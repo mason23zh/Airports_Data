@@ -2,3 +2,7 @@ node_modules
 /config.env
 /dev-data
 dev-data/GNS430_Data
+utils/Vamsys/large_airportEU_CSV.csv
+utils/Vamsys/large_airportInNA.json
+utils/Vamsys/targetAirport.json
+utils/Vamsys/large_airportEU_CSV.csv
