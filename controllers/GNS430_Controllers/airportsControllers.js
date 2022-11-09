@@ -8,6 +8,7 @@ const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimAT
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
+
 module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
     const airportFeatures = new APIFeatures(
         GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
@@ -20,7 +21,6 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
     if (!gns430Airport) {
         throw new BadRequestError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
     }
-    const gns430Runway = gns430Airport.runway;
 
     const responseMetar = await generateResponseMetar(req.params.icao.toUpperCase());
     const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
@@ -29,7 +29,6 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
         status: "success",
         data: {
             airport: gns430Airport,
-            runways: gns430Runway,
             ATIS,
             METAR: responseMetar.data,
         },
@@ -51,6 +50,8 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
 
     const airportICAO_Code = airportICAO[0].ident;
     //const gns430Airport = await GNS430Airport.find({ ICAO: airportICAO_Code });
+
+    console.log(airportICAO_Code);
 
     const airportFeatures = new APIFeatures(GNS430Airport.find({ ICAO: airportICAO_Code }), req.query).limitFields();
 

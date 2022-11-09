@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { CHECK_WEATHER_BASE_URL } = require("../../config");
-const BadRequestError = require("../../common/errors/BadRequestError");
 
 const getMetar = async (station, location) => {
     try {
@@ -14,7 +13,7 @@ const getMetar = async (station, location) => {
 
         return responseMetar.data;
     } catch (err) {
-        throw new BadRequestError(err);
+        return { data: [] };
     }
 };
 
