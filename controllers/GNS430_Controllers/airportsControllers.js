@@ -61,14 +61,12 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
     if (!gns430Airport) {
         throw new NotFoundError(`Can Not Found Airport with IATA: ${req.params.iata.toUpperCase()}`);
     }
-    const gns430Runway = gns430Airport.runway;
 
     const responseMetar = await generateResponseMetar(airportICAO_Code);
     res.status(200).json({
         status: "success",
         data: {
             airport: gns430Airport,
-            runways: gns430Runway,
             METAR: responseMetar.data,
             ATIS,
         },
@@ -89,6 +87,34 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
         results: airports.length,
         data: {
             airport: airports,
+        },
+    });
+};
+
+module.exports.getAirportsByCity_GNS430 = async (req, res) => {
+    const airportsQueryObj = Airports.find({
+        municipality: { $regex: `${req.params.name}`, $options: "i" },
+    });
+
+    const featuresQuery = new APIFeatures(airportsQueryObj, req.query).filter().limitFields().limitResults().paginate();
+
+    const airports = await featuresQuery.query;
+
+    const filteredAirports = [];
+    await Promise.all(
+        airports.map(async (airport) => {
+            const filteredAirport = await GNS430Airport.find({ ICAO: airport.ident });
+            if (filteredAirport.length !== 0) {
+                filteredAirports.push(filteredAirport[0]);
+            }
+        })
+    );
+
+    res.status(200).json({
+        status: "success",
+        results: filteredAirports.length,
+        data: {
+            airport: filteredAirports,
         },
     });
 };
