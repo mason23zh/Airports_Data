@@ -14,6 +14,7 @@ const {
     getAirportWithin,
     getAirportsDistance,
     getAirportsByCity_GNS430,
+    getAirportByGenericInput_GNS430,
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -27,6 +28,7 @@ router.route("/icao/:icao").get(getAirportByICAO_GNS430);
 router.route("/iata/:iata").get(getAirportByIATA_GNS430);
 router.route("/type/:type").get(getAirportByType);
 router.route("/city/:name").get(getAirportsByCity_GNS430);
+router.route("/generic/:data").get(getAirportByGenericInput_GNS430);
 //Able to partially match e.g. winnipeg would match 3 resutls
 router.route("/name/:name").get(getAirportByName_GNS430);
 
