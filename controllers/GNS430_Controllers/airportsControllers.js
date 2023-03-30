@@ -5,6 +5,7 @@ const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
 const { Airports } = require("../../models/airports/airportsModel");
 const { generateResponseMetar } = require("../../utils/METAR/generateResponseMETAR");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
+const { checkICAO } = require("../../utils/checkICAO");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -123,6 +124,8 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     // If checkICAO return true, check ICAO first
     const userInput = req.params.data;
     let airports = [];
+    let filteredAirports = [];
+    let responseAirports = [];
 
     if (checkICAO(userInput)) {
         const airportsWithICAO = await GNS430Airport.findOne({
@@ -138,7 +141,6 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
             municipality: { $regex: `${userInput}`, $options: "i" },
         });
 
-        let filteredAirports = [];
         await Promise.all(
             airportWithCity.map(async (airport) => {
                 const matchedAirport = await GNS430Airport.findOne({ ICAO: `${airport.ident}` });
@@ -149,12 +151,20 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         );
 
         airports = [...filteredAirports, ...airportsWithGNS430];
+        responseAirports = airports.filter((value, index, self) => {
+            return (
+                index ===
+                self.findIndex((t) => {
+                    return t.ICAO === value.ICAO;
+                })
+            );
+        });
     }
 
     res.status(200).json({
         status: "success",
-        result: airports.length,
-        data: airports,
+        result: responseAirports.length,
+        data: responseAirports,
     });
 };
 
