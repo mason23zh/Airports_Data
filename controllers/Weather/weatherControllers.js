@@ -1,5 +1,6 @@
 const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
 const NotFoundError = require("../../common/errors/NotFoundError");
+const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 
 const awcWeather = new AwcWeather();
 
@@ -689,5 +690,12 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
         data: {
             METAR: resultMetar,
         },
+    });
+};
+
+module.exports.getDownloadFile = async (req, res, next) => {
+    await downloadFile("https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv");
+    res.status(200).json({
+        status: "success",
     });
 };

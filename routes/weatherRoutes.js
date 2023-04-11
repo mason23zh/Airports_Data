@@ -17,6 +17,7 @@ const {
     getBaroMetarForGlobal,
     getVisibilityMetarForGlobal,
     getTempMetarForGlobal,
+    getDownloadFile,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
@@ -43,5 +44,8 @@ router.route("/global-weather/wind-speed").get(getWindMetarForGlobal);
 router.route("/global-weather/baro").get(getBaroMetarForGlobal);
 router.route("/global-weather/visibility").get(getVisibilityMetarForGlobal);
 router.route("/global-weather/temperature").get(getTempMetarForGlobal);
+
+//test
+router.route("/get-download").get(getDownloadFile);
 
 module.exports = router;
