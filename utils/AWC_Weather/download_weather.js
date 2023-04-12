@@ -9,7 +9,6 @@ const pipeline = util.promisify(stream.pipeline);
 const awc_csv_metar = "./dev-data/csv_data/awc_metars.csv";
 const awc_csv_modified_metar = "./dev-data/weather/awc_metars.csv";
 const awc_json_metar = "./dev-data/json_data/awc_metars.json";
-const { AwcWeather } = require("../../models/weather/awcWeatherModel");
 // const ImportData = require("../../models/importDataToDB");
 
 // download csv
@@ -59,6 +58,5 @@ module.exports.downloadFile = async (url) => {
     await awc_metars.csvToJson();
 
     const awcMetars = JSON.parse(fs.readFileSync(awc_json_metar, "utf-8"));
-
-    return awcWeatherStatus;
+    return awcMetars;
 };

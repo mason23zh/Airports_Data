@@ -1,6 +1,9 @@
-const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
+const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
+const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
+const mongoose = require("mongoose");
+require("dotenv").config({ path: "../../config.env" });
 
 const awcWeather = new AwcWeather();
 
@@ -693,9 +696,61 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
     });
 };
 
+const createItemToDB = async (data, model) => {
+    let doc;
+    try {
+        doc = await model.create(data);
+        console.log("data created");
+    } catch (err) {
+        console.log("error create data", err);
+    }
+    return doc;
+};
+
+exports.getAwcMetarsToDB = async (req, res, next) => {
+    mongoose.connect(`${process.env.DATABASE}`);
+    const db = mongoose.connection;
+    db.once("connected", () => {
+        console.log("connected to database for metar import");
+        createItems();
+    });
+
+    async function createItems() {
+        try {
+            const awcMetars = await downloadFile(
+                "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
+            );
+            console.log("Download Data Length:", awcMetars.length);
+            const docs = await AwcWeatherMetarModel.create(awcMetars);
+            console.log(docs.length);
+        } catch (e) {
+            console.log("error import data", e);
+        }
+    }
+
+    next();
+};
+
 module.exports.getDownloadFile = async (req, res, next) => {
-    await downloadFile("https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv");
+    async function createItems() {
+        try {
+            console.log("start downloading data from AWC...");
+            const awcMetars = await downloadFile(
+                "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
+            );
+            console.log("Download Finished, data length:", awcMetars.length);
+            console.log("Start importing data to Database...");
+            const docs = await AwcWeatherMetarModel.create(awcMetars);
+            console.log("Data imported, total entries:", docs.length);
+            return docs;
+        } catch (e) {
+            console.log("error import data", e);
+        }
+    }
+
+    const docs = await createItems();
     res.status(200).json({
         status: "success",
+        data: docs.length,
     });
 };

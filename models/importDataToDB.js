@@ -1,6 +1,6 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
-const { AwcWeather } = require("./weather/awcWeatherModel");
+const { AwcWeatherMetarModel } = require("../models/weather/awcWeatherModel");
 // const { Airports } = require("./airports/airportsModel");
 // const { AirportFrequencies } = require("./airports/airportFrequenciesModel");
 // const { Countries } = require("./airports/countriesModel");
@@ -31,7 +31,7 @@ const awcJsonPath = "../dev-data/json_data/awc_metars.json";
 // const regions = JSON.parse(fs.readFileSync(regionsJsonPath));
 // const runways = JSON.parse(fs.readFileSync(runwaysJsonPath));
 // const gns430Runway = JSON.parse(fs.readFileSync(gns430AirportJsonPath));
-const awcWeahterMetars = JSON.parse(fs.readFileSync(awcJsonPath, "utf-8"));
+const awcWeatherMetars = JSON.parse(fs.readFileSync(awcJsonPath, "utf-8"));
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected for import data");
 });
@@ -54,7 +54,7 @@ class ImportData {
 
 module.exports = ImportData;
 
-const importAwcMetar = new ImportData(AwcWeather, awcWeahterMetars);
+const importAwcMetar = new ImportData(AwcWeatherMetarModel, awcWeatherMetars);
 importAwcMetar.import();
 // const importAirport = new ImportData(Airports, airports);
 // const importAirportFreq = new ImportData(AirportFrequencies, airportFreqs);

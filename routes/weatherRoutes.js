@@ -18,6 +18,7 @@ const {
     getVisibilityMetarForGlobal,
     getTempMetarForGlobal,
     getDownloadFile,
+    getAwcMetarsToDB,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
