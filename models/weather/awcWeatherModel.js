@@ -48,6 +48,15 @@ const awcWeatherSchema = new mongoose.Schema({
     elevation_m: {
         type: Number,
     },
+    ios_country: {
+        type: String,
+    },
+    ios_region: {
+        type: String,
+    },
+    continent: {
+        type: String,
+    },
 });
 
 module.exports.AwcWeatherMetarModel = mongoose.model("AwcWeatherMetarModel", awcWeatherSchema);

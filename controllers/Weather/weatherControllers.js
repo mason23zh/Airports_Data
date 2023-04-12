@@ -3,6 +3,8 @@ const NotFoundError = require("../../common/errors/NotFoundError");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
 const mongoose = require("mongoose");
+const fs = require("fs");
+const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 require("dotenv").config({ path: "../../config.env" });
 
 const awcWeather = new AwcWeather();
@@ -729,6 +731,27 @@ exports.getAwcMetarsToDB = async (req, res, next) => {
     }
 
     next();
+};
+
+module.exports.normalizeCSV = async (req, res, next) => {
+    // normalizeData();
+    async function createItems() {
+        try {
+            const normalizedMetar = await normalizeData();
+            const docs = await AwcWeatherMetarModel.create(JSON.parse(normalizedMetar));
+            console.log("Data imported, total entries:", docs.length);
+            return docs;
+        } catch (e) {
+            console.log("error import data", e);
+        }
+    }
+
+    const docs = await createItems();
+
+    res.status(200).json({
+        status: "success",
+        data: docs.length,
+    });
 };
 
 module.exports.getDownloadFile = async (req, res, next) => {
