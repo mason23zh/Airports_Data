@@ -733,6 +733,8 @@ exports.getAwcMetarsToDB = async (req, res, next) => {
     next();
 };
 
+//! DEV TESTING ONLY
+
 module.exports.normalizeCSV = async (req, res, next) => {
     const conn = mongoose.createConnection(`${process.env.DATABASE}`);
     const AwcWeatherModel = conn.model("AwcWeatherMetarModel", AwcWeatherMetarSchema);
@@ -761,7 +763,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
     async function createItems() {
         try {
             const conn = mongoose.createConnection(`${process.env.DATABASE}`);
-            const AwcWeatherModel = conn.model("AwcWeatherMetarModel", AwcWeatherMetarSchema);
+            const AwcWeatherModel = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
             console.log("start downloading data from AWC...");
             const awcMetars = await downloadFile(
                 "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
@@ -776,6 +778,8 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Start importing data to Database...");
                 const docs = await AwcWeatherModel.create(JSON.parse(normalizedMetar));
                 console.log("Data imported, total entries:", docs.length);
+                console.log("Copy all data to AwcWeatherMetarModel...");
+                await AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
                 return normalizedMetar;
             } else {
                 return;
@@ -789,5 +793,14 @@ module.exports.getDownloadFile = async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data: JSON.parse(docs),
+    });
+};
+
+module.exports.getWindMetar = async (req, res, next) => {
+    const metar = await AwcWeatherMetarModel.findOne({ station_id: "CYWG" });
+    console.log(metar);
+    res.status(200).json({
+        status: "success",
+        data: metar,
     });
 };

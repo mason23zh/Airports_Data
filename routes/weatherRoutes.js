@@ -20,6 +20,7 @@ const {
     getDownloadFile,
     getAwcMetarsToDB,
     normalizeCSV,
+    getWindMetar,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
@@ -49,6 +50,6 @@ router.route("/global-weather/temperature").get(getTempMetarForGlobal);
 
 //test
 router.route("/get-download").get(getDownloadFile);
-router.route("/normalize-weather").get(normalizeCSV);
+router.route("/normalize-weather").get(getWindMetar);
 
 module.exports = router;
