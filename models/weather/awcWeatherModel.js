@@ -59,4 +59,5 @@ const awcWeatherSchema = new mongoose.Schema({
     },
 });
 
+module.exports.AwcWeatherMetarSchema = awcWeatherSchema;
 module.exports.AwcWeatherMetarModel = mongoose.model("AwcWeatherMetarModel", awcWeatherSchema);

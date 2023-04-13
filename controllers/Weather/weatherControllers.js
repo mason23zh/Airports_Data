@@ -1,4 +1,4 @@
-const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
+const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
@@ -734,6 +734,9 @@ exports.getAwcMetarsToDB = async (req, res, next) => {
 };
 
 module.exports.normalizeCSV = async (req, res, next) => {
+    const conn = mongoose.createConnection(`${process.env.DATABASE}`);
+    const AwcWeatherModel = conn.model("AwcWeatherMetarModel", AwcWeatherMetarSchema);
+
     // normalizeData();
     async function createItems() {
         try {
@@ -757,15 +760,26 @@ module.exports.normalizeCSV = async (req, res, next) => {
 module.exports.getDownloadFile = async (req, res, next) => {
     async function createItems() {
         try {
+            const conn = mongoose.createConnection(`${process.env.DATABASE}`);
+            const AwcWeatherModel = conn.model("AwcWeatherMetarModel", AwcWeatherMetarSchema);
             console.log("start downloading data from AWC...");
             const awcMetars = await downloadFile(
                 "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
             );
-            console.log("Download Finished, data length:", awcMetars.length);
-            console.log("Start importing data to Database...");
-            const docs = await AwcWeatherMetarModel.create(awcMetars);
-            console.log("Data imported, total entries:", docs.length);
-            return docs;
+            if (awcMetars.length && awcMetars.length > 0) {
+                console.log("Download Finished, data length:", awcMetars.length);
+                console.log("Deleting old data...");
+                await AwcWeatherModel.deleteMany({});
+                console.log("Old data deleted");
+                console.log("Starting normalizing awc metars...");
+                const normalizedMetar = await normalizeData();
+                console.log("Start importing data to Database...");
+                const docs = await AwcWeatherModel.create(JSON.parse(normalizedMetar));
+                console.log("Data imported, total entries:", docs.length);
+                return normalizedMetar;
+            } else {
+                return;
+            }
         } catch (e) {
             console.log("error import data", e);
         }
@@ -774,6 +788,6 @@ module.exports.getDownloadFile = async (req, res, next) => {
     const docs = await createItems();
     res.status(200).json({
         status: "success",
-        data: docs.length,
+        data: JSON.parse(docs),
     });
 };
