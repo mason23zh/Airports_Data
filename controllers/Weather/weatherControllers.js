@@ -13,29 +13,19 @@ const awcWeather = new AwcWeather();
 module.exports.getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
-    let resultMetar = [];
 
-    try {
-        const tempMetars = await awcWeather.getWeatherForCountry(country);
-        if (tempMetars.length > 0) {
-            if (tempMetars.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetars[i]);
-                }
-            } else {
-                resultMetar = [...tempMetars];
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+    const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(
+            `Cannot find weather for country: ${country.toUpperCase()}. Please use correct country code.`
+        );
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
+        result: sortedMetars.length,
         data: {
-            METAR: resultMetar,
+            METAR: sortedMetars,
         },
     });
 };
@@ -43,658 +33,353 @@ module.exports.getWeatherForCountry = async (req, res, next) => {
 module.exports.getWindGustForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForCountry(country);
-        const tempMetar = awcWeather.getGustMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        ios_country: country.toUpperCase(),
+        wind_gust_kt: { $ne: null },
+    })
+        .sort({ wind_gust_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find wind gust data for country: ${country}`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getWindMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForCountry(country);
-        const tempMetar = awcWeather.getWindMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        ios_country: country.toUpperCase(),
+        wind_speed_kt: { $ne: null },
+    })
+        .sort({ wind_speed_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find wind gust data for country: ${country}`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getBaroMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForCountry(country);
+    const { sort = 1, limit = 10 } = req.query; // 1 would sort low baro to high
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getBaroMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getBaroMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        ios_country: country.toUpperCase(),
+        altim_in_hg: { $ne: null },
+    })
+        .sort({ altim_in_hg: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find baro data for country: ${country}`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getVisibilityMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForCountry(country);
+    const { sort = 1, limit = 10 } = req.query; //1 would sort bad visibility from good
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        ios_country: country.toUpperCase(),
+        visibility_statute_mi: { $ne: null },
+    })
+        .sort({ visibility_statute_mi: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find visibility data for country: ${country}`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getTempMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForCountry(country);
+    const { sort = 1, limit = 10 } = req.query; //1 would sort temp from low to high
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getTempMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getTempMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find weather for ${country.toUpperCase()}`);
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        ios_country: country.toUpperCase(),
+        temp_c: { $ne: null },
+    })
+        .sort({ temp_c: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find temperature data for country: ${country}`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 //continent
 module.exports.getMetarForContinent = async (req, res, next) => {
-    const result = await awcWeather.getWeatherForContinent("SA");
+    const { continent } = req.params;
+    const { limit } = req.query;
+    const sortedMetars = await AwcWeatherMetarModel.find({ continent: continent.toUpperCase() }).limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(
+            `Can not find METARs for continent: ${continent}. Please use the correct continent code.`
+        );
+    }
 
     res.status(200).json({
         status: "success",
-        result: result.length,
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getWindGustForContinent = async (req, res, next) => {
     const { continent } = req.params;
-    const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForContinent(continent);
-        const tempMetar = awcWeather.getGustMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
-        throw new NotFoundError(
-            `Cannot find continent weather for continent/global code: ${continent.toUpperCase()}\n
-             Please use code: AF, AN, AS, OC, EU, NA, SA
-            `
-        );
+    const { limit = 10 } = req.query; //1 would sort temp from low to high
+
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        continent: continent.toUpperCase(),
+        wind_gust_kt: { $ne: null },
+    })
+        .sort({ wind_gust_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find wind gust data for continent: ${continent}
+            Please use code: AF, AN, AS, OC, EU, NA, SA`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getWindMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
-    const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForContinent(continent);
-        const tempMetar = awcWeather.getWindMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
+    const { limit = 10 } = req.query; //1 would sort temp from low to high
+
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        continent: continent.toUpperCase(),
+        wind_speed_kt: { $ne: null },
+    })
+        .sort({ wind_speed_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
         throw new NotFoundError(
-            `Cannot find continent weather for continent/global code: ${continent.toUpperCase()}\n
-             Please use code: AF, AN, AS, OC, EU, NA, SA
-            `
+            `Cannot find wind speed data for continent: ${continent}
+            Please use code: AF, AN, AS, OC, EU, NA, SA`
         );
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getBaroMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForContinent(continent);
+    const { sort = 1, limit = 10 } = req.query; //1 would sort baro from low to high
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getBaroMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getBaroMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        continent: continent.toUpperCase(),
+        altim_in_hg: { $ne: null },
+    })
+        .sort({ altim_in_hg: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
         throw new NotFoundError(
-            `Cannot find continent weather for continent/global code: ${continent.toUpperCase()}\n
-             Please use code: AF, AN, AS, OC, EU, NA, SA
-            `
+            `Cannot find bara data for continent: ${continent}
+            Please use code: AF, AN, AS, OC, EU, NA, SA`
         );
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getVisibilityMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForContinent(continent);
+    const { sort = 1, limit = 10 } = req.query; //1 would sort visibility from low to high
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        continent: continent.toUpperCase(),
+        visibility_statute_mi: { $ne: null },
+    })
+        .sort({ visibility_statute_mi: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
         throw new NotFoundError(
-            `Cannot find continent weather for continent/global code: ${continent.toUpperCase()}\n
-             Please use code: AF, AN, AS, OC, EU, NA, SA
-            `
+            `Cannot find visibility data for continent: ${continent}
+            Please use code: AF, AN, AS, OC, EU, NA, SA`
         );
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getTempMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
-    const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForContinent(continent);
+    const { sort = 1, limit = 10 } = req.query; //1 would sort temperature from low to high
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getTempMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getTempMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        continent: continent.toUpperCase(),
+        temp_c: { $ne: null },
+    })
+        .sort({ temp_c: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
         throw new NotFoundError(
-            `Cannot find continent weather for continent/global code: ${continent.toUpperCase()}\n
-             Please use code: AF, AN, AS, OC, EU, NA, SA
-            `
+            `Cannot find temperature data for continent: ${continent}
+            Please use code: AF, AN, AS, OC, EU, NA, SA`
         );
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
+// Global
+
 module.exports.getWindGustForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForGlobal();
-        const tempMetar = awcWeather.getGustMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find global weather`);
+
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        wind_gust_kt: { $ne: null },
+    })
+        .sort({ wind_gust_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find global temperature data.`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getWindMetarForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForGlobal();
-        const tempMetar = awcWeather.getWindMetarFromHighToLow();
-        if (tempMetar.length > 0) {
-            if (tempMetar.length > Number(limit)) {
-                for (let i = 0; i < Number(limit); i++) {
-                    resultMetar.push(tempMetar[i]);
-                }
-            } else if (tempMetar.length < Number(limit)) {
-                resultMetar = [...tempMetar];
-            }
-        } else {
-            return resultMetar;
-        }
-    } catch (err) {
-        throw new NotFoundError(`Cannot find global weather`);
+
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        wind_speed_kt: { $ne: null },
+    })
+        .sort({ wind_speed_kt: -1 })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find global temperature data.`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getBaroMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForGlobal();
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getBaroMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getBaroMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError("Cannot find global weather");
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        altim_in_hg: { $ne: null },
+    })
+        .sort({ altim_in_hg: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find global baro data.`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getVisibilityMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForGlobal();
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getVisibilityMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError("Cannot find global weather");
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        visibility_statute_mi: { $ne: null },
+    })
+        .sort({ visibility_statute_mi: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find global visibility data.`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
 module.exports.getTempMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
-    let resultMetar = [];
-    try {
-        await awcWeather.getWeatherForGlobal();
 
-        if (Number(sort) === 1) {
-            const tempMetar = awcWeather.getTempMetarFromLowToHigh();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-        if (Number(sort) === -1) {
-            const tempMetar = awcWeather.getTempMetarFromHighToLow();
-            if (tempMetar.length > 0) {
-                if (tempMetar.length > Number(limit)) {
-                    for (let i = 0; i < Number(limit); i++) {
-                        resultMetar.push(tempMetar[i]);
-                    }
-                } else if (tempMetar.length < Number(limit)) {
-                    resultMetar = [...tempMetar];
-                }
-            } else {
-                return resultMetar;
-            }
-        }
-    } catch (err) {
-        throw new NotFoundError("Cannot find global weather");
+    const sortedMetars = await AwcWeatherMetarModel.find({
+        temp_c: { $ne: null },
+    })
+        .sort({ temp_c: sort })
+        .limit(limit);
+
+    if (!sortedMetars || sortedMetars.length === 0) {
+        throw new NotFoundError(`Cannot find global temperature data.`);
     }
 
     res.status(200).json({
         status: "success",
-        totalNumber: awcWeather.getNumberOfMetars(),
-        result: resultMetar.length,
-        data: {
-            METAR: resultMetar,
-        },
+        result: sortedMetars.length,
+        data: sortedMetars,
     });
 };
 
@@ -778,8 +463,9 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Start importing data to Database...");
                 const docs = await AwcWeatherModel.create(JSON.parse(normalizedMetar));
                 console.log("Data imported, total entries:", docs.length);
-                console.log("Copy all data to AwcWeatherMetarModel...");
+                console.log("Copy all data to Model...");
                 await AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
+                console.log("Data merged successfully, Let's rock!");
                 return normalizedMetar;
             } else {
                 return;
@@ -797,10 +483,23 @@ module.exports.getDownloadFile = async (req, res, next) => {
 };
 
 module.exports.getWindMetar = async (req, res, next) => {
-    const metar = await AwcWeatherMetarModel.findOne({ station_id: "CYWG" });
-    console.log(metar);
+    const { ICAO } = req.params;
+    const metar = await AwcWeatherMetarModel.findOne({ station_id: `${ICAO.toUpperCase()}` });
     res.status(200).json({
         status: "success",
         data: metar,
+    });
+};
+
+module.exports.getGlobalVisibility = async (req, res, next) => {
+    const sortedMetars = await AwcWeatherMetarModel.find({ visibility_statute_mi: { $ne: null } }).sort({
+        visibility_statute_mi: 1,
+    });
+    // const metars = await AwcWeatherMetarModel.sort({ visibility_statute_mi: "asc" });
+
+    res.status(200).json({
+        status: "success",
+        length: sortedMetars.length,
+        data: sortedMetars,
     });
 };

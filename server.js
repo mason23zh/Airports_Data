@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const app = require("./app");
 const { PORT } = require("./config");
-const { AwcWeatherMetarSchema, AwcWeatherMetarModel } = require("./models/weather/awcWeatherModel");
+const { AwcWeatherMetarSchema } = require("./models/weather/awcWeatherModel");
 const { downloadFile } = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
-let AwcWeatherModel_Latest = "";
 
 async function importMetarsToDB() {
     try {
@@ -35,7 +34,9 @@ async function importMetarsToDB() {
             console.log("Data imported, total entries:", docs.length);
 
             console.log("Copy all data to AwcWeatherMetarModel...");
-            await Latest_AwcWeatherModel.aggregate([{ $out: AwcWeatherMetarModel }]);
+            await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
+            console.log("Data merged successfully, Let's rock!");
+
             return normalizedMetar;
         } else {
             console.log("AWC Metar download failed...");
@@ -46,22 +47,14 @@ async function importMetarsToDB() {
     }
 }
 
-const conn = mongoose.createConnection(`${process.env.DATABASE}`, () => {
-    console.log("second DB connected");
-});
-// create new model based on the AwcWeather Schema
-const Latest_AwcWeatherModel = (module.exports = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema));
-
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
-
-    // schedule.scheduleJob("0 15 0 ? * * *", async () => {
-    //     await importMetarsToDB();
-    // });
+    // repeat every 10 minutes
+    schedule.scheduleJob("*/10 * * * *", async () => {
+        await importMetarsToDB();
+    });
 });
 
 app.listen(PORT, () => {
     console.log(`Express starts on port ${PORT}`);
 });
-
-// module.exports.AwcWeatherModel_Latest = AwcWeatherModel_Latest;

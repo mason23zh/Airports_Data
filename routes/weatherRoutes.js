@@ -21,6 +21,7 @@ const {
     getAwcMetarsToDB,
     normalizeCSV,
     getWindMetar,
+    getGlobalVisibility,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
@@ -34,7 +35,7 @@ router.route("/country-weather/wind-speed/:country").get(getWindMetarForCountry)
 router.route("/country-weather/wind-gust-speed/:country").get(getWindGustForCountry);
 
 //continent
-router.route("/continent-weather").get(getMetarForContinent);
+router.route("/continent-weather/:continent").get(getMetarForContinent);
 router.route("/continent-weather/wind-gust-speed/:continent").get(getWindGustForContinent);
 router.route("/continent-weather/wind-speed/:continent").get(getWindMetarForContinent);
 router.route("/continent-weather/baro/:continent").get(getBaroMetarForContinent);
@@ -50,6 +51,7 @@ router.route("/global-weather/temperature").get(getTempMetarForGlobal);
 
 //test
 router.route("/get-download").get(getDownloadFile);
-router.route("/normalize-weather").get(getWindMetar);
+router.route("/normalize-weather/:ICAO").get(getWindMetar);
+router.route("/getGlobalVisibilityTest").get(getGlobalVisibility);
 
 module.exports = router;

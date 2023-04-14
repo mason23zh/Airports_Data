@@ -30,6 +30,9 @@ const awcWeatherSchema = new mongoose.Schema({
     wind_speed_kt: {
         type: Number,
     },
+    wind_gust_kt: {
+        type: Number,
+    },
     visibility_statute_mi: {
         type: Number,
     },
