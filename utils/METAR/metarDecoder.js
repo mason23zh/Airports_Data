@@ -13,7 +13,6 @@ const metarDecoder = (metar) => {
             visibility: {},
         },
     };
-    console.log("metar::::::::", metar);
 
     if (!metar) {
         return;

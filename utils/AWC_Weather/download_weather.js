@@ -1,5 +1,4 @@
 require("dotenv").config({ path: "../config.env" });
-const mongoose = require("mongoose");
 const util = require("util");
 const stream = require("stream");
 const axios = require("axios");
@@ -9,25 +8,6 @@ const pipeline = util.promisify(stream.pipeline);
 const awc_csv_metar = "./dev-data/csv_data/awc_metars.csv";
 const awc_csv_modified_metar = "./dev-data/weather/awc_metars.csv";
 const awc_json_metar = "./dev-data/json_data/awc_metars.json";
-// const ImportData = require("../../models/importDataToDB");
-
-// download csv
-// remove top lines from csv
-// convert csv to json
-// import new csv to AWC model
-
-// const importData = async (data) => {
-//     try {
-//         mongoose.connect(`${process.env.DATABASE}`).then(() => {
-//             console.log("DB connected for import data");
-//         });
-//         console.log(data.length);
-//         await AwcWeather.create(data);
-//         console.log("data imported");
-//     } catch (e) {
-//         console.log(e);
-//     }
-// };
 
 module.exports.downloadFile = async (url) => {
     let awcWeatherStatus = {
@@ -57,6 +37,5 @@ module.exports.downloadFile = async (url) => {
     const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
     await awc_metars.csvToJson();
 
-    const awcMetars = JSON.parse(fs.readFileSync(awc_json_metar, "utf-8"));
-    return awcMetars;
+    return JSON.parse(fs.readFileSync(awc_json_metar, "utf-8"));
 };

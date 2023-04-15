@@ -16,8 +16,6 @@ class APIFeatures {
         let queryString = JSON.stringify(queryObject); //covert queryObj to String
         queryString = queryString.replace(/\b(gte|gt|lte|lt|ne)\b/g, (match) => `$${match}`);
 
-        console.log("api filter", JSON.parse(queryString));
-
         this.query = this.query.find(JSON.parse(queryString));
 
         //return the entire filter object inorder to be chained

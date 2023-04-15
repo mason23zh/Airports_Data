@@ -22,6 +22,7 @@ const {
     normalizeCSV,
     getWindMetar,
     getGlobalVisibility,
+    gns430AirportsFilter,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
@@ -53,5 +54,6 @@ router.route("/global-weather/temperature").get(getTempMetarForGlobal);
 router.route("/get-download").get(getDownloadFile);
 router.route("/normalize-weather/:ICAO").get(getWindMetar);
 router.route("/getGlobalVisibilityTest").get(getGlobalVisibility);
+router.route("/filterTest").get(gns430AirportsFilter);
 
 module.exports = router;

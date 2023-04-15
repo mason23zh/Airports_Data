@@ -52,8 +52,6 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
     const airportICAO_Code = airportICAO[0].ident;
     //const gns430Airport = await GNS430Airport.find({ ICAO: airportICAO_Code });
 
-    console.log(airportICAO_Code);
-
     const airportFeatures = new APIFeatures(GNS430Airport.find({ ICAO: airportICAO_Code }), req.query).limitFields();
 
     const gns430Airport = await airportFeatures.query;

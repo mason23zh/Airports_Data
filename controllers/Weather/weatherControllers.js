@@ -3,6 +3,7 @@ const NotFoundError = require("../../common/errors/NotFoundError");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 const mongoose = require("mongoose");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
+const { filterOutGlobalAirportsUsingGNS430_data } = require("../../utils/Data_Convert/gns430AirportFilter");
 require("dotenv").config({ path: "../../config.env" });
 
 module.exports.getWeatherForCountry = async (req, res, next) => {
@@ -378,6 +379,8 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
     });
 };
 
+//! DEV TESTING ONLY
+
 const createItemToDB = async (data, model) => {
     let doc;
     try {
@@ -412,8 +415,6 @@ exports.getAwcMetarsToDB = async (req, res, next) => {
 
     next();
 };
-
-//! DEV TESTING ONLY
 
 module.exports.normalizeCSV = async (req, res, next) => {
     const conn = mongoose.createConnection(`${process.env.DATABASE}`);
@@ -496,5 +497,12 @@ module.exports.getGlobalVisibility = async (req, res, next) => {
         status: "success",
         length: sortedMetars.length,
         data: sortedMetars,
+    });
+};
+
+module.exports.gns430AirportsFilter = async (req, res, next) => {
+    filterOutGlobalAirportsUsingGNS430_data();
+    res.status(200).json({
+        status: "success",
     });
 };
