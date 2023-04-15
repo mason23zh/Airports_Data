@@ -1,6 +1,7 @@
 const express = require("express");
 require("express-async-errors");
 const morgan = require("morgan");
+const compression = require("compression");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -14,6 +15,8 @@ const NotFoundError = require("./common/errors/NotFoundError");
 const AccessNumberExceedError = require("./common/errors/AccessNumberExceedError");
 
 const app = express();
+
+app.use(compression());
 
 app.use(helmet());
 

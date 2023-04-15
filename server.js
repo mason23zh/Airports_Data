@@ -6,13 +6,16 @@ const { downloadFile } = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
+const { SecondaryConnection } = require("./secondaryDbConnection");
 
-async function importMetarsToDB() {
+async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
         // create new mongoose connection
-        const conn = mongoose.createConnection(`${process.env.DATABASE}`);
+        // console.log("Starting DB...");
+        // const conn = mongoose.createConnection(`${process.env.DATABASE}`);
         // create new model based on the AwcWeather Schema
-        const Latest_AwcWeatherModel = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
+        // console.log("DB connected");
+        // const Latest_AwcWeatherModel = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
         // downloading latest AWC metar CSV file
         console.log("start downloading data from AWC...");
         const awcMetars = await downloadFile(
@@ -36,7 +39,9 @@ async function importMetarsToDB() {
             console.log("Copy all data to AwcWeatherMetarModel...");
             await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
             console.log("Data merged successfully, Let's rock!");
-
+            // console.log("Close DB connection...");
+            // conn.disconnect();
+            // console.log("DB Closed");
             return normalizedMetar;
         } else {
             console.log("AWC Metar download failed...");
@@ -47,11 +52,11 @@ async function importMetarsToDB() {
     }
 }
 
+const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
-    // repeat every 10 minutes
     schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB();
+        await importMetarsToDB(Latest_AwcWeatherModel);
     });
 });
 

@@ -1,15 +1,10 @@
 const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
-const AwcWeather = require("../../utils/AWC_Weather/AwcWeather");
 const mongoose = require("mongoose");
-const fs = require("fs");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 require("dotenv").config({ path: "../../config.env" });
 
-const awcWeather = new AwcWeather();
-
-//!TODO: Refactor
 module.exports.getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
