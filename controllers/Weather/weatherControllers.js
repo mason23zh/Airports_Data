@@ -1,29 +1,47 @@
-const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
-const NotFoundError = require("../../common/errors/NotFoundError");
-const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
+require("dotenv").config({ path: "../../config.env" });
+const Redis = require("redis");
 const mongoose = require("mongoose");
+const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 const { filterOutGlobalAirportsUsingGNS430_data } = require("../../utils/Data_Convert/gns430AirportFilter");
-require("dotenv").config({ path: "../../config.env" });
+const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
+const NotFoundError = require("../../common/errors/NotFoundError");
+const DEFAULT_EXPIRATION = 3600;
+let redisClient;
+(async () => {
+    redisClient = Redis.createClient();
+    await redisClient.connect();
+})();
 
 module.exports.getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
 
-    const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
-    if (!sortedMetars || sortedMetars.length === 0) {
-        throw new NotFoundError(
-            `Cannot find weather for country: ${country.toUpperCase()}. Please use correct country code.`
-        );
-    }
+    const redisResult = await redisClient.get("metars");
 
-    res.status(200).json({
-        status: "success",
-        result: sortedMetars.length,
-        data: {
-            METAR: sortedMetars,
-        },
-    });
+    if (redisResult === null) {
+        console.log("redis miss");
+        const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
+        if (!sortedMetars || sortedMetars.length === 0) {
+            throw new NotFoundError(
+                `Cannot find weather for country: ${country.toUpperCase()}. Please use correct country code.`
+            );
+        }
+        redisClient.setEx("metars", DEFAULT_EXPIRATION, JSON.stringify(sortedMetars));
+
+        res.status(200).json({
+            status: "success",
+            result: sortedMetars.length,
+            data: sortedMetars,
+        });
+    } else {
+        console.log("redis hit");
+        res.status(200).json({
+            status: "success",
+            result: JSON.parse(redisResult).length,
+            data: JSON.parse(redisResult),
+        });
+    }
 };
 
 module.exports.getWindGustForCountry = async (req, res, next) => {
