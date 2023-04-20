@@ -40,6 +40,7 @@
     "papaparse": "^5.4.1",
     "puppeteer": "^18.0.5",
     "redis": "^4.6.5",
+    "redis-om": "^0.3.6",
     "request": "^2.88.2",
     "underscore": "^1.13.6",
     "validator": "^13.7.0",

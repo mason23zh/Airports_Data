@@ -23,6 +23,8 @@ const {
     getWindMetar,
     getGlobalVisibility,
     gns430AirportsFilter,
+    redisTest,
+    redisReset,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
@@ -55,5 +57,6 @@ router.route("/get-download").get(getDownloadFile);
 router.route("/normalize-weather/:ICAO").get(getWindMetar);
 router.route("/getGlobalVisibilityTest").get(getGlobalVisibility);
 router.route("/filterTest").get(gns430AirportsFilter);
-
+router.route("/redisTest").get(redisTest);
+router.route("/redisRest").get(redisReset);
 module.exports = router;

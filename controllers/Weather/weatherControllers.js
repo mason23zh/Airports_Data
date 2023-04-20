@@ -1,47 +1,25 @@
 require("dotenv").config({ path: "../../config.env" });
-const Redis = require("redis");
 const mongoose = require("mongoose");
 const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 const { filterOutGlobalAirportsUsingGNS430_data } = require("../../utils/Data_Convert/gns430AirportFilter");
 const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
 const NotFoundError = require("../../common/errors/NotFoundError");
-const DEFAULT_EXPIRATION = 3600;
-let redisClient;
-(async () => {
-    redisClient = Redis.createClient();
-    await redisClient.connect();
-})();
+const { awcMetarRepository } = require("../../redis/awcMetar");
+const { redisClient } = require("../../redis/client");
+const { redisNodeClient } = require("../../redis/client");
 
 module.exports.getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
 
-    const redisResult = await redisClient.get("metars");
+    const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
 
-    if (redisResult === null) {
-        console.log("redis miss");
-        const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(
-                `Cannot find weather for country: ${country.toUpperCase()}. Please use correct country code.`
-            );
-        }
-        redisClient.setEx("metars", DEFAULT_EXPIRATION, JSON.stringify(sortedMetars));
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        console.log("redis hit");
-        res.status(200).json({
-            status: "success",
-            result: JSON.parse(redisResult).length,
-            data: JSON.parse(redisResult),
-        });
-    }
+    res.status(200).json({
+        status: "success",
+        result: sortedMetars.length,
+        data: sortedMetars,
+    });
 };
 
 module.exports.getWindGustForCountry = async (req, res, next) => {
@@ -471,9 +449,36 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Download Finished, data length:", awcMetars.length);
                 console.log("Deleting old data...");
                 await AwcWeatherModel.deleteMany({});
+                console.log("Clear redis cache...");
+                const redisNode = await redisNodeClient();
+                redisNode.flushAll("ASYNC", () => {
+                    console.log("Redis cache flushed");
+                });
                 console.log("Old data deleted");
                 console.log("Starting normalizing awc metars...");
                 const normalizedMetar = await normalizeData();
+
+                console.log("store normalized metar into redis");
+                const client = await awcMetarRepository();
+                await client.createIndex();
+
+                await Promise.all(
+                    JSON.parse(normalizedMetar).map(async (metar) => {
+                        let updatedMetar = {
+                            ...metar,
+                            temp_c: Number(metar.temp_c),
+                            dewpoint_c: Number(metar.dewpoint_c),
+                            wind_dir_degrees: Number(metar.wind_dir_degrees),
+                            wind_speed_kt: Number(metar.wind_speed_kt),
+                            wind_gust_kt: Number(metar.wind_gust_kt),
+                            visibility_statute_mi: Number(metar.visibility_statute_mi),
+                            altim_in_hg: Number(metar.altim_in_hg),
+                            elevation_m: Number(metar.elevation_m),
+                        };
+                        await client.createAndSave(updatedMetar);
+                    })
+                );
+
                 console.log("Start importing data to Database...");
                 const docs = await AwcWeatherModel.create(JSON.parse(normalizedMetar));
                 console.log("Data imported, total entries:", docs.length);
@@ -523,4 +528,78 @@ module.exports.gns430AirportsFilter = async (req, res, next) => {
     res.status(200).json({
         status: "success",
     });
+};
+
+module.exports.redisTest = async (req, res, next) => {
+    // const repo = await awcMetarRepository;
+
+    // repo.createIndex();
+
+    let tempObj = [
+        {
+            raw_text: "K0V4 190555Z AUTO 15003KT 10SM CLR 09/06 A2999 RMK AO1",
+            station_id: "K0V4",
+            observation_time: "2023-04-19T05:55:00.000Z",
+            latitude: "37.15",
+            longitude: "-79.02",
+            temp_c: 9,
+            dewpoint_c: 6,
+            wind_dir_degrees: 150,
+            wind_speed_kt: 3,
+            wind_gust_kt: null,
+            visibility_statute_mi: 10,
+            altim_in_hg: 29.991142,
+            auto: "TRUE",
+            flight_category: "VFR",
+            metar_type: "METAR",
+            elevation_m: 186,
+            ios_country: "US",
+            ios_region: "US-VA",
+            continent: "NA",
+        },
+        {
+            raw_text: "K0V4 190555Z AUTO 15003KT 10SM CLR 09/06 A2999 RMK AO1",
+            station_id: "K0V4",
+            observation_time: "2023-04-19T05:55:00.000Z",
+            latitude: "37.15",
+            longitude: "-79.02",
+            temp_c: 9,
+            dewpoint_c: 6,
+            wind_dir_degrees: 150,
+            wind_speed_kt: 3,
+            wind_gust_kt: null,
+            visibility_statute_mi: 10,
+            altim_in_hg: 29.991142,
+            auto: "TRUE",
+            flight_category: "VFR",
+            metar_type: "METAR",
+            elevation_m: 186,
+            ios_country: "US",
+            ios_region: "US-VA",
+            continent: "NA",
+        },
+    ];
+
+    const client = await awcMetarRepository();
+    for (let obj of tempObj) {
+        await client.createIndex();
+        await client.createAndSave(obj);
+    }
+    const nodeClient = await redisNodeClient();
+    // const doc = await client.setEx(JSON.parse(tempObj));
+    // const metars = await repo.save(JSON.stringify(tempObj)); // TypeError: entity.toRedisJson is not a function
+    // const metars = await repo.createAndSave(JSON.stringify(tempObj)); // all filed are null
+
+    res.status(200).json({
+        status: "success",
+    });
+};
+
+module.exports.redisReset = async (req, res, next) => {
+    const client = await redisNodeClient();
+    client.flushAll("ASYNC", () => {
+        console.log("flush all");
+    });
+
+    res.status(200).json({});
 };

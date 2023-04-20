@@ -24,6 +24,5 @@ module.exports.normalizeData = async () => {
             }
         }
     }
-    // console.log(normalizedAwcMetar.length);
     return JSON.stringify(normalizedAwcMetar);
 };
