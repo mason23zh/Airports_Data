@@ -21,24 +21,30 @@ const awcMetarSchema = new Schema(AwcMetar, {
     },
     temp_c: {
         type: "number",
+        sortable: true,
     },
     dewpoint_c: {
         type: "number",
+        sortable: true,
     },
     wind_dir_degrees: {
         type: "number",
     },
     wind_speed_kt: {
         type: "number",
+        sortable: true,
     },
     wind_gust_kt: {
         type: "number",
+        sortable: true,
     },
     visibility_statute_mi: {
         type: "number",
+        sortable: true,
     },
     altim_in_hg: {
         type: "number",
+        sortable: true,
     },
     auto: {
         type: "string",
@@ -51,6 +57,7 @@ const awcMetarSchema = new Schema(AwcMetar, {
     },
     elevation_m: {
         type: "number",
+        sortable: true,
     },
     ios_country: {
         type: "string",

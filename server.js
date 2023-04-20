@@ -35,6 +35,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
 
             console.log("store normalized metar into redis");
             const client = await awcMetarRepository();
+            // await client.dropIndex();
             await client.createIndex();
 
             await Promise.all(
@@ -49,6 +50,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
                         visibility_statute_mi: Number(metar.visibility_statute_mi),
                         altim_in_hg: Number(metar.altim_in_hg),
                         elevation_m: Number(metar.elevation_m),
+                        auto: metar.auto || "FALSE",
                     };
                     await client.createAndSave(updatedMetar);
                 })
@@ -78,6 +80,11 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
 const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
+    (async () => {
+        const client = await awcMetarRepository();
+        // await client.dropIndex();
+        await client.createIndex();
+    })();
     schedule.scheduleJob("*/10 * * * *", async () => {
         await importMetarsToDB(Latest_AwcWeatherModel);
     });
