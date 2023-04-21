@@ -1,4 +1,5 @@
 const express = require("express");
+
 require("express-async-errors");
 const morgan = require("morgan");
 const compression = require("compression");
@@ -10,6 +11,7 @@ const airportsRoutes = require("./routes/airportsRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
+const devRoutes = require("./routes/devRoutes");
 const errorHandler = require("./common/middlewares/error-handler");
 const NotFoundError = require("./common/errors/NotFoundError");
 const AccessNumberExceedError = require("./common/errors/AccessNumberExceedError");
@@ -50,6 +52,7 @@ app.use("/api/v1/airports", airportsRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/weather", weatherRoutes);
+app.use("/api/v1/dev", devRoutes);
 
 app.all("*", (req, res) => {
     throw new NotFoundError("Page Not Found");

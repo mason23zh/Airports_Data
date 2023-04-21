@@ -3,7 +3,7 @@ const FAA_ATIS_API_BASE_URL = "http://datis.clowd.io/api";
 const VATSIM_DATA_URL = "https://data.vatsim.net/v3/vatsim-data.json";
 const AWC_METAR_BASE_URL =
     "https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml";
-const PORT = 8001;
+const PORT = 8000;
 
 module.exports = {
     AWC_METAR_BASE_URL,
