@@ -68,6 +68,12 @@ const awcMetarSchema = new Schema(AwcMetar, {
     continent: {
         type: "string",
     },
+    municipality: {
+        type: "string",
+    },
+    name: {
+        type: "string",
+    },
 });
 
 module.exports.awcMetarRepository = async () => {

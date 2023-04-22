@@ -60,6 +60,12 @@ const awcWeatherSchema = new mongoose.Schema({
     continent: {
         type: String,
     },
+    municipality: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
 });
 
 module.exports.AwcWeatherMetarSchema = awcWeatherSchema;

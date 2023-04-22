@@ -1,7 +1,5 @@
 const fs = require("fs");
 const awc_json_metar = "./dev-data/json_data/awc_metars.json";
-const global_airport_icao = "./dev-data/json_data/airport-codes_json.json";
-// const gns430_airport_data = "./dev-data/GNS430_Data/airports.json";
 const gns430_airports_with_location = "./dev-data/GNS430_Data/GNS430_airports_with_location.json";
 
 module.exports.normalizeData = async () => {
@@ -19,6 +17,8 @@ module.exports.normalizeData = async () => {
                     ios_country: airport.iso_country,
                     ios_region: airport.iso_region,
                     continent: airport.continent,
+                    municipality: airport.municipality,
+                    name: airport.name,
                 };
                 normalizedAwcMetar.push(updatedMetar);
             }
