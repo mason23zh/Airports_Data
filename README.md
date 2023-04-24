@@ -13,6 +13,11 @@
 Get All Airports:\
 Example: ***/api/v1/airports/all-airports***
 
+Get Airports With Generic Input:\
+This endpoint would accept city name, airport name or ICAO\
+Example: ***/api/v1/airports/generic/new york***\
+Example: ***/api/v1/airports/generic/CYWG***
+
 Get Airports By ICAO:\
 Example: ***/api/v1/airports/icao/cywg***
 
@@ -49,6 +54,10 @@ Example: ***/api/v1/airports/all-airports?page=1&limit=3***
 ## Weather
 
 #### All METARs that does not belong to Navdata are removed.
+
+#### The default returning results will be 10 as no 'limit' is added.
+
+#### The data will be updated every 10 minutes.
 
 ### Bad Weathers For Global
 

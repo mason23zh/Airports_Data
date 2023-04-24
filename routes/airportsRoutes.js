@@ -1,11 +1,5 @@
 const express = require("express");
-const {
-    getAllAirports,
-    getAirportByType,
-    getAirportWithRunways,
-    getAirportWithNavaids,
-    getNOTAM,
-} = require("../controllers/airportsControllers");
+const { getAllAirports, getAirportByType } = require("../controllers/airportsControllers");
 
 const {
     getAirportByICAO_GNS430,
@@ -37,11 +31,5 @@ router.route("/name/:name").get(getAirportByName_GNS430);
 router.route("/airports-within/icao/:icao/distance/:distance/unit/:unit").get(getAirportWithin);
 // /airports-distance/origin/katl/destination/kjax/unit/km or nm
 router.route("/airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit").get(getAirportsDistance);
-//For test
-router.route("/runways/:icao").get(getAirportWithRunways);
-router.route("/dev/airportWithNavids/:icao").get(getAirportWithNavaids);
-router.route("/dev/notam").get(getNOTAM);
-//router.route("/getRoute").get(getRoute);
-//router.route("/dev/AirportRunway/:icao").get(testController);
 
 module.exports = router;
