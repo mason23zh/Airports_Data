@@ -39,8 +39,8 @@ function processLineByLine1() {
 
                 runwayObj.runway_id = line.split(",")[1];
                 runwayObj.runwayHdg = Number(line.split(",")[2]);
-                runwayObj.runwayWidth = Number(line.split(",")[3]);
-                runwayObj.runwayLength = Number(line.split(",")[4]);
+                runwayObj.runwayLength = Number(line.split(",")[3]);
+                runwayObj.runwayWidth = Number(line.split(",")[4]);
                 runwayObj.runway_ils_avl = Number(line.split(",")[5]);
                 runwayObj.ilsFreq = Number(line.split(",")[6]);
                 runwayObj.ilsHdg = Number(line.split(",")[7]);
@@ -67,7 +67,7 @@ function processLineByLine1() {
             airportObj = {};
             // eslint-disable-next-line no-plusplus
             console.log(`added ${airportsCount++}`);
-            fs.writeFileSync("../../dev-data/GNS430_Data/Airports_rv1.json", JSON.stringify(airports));
+            fs.writeFileSync("../../dev-data/GNS430_Data/Airports_2303.json", JSON.stringify(airports));
         }
     });
 }
