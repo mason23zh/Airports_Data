@@ -10,6 +10,26 @@ const { checkICAO } = require("../../utils/checkICAO");
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
 
+module.exports.getAirportByICAO_GNS430_Basic = async (req, res, next) => {
+    const airportFeatures = new APIFeatures(
+        GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
+        req.query
+    ).limitFields();
+
+    const gns430Airport = await airportFeatures.query;
+
+    if (!gns430Airport) {
+        throw new BadRequestError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
+    }
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            airport: gns430Airport,
+        },
+    });
+};
+
 module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
     const airportFeatures = new APIFeatures(
         GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),

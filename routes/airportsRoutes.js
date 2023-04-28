@@ -9,6 +9,7 @@ const {
     getAirportsDistance,
     getAirportsByCity_GNS430,
     getAirportByGenericInput_GNS430,
+    getAirportByICAO_GNS430_Basic,
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -19,6 +20,7 @@ router.use("/:airporId/comments", commentRoutes);
 
 router.route("/all-airports").get(getAllAirports);
 router.route("/icao/:icao").get(getAirportByICAO_GNS430);
+router.route("/icao/basic/:icao").get(getAirportByICAO_GNS430_Basic);
 router.route("/iata/:iata").get(getAirportByIATA_GNS430);
 router.route("/type/:type").get(getAirportByType);
 router.route("/city/:name").get(getAirportsByCity_GNS430);
