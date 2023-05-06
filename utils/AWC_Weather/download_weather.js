@@ -9,7 +9,7 @@ const awc_csv_metar = "./dev-data/csv_data/awc_metars.csv";
 const awc_csv_modified_metar = "./dev-data/weather/awc_metars.csv";
 const awc_json_metar = "./dev-data/json_data/awc_metars.json";
 
-module.exports.downloadFile = async (url) => {
+module.exports.downloadAndProcessAWCMetars = async (url) => {
     let awcWeatherStatus = {
         error: "",
         warning: "",

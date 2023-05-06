@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const { PORT } = require("./config");
 const { AwcWeatherMetarSchema } = require("./models/weather/awcWeatherModel");
-const { downloadFile } = require("./utils/AWC_Weather/download_weather");
+const { downloadAndProcessAWCMetars } = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
@@ -13,7 +13,7 @@ const { awcMetarRepository } = require("./redis/awcMetar");
 async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
         console.log("start downloading data from AWC...");
-        const awcMetars = await downloadFile(
+        const awcMetars = await downloadAndProcessAWCMetars(
             "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
         );
         if (awcMetars.length && awcMetars.length > 0) {

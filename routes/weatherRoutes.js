@@ -17,9 +17,13 @@ const {
     getBaroMetarForGlobal,
     getVisibilityMetarForGlobal,
     getTempMetarForGlobal,
+    getWeatherUsingICAO,
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();
+
+// Search weather with ICAO or airport name
+router.route("/search-weather/icao/:ICAO").get(getWeatherUsingICAO);
 
 //country
 router.route("/country-weather/:country").get(getWeatherForCountry);

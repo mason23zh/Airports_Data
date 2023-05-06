@@ -19,6 +19,8 @@ const AccessNumberExceedError = require("./common/errors/AccessNumberExceedError
 
 const app = express();
 
+app.use(require("express-status-monitor")());
+
 app.use(compression());
 
 app.use(helmet());
