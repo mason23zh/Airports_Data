@@ -69,10 +69,10 @@ const awcMetarSchema = new Schema(AwcMetar, {
         type: "string",
     },
     municipality: {
-        type: "string",
+        type: "text",
     },
     name: {
-        type: "string",
+        type: "text",
     },
 });
 

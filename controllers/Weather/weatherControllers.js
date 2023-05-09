@@ -5,7 +5,31 @@ const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel")
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { awcMetarRepository } = require("../../redis/awcMetar");
 
-module.exports.getWeatherUsingICAO = async (req, res, next) => {
+module.exports.getMetarUsingAirportName = async (req, res, next) => {
+    const { name } = req.params;
+    const repo = await awcMetarRepository();
+
+    const responseMetar = await repo.search().where("name").matches(name).returnAll();
+
+    if (responseMetar.length !== 0) {
+        return res.status(200).json({
+            status: "success",
+            data: responseMetar,
+        });
+    } else {
+        const responseMetar = await AwcWeatherMetarModel.find({ name: { $regex: `${name}`, $options: "i" } });
+        if (!responseMetar || responseMetar.length === 0) {
+            throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${name}`);
+        }
+
+        res.status(200).json({
+            status: "success",
+            data: responseMetar,
+        });
+    }
+};
+
+module.exports.getMetarUsingICAO = async (req, res, next) => {
     const { ICAO } = req.params;
     const repo = await awcMetarRepository();
 
