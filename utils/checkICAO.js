@@ -1,6 +1,6 @@
 const { ICAO_COUNTRY_CODE } = require("./gloabalICAOCountryCode");
 module.exports.checkICAO = (input) => {
-    const tempIcao = input.toLowerCase();
+    const tempIcao = input.toUpperCase();
     if (tempIcao.length !== 3 && tempIcao.length !== 4) {
         return false;
     }
