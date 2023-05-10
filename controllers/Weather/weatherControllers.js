@@ -6,105 +6,105 @@ const NotFoundError = require("../../common/errors/NotFoundError");
 const { awcMetarRepository } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
 
-module.exports.getMetarUsingGenericInput = async (req, res, next) => {
-    const { data } = req.params;
+module.exports.getAwcMetarUsingICAO = async (icao) => {
     const repo = await awcMetarRepository();
 
-    if (checkICAO(data)) {
-        const responseMetar = await repo.search().where("station_id").equals(data.toUpperCase()).returnAll();
-        if (responseMetar && responseMetar.length !== 0) {
-            res.status(200).json({
-                status: "success",
-                data: responseMetar,
-            });
-        } else {
-            const responseMetar = await AwcWeatherMetarModel.find({ station_id: `${data.toUpperCase()}` });
-            if (!responseMetar || responseMetar.length === 0) {
-                throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${data}`);
-            }
-            res.status(200).json({
-                status: "success",
-                data: responseMetar,
-            });
-        }
+    const responseMetar = await repo.search().where("station_id").equals(icao.toUpperCase()).returnAll();
+    if (responseMetar && responseMetar.length !== 0) {
+        return responseMetar;
     } else {
-        /*eslint-disable*/
-        const responseMetar = await repo.search()
-                                        .where("name")
-                                        .matches(data)
-                                        .or("municipality")
-                                        .match(data)
-                                        .returnAll();
-        if (responseMetar && responseMetar.length !== 0) {
-            res.status(200).json({
-                status: "success",
-                data: responseMetar
-            });
-        } else {
-            const responseMetar = await AwcWeatherMetarModel.find({
-                $or: [{
-                    municipality: {
-                        $regex: `${data}`,
-                        $options: "i"
-                    }
-                }, { name: { $regex: `${data}`, $options: "i" } }]
-            });
-            if (!responseMetar || responseMetar.length === 0) {
-                throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${data}`);
-            }
-            res.status(200).json({
-                status: "success",
-                data: responseMetar
-            });
+        const responseMetar = await AwcWeatherMetarModel.find({ station_id: `${icao.toUpperCase()}` });
+        if (!responseMetar || responseMetar.length === 0) {
+            throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${icao}`);
         }
+        return responseMetar;
     }
 };
 
-module.exports.getMetarUsingAirportName = async (req, res, next) => {
-    const { name } = req.params;
+module.exports.getAwcMetarUsingGenericInput = async (data) => {
+    const repo = await awcMetarRepository();
+    /*eslint-disable*/
+    const responseMetar = await repo.search()
+                                    .where("name")
+                                    .matches(data)
+                                    .or("municipality")
+                                    .match(data)
+                                    .returnAll();
+    if (responseMetar && responseMetar.length !== 0) {
+        return responseMetar;
+    } else {
+        const responseMetar = await AwcWeatherMetarModel.find({
+            $or: [{
+                municipality: {
+                    $regex: `${data}`,
+                    $options: "i"
+                }
+            }, { name: { $regex: `${data}`, $options: "i" } }]
+        });
+        if (!responseMetar || responseMetar.length === 0) {
+            throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${data}`);
+        }
+        return responseMetar;
+    }
+};
+
+module.exports.getAwcMetarUsingAirportName = async (name) => {
     const repo = await awcMetarRepository();
     
     const responseMetar = await repo.search().where("name").matches(name).returnAll();
     
     if (responseMetar.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            data: responseMetar
-        });
+        return responseMetar;
     } else {
         const responseMetar = await AwcWeatherMetarModel.find({ name: { $regex: `${name}`, $options: "i" } });
         if (!responseMetar || responseMetar.length === 0) {
             throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${name}`);
         }
         
+        return responseMetar;
+    }
+};
+
+module.exports.getMetarUsingGenericInput = async (req, res, next) => {
+    const { data } = req.params;
+    
+    if (checkICAO(data)) {
+        const responseMetar = await this.getAwcMetarUsingICAO(data);
         res.status(200).json({
             status: "success",
             data: responseMetar
         });
     }
+    const responseMetar = await this.getAwcMetarUsingGenericInput(data);
+    res.status(200).json({
+        status: "success",
+        data: responseMetar
+    });
+    
+};
+
+module.exports.getMetarUsingAirportName = async (req, res, next) => {
+    const { name } = req.params;
+    const responseMetar = await this.getAwcMetarUsingAirportName(name);
+    
+    res.status(200).json({
+        status: "success",
+        data: responseMetar
+    });
 };
 
 module.exports.getMetarUsingICAO = async (req, res, next) => {
     const { ICAO } = req.params;
-    const repo = await awcMetarRepository();
-    
-    const responseMetar = await repo.search().where("station_id").equals(ICAO.toUpperCase()).returnAll();
-    
-    if (responseMetar.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            data: responseMetar
-        });
-    } else {
-        const responseMetar = await AwcWeatherMetarModel.find({ station_id: ICAO.toUpperCase() });
-        if (!responseMetar || responseMetar.length === 0) {
-            throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${ICAO}`);
+    if (checkICAO(ICAO)) {
+        const responseMetar = await this.getAwcMetarUsingICAO(ICAO);
+        if (responseMetar && responseMetar.length !== 0) {
+            res.status(200).json({
+                status: "success",
+                data: responseMetar
+            });
         }
-        
-        res.status(200).json({
-            status: "success",
-            data: responseMetar
-        });
+    } else {
+        throw new NotFoundError("Please provide correct ICAO code");
     }
 };
 
@@ -761,3 +761,4 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
         });
     }
 };
+

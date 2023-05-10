@@ -3,9 +3,9 @@ const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
 const { Airports } = require("../../models/airports/airportsModel");
-const { generateResponseMetar } = require("../../utils/METAR/generateResponseMETAR");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
 const { checkICAO } = require("../../utils/checkICAO");
+const { getAwcMetarUsingICAO } = require("../Weather/weatherControllers");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -43,7 +43,7 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
         throw new BadRequestError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
     }
 
-    const responseMetar = await generateResponseMetar(req.params.icao.toUpperCase());
+    const responseMetar = await getAwcMetarUsingICAO(req.params.icao.toUpperCase());
     const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
 
     res.status(200).json({
@@ -51,7 +51,7 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
         data: {
             airport: gns430Airport,
             ATIS,
-            METAR: responseMetar.data,
+            METAR: responseMetar,
         },
     });
 };
@@ -70,7 +70,6 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
     }
 
     const airportICAO_Code = airportICAO[0].ident;
-    //const gns430Airport = await GNS430Airport.find({ ICAO: airportICAO_Code });
 
     const airportFeatures = new APIFeatures(GNS430Airport.find({ ICAO: airportICAO_Code }), req.query).limitFields();
 
@@ -81,12 +80,12 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
         throw new NotFoundError(`Can Not Found Airport with IATA: ${req.params.iata.toUpperCase()}`);
     }
 
-    const responseMetar = await generateResponseMetar(airportICAO_Code);
+    const responseMetar = await getAwcMetarUsingICAO(airportICAO_Code);
     res.status(200).json({
         status: "success",
         data: {
             airport: gns430Airport,
-            METAR: responseMetar.data,
+            METAR: responseMetar,
             ATIS,
         },
     });
