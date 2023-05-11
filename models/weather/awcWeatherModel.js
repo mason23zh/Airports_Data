@@ -12,11 +12,13 @@ const awcWeatherSchema = new mongoose.Schema({
     observation_time: {
         type: Date,
     },
-    latitude: {
-        type: String,
-    },
-    longitude: {
-        type: String,
+    location: {
+        type: {
+            type: String,
+            default: "Point",
+            enum: ["Point"],
+        },
+        coordinates: [Number],
     },
     temp_c: {
         type: Number,

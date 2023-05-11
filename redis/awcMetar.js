@@ -13,11 +13,8 @@ const awcMetarSchema = new Schema(AwcMetar, {
     observation_time: {
         type: "date",
     },
-    latitude: {
-        type: "string",
-    },
-    longitude: {
-        type: "string",
+    location_redis: {
+        type: "point",
     },
     temp_c: {
         type: "number",

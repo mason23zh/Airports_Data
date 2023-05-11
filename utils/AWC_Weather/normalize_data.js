@@ -12,6 +12,14 @@ module.exports.normalizeData = async () => {
     for (let airport of gns430Airport) {
         for (let metar of awcMetars) {
             if (metar.station_id === airport.ident) {
+                const tempObject = {
+                    type: "Point",
+                    coordinates: [Number(metar.longitude), Number(metar.latitude)],
+                };
+                const locationRedis = {
+                    longitude: Number(metar.longitude),
+                    latitude: Number(metar.latitude),
+                };
                 let updatedMetar = {
                     ...metar,
                     ios_country: airport.iso_country,
@@ -19,6 +27,8 @@ module.exports.normalizeData = async () => {
                     continent: airport.continent,
                     municipality: airport.municipality,
                     name: airport.name,
+                    location: tempObject,
+                    location_redis: locationRedis,
                 };
                 normalizedAwcMetar.push(updatedMetar);
             }
