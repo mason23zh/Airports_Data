@@ -59,26 +59,43 @@ Example: ***/api/v1/airports/all-airports?page=1&limit=3***
 
 #### The data will be updated every 10 minutes.
 
+#### Base URL: */api/v1/weather/*
+
+### Generic METAR search
+
+#### Base URL:  */api/v1/weather/search-weather*
+
+**End Points**:
+
+Get METAR using airport ICAO code: \
+Example: ***/api/v1/weather/search-weather/icao/cywg***
+
+Get METARs using airport name code: \
+Example: ***/api/v1/weather/search-weather/name/winnipeg***
+
+Get METARs with generic input, (airport name or city, partial match): \
+Example: ***/api/v1/weather/search-weather/generic/new york***
+
 ### Bad Weathers For Global
 
-#### Base URL: */api/v1/weather/global-weather*
+#### Base URL:  */api/v1/weather/global-weather*
 
 **End Points**:
 
 Sort METARs by temperature from lowest to highest:\
-Example: ***/api/v1/airports/global-weather/temperature?sort=1&limit=10***
+Example: ***/api/v1/weather/global-weather/temperature?sort=1&limit=10***
 
 Sort METARs by visibility from worst to best:\
-Example: ***/api/v1/airports/global-weather/visibility?sort=1&limit=10***
+Example: ***/api/v1/weather/global-weather/visibility?sort=1&limit=10***
 
 Sort METARs by barometers from lowest to highest:\
-Example: ***/api/v1/airports/global-weather/baro?sort=1&limit=10***
+Example: ***/api/v1/weather/global-weather/baro?sort=1&limit=10***
 
 Sort METARs by wind speed from highest to lowest:\
-Example: ***/api/v1/airports/global-weather/wind-speed?limit=10***
+Example: ***/api/v1/weather/global-weather/wind-speed?limit=10***
 
 Sort METARs by wind gust speed from highest to lowest:\
-Example: ***/api/v1/airports/global-weather/wind-gust-speed?limit=10***
+Example: ***/api/v1/weather/global-weather/wind-gust-speed?limit=10***
 
 ### Bad Weathers For Continent
 
@@ -87,19 +104,19 @@ Example: ***/api/v1/airports/global-weather/wind-gust-speed?limit=10***
 **End Points**:
 
 Sort METARs by temperature from lowest to highest:\
-Example: ***/api/v1/airports/continent-weather/temperature/as?sort=1&limit=10***
+Example: ***/api/v1/weather/continent-weather/temperature/as?sort=1&limit=10***
 
 Sort METARs by visibility from worst to best:\
-Example: ***/api/v1/airports/continent-weather/visibility/na?sort=1&limit=10***
+Example: ***/api/v1/weather/continent-weather/visibility/na?sort=1&limit=10***
 
 Sort METARs by barometers from lowest to highest:\
-Example: ***/api/v1/airports/continent-weather/baro/sa?sort=1&limit=10***
+Example: ***/api/v1/weather/continent-weather/baro/sa?sort=1&limit=10***
 
 Sort METARs by wind speed from highest to lowest:\
-Example: ***/api/v1/airports/continent-weather/wind-speed/oc?limit=10***
+Example: ***/api/v1/weather/continent-weather/wind-speed/oc?limit=10***
 
 Sort METARs by wind gust speed from highest to lowest:\
-Example: ***/api/v1/airports/country-weather/wind-gust-speed/na?limit=10***
+Example: ***/api/v1/weather/country-weather/wind-gust-speed/na?limit=10***
 
 ### Bad Weathers For Country
 
@@ -108,19 +125,19 @@ Example: ***/api/v1/airports/country-weather/wind-gust-speed/na?limit=10***
 **End Points**:
 
 Sort METARs by temperature from lowest to highest:\
-Example: ***/api/v1/airports/country-weather/temperature/ca?sort=1&limit=10***
+Example: ***/api/v1/weather/country-weather/temperature/ca?sort=1&limit=10***
 
 Sort METARs by visibility from worst to best:\
-Example: ***/api/v1/airports/country-weather/visibility/us?sort=1&limit=10***
+Example: ***/api/v1/weather/country-weather/visibility/us?sort=1&limit=10***
 
 Sort METARs by barometers from lowest to highest:\
-Example: ***/api/v1/airports/country-weather/baro/ca?sort=1&limit=10***
+Example: ***/api/v1/weather/country-weather/baro/ca?sort=1&limit=10***
 
 Sort METARs by wind speed from highest to lowest:\
-Example: ***/api/v1/airports/country-weather/wind-speed/ca?limit=10***
+Example: ***/api/v1/weather/country-weather/wind-speed/ca?limit=10***
 
 Sort METARs by wind gust speed from highest to lowest:\
-Example: ***/api/v1/airports/country-weather/wind-gust-speed/ca?limit=10***
+Example: ***/api/v1/weather/country-weather/wind-gust-speed/ca?limit=10***
 
 ---
 
