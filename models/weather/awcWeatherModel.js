@@ -70,5 +70,7 @@ const awcWeatherSchema = new mongoose.Schema({
     },
 });
 
+awcWeatherSchema.index({ location: "2dsphere" });
+
 module.exports.AwcWeatherMetarSchema = awcWeatherSchema;
 module.exports.AwcWeatherMetarModel = mongoose.model("AwcWeatherMetarModel", awcWeatherSchema);

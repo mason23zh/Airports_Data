@@ -65,6 +65,80 @@ module.exports.getAwcMetarUsingAirportName = async (name) => {
     }
 };
 
+
+module.exports.getMetarsWithin = async (req, res, next) => {
+    const earthRadiusInNauticalMile = 3443.92;
+    const earthRadiusInKM = 6378.1;
+    const earthRadiusInMile = 3963.19;
+    let newDistance;
+    let radius;
+    //unit: miles, meters, kilometers
+    const { icao, distance, unit } = req.query;
+    
+    if (unit.toLowerCase() === "mi" || "miles" || "mile") {
+        newDistance = Number(distance) * 1.60934;
+        radius = Number(distance) / earthRadiusInMile;
+    } else if (unit.toLowerCase() === "km" || "kilometers" || "kilometer") {
+        newDistance = Number(distance);
+        radius = Number(distance) / earthRadiusInKM;
+    } else if (unit.toLowerCase() === "nm" || "nauticalmile" || "nauticalmiles") {
+        newDistance = Number(distance) * 1.852;
+        radius = Number(distance) / earthRadiusInNauticalMile;
+    }
+    
+    if (checkICAO(icao.toUpperCase())) {
+        const repo = await awcMetarRepository();
+        const originMetar = await repo.search()
+                                      .where("station_id")
+                                      .equals(icao.toUpperCase())
+                                      .returnAll();
+        
+        if (originMetar && originMetar.length > 0) {
+            const { longitude, latitude } = originMetar[0].entityFields.location_redis._value;
+            const responseMetar = await repo.search()
+                                            .where("location_redis")
+                                            .inRadius(circle => circle
+                                                .longitude(longitude)
+                                                .latitude(latitude)
+                                                .radius(newDistance)
+                                                .kilometer)
+                                            .return.all();
+            if (responseMetar && responseMetar.length > 0) {
+                res.status(200).json({
+                    status: "success",
+                    result: responseMetar.length,
+                    data: responseMetar
+                });
+            } else {
+                throw new NotFoundError(`Can not find data for: ${icao.toUpperCase()}`);
+            }
+        } else {
+            // AWC model request
+            const originAirport = await AwcWeatherMetarModel.findOne({ station_id: `${icao.toUpperCase()}` });
+            if (originAirport === null) {
+                throw new NotFoundError(`Airport with ICAO: ${icao.toUpperCase()} not found.`);
+            }
+            const [longitude, latitude] = originAirport.location.coordinates;
+            
+            const responseMetars = await AwcWeatherMetarModel.find({
+                location: {
+                    $geoWithin: {
+                        $centerSphere: [[longitude, latitude], radius]
+                    }
+                }
+            });
+            
+            res.status(200).json({
+                status: "success",
+                result: responseMetars.length,
+                data: responseMetars
+            });
+        }
+    } else {
+        throw new NotFoundError("Please provide correct ICAO code.");
+    }
+};
+
 module.exports.getMetarUsingGenericInput = async (req, res, next) => {
     const { data } = req.params;
     
