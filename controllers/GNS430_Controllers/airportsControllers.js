@@ -146,9 +146,17 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
 
     if (checkICAO(userInput)) {
         const airportsWithICAO = await GNS430Airport.findOne({
-            ICAO: `${userInput.toUpperCase}`,
+            ICAO: userInput.toUpperCase(),
         });
-        airports = [...airportsWithICAO];
+        if (airportsWithICAO) {
+            res.status(200).json({
+                status: "success",
+                results: airportsWithICAO.length,
+                data: airportsWithICAO,
+            });
+        } else {
+            throw new NotFoundError(`Cannot find airport with ICAO code: ${userInput.toUpperCase()}`);
+        }
     } else {
         const airportsWithGNS430 = await GNS430Airport.find({
             $or: [{ ICAO: `${userInput.toUpperCase()}` }, { name: { $regex: `${userInput}`, $options: "i" } }],
@@ -176,13 +184,12 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
                 })
             );
         });
+        res.status(200).json({
+            status: "success",
+            result: responseAirports.length,
+            data: responseAirports,
+        });
     }
-
-    res.status(200).json({
-        status: "success",
-        result: responseAirports.length,
-        data: responseAirports,
-    });
 };
 
 module.exports.getAirportWithin = async (req, res) => {
