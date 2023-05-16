@@ -82,7 +82,6 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
         const client = await awcMetarRepository();
-        // await client.dropIndex();
         await client.createIndex();
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
