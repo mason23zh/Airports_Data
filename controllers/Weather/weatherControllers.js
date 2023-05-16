@@ -7,7 +7,6 @@ const { awcMetarRepository } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
 const { Airports } = require("../../models/airports/airportsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
-const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
 
 module.exports.getAwcMetarUsingICAO = async (icao) => {
     const repo = await awcMetarRepository();
