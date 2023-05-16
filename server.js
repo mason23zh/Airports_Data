@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const app = require("./app");
-const { PORT } = require("./config");
 const { AwcWeatherMetarSchema } = require("./models/weather/awcWeatherModel");
 const { downloadAndProcessAWCMetars } = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });

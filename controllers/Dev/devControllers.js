@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { downloadFile } = require("../../utils/AWC_Weather/download_weather");
+const { downloadAndProcessAWCMetars } = require("../../utils/AWC_Weather/download_weather");
 const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 const { redisNodeClient } = require("../../redis/client");
@@ -28,7 +28,7 @@ exports.getAwcMetarsToDB = async (req, res, next) => {
 
     async function createItems() {
         try {
-            const awcMetars = await downloadFile(
+            const awcMetars = await downloadAndProcessAWCMetars(
                 "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
             );
             console.log("Download Data Length:", awcMetars.length);
@@ -72,7 +72,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
             const conn = mongoose.createConnection(`${process.env.DATABASE}`);
             const AwcWeatherModel = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
             console.log("start downloading data from AWC...");
-            const awcMetars = await downloadFile(
+            const awcMetars = await downloadAndProcessAWCMetars(
                 "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
             );
             if (awcMetars.length && awcMetars.length > 0) {
