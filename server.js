@@ -88,7 +88,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         await importMetarsToDB(Latest_AwcWeatherModel);
     });
 });
-
-app.listen(PORT, () => {
-    console.log(`Express starts on port ${PORT}`);
+const port = process.env.PORT || 80;
+app.listen(port, () => {
+    console.log(`Express starts on port ${port}`);
 });
