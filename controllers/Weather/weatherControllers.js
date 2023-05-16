@@ -5,6 +5,9 @@ const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel")
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { awcMetarRepository } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
+const { Airports } = require("../../models/airports/airportsModel");
+const BadRequestError = require("../../common/errors/BadRequestError");
+const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
 
 module.exports.getAwcMetarUsingICAO = async (icao) => {
     const repo = await awcMetarRepository();
@@ -180,6 +183,30 @@ module.exports.getMetarUsingICAO = async (req, res, next) => {
     } else {
         throw new NotFoundError("Please provide correct ICAO code");
     }
+};
+
+module.exports.getMetarUsingIATA = async (req, res, next) => {
+    const { IATA } = req.params;
+    const airportICAO = await Airports.find({
+        iata_code: IATA.toUpperCase()
+    });
+    
+    if (!airportICAO || airportICAO.length === 0) {
+        throw new BadRequestError(
+            `Airport with IATA: '${IATA.toUpperCase()}' Not Found ${
+                IATA.length > 3 ? "(IATA code length is 3)" : ""
+            }`
+        );
+    }
+    
+    const airportICAO_Code = airportICAO[0].ident;
+    
+    const responseMetar = await this.getAwcMetarUsingICAO(airportICAO_Code.toUpperCase());
+    
+    res.status(200).json({
+        status: "success",
+        data: responseMetar
+    });
 };
 
 module.exports.getWeatherForCountry = async (req, res, next) => {

@@ -1,6 +1,6 @@
 # Flight Data
 
-## This is an API to get data for the airports, runways, navaids and etc.
+## This is an API to get data for the airports, runways, METARs and etc.
 
 ---
 
@@ -69,6 +69,9 @@ Example: ***/api/v1/airports/all-airports?page=1&limit=3***
 
 Get METAR using airport ICAO code: \
 Example: ***/api/v1/weather/search-weather/icao/cywg***
+
+Get METAR using airport IATA code: \
+Example: ***/api/v1/weather/search-weather/iata/bos***
 
 Get METARs using airport name code: \
 Example: ***/api/v1/weather/search-weather/name/winnipeg***
