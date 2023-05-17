@@ -1,5 +1,4 @@
 const { Entity, Schema } = require("redis-om");
-const { redisClient } = require("./client");
 
 class AwcMetar extends Entity {}
 
@@ -72,7 +71,3 @@ exports.awcMetarSchema = new Schema(AwcMetar, {
         type: "text",
     },
 });
-
-// module.exports.awcMetarRepository = async () => {
-//     return (await redisClient()).fetchRepository(awcMetarSchema);
-// };

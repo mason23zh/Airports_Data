@@ -8,16 +8,12 @@ const { awcMetarSchema } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
 const { Airports } = require("../../models/airports/airportsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
-const { redisClient } = require("../../redis/client");
 const RedisClient = require("../../redis/RedisClient");
 const rClient = new RedisClient();
 let repo;
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDIS_URL);
+    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
-    // const client = redisClient();
-    // const openClient = await client.open(process.env.REDIS_URL);
-    // repo = openClient.fetchRepository(awcMetarSchema);
 })();
 
 module.exports.getAwcMetarUsingICAO = async (icao) => {

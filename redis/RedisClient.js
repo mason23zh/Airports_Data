@@ -24,14 +24,15 @@ class RedisClient {
         }
     }
 
-    async createRedisNodeConnection(REDIS_URL, REDIS_PASSWORD, REDIS_HOST, REDIS_PORT) {
-        const connection = await createClient({
+    async createRedisNodeConnection(REDIS_PASSWORD, REDIS_HOST, REDIS_PORT) {
+        const connection = createClient({
             password: REDIS_PASSWORD,
             socket: {
                 host: REDIS_HOST,
                 port: REDIS_PORT,
             },
-        }).connect();
+        });
+        await connection.connect();
         return connection;
     }
 

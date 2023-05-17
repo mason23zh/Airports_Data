@@ -4,6 +4,8 @@ node_modules
 dev-data/GNS430_Data
 dev-data/Vamsys_data
 utils/Vamsys
+routes/devRoutes.js
+controllers/Dev
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

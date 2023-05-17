@@ -25,14 +25,18 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             await Latest_AwcWeatherModel.deleteMany({});
             console.log("Old data deleted");
 
-            //clear redis cache
-            const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
+            const rNodeClient = await redisClient.createRedisNodeConnection(
+                process.env.REDISCLOUD_PASSWORD,
+                process.env.REDISCLOUD_HOST,
+                process.env.REDISCLOUD_PORT
+            );
+
             rNodeClient.flushAll("ASYNC", () => {
                 console.log("Redis cache flushed");
             });
 
             console.log("Connecting to Redis...");
-            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+            await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
             const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
             console.log("Starting normalizing awc metars...");
@@ -72,9 +76,6 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             console.log("Copy all data to AwcWeatherMetarModel...");
             await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
             console.log("Data merged successfully, Let's rock!");
-            // console.log("Close DB connection...");
-            // conn.disconnect();
-            // console.log("DB Closed");
 
             return normalizedMetar;
         } else {
@@ -90,10 +91,9 @@ const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_L
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
-        await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+        await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
         const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
-        // const client = await awcMetarRepository();
         await repo.createIndex();
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
