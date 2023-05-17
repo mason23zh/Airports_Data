@@ -6,8 +6,10 @@ require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
 const { SecondaryConnection } = require("./secondaryDbConnection");
-const { redisNodeClient } = require("./redis/client");
-const { awcMetarRepository } = require("./redis/awcMetar");
+const { awcMetarSchema } = require("./redis/awcMetar");
+const RedisClient = require("./redis/RedisClient");
+
+const redisClient = new RedisClient();
 
 async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
@@ -24,18 +26,21 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             console.log("Old data deleted");
 
             //clear redis cache
-            const redisNode = await redisNodeClient();
-            redisNode.flushAll("ASYNC", () => {
+            const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
+            rNodeClient.flushAll("ASYNC", () => {
                 console.log("Redis cache flushed");
             });
+
+            console.log("Connecting to Redis...");
+            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+            const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
             console.log("Starting normalizing awc metars...");
             const normalizedMetar = await normalizeData();
 
             console.log("store normalized metar into redis");
-            const client = await awcMetarRepository();
-            // await client.dropIndex();
-            await client.createIndex();
+
+            await repo.createIndex();
 
             await Promise.all(
                 JSON.parse(normalizedMetar).map(async (metar) => {
@@ -51,9 +56,13 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
                         elevation_m: Number(metar.elevation_m),
                         auto: metar.auto || "FALSE",
                     };
-                    await client.createAndSave(updatedMetar);
+                    await repo.createAndSave(updatedMetar);
                 })
             );
+            console.log("Disconnect redis client");
+            const currentClient = redisClient.getCurrentClient();
+            currentClient.close();
+            rNodeClient.quit();
 
             // import new metar into the latest AWC Model
             console.log("Start importing data to Database...");
@@ -66,6 +75,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             // console.log("Close DB connection...");
             // conn.disconnect();
             // console.log("DB Closed");
+
             return normalizedMetar;
         } else {
             console.log("AWC Metar download failed...");
@@ -80,8 +90,11 @@ const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_L
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
-        const client = await awcMetarRepository();
-        await client.createIndex();
+        await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+        const repo = redisClient.createRedisOMRepository(awcMetarSchema);
+
+        // const client = await awcMetarRepository();
+        await repo.createIndex();
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
         await importMetarsToDB(Latest_AwcWeatherModel);

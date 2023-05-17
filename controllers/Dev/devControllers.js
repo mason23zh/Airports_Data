@@ -3,9 +3,20 @@ const { downloadAndProcessAWCMetars } = require("../../utils/AWC_Weather/downloa
 const { AwcWeatherMetarModel, AwcWeatherMetarSchema } = require("../../models/weather/awcWeatherModel");
 const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 const { redisNodeClient } = require("../../redis/client");
-const { awcMetarRepository } = require("../../redis/awcMetar");
+const { awcMetarRepository, awcMetarSchema } = require("../../redis/awcMetar");
 const { filterOutGlobalAirportsUsingGNS430_data } = require("../../utils/Data_Convert/gns430AirportFilter");
+const RedisClient = require("../../redis/RedisClient");
+const rClient = new RedisClient();
 //! DEV TESTING ONLY
+
+// let repo;
+// (async () => {
+//     await rClient.openNewRedisOMClient(process.env.REDIS_URL);
+//     repo = rClient.createRedisOMRepository(awcMetarSchema);
+//     // const client = redisClient();
+//     // const openClient = await client.open(process.env.REDIS_URL);
+//     // repo = openClient.fetchRepository(awcMetarSchema);
+// })();
 
 const createItemToDB = async (data, model) => {
     let doc;
@@ -69,6 +80,12 @@ module.exports.normalizeCSV = async (req, res, next) => {
 module.exports.getDownloadFile = async (req, res, next) => {
     async function createItems() {
         try {
+            await rClient.openNewRedisOMClient(process.env.REDIS_URL);
+            const repo = rClient.createRedisOMRepository(awcMetarSchema);
+            // const client = redisClient();
+            // const openClient = await client.open(process.env.REDIS_URL);
+            // repo = openClient.fetchRepository(awcMetarSchema);
+
             const conn = mongoose.createConnection(`${process.env.DATABASE}`);
             const AwcWeatherModel = conn.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
             console.log("start downloading data from AWC...");
@@ -80,18 +97,23 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Deleting old data...");
                 await AwcWeatherModel.deleteMany({});
                 console.log("Clear redis cache...");
-                const redisNode = await redisNodeClient();
-                redisNode.flushAll("ASYNC", () => {
+                const rnodeClient = await rClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
+                console.log("redis node client", rnodeClient);
+                rnodeClient.flushAll("ASYNC", () => {
                     console.log("Redis cache flushed");
                 });
+                // const redisNode = await redisNodeClient();
+                // redisNode.flushAll("ASYNC", () => {
+                //     console.log("Redis cache flushed");
+                // });
                 console.log("Old data deleted");
                 console.log("Starting normalizing awc metars...");
                 const normalizedMetar = await normalizeData();
 
                 console.log("store normalized metar into redis");
-                const client = await awcMetarRepository();
-                await client.dropIndex();
-                await client.createIndex();
+                // const client = await awcMetarRepository();
+                // await client.dropIndex();
+                await repo.createIndex();
 
                 await Promise.all(
                     JSON.parse(normalizedMetar).map(async (metar) => {
@@ -106,7 +128,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
                             altim_in_hg: Number(metar.altim_in_hg),
                             elevation_m: Number(metar.elevation_m),
                         };
-                        await client.createAndSave(updatedMetar);
+                        await repo.createAndSave(updatedMetar);
                     })
                 );
 
@@ -115,6 +137,10 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Data imported, total entries:", docs.length);
                 console.log("Copy all data to Model...");
                 await AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
+                console.log("Disconnect redis client");
+                const currentClient = rClient.getCurrentClient();
+                currentClient.close();
+                rnodeClient.quit();
                 console.log("Data merged successfully, Let's rock!");
                 return normalizedMetar;
             } else {
@@ -128,7 +154,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
     const docs = await createItems();
     res.status(200).json({
         status: "success",
-        data: JSON.parse(docs),
+        data: docs.length,
     });
 };
 
