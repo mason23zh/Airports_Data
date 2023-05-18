@@ -79,7 +79,7 @@ module.exports.normalizeCSV = async (req, res, next) => {
 module.exports.getDownloadFile = async (req, res, next) => {
     async function createItems() {
         try {
-            await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
+            await rClient.openNewRedisOMClient(process.env.REDIS_URL);
             const repo = rClient.createRedisOMRepository(awcMetarSchema);
             // const client = redisClient();
             // const openClient = await client.open(process.env.REDIS_URL);
@@ -96,11 +96,14 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 console.log("Deleting old data...");
                 await AwcWeatherModel.deleteMany({});
                 console.log("Clear redis cache...");
-                const rnodeClient = await rClient.createRedisNodeConnectionWithURL(process.env.REDISCLOUD_URL);
+                const rnodeClient = await rClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
                 console.log("redis node client", rnodeClient);
-                rnodeClient.flushAll("ASYNC", () => {
-                    console.log("Redis cache flushed");
+                await rnodeClient.flushDb("SYNC", () => {
+                    console.log("REDIS FLUSH");
                 });
+                // rnodeClient.flushAll("ASYNC", () => {
+                //     console.log("Redis cache flushed");
+                // });
 
                 console.log("Old data deleted");
                 console.log("Starting normalizing awc metars...");
@@ -248,11 +251,16 @@ module.exports.gns430AirportsFilter = async (req, res, next) => {
 //     });
 // };
 
-// module.exports.redisReset = async (req, res, next) => {
-//     const client = await redisNodeClient();
-//     client.flushAll("ASYNC", () => {
-//         console.log("flush all");
-//     });
-//
-//     res.status(200).json({});
-// };
+module.exports.redisReset = async (req, res, next) => {
+    const redisNodeClient = await rClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
+    await redisNodeClient.FLUSHDB("SYNC", () => {
+        console.log("FLUSH REDIS DONE.");
+    });
+    await redisNodeClient.quit();
+    // redisNodeClient.flushdb((err, succeeded) => {});
+    // client.flushAll("ASYNC", () => {
+    //     console.log("flush all");
+    // });
+
+    res.status(200).json({});
+};

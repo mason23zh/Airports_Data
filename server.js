@@ -25,18 +25,20 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             await Latest_AwcWeatherModel.deleteMany({});
             console.log("Old data deleted");
 
-            const rNodeClient = await redisClient.createRedisNodeConnection(
-                process.env.REDISCLOUD_PASSWORD,
-                process.env.REDISCLOUD_HOST,
-                process.env.REDISCLOUD_PORT
-            );
+            const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
 
-            rNodeClient.flushAll("ASYNC", () => {
-                console.log("Redis cache flushed");
+            // const rNodeClient = await redisClient.createRedisNodeConnection(
+            //     process.env.REDISCLOUD_PASSWORD,
+            //     process.env.REDISCLOUD_HOST,
+            //     process.env.REDISCLOUD_PORT
+            // );
+
+            await rNodeClient.flushDb("SYNC", () => {
+                console.log("REDIS FLUSH");
             });
 
             console.log("Connecting to Redis...");
-            await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
+            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
             const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
             console.log("Starting normalizing awc metars...");
@@ -66,7 +68,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             console.log("Disconnect redis client");
             const currentClient = redisClient.getCurrentClient();
             currentClient.close();
-            rNodeClient.quit();
+            await rNodeClient.quit();
 
             // import new metar into the latest AWC Model
             console.log("Start importing data to Database...");
@@ -91,10 +93,12 @@ const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_L
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
-        await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
+        await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
         const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
         await repo.createIndex();
+        const currentClient = redisClient.getCurrentClient();
+        currentClient.close();
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
         await importMetarsToDB(Latest_AwcWeatherModel);

@@ -15,6 +15,6 @@ router.route("/normalize-weather/:ICAO").get(getWindMetar);
 router.route("/getGlobalVisibilityTest").get(getGlobalVisibility);
 router.route("/filterTest").get(gns430AirportsFilter);
 // router.route("/redisTest").get(redisTest);
-// router.route("/redisRest").get(redisReset);
+router.route("/redisReset").get(redisReset);
 
 module.exports = router;
