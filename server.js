@@ -25,20 +25,18 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             await Latest_AwcWeatherModel.deleteMany({});
             console.log("Old data deleted");
 
-            const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
-
-            // const rNodeClient = await redisClient.createRedisNodeConnection(
-            //     process.env.REDISCLOUD_PASSWORD,
-            //     process.env.REDISCLOUD_HOST,
-            //     process.env.REDISCLOUD_PORT
-            // );
+            const rNodeClient = await redisClient.createRedisNodeConnection(
+                process.env.REDISCLOUD_PASSWORD,
+                process.env.REDISCLOUD_HOST,
+                process.env.REDISCLOUD_PORT
+            );
 
             await rNodeClient.flushDb("SYNC", () => {
                 console.log("REDIS FLUSH");
             });
 
             console.log("Connecting to Redis...");
-            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+            await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
             const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
             console.log("Starting normalizing awc metars...");
@@ -93,7 +91,7 @@ const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_L
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
-        await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+        await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
         const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
         await repo.createIndex();
