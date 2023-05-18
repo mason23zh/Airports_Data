@@ -55,7 +55,7 @@ Example: ***/api/v1/airports/all-airports?page=1&limit=3***
 
 #### All METARs that does not belong to Navdata are removed.
 
-#### The default returning results will be 10 as no 'limit' is added.
+#### The default returning results will be 10 as if no 'limit' is added.
 
 #### The data will be updated every 10 minutes.
 
@@ -78,6 +78,10 @@ Example: ***/api/v1/weather/search-weather/name/winnipeg***
 
 Get METARs with generic input, (airport name or city, partial match): \
 Example: ***/api/v1/weather/search-weather/generic/new york***
+
+Get METARs within radius of ICAO: \
+unit can be nm (nm, nauticalmile or nauticalmiles), km (km, kilometers, kilometer) or mi (mi, miles, mile)\
+Example: ***/api/v1/weather/search-weather/weather-within?icao=klax&distance=50&unit=nm***
 
 ### Bad Weathers For Global
 
@@ -119,7 +123,7 @@ Sort METARs by wind speed from highest to lowest:\
 Example: ***/api/v1/weather/continent-weather/wind-speed/oc?limit=10***
 
 Sort METARs by wind gust speed from highest to lowest:\
-Example: ***/api/v1/weather/country-weather/wind-gust-speed/na?limit=10***
+Example: ***/api/v1/weather/continent-weather/wind-gust-speed/na?limit=10***
 
 ### Bad Weathers For Country
 
