@@ -11,7 +11,7 @@ module.exports.normalizeData = async () => {
 
     for (let airport of gns430Airport) {
         for (let metar of awcMetars) {
-            if (metar.station_id === airport.ident) {
+            if (metar.station_id === airport.ident && metar.station_id !== "NZSP") {
                 const tempObject = {
                     type: "Point",
                     coordinates: [Number(metar.longitude), Number(metar.latitude)],
