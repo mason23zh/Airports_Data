@@ -9,9 +9,19 @@ module.exports.normalizeData = async () => {
     // console.log(awcMetars[0]);
     let normalizedAwcMetar = [];
 
+    const redisValidCoordinates = (lng, lat) => {
+        if ((Number(lng) < -180 && Number(lng) > 180) || (Number(lat) < -85.05112878 && Number(lat) > 85.05112878)) {
+            return false;
+        }
+        return true;
+    };
+
     for (let airport of gns430Airport) {
         for (let metar of awcMetars) {
-            if (metar.station_id === airport.ident && metar.station_id !== "NZSP") {
+            if (
+                metar.station_id === airport.ident &&
+                redisValidCoordinates(Number(metar.longitude), Number(metar.latitude))
+            ) {
                 const tempObject = {
                     type: "Point",
                     coordinates: [Number(metar.longitude), Number(metar.latitude)],
@@ -34,5 +44,6 @@ module.exports.normalizeData = async () => {
             }
         }
     }
+
     return JSON.stringify(normalizedAwcMetar);
 };

@@ -107,7 +107,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
 
                 console.log("Old data deleted");
                 console.log("Starting normalizing awc metars...");
-                const normalizedMetar = await normalizeData();
+                const normalizedAwcMetar = await normalizeData();
 
                 console.log("store normalized metar into redis");
                 // const client = await awcMetarRepository();
@@ -115,7 +115,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 await repo.createIndex();
 
                 await Promise.all(
-                    JSON.parse(normalizedMetar).map(async (metar) => {
+                    JSON.parse(normalizedAwcMetar).map(async (metar) => {
                         let updatedMetar = {
                             ...metar,
                             temp_c: Number(metar.temp_c),
@@ -132,7 +132,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 );
 
                 console.log("Start importing data to Database...");
-                const docs = await AwcWeatherModel.create(JSON.parse(normalizedMetar));
+                const docs = await AwcWeatherModel.create(JSON.parse(normalizedAwcMetar));
                 console.log("Data imported, total entries:", docs.length);
                 console.log("Copy all data to Model...");
                 await AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
@@ -141,7 +141,7 @@ module.exports.getDownloadFile = async (req, res, next) => {
                 currentClient.close();
                 rnodeClient.quit();
                 console.log("Data merged successfully, Let's rock!");
-                return normalizedMetar;
+                return normalizedAwcMetar.length;
             } else {
                 return;
             }
