@@ -10,11 +10,12 @@ module.exports.normalizeData = async () => {
     let normalizedAwcMetar = [];
 
     const redisValidCoordinates = (lng, lat) => {
-        if ((Number(lng) < -180 && Number(lng) > 180) || (Number(lat) < -85.05112878 && Number(lat) > 85.05112878)) {
+        if (Number(lng) < -180 || Number(lng) > 180 || Number(lat) < -85.05112878 || Number(lat) > 85.05112878) {
             return false;
         }
         return true;
     };
+    console.log(redisValidCoordinates(179.98, -89.98));
 
     for (let airport of gns430Airport) {
         for (let metar of awcMetars) {
