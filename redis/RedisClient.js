@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "./config.env" });
 const { createClient } = require("redis");
 const { Client } = require("redis-om");
+const CustomError = require("../common/errors/custom-error");
 
 class RedisClient {
     constructor() {
@@ -9,7 +10,12 @@ class RedisClient {
     }
 
     async openNewRedisOMClient(REDIS_URL) {
-        this.client = await new Client().open(REDIS_URL);
+        try {
+            this.client = await new Client().open(REDIS_URL);
+        } catch (e) {
+            throw new CustomError(e.message, 500);
+        }
+        return this.client;
     }
 
     getCurrentClient() {
@@ -37,15 +43,9 @@ class RedisClient {
     }
 
     async createRedisNodeConnectionWithURL(REDIS_URL) {
-        // const connection = await createClient(REDIS_URL).connect();
         const connection = createClient(REDIS_URL);
         await connection.connect();
         return connection;
-    }
-
-    getNewClient() {
-        this.client = new Client();
-        return this.client;
     }
 }
 

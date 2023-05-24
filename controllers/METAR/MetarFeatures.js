@@ -1,35 +1,54 @@
-const NotFoundError = require("../../common/errors/NotFoundError");
+const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 
+// noinspection JSUnresolvedFunction
 class MetarFeatures {
-    constructor(repo, model) {
+    constructor(model, repo) {
         this.repo = repo;
         this.model = model;
-        this.response = null;
+        this.metar = {};
     }
 
-    async getMetarUsingICAO(icao, decode) {
-        const responseMetar = await this.repo.where("station_id").equals(icao.toUpperCase()).returnAll();
-        console.log("response metar", responseMetar);
-        if (responseMetar && responseMetar.length !== 0) {
-            console.log("response metar", JSON.parse(JSON.stringify(responseMetar[0])));
-            if (decode === "false") {
-                let tempObj = JSON.parse(JSON.stringify(responseMetar[0]));
-                return tempObj.raw_text;
-            } else {
-                return responseMetar;
-            }
+    /**
+     Covert either Metar from db or Reids into the same format
+     **/
+    normalizeMetar() {
+        /* eslint-disable no-unused-vars */
+        if (Object.hasOwn(this.metar, "entityId")) {
+            const { longitude, latitude } = this.metar.location_redis;
+            const location = [longitude, latitude];
+            const { entityId, location_redis, auto, ...rest } = this.metar;
+            rest.location = location;
+            this.metar = rest;
         } else {
-            const responseMetar = await this.model.find({ station_id: `${icao.toUpperCase()}` });
-            if (!responseMetar || responseMetar.length === 0) {
-                throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${icao}`);
-            }
+            const { _id, location, __v, auto, ...rest } = this.metar;
+            rest.location = this.metar.location.coordinates;
+            rest.wind_speed_kt = this.metar.wind_speed_kt || 0;
+            rest.wind_gust_kt = this.metar.wind_gust_kt || 0;
 
-            if (decode === "false") {
-                let tempObj = JSON.parse(responseMetar[0]);
-                return tempObj.raw_text;
-            }
-            return responseMetar;
+            this.metar = rest;
         }
+    }
+
+    async requestMetarUsingICAO(icao) {
+        const redisMetar = await this.repo.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
+        if (redisMetar && redisMetar.length !== 0) {
+            this.metar = JSON.parse(JSON.stringify(redisMetar));
+        } else {
+            const dbMetar = await AwcWeatherMetarModel.findOne({ station_id: icao.toUpperCase() });
+            if (dbMetar) {
+                this.metar = dbMetar.toObject();
+            }
+        }
+        this.normalizeMetar();
+        return this.metar;
+    }
+
+    getNormalMetar() {
+        return this.metar;
+    }
+
+    getRawMetar() {
+        return this.metar.raw_text;
     }
 }
 
