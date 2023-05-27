@@ -1,5 +1,15 @@
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { metarCloudCode, metarWeatherCode } = require("./constants");
+const {
+    ktsToMps,
+    ktsTokph,
+    ktsToMph,
+    statuteMiToMeter,
+    celsiusToFahrenheit,
+    meterToFeet,
+    calculateHumidity,
+} = require("../../utils/METAR/convert");
+const CustomError = require("../../common/errors/custom-error");
 
 // noinspection JSUnresolvedFunction
 class MetarFeatures {
@@ -8,17 +18,43 @@ class MetarFeatures {
         this.model = model;
         this.metar = {};
         this.normalizedMetar = {};
-        this.formattedMetar = {};
+        this.decodedMetar = {};
         this.clouds = [];
         this.weather = [];
         this.barometer = {};
         this.wind = {};
+        this.visibility = {};
+        this.temperature = {};
+        this.dewpoint = {};
+        this.humidity = {};
+        this.elevation = {};
+        this.icao = "";
+        this.station = {};
+    }
+
+    #clearEmpties(o) {
+        for (let k in o) {
+            if (!o[k] || typeof o[k] !== "object") {
+                continue; // If null or not an object, skip to the next iteration
+            }
+
+            // The property is an object
+            this.#clearEmpties(o[k]); // <-- Make a recursive call on the nested object
+            if (Object.keys(o[k]).length === 0) {
+                delete o[k]; // The object had no properties, so delete that property
+            }
+        }
+        return o;
     }
 
     /**
      Covert either Metar from db or Reids into the same format
      **/
     normalizeMetar() {
+        if (Object.keys(this.metar).length === 0) {
+            this.normalizedMetar = {};
+            return;
+        }
         /* eslint-disable no-unused-vars */
         if (Object.hasOwn(this.metar, "entityId")) {
             const { longitude, latitude } = this.metar.location_redis;
@@ -37,17 +73,23 @@ class MetarFeatures {
     }
 
     async requestMetarUsingICAO(icao) {
-        const redisMetar = await this.repo.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
-        if (redisMetar && redisMetar.length !== 0) {
-            this.metar = JSON.parse(JSON.stringify(redisMetar));
-        } else {
-            const dbMetar = await AwcWeatherMetarModel.findOne({ station_id: icao.toUpperCase() });
-            if (dbMetar) {
+        try {
+            const redisMetar = await this.repo.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metar = JSON.parse(JSON.stringify(redisMetar));
+            } else {
+                const dbMetar = await AwcWeatherMetarModel.findOne({ station_id: icao.toUpperCase() });
+                if (!dbMetar || dbMetar.length === 0) {
+                    return;
+                }
+
                 this.metar = dbMetar.toObject();
             }
+            this.normalizeMetar();
+            return this.metar;
+        } catch (e) {
+            throw new CustomError("Something went wrong, please come again later.", 500);
         }
-        this.normalizeMetar();
-        return this.metar;
     }
 
     formatMetar() {
@@ -145,27 +187,42 @@ class MetarFeatures {
         return this;
     }
 
+    #decodeWeatherCode(code) {
+        let weatherText = "";
+
+        // check for special weather code
+        if (code.length >= 4 && metarWeatherCode[code]) {
+            weatherText = `${weatherText} ${metarWeatherCode[code]}`;
+        }
+
+        for (let i = 0; i < code.length - 1; i += 2) {
+            const singleCode = code.slice(i, i + 2);
+            if (metarWeatherCode[singleCode]) {
+                weatherText = `${weatherText} ${metarWeatherCode[singleCode]}`;
+            }
+        }
+        return weatherText;
+    }
+
     /**
      * Construct weather condition array
      **/
     generateWeather() {
         const rawMetarSection = this.normalizedMetar.raw_text.split(" ");
-
         for (let i = 0; i < rawMetarSection.length; i++) {
             let intensityFlag;
             // check if weather code has intensity flag;
             if (rawMetarSection[i].includes("+") || rawMetarSection[i].includes("-")) {
                 intensityFlag = rawMetarSection[i].slice(0, 1);
                 const tempWeatherCode = rawMetarSection[i].slice(1);
-                if (metarWeatherCode[tempWeatherCode]) {
-                    let text = intensityFlag
-                        ? `${metarWeatherCode[intensityFlag]} ${metarWeatherCode[tempWeatherCode]}`
-                        : "";
-                    this.weather.push({ code: rawMetarSection[i], text: text });
-                }
+                const tempWeatherText = this.#decodeWeatherCode(tempWeatherCode);
+                //let text = intensityFlag ? `${metarWeatherCode[intensityFlag]} ${tempWeatherText}` : "";
+                let text = intensityFlag ? `${metarWeatherCode[intensityFlag]}${tempWeatherText}` : "";
+                this.weather.push({ code: rawMetarSection[i], text: text });
             }
             if (metarWeatherCode[rawMetarSection[i]]) {
-                this.weather.push({ code: rawMetarSection[i], text: metarWeatherCode[rawMetarSection[i]] });
+                let text = this.#decodeWeatherCode(rawMetarSection[i]);
+                this.weather.push({ code: rawMetarSection[i], text: text });
             }
         }
         return this;
@@ -174,7 +231,177 @@ class MetarFeatures {
     /**
      * Construct wind
      **/
-    generateWind() {}
+    generateWind() {
+        const windSpeedKt = this.normalizedMetar.wind_speed_kt || 0;
+        const windDirection = this.normalizedMetar.wind_dir_degrees;
+        const windGustKt = this.normalizedMetar.wind_gust_kt || 0;
+        this.wind.degrees = Number(windDirection);
+        this.wind.speed_kts = Number(windSpeedKt);
+        this.wind.speed_kph = Number(ktsTokph(windSpeedKt));
+        this.wind.speed_mps = Number(ktsToMps(windSpeedKt));
+        this.wind.speed_mph = Number(ktsToMph(windSpeedKt));
+        if (windGustKt !== 0) {
+            this.wind.gust_kts = Number(windGustKt);
+            this.wind.gust_mps = Number(ktsToMps(windGustKt));
+            this.wind.gust_kph = Number(ktsTokph(windGustKt));
+            this.wind.gust_mph = Number(ktsToMph(windGustKt));
+        }
+        return this;
+    }
+
+    /**
+     * Construct visibility
+     **/
+    generateVisibility() {
+        const { visibility_statute_mi } = this.normalizedMetar;
+        this.visibility.miles = visibility_statute_mi.toString();
+        this.visibility.meters = statuteMiToMeter(visibility_statute_mi).toString();
+        this.visibility.miles_float = Number(visibility_statute_mi);
+        this.visibility.meters_float = Number(statuteMiToMeter(visibility_statute_mi));
+        return this;
+    }
+
+    /**
+     * Construct temperature
+     **/
+    generateTemperature() {
+        const { temp_c } = this.normalizedMetar;
+        if (temp_c) {
+            this.temperature.celsius = Number(temp_c);
+            this.temperature.fahrenheit = celsiusToFahrenheit(temp_c);
+        }
+        return this;
+    }
+
+    /**
+     * Construct dewpoint
+     **/
+    generateDewpoint() {
+        const { dewpoint_c } = this.normalizedMetar;
+        if (dewpoint_c) {
+            this.dewpoint.celsius = Number(dewpoint_c);
+            this.dewpoint.fahrenheit = celsiusToFahrenheit(dewpoint_c);
+        }
+        return this;
+    }
+
+    /**
+     * Construct dewpoint
+     **/
+    generateHumidity() {
+        if (this.normalizedMetar.temp_c && this.normalizedMetar.dewpoint_c) {
+            this.humidity.percent = Number(
+                calculateHumidity(this.normalizedMetar.temp_c, this.normalizedMetar.dewpoint_c)
+            );
+        }
+        return this;
+    }
+
+    /**
+     * Construct elevation
+     **/
+    generateElevation() {
+        if (this.normalizedMetar.elevation_m) {
+            this.elevation.feet = Number(meterToFeet(this.normalizedMetar.elevation_m));
+            this.elevation.meters = Number(this.normalizedMetar.elevation_m);
+        }
+        return this;
+    }
+
+    /**
+     * Construct ICAO
+     **/
+    generateICAO() {
+        if (this.normalizedMetar.station_id) {
+            this.icao = this.normalizedMetar.station_id.toUpperCase();
+        }
+        return this;
+    }
+
+    /**
+     * Construct Station
+     **/
+    generateStation() {
+        const geometry = this.normalizedMetar.location || null;
+        const location = {
+            continent: this.normalizedMetar.continent || "",
+            country: this.normalizedMetar.ios_country || "",
+            region: this.normalizedMetar.ios_region || "",
+            city: this.normalizedMetar.municipality || "",
+            name: this.normalizedMetar.name || "",
+        };
+        this.station = { location: { ...location }, geometry: geometry };
+        return this;
+    }
+
+    /**
+     * Construct decoded Metar
+     **/
+    generateDecodedMetar() {
+        if (Object.keys(this.normalizedMetar).length === 0) {
+            return;
+        }
+        this.generateBarometer()
+            .generateHumidity()
+            .generateWind()
+            .generateCloud()
+            .generateVisibility()
+            .generateTemperature()
+            .generateDewpoint()
+            .generateElevation()
+            .generateWeather()
+            .generateICAO()
+            .generateStation();
+        let tempDecodedMetar = {
+            icao: this.icao,
+            observed: this.normalizedMetar.observation_time,
+            raw_text: this.normalizedMetar.raw_text,
+            barometer: { ...this.barometer },
+            wind: { ...this.wind },
+            clouds: this.clouds,
+            conditions: { ...this.weather },
+            visibility: { ...this.visibility },
+            temperature: { ...this.temperature },
+            dewpoint: { ...this.dewpoint },
+            humidity: { ...this.humidity },
+            elevation: { ...this.elevation },
+            flight_category: this.normalizedMetar.flight_category,
+            station: { ...this.station },
+        };
+        this.decodedMetar = this.#clearEmpties(tempDecodedMetar);
+    }
+
+    getDecodedMetar() {
+        return this.decodedMetar;
+    }
+
+    getStation() {
+        return this.station;
+    }
+
+    getHumidity() {
+        return this.humidity;
+    }
+
+    getElevation() {
+        return this.elevation;
+    }
+
+    getTemperature() {
+        return this.temperature;
+    }
+
+    getDewpoint() {
+        return this.dewpoint;
+    }
+
+    getVisibility() {
+        return this.visibility;
+    }
+
+    getWind() {
+        return this.wind;
+    }
 
     getBarometer() {
         return this.barometer;
