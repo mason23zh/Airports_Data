@@ -13,12 +13,16 @@ const redisClient = new RedisClient();
 
 async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
+        let repo;
         console.log("start downloading data from AWC...");
         const awcMetars = await downloadAndProcessAWCMetars(
             "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
         );
         if (awcMetars.length && awcMetars.length > 0) {
             console.log("Download Finished, data length:", awcMetars.length);
+
+            console.log("Starting normalizing awc metars...");
+            const normalizedAwcMetar = await normalizeData();
 
             // Delete old data.
             console.log("Deleting old data...");
@@ -33,42 +37,40 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
 
             const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
 
-            await rNodeClient.flushDb("SYNC", () => {
-                console.log("REDIS FLUSH");
-            });
+            if (rNodeClient) {
+                await rNodeClient.flushDb("SYNC", () => {
+                    console.log("REDIS FLUSH");
+                });
 
-            console.log("Connecting to Redis...");
-            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
-            const repo = redisClient.createRedisOMRepository(awcMetarSchema);
+                console.log("Connecting to Redis...");
+                await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+                repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
-            console.log("Starting normalizing awc metars...");
-            const normalizedAwcMetar = await normalizeData();
+                console.log("store normalized metar into redis");
+                await repo.createIndex();
 
-            console.log("store normalized metar into redis");
-
-            await repo.createIndex();
-
-            await Promise.all(
-                JSON.parse(normalizedAwcMetar).map(async (metar) => {
-                    let updatedMetar = {
-                        ...metar,
-                        temp_c: Number(metar.temp_c),
-                        dewpoint_c: Number(metar.dewpoint_c),
-                        wind_dir_degrees: Number(metar.wind_dir_degrees),
-                        wind_speed_kt: Number(metar.wind_speed_kt),
-                        wind_gust_kt: Number(metar.wind_gust_kt),
-                        visibility_statute_mi: Number(metar.visibility_statute_mi),
-                        altim_in_hg: Number(metar.altim_in_hg),
-                        elevation_m: Number(metar.elevation_m),
-                        auto: metar.auto || "FALSE",
-                    };
-                    await repo.createAndSave(updatedMetar);
-                })
-            );
-            console.log("Disconnect redis client");
-            const currentClient = redisClient.getCurrentClient();
-            currentClient.close();
-            await rNodeClient.quit();
+                await Promise.all(
+                    JSON.parse(normalizedAwcMetar).map(async (metar) => {
+                        let updatedMetar = {
+                            ...metar,
+                            temp_c: Number(metar.temp_c),
+                            dewpoint_c: Number(metar.dewpoint_c),
+                            wind_dir_degrees: Number(metar.wind_dir_degrees),
+                            wind_speed_kt: Number(metar.wind_speed_kt),
+                            wind_gust_kt: Number(metar.wind_gust_kt),
+                            visibility_statute_mi: Number(metar.visibility_statute_mi),
+                            altim_in_hg: Number(metar.altim_in_hg),
+                            elevation_m: Number(metar.elevation_m),
+                            auto: metar.auto || "FALSE",
+                        };
+                        await repo.createAndSave(updatedMetar);
+                    })
+                );
+                console.log("Disconnect redis client");
+                const currentClient = redisClient.getCurrentClient();
+                currentClient.close();
+                await rNodeClient.quit();
+            }
 
             // import new metar into the latest AWC Model
             console.log("Start importing data to Database...");
@@ -93,12 +95,16 @@ const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_L
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
-        await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
-        const repo = redisClient.createRedisOMRepository(awcMetarSchema);
+        try {
+            await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
+            const repo = redisClient.createRedisOMRepository(awcMetarSchema);
 
-        await repo.createIndex();
-        const currentClient = redisClient.getCurrentClient();
-        currentClient.close();
+            await repo.createIndex();
+            const currentClient = redisClient.getCurrentClient();
+            currentClient.close();
+        } catch (e) {
+            console.log("Error connecting to Redis");
+        }
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
         await importMetarsToDB(Latest_AwcWeatherModel);

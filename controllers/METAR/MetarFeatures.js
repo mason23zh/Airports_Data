@@ -74,7 +74,7 @@ class MetarFeatures {
 
     async requestMetarUsingICAO(icao) {
         try {
-            const redisMetar = await this.repo.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
+            const redisMetar = await this.repo?.where("station_id").equals(icao.toUpperCase()).returnFirst();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metar = JSON.parse(JSON.stringify(redisMetar));
             } else {
@@ -88,7 +88,7 @@ class MetarFeatures {
             this.normalizeMetar();
             return this.metar;
         } catch (e) {
-            throw new CustomError("Something went wrong, please come again later.", 500);
+            throw new CustomError("Something went wrong, please come back later", 500);
         }
     }
 

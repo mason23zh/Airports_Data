@@ -17,13 +17,13 @@ let repo;
 })();
 
 module.exports.getAwcMetarUsingICAO = async (icao) => {
-    const responseMetar = await repo.search().where("station_id").equals(icao.toUpperCase()).returnAll();
+    const responseMetar = await repo?.search().where("station_id").equals(icao.toUpperCase()).returnAll();
     if (responseMetar && responseMetar.length !== 0) {
         return responseMetar;
     } else {
         const responseMetar = await AwcWeatherMetarModel.find({ station_id: `${icao.toUpperCase()}` });
         if (!responseMetar || responseMetar.length === 0) {
-            throw new NotFoundError(`Cannot find METARs data for airport with ICAO code: ${icao}`);
+            throw new NotFoundError(`Cannot find METARs data for airport with keyword: ${icao}`);
         }
         return responseMetar;
     }
@@ -32,7 +32,7 @@ module.exports.getAwcMetarUsingICAO = async (icao) => {
 module.exports.getAwcMetarUsingGenericInput = async (data) => {
     //const repo = await awcMetarRepository();
     /*eslint-disable*/
-    const responseMetar = await repo.search()
+    const responseMetar = await repo?.search()
                                     .where("name")
                                     .matches(data)
                                     .or("municipality")
@@ -219,13 +219,12 @@ module.exports.getWeatherForCountry = async (req, res, next) => {
     const { limit = 30 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("ios_country")
+                                   .equals(country.toUpperCase())
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -251,14 +250,13 @@ module.exports.getWindGustForCountry = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("ios_country")
+                                   .equals(country.toUpperCase())
+                                   .sortDesc("wind_gust_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -289,14 +287,13 @@ module.exports.getWindMetarForCountry = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .sortDesc("wind_speed_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("ios_country")
+                                   .equals(country.toUpperCase())
+                                   .sortDesc("wind_speed_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -328,16 +325,15 @@ module.exports.getBaroMetarForCountry = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(country.toUpperCase())
-        .sortBy("altim_in_hg", sortQuery)
-        .where("altim_in_hg")
-        .not.eq(0)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(country.toUpperCase())
+                                   .sortBy("altim_in_hg", sortQuery)
+                                   .where("altim_in_hg")
+                                   .not.eq(0)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -369,16 +365,15 @@ module.exports.getVisibilityMetarForCountry = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .sortBy("visibility_statute_mi", sortQuery)
-        .where("visibility_statute_mi")
-        .not.eq(0)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("ios_country")
+                                   .equals(country.toUpperCase())
+                                   .sortBy("visibility_statute_mi", sortQuery)
+                                   .where("visibility_statute_mi")
+                                   .not.eq(0)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -410,14 +405,13 @@ module.exports.getTempMetarForCountry = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .sortBy("temp_c", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("ios_country")
+                                   .equals(country.toUpperCase())
+                                   .sortBy("temp_c", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -449,13 +443,12 @@ module.exports.getMetarForContinent = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -483,14 +476,13 @@ module.exports.getWindGustForContinent = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .sortDesc("wind_gust_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -522,14 +514,13 @@ module.exports.getWindMetarForContinent = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .sortDesc("wind_speed_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .sortDesc("wind_speed_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -564,16 +555,15 @@ module.exports.getBaroMetarForContinent = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .where("altim_in_hg")
-        .not.eq(0)
-        .sortBy("altim_in_hg", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .where("altim_in_hg")
+                                   .not.eq(0)
+                                   .sortBy("altim_in_hg", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -608,16 +598,15 @@ module.exports.getVisibilityMetarForContinent = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .where("visibility_statute_mi")
-        .not.eq(0)
-        .sortBy("visibility_statute_mi", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .where("visibility_statute_mi")
+                                   .not.eq(0)
+                                   .sortBy("visibility_statute_mi", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -652,14 +641,13 @@ module.exports.getTempMetarForContinent = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .sortBy("temp_c", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("continent")
+                                   .equals(continent.toUpperCase())
+                                   .sortBy("temp_c", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -694,14 +682,13 @@ module.exports.getWindGustForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("wind_gust_kt")
-        .not.eq(0)
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("wind_gust_kt")
+                                   .not.eq(0)
+                                   .sortDesc("wind_gust_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -730,14 +717,13 @@ module.exports.getWindMetarForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
     
-    const sortedMetars = await repo
-        .search()
-        .where("wind_speed_kt")
-        .not.eq(0)
-        .sortDesc("wind_speed_kt")
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("wind_speed_kt")
+                                   .not.eq(0)
+                                   .sortDesc("wind_speed_kt")
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -767,14 +753,13 @@ module.exports.getBaroMetarForGlobal = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("altim_in_hg")
-        .not.eq(0)
-        .sortBy("altim_in_hg", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("altim_in_hg")
+                                   .not.eq(0)
+                                   .sortBy("altim_in_hg", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -804,14 +789,13 @@ module.exports.getVisibilityMetarForGlobal = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo
-        .search()
-        .where("visibility_statute_mi")
-        .not.eq(0)
-        .sortBy("visibility_statute_mi", sortQuery)
-        .returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search()
+                                   .where("visibility_statute_mi")
+                                   .not.eq(0)
+                                   .sortBy("visibility_statute_mi", sortQuery)
+                                   .returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
@@ -841,9 +825,9 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
     //const repo = await awcMetarRepository();
     const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
     
-    const sortedMetars = await repo.search().sortBy("temp_c", sortQuery).returnPage(0, Number(limit));
+    const sortedMetars = await repo?.search().sortBy("temp_c", sortQuery).returnPage(0, Number(limit));
     
-    if (sortedMetars.length !== 0) {
+    if (sortedMetars && sortedMetars.length !== 0) {
         return res.status(200).json({
             status: "success",
             result: sortedMetars.length,
