@@ -27,19 +27,17 @@ module.exports.getMetar = async (req, res) => {
     await Promise.all(
         uniqIcaoArray.map(async (icao) => {
             const metarFeature = new MetarFeatures(AwcWeatherMetarModel, repo);
-            await metarFeature.requestMetarUsingICAO(icao);
-            metarFeature.generateDecodedMetar();
-
-            if (decode === "true") {
-                const decodedMetar = metarFeature.getDecodedMetar();
+            const metar = await metarFeature.requestMetarUsingICAO(icao);
+            if (decode === "true" && metar) {
+                const decodedMetar = metar.getDecodedMetar();
                 if (decodedMetar && Object.keys(decodedMetar).length !== 0) {
                     responseMetarArray.push(decodedMetar);
                 }
             }
-            if (decode === "false") {
-                const rawMetar = metarFeature.getRawMetar();
+            if (decode === "false" && metar) {
+                const rawMetar = metar.getRawMetar();
                 if (rawMetar && Object.keys(rawMetar).length !== 0) {
-                    responseMetarArray.push(metarFeature.getRawMetar());
+                    responseMetarArray.push(metar.getRawMetar());
                 }
             }
         })

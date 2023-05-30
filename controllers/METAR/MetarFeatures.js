@@ -9,7 +9,7 @@ const {
     meterToFeet,
     calculateHumidity,
 } = require("../../utils/METAR/convert");
-const CustomError = require("../../common/errors/custom-error");
+const earthRadiusInMile = 3963.19;
 
 // noinspection JSUnresolvedFunction
 class MetarFeatures {
@@ -30,6 +30,7 @@ class MetarFeatures {
         this.elevation = {};
         this.icao = "";
         this.station = {};
+        this.metarArray = [];
     }
 
     #clearEmpties(o) {
@@ -50,7 +51,7 @@ class MetarFeatures {
     /**
      Covert either Metar from db or Reids into the same format
      **/
-    normalizeMetar() {
+    #normalizeMetar() {
         if (Object.keys(this.metar).length === 0) {
             this.normalizedMetar = {};
             return;
@@ -72,38 +73,137 @@ class MetarFeatures {
         }
     }
 
-    async requestMetarUsingICAO(icao) {
-        try {
-            const redisMetar = await this.repo?.where("station_id").equals(icao.toUpperCase()).returnFirst();
-            if (redisMetar && redisMetar.length !== 0) {
-                this.metar = JSON.parse(JSON.stringify(redisMetar));
-            } else {
-                const dbMetar = await AwcWeatherMetarModel.findOne({ station_id: icao.toUpperCase() });
-                if (!dbMetar || dbMetar.length === 0) {
-                    return;
-                }
+    // radius is in mile.
+    async requestMetarWithinRadius(icao, distance) {
+        const originMetar = await this.requestMetarUsingICAO(icao);
+        if (!originMetar) return null;
+        const location = originMetar.getStation();
+        const [lon, lat] = location.coordinates;
 
-                this.metar = dbMetar.toObject();
+        try {
+            const responseMetar = await this.repo
+                .search()
+                .where("location_redis")
+                .inRadius((circle) => circle.longitude(lon).latitude(lat).radius(distance).miles)
+                .return.all();
+            if (responseMetar && responseMetar.length !== 0) {
+                this.metarArray = [];
+                responseMetar.map((metar) => {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                });
+                return this;
+            } else {
+                throw 1;
             }
-            this.normalizeMetar();
-            return this.metar;
         } catch (e) {
-            throw new CustomError("Something went wrong, please come back later", 500);
+            const responseMetars = await AwcWeatherMetarModel.find({
+                location: {
+                    $geoWithin: {
+                        $centerSphere: [[lon, lat], distance / earthRadiusInMile],
+                    },
+                },
+            });
+            if (!responseMetars) {
+                return null;
+            }
+            this.metarArray = [];
+            responseMetars.map((metar) => {
+                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+            });
+            return this;
         }
     }
 
-    formatMetar() {
-        let tempMetar = {};
-        tempMetar.raw_text = this.normalizedMetar.raw_text;
-        tempMetar.icao = this.normalizedMetar.station_id;
-        tempMetar.flight_category = this.normalizedMetar.flight_category;
-        tempMetar.observation_time = this.normalizedMetar.observation_time;
+    async requestMetarUsingGenericInput(data) {
+        try {
+            const redisMetar = await this.repo.where("name").matches(data).or("municipality").match(data).returnAll();
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metarArray = [];
+                redisMetar.map((metar) => {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                });
+                return this.metarArray;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetars = await this.model.find({
+                $or: [
+                    {
+                        municipality: {
+                            $regex: `${data}`,
+                            $options: "i",
+                        },
+                    },
+                    { name: { $regex: `${data}`, $options: "i" } },
+                ],
+            });
+            if (!dbMetars) {
+                return null;
+            }
+
+            this.metarArray = [];
+            dbMetars.map((metar) => {
+                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+            });
+            return this.metarArray;
+        }
+    }
+
+    async requestMetarUsingAirportName(name) {
+        try {
+            const redisMetar = await this.repo.search().where("name").matches(name).returnAll();
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metarArray = [];
+                redisMetar.map((metar) => {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                });
+                return this.metarArray;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetars = await this.model.find({ name: { $regex: `${name}`, $options: "i" } });
+            if (!dbMetars) {
+                return null;
+            }
+
+            this.metarArray = [];
+            dbMetars.map((metar) => {
+                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+            });
+            return this.metarArray;
+        }
+    }
+
+    async requestMetarUsingICAO(icao) {
+        try {
+            const redisMetar = await this.repo?.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metar = redisMetar.toJSON();
+                this.#normalizeMetar();
+                this.#generateDecodedMetar();
+                return this;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetar = await AwcWeatherMetarModel.findOne({ station_id: icao.toUpperCase() });
+            if (!dbMetar) {
+                return null;
+            }
+
+            this.metar = dbMetar.toObject();
+            this.#normalizeMetar();
+            this.#generateDecodedMetar();
+            return this;
+        }
     }
 
     /**
      * construct new barometer object
      **/
-    generateBarometer() {
+    #generateBarometer() {
         if (this.normalizedMetar.altim_in_hg) {
             const originalBaro = Number(this.normalizedMetar.altim_in_hg);
             this.barometer.hg = originalBaro.toFixed(2);
@@ -117,7 +217,7 @@ class MetarFeatures {
     /**
      * construct cloud array
      */
-    generateCloud() {
+    #generateCloud() {
         this.clouds = [];
         if (this.normalizedMetar.raw_text) {
             let finalCloudObject = {};
@@ -207,7 +307,7 @@ class MetarFeatures {
     /**
      * Construct weather condition array
      **/
-    generateWeather() {
+    #generateWeather() {
         const rawMetarSection = this.normalizedMetar.raw_text.split(" ");
         for (let i = 0; i < rawMetarSection.length; i++) {
             let intensityFlag;
@@ -231,7 +331,7 @@ class MetarFeatures {
     /**
      * Construct wind
      **/
-    generateWind() {
+    #generateWind() {
         const windSpeedKt = this.normalizedMetar.wind_speed_kt || 0;
         const windDirection = this.normalizedMetar.wind_dir_degrees;
         const windGustKt = this.normalizedMetar.wind_gust_kt || 0;
@@ -252,19 +352,20 @@ class MetarFeatures {
     /**
      * Construct visibility
      **/
-    generateVisibility() {
+    #generateVisibility() {
         const { visibility_statute_mi } = this.normalizedMetar;
         this.visibility.miles = visibility_statute_mi.toString();
         this.visibility.meters = statuteMiToMeter(visibility_statute_mi).toString();
         this.visibility.miles_float = Number(visibility_statute_mi);
         this.visibility.meters_float = Number(statuteMiToMeter(visibility_statute_mi));
+
         return this;
     }
 
     /**
      * Construct temperature
      **/
-    generateTemperature() {
+    #generateTemperature() {
         const { temp_c } = this.normalizedMetar;
         if (temp_c) {
             this.temperature.celsius = Number(temp_c);
@@ -276,9 +377,9 @@ class MetarFeatures {
     /**
      * Construct dewpoint
      **/
-    generateDewpoint() {
+    #generateDewpoint() {
         const { dewpoint_c } = this.normalizedMetar;
-        if (dewpoint_c) {
+        if (this.normalizedMetar.dewpoint_c) {
             this.dewpoint.celsius = Number(dewpoint_c);
             this.dewpoint.fahrenheit = celsiusToFahrenheit(dewpoint_c);
         }
@@ -288,7 +389,7 @@ class MetarFeatures {
     /**
      * Construct dewpoint
      **/
-    generateHumidity() {
+    #generateHumidity() {
         if (this.normalizedMetar.temp_c && this.normalizedMetar.dewpoint_c) {
             this.humidity.percent = Number(
                 calculateHumidity(this.normalizedMetar.temp_c, this.normalizedMetar.dewpoint_c)
@@ -300,7 +401,7 @@ class MetarFeatures {
     /**
      * Construct elevation
      **/
-    generateElevation() {
+    #generateElevation() {
         if (this.normalizedMetar.elevation_m) {
             this.elevation.feet = Number(meterToFeet(this.normalizedMetar.elevation_m));
             this.elevation.meters = Number(this.normalizedMetar.elevation_m);
@@ -311,7 +412,7 @@ class MetarFeatures {
     /**
      * Construct ICAO
      **/
-    generateICAO() {
+    #generateICAO() {
         if (this.normalizedMetar.station_id) {
             this.icao = this.normalizedMetar.station_id.toUpperCase();
         }
@@ -321,7 +422,7 @@ class MetarFeatures {
     /**
      * Construct Station
      **/
-    generateStation() {
+    #generateStation() {
         const geometry = this.normalizedMetar.location || null;
         const location = {
             continent: this.normalizedMetar.continent || "",
@@ -330,28 +431,29 @@ class MetarFeatures {
             city: this.normalizedMetar.municipality || "",
             name: this.normalizedMetar.name || "",
         };
-        this.station = { location: { ...location }, geometry: geometry };
+        this.station = { location: { ...location }, coordinates: geometry };
         return this;
     }
 
     /**
      * Construct decoded Metar
      **/
-    generateDecodedMetar() {
+    #generateDecodedMetar() {
         if (Object.keys(this.normalizedMetar).length === 0) {
-            return;
+            return null;
         }
-        this.generateBarometer()
-            .generateHumidity()
-            .generateWind()
-            .generateCloud()
-            .generateVisibility()
-            .generateTemperature()
-            .generateDewpoint()
-            .generateElevation()
-            .generateWeather()
-            .generateICAO()
-            .generateStation();
+        this.#generateBarometer();
+        this.#generateHumidity();
+        this.#generateWind();
+        this.#generateCloud();
+        this.#generateVisibility();
+        this.#generateTemperature();
+        this.#generateDewpoint();
+        this.#generateElevation();
+        this.#generateWeather();
+        this.#generateICAO();
+        this.#generateStation();
+
         let tempDecodedMetar = {
             icao: this.icao,
             observed: this.normalizedMetar.observation_time,
@@ -369,6 +471,21 @@ class MetarFeatures {
             station: { ...this.station },
         };
         this.decodedMetar = this.#clearEmpties(tempDecodedMetar);
+        return this;
+    }
+
+    convertGeneralResponseMetar(metar) {
+        if (!metar) {
+            return null;
+        }
+        this.metar = { ...metar };
+        this.#normalizeMetar();
+        this.#generateDecodedMetar();
+        return this.decodedMetar;
+    }
+
+    getMetarArray() {
+        return this.metarArray;
     }
 
     getDecodedMetar() {
@@ -415,6 +532,9 @@ class MetarFeatures {
         return this.clouds;
     }
 
+    /**
+     * return the normalized metar format without any name changes.
+     **/
     getNormalMetar() {
         return this.normalizedMetar;
     }

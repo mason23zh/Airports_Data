@@ -36,7 +36,6 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             // );
 
             const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDIS_URL);
-
             if (rNodeClient) {
                 await rNodeClient.flushDb("SYNC", () => {
                     console.log("REDIS FLUSH");
@@ -98,12 +97,11 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         try {
             await redisClient.openNewRedisOMClient(process.env.REDIS_URL);
             const repo = redisClient.createRedisOMRepository(awcMetarSchema);
-
             await repo.createIndex();
             const currentClient = redisClient.getCurrentClient();
             currentClient.close();
         } catch (e) {
-            console.log("Error connecting to Redis");
+            console.log("Error connecting to Redis", e);
         }
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {

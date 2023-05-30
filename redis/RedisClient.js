@@ -11,11 +11,12 @@ class RedisClient {
     async openNewRedisOMClient(REDIS_URL) {
         try {
             this.client = await new Client().open(REDIS_URL);
+            return this.client;
         } catch (e) {
+            console.log(e);
             this.client = null;
             return;
         }
-        return this.client;
     }
 
     getCurrentClient() {
@@ -24,7 +25,8 @@ class RedisClient {
 
     createRedisOMRepository(schema) {
         if (this.client !== null) {
-            return (this.repo = this.client.fetchRepository(schema));
+            this.repo = this.client.fetchRepository(schema);
+            return this.repo;
         } else {
             // throw new Error("Client initialization required");
             return null;
