@@ -192,15 +192,66 @@ class MetarFeatures {
         }
     }
 
-    async requestWindGustMetar_Global(limit, decode = false) {
+    async requestMetarCategory_global(category, sort = 1, limit = 10, decode = false) {
+        const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
         try {
             const redisMetar = await this.repo
                 ?.search()
-                .where("wind_gust_kt")
+                .where(category)
                 .not.eq(0)
-                .sortDesc("wind_gust_kt")
+                .sortBy(category, sortQuery)
                 .returnPage(0, Number(limit));
             if (redisMetar && redisMetar.length !== 0) {
+                this.metarArray = [];
+                redisMetar.map((metar) => {
+                    if (!decode) {
+                        this.metarArray.push(metar.raw_text);
+                    } else {
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    }
+                });
+                return this.metarArray;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetars = await this.model
+                .find({
+                    category: { $ne: null },
+                })
+                .sort({ category: sort })
+                .limit(limit);
+
+            if (!dbMetars || dbMetars.length === 0) {
+                return null;
+            }
+            this.metarArray = [];
+            dbMetars.map((metar) => {
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
+            });
+            return this.metarArray;
+        }
+    }
+
+    async requestMetarCategory_local(scope, target, category, sort = 1, limit = 10, decode = false) {
+        //console.log(sort);
+        const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
+
+        try {
+            const redisMetar = await this.repo
+                ?.search()
+                .where(scope)
+                .equals(target.toUpperCase())
+                .where(category)
+                .not.eq(0)
+                .sortBy(category, sortQuery)
+                .returnPage(0, Number(limit));
+
+            if (redisMetar && redisMetar.length > 0) {
                 this.metarArray = [];
                 redisMetar.map((metar) => {
                     if (!decode) {
@@ -216,65 +267,16 @@ class MetarFeatures {
         } catch (e) {
             const dbMetar = await this.model
                 .find({
-                    wind_gust_kt: { $ne: null },
+                    scope: target.toUpperCase(),
+                    category: { $ne: null },
                 })
-                .sort({ wind_gust_kt: -1 })
+                .sort({ category: sort })
                 .limit(limit);
             if (!dbMetar || dbMetar.length === 0) {
                 return null;
             }
             this.metarArray = [];
             dbMetar.map((metar) => {
-                if (!decode) {
-                    this.metarArray.push(metar.raw_text);
-                } else {
-                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
-                }
-            });
-            return this.metarArray;
-        }
-    }
-
-    async requestWindGustMetar(scope, target, limit = 10, decode = false) {
-        let finalScope;
-        if (scope === "country") {
-            finalScope = "ios_country";
-        } else if (scope === "continent") {
-            finalScope = "continent";
-        }
-
-        try {
-            const redisMetar = await this.repo
-                .search()
-                .where(finalScope)
-                .equals(target.toUpperCase())
-                .sortDesc("wind_gust_kt")
-                .returnPage(0, Number(limit));
-            if (redisMetar && redisMetar.length !== 0) {
-                this.metarArray = [];
-                redisMetar.map((metar) => {
-                    console.log(decode);
-                    if (!decode) {
-                        this.metarArray.push(metar.raw_text);
-                    } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
-                    }
-                });
-                return this.metarArray;
-            } else {
-                throw 1;
-            }
-        } catch (e) {
-            const dbMetars = await this.model
-                .find({
-                    finalScope: `${target.toUpperCase()}`,
-                })
-                .sort({ wind_gust_kt: -1 })
-                .limit(limit);
-            if (!dbMetars || dbMetars.length === 0) {
-                return null;
-            }
-            dbMetars.map((metar) => {
                 if (!decode) {
                     this.metarArray.push(metar.raw_text);
                 } else {
