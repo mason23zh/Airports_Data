@@ -73,7 +73,7 @@ module.exports.getMetarsWithin = async (req, res, next) => {
 
     if (checkICAO(icao.toUpperCase())) {
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-        const responseMetars = (await metarFeatures.requestMetarWithinRadius(icao, newDistance)).getMetarArray();
+        const responseMetars = (await metarFeatures.requestMetarWithinRadius(icao, newDistance, false)).getMetarArray();
 
         if (responseMetars) {
             res.status(200).json({
@@ -188,39 +188,15 @@ module.exports.getWeatherForCountry = async (req, res, next) => {
 module.exports.getWindGustForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
-    //const repo = await awcMetarRepository();
+    let decode = req.query.decode === "true";
 
-    const sortedMetars = await repo
-        ?.search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
-
-    if (sortedMetars && sortedMetars.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        const sortedMetars = await AwcWeatherMetarModel.find({
-            ios_country: country.toUpperCase(),
-            wind_gust_kt: { $ne: null },
-        })
-            .sort({ wind_gust_kt: -1 })
-            .limit(limit);
-
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(`Cannot find wind gust data for country: ${country}`);
-        }
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    }
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestWindGustMetar("country", country, limit, decode);
+    res.status(200).json({
+        status: "success",
+        result: response.length,
+        data: response,
+    });
 };
 
 module.exports.getWindMetarForCountry = async (req, res, next) => {
@@ -420,40 +396,16 @@ module.exports.getMetarForContinent = async (req, res, next) => {
 module.exports.getWindGustForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { limit = 10 } = req.query;
-    //const repo = await awcMetarRepository();
+    let decode = req.query.decode === "true";
 
-    const sortedMetars = await repo
-        ?.search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestWindGustMetar("continent", continent, limit, decode);
 
-    if (sortedMetars && sortedMetars.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        const sortedMetars = await AwcWeatherMetarModel.find({
-            continent: continent.toUpperCase(),
-            wind_gust_kt: { $ne: null },
-        })
-            .sort({ wind_gust_kt: -1 })
-            .limit(limit);
-
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(`Cannot find wind gust data for continent: ${continent}
-            Please use code: AF, AN, AS, OC, EU, NA, SA`);
-        }
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    }
+    res.status(200).json({
+        status: "success",
+        result: response.length,
+        data: response,
+    });
 };
 
 module.exports.getWindMetarForContinent = async (req, res, next) => {
@@ -631,38 +583,15 @@ module.exports.getTempMetarForContinent = async (req, res, next) => {
 
 module.exports.getWindGustForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
+    let decode = req.query.decode === "true";
     //const repo = await awcMetarRepository();
-
-    const sortedMetars = await repo
-        ?.search()
-        .where("wind_gust_kt")
-        .not.eq(0)
-        .sortDesc("wind_gust_kt")
-        .returnPage(0, Number(limit));
-
-    if (sortedMetars && sortedMetars.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        const sortedMetars = await AwcWeatherMetarModel.find({
-            wind_gust_kt: { $ne: null },
-        })
-            .sort({ wind_gust_kt: -1 })
-            .limit(limit);
-
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(`Cannot find global temperature data.`);
-        }
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    }
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestWindGustMetar_Global(limit, decode);
+    res.status(200).json({
+        status: "success",
+        result: response.length,
+        data: response,
+    });
 };
 
 module.exports.getWindMetarForGlobal = async (req, res, next) => {

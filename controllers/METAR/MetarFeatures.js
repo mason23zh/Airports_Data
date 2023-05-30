@@ -74,11 +74,11 @@ class MetarFeatures {
     }
 
     // radius is in mile.
-    async requestMetarWithinRadius(icao, distance) {
+    async requestMetarWithinRadius(icao, distance, decode = false) {
         const originMetar = await this.requestMetarUsingICAO(icao);
         if (!originMetar) return null;
-        const location = originMetar.getStation();
-        const [lon, lat] = location.coordinates;
+        const station = originMetar.getStation();
+        const [lon, lat] = station.location.geometry.coordinates;
 
         try {
             const responseMetar = await this.repo
@@ -89,7 +89,11 @@ class MetarFeatures {
             if (responseMetar && responseMetar.length !== 0) {
                 this.metarArray = [];
                 responseMetar.map((metar) => {
-                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    if (!decode) {
+                        this.metarArray.push(metar.raw_text);
+                    } else {
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    }
                 });
                 return this;
             } else {
@@ -108,13 +112,17 @@ class MetarFeatures {
             }
             this.metarArray = [];
             responseMetars.map((metar) => {
-                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
             });
             return this;
         }
     }
 
-    async requestMetarUsingGenericInput(data) {
+    async requestMetarUsingGenericInput(data, decode = false) {
         try {
             const redisMetar = await this.repo.where("name").matches(data).or("municipality").match(data).returnAll();
             if (redisMetar && redisMetar.length !== 0) {
@@ -144,13 +152,17 @@ class MetarFeatures {
 
             this.metarArray = [];
             dbMetars.map((metar) => {
-                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
             });
             return this.metarArray;
         }
     }
 
-    async requestMetarUsingAirportName(name) {
+    async requestMetarUsingAirportName(name, decode = false) {
         try {
             const redisMetar = await this.repo.search().where("name").matches(name).returnAll();
             if (redisMetar && redisMetar.length !== 0) {
@@ -170,7 +182,104 @@ class MetarFeatures {
 
             this.metarArray = [];
             dbMetars.map((metar) => {
-                this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
+            });
+            return this.metarArray;
+        }
+    }
+
+    async requestWindGustMetar_Global(limit, decode = false) {
+        try {
+            const redisMetar = await this.repo
+                ?.search()
+                .where("wind_gust_kt")
+                .not.eq(0)
+                .sortDesc("wind_gust_kt")
+                .returnPage(0, Number(limit));
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metarArray = [];
+                redisMetar.map((metar) => {
+                    if (!decode) {
+                        this.metarArray.push(metar.raw_text);
+                    } else {
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    }
+                });
+                return this.metarArray;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetar = await this.model
+                .find({
+                    wind_gust_kt: { $ne: null },
+                })
+                .sort({ wind_gust_kt: -1 })
+                .limit(limit);
+            if (!dbMetar || dbMetar.length === 0) {
+                return null;
+            }
+            this.metarArray = [];
+            dbMetar.map((metar) => {
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
+            });
+            return this.metarArray;
+        }
+    }
+
+    async requestWindGustMetar(scope, target, limit = 10, decode = false) {
+        let finalScope;
+        if (scope === "country") {
+            finalScope = "ios_country";
+        } else if (scope === "continent") {
+            finalScope = "continent";
+        }
+
+        try {
+            const redisMetar = await this.repo
+                .search()
+                .where(finalScope)
+                .equals(target.toUpperCase())
+                .sortDesc("wind_gust_kt")
+                .returnPage(0, Number(limit));
+            if (redisMetar && redisMetar.length !== 0) {
+                this.metarArray = [];
+                redisMetar.map((metar) => {
+                    console.log(decode);
+                    if (!decode) {
+                        this.metarArray.push(metar.raw_text);
+                    } else {
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    }
+                });
+                return this.metarArray;
+            } else {
+                throw 1;
+            }
+        } catch (e) {
+            const dbMetars = await this.model
+                .find({
+                    finalScope: `${target.toUpperCase()}`,
+                })
+                .sort({ wind_gust_kt: -1 })
+                .limit(limit);
+            if (!dbMetars || dbMetars.length === 0) {
+                return null;
+            }
+            dbMetars.map((metar) => {
+                if (!decode) {
+                    this.metarArray.push(metar.raw_text);
+                } else {
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                }
             });
             return this.metarArray;
         }
@@ -354,8 +463,9 @@ class MetarFeatures {
      **/
     #generateVisibility() {
         const { visibility_statute_mi } = this.normalizedMetar;
-        this.visibility.miles = visibility_statute_mi.toString();
-        this.visibility.meters = statuteMiToMeter(visibility_statute_mi).toString();
+        if (visibility_statute_mi === null) {
+            return;
+        }
         this.visibility.miles_float = Number(visibility_statute_mi);
         this.visibility.meters_float = Number(statuteMiToMeter(visibility_statute_mi));
 
@@ -423,15 +533,20 @@ class MetarFeatures {
      * Construct Station
      **/
     #generateStation() {
-        const geometry = this.normalizedMetar.location || null;
+        const coordinate = this.normalizedMetar.location || null;
+
         const location = {
             continent: this.normalizedMetar.continent || "",
             country: this.normalizedMetar.ios_country || "",
             region: this.normalizedMetar.ios_region || "",
             city: this.normalizedMetar.municipality || "",
             name: this.normalizedMetar.name || "",
+            geometry: {
+                coordinates: coordinate,
+                type: "Point",
+            },
         };
-        this.station = { location: { ...location }, coordinates: geometry };
+        this.station = { location: { ...location } };
         return this;
     }
 

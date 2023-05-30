@@ -25,9 +25,9 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             const normalizedAwcMetar = await normalizeData();
 
             // Delete old data.
-            console.log("Deleting old data...");
-            await Latest_AwcWeatherModel.deleteMany({});
-            console.log("Old data deleted");
+            // console.log("Deleting old data...");
+            // await Latest_AwcWeatherModel.deleteMany({});
+            // console.log("Old data deleted");
 
             // const rNodeClient = await redisClient.createRedisNodeConnection(
             //     process.env.REDISCLOUD_PASSWORD,
@@ -72,12 +72,12 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             }
 
             // import new metar into the latest AWC Model
-            console.log("Start importing data to Database...");
-            const docs = await Latest_AwcWeatherModel.create(JSON.parse(normalizedAwcMetar));
-            console.log("Data imported, total entries:", docs.length);
-
-            console.log("Copy all data to AwcWeatherMetarModel...");
-            await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
+            // console.log("Start importing data to Database...");
+            // const docs = await Latest_AwcWeatherModel.create(JSON.parse(normalizedAwcMetar));
+            // console.log("Data imported, total entries:", docs.length);
+            //
+            // console.log("Copy all data to AwcWeatherMetarModel...");
+            // await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
             console.log("Data merged successfully, Let's rock!");
 
             return normalizedAwcMetar.length;
