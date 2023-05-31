@@ -73,13 +73,7 @@ class MetarFeatures {
         }
     }
 
-    // radius is in mile.
-    async requestMetarWithinRadius(icao, distance, decode = false) {
-        const originMetar = await this.requestMetarUsingICAO(icao);
-        if (!originMetar) return [];
-        const station = originMetar.getStation();
-        const [lon, lat] = station.location.geometry.coordinates;
-
+    async requestMetarWithinRadius_LngLat(lon, lat, distance, decode = false) {
         try {
             const responseMetar = await this.repo
                 .search()
@@ -119,6 +113,19 @@ class MetarFeatures {
                 }
             });
             return this.metarArray;
+        }
+    }
+
+    // radius is in mile.
+    async requestMetarWithinRadius_icao(icao, distance, decode = false) {
+        try {
+            const originMetar = await this.requestMetarUsingICAO(icao);
+            if (!originMetar) return [];
+            const station = originMetar.getStation();
+            const [lon, lat] = station.location.geometry.coordinates;
+            return await this.requestMetarWithinRadius_LngLat(lon, lat, distance, decode);
+        } catch (e) {
+            return [];
         }
     }
 

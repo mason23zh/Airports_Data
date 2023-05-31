@@ -51,12 +51,8 @@ module.exports.getMetar = async (req, res) => {
     });
 };
 
-module.exports.getRadiusMetar = async (req, res) => {
+const distanceConverter = (unit, distance) => {
     let newDistance;
-    const { icao } = req.params;
-    const { distance, unit = "mile" } = req.query;
-    let decode = req.query.decode === "true";
-
     if (unit.toLowerCase() === "mi" || "miles" || "mile") {
         newDistance = Number(distance);
     } else if (unit.toLowerCase() === "km" || "kilometers" || "kilometer") {
@@ -64,9 +60,17 @@ module.exports.getRadiusMetar = async (req, res) => {
     } else if (unit.toLowerCase() === "nm" || "nauticalmile" || "nauticalmiles") {
         newDistance = Number(distance) * 1.15078;
     }
+    return newDistance;
+};
+
+module.exports.getRadiusMetar = async (req, res) => {
+    const { icao } = req.params;
+    const { distance, unit = "mile" } = req.query;
+    let decode = req.query.decode === "true";
+    const newDistance = distanceConverter(unit, distance);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarWithinRadius(icao, newDistance, decode);
+    const response = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);
 
     if (response) {
         res.status(200).json({
@@ -74,4 +78,21 @@ module.exports.getRadiusMetar = async (req, res) => {
             data: response,
         });
     }
+};
+
+module.exports.getRadiusMetarWithLngLat = async (req, res) => {
+    const coordinates = req.params.coordinates.split(",");
+    const { distance, unit = "mile" } = req.query;
+    let decode = req.query.decode === "true";
+    const lng = Number(coordinates[0]) || null;
+    const lat = Number(coordinates[1]) || null;
+    const newDistance = distanceConverter(unit, distance);
+
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestMetarWithinRadius_LngLat(lng, lat, newDistance, decode);
+
+    res.status(200).json({
+        results: response.length,
+        data: response,
+    });
 };
