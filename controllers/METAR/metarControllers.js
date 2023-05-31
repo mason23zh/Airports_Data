@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
 
 require("dotenv").config({ path: "../../config.env" });
@@ -48,4 +49,29 @@ module.exports.getMetar = async (req, res) => {
         result: responseMetarArray.length,
         data: responseMetarArray,
     });
+};
+
+module.exports.getRadiusMetar = async (req, res) => {
+    let newDistance;
+    const { icao } = req.params;
+    const { distance, unit = "mile" } = req.query;
+    let decode = req.query.decode === "true";
+
+    if (unit.toLowerCase() === "mi" || "miles" || "mile") {
+        newDistance = Number(distance);
+    } else if (unit.toLowerCase() === "km" || "kilometers" || "kilometer") {
+        newDistance = Number(distance) * 0.621371;
+    } else if (unit.toLowerCase() === "nm" || "nauticalmile" || "nauticalmiles") {
+        newDistance = Number(distance) * 1.15078;
+    }
+
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestMetarWithinRadius(icao, newDistance, decode);
+
+    if (response) {
+        res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    }
 };

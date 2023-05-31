@@ -76,7 +76,7 @@ class MetarFeatures {
     // radius is in mile.
     async requestMetarWithinRadius(icao, distance, decode = false) {
         const originMetar = await this.requestMetarUsingICAO(icao);
-        if (!originMetar) return null;
+        if (!originMetar) return [];
         const station = originMetar.getStation();
         const [lon, lat] = station.location.geometry.coordinates;
 
@@ -95,7 +95,7 @@ class MetarFeatures {
                         this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
                     }
                 });
-                return this;
+                return this.metarArray;
             } else {
                 throw 1;
             }
@@ -108,7 +108,7 @@ class MetarFeatures {
                 },
             });
             if (!responseMetars) {
-                return null;
+                return [];
             }
             this.metarArray = [];
             responseMetars.map((metar) => {
@@ -118,7 +118,7 @@ class MetarFeatures {
                     this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
                 }
             });
-            return this;
+            return this.metarArray;
         }
     }
 
@@ -223,7 +223,7 @@ class MetarFeatures {
                 .limit(limit);
 
             if (!dbMetars || dbMetars.length === 0) {
-                return null;
+                return [];
             }
             this.metarArray = [];
             dbMetars.map((metar) => {
@@ -273,7 +273,7 @@ class MetarFeatures {
                 .sort({ category: sort })
                 .limit(limit);
             if (!dbMetar || dbMetar.length === 0) {
-                return null;
+                return [];
             }
             this.metarArray = [];
             dbMetar.map((metar) => {

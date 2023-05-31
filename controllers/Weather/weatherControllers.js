@@ -10,7 +10,6 @@ const BadRequestError = require("../../common/errors/BadRequestError");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
 const CustomError = require("../../common/errors/custom-error");
-const { decode } = require("jsonwebtoken");
 
 const rClient = new RedisClient();
 let repo;
@@ -74,12 +73,11 @@ module.exports.getMetarsWithin = async (req, res, next) => {
 
     if (checkICAO(icao.toUpperCase())) {
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-        const responseMetars = (await metarFeatures.requestMetarWithinRadius(icao, newDistance, false)).getMetarArray();
+        const responseMetars = await metarFeatures.requestMetarWithinRadius(icao, newDistance, false);
 
         if (responseMetars) {
             res.status(200).json({
-                status: "success",
-                result: responseMetars.length,
+                results: responseMetars.length,
                 data: responseMetars,
             });
         }
@@ -157,7 +155,6 @@ module.exports.getMetarUsingIATA = async (req, res, next) => {
 module.exports.getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
-    //const repo = await awcMetarRepository();
 
     const sortedMetars = await repo
         ?.search()

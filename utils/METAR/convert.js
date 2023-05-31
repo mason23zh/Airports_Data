@@ -24,7 +24,7 @@ module.exports.statuteMiToMeter = (sm) => {
 };
 
 module.exports.celsiusToFahrenheit = (celsius) => {
-    return Number((Number(celsius) * (9 / 5) + 32).toFixed());
+    return (Number(celsius) * (9 / 5) + 32).toFixed();
 };
 
 module.exports.meterToFeet = (meter) => {
