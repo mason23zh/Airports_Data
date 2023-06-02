@@ -46,7 +46,7 @@ module.exports.getMetar = async (req, res) => {
 
     res.status(200).json({
         status: "success",
-        result: responseMetarArray.length,
+        results: responseMetarArray.length,
         data: responseMetarArray,
     });
 };
