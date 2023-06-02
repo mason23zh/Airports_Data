@@ -61,6 +61,30 @@ describe("length convert", () => {
             expect(typeof Number(actual)).toBe("number");
         });
     });
+
+    describe("distanceConverter", () => {
+        it("Should return un-changed distance if unit is mile", () => {
+            const unit = "mi";
+            const distance = 15;
+            const expected = 15;
+            const actual = convert.distanceConverter(unit, distance);
+            expect(actual).toEqual(expected);
+        });
+        it("should convert km to mile if km is the distance unit", () => {
+            const unit = "km";
+            const distance = 10;
+            const expected = Number(distance * 0.621371);
+            const actual = convert.distanceConverter(unit, distance);
+            expect(actual).toEqual(expected);
+        });
+        it("should convert nm to mile if nm is the distance unit", () => {
+            const unit = "nm";
+            const distance = 10;
+            const expected = Number(distance * 1.15078);
+            const actual = convert.distanceConverter(unit, distance);
+            expect(actual).toEqual(expected);
+        });
+    });
 });
 
 describe("Temperature convert", () => {

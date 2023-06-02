@@ -7,6 +7,7 @@ const { awcMetarSchema } = require("../../redis/awcMetar");
 const MetarFeatures = require("./MetarFeatures");
 const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
+const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
 
 let repo;
@@ -49,18 +50,6 @@ module.exports.getMetar = async (req, res) => {
         results: responseMetarArray.length,
         data: responseMetarArray,
     });
-};
-
-const distanceConverter = (unit, distance) => {
-    let newDistance;
-    if (unit.toLowerCase() === "mi" || "miles" || "mile") {
-        newDistance = Number(distance);
-    } else if (unit.toLowerCase() === "km" || "kilometers" || "kilometer") {
-        newDistance = Number(distance) * 0.621371;
-    } else if (unit.toLowerCase() === "nm" || "nauticalmile" || "nauticalmiles") {
-        newDistance = Number(distance) * 1.15078;
-    }
-    return newDistance;
 };
 
 module.exports.getRadiusMetar = async (req, res) => {

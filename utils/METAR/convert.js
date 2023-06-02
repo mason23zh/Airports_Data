@@ -40,3 +40,39 @@ module.exports.calculateHumidity = (temperature, dewpoint) => {
     const humidity = 100 * 10 ** exp;
     return humidity.toFixed();
 };
+
+module.exports.distanceConverter = (distanceUnit, distance) => {
+    let newDistance;
+    switch (distanceUnit.toLowerCase()) {
+        case "mi":
+            newDistance = Number(distance);
+            break;
+        case "mile":
+            newDistance = Number(distance);
+            break;
+        case "miles":
+            newDistance = Number(distance);
+            break;
+        case "km":
+            newDistance = Number(distance) * 0.621371;
+            break;
+        case "kilometers":
+            newDistance = Number(distance) * 0.621371;
+            break;
+        case "kilometer":
+            newDistance = Number(distance) * 0.621371;
+            break;
+        case "nm":
+            newDistance = Number(distance) * 1.15078;
+            break;
+        case "nauticalmile":
+            newDistance = Number(distance) * 1.15078;
+            break;
+        case "nauticalmiles":
+            newDistance = Number(distance) * 1.15078;
+            break;
+        default:
+            newDistance = Number(distance);
+    }
+    return newDistance;
+};
