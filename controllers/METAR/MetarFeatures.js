@@ -73,6 +73,41 @@ class MetarFeatures {
         }
     }
 
+    async requestNearestMetar_icao(icao, decode = false) {
+        try {
+            const originMetar = await this.requestMetarUsingICAO(icao);
+            if (!originMetar) return [];
+            const station = originMetar.getStation();
+            const [lon, lat] = station.location.geometry.coordinates;
+
+            const responseMetars = await AwcWeatherMetarModel.find({
+                location: {
+                    $near: {
+                        $geometry: {
+                            type: "Point",
+                            coordinates: [lon, lat],
+                        },
+                        $maxDistance: 200000,
+                        $minDistance: 10,
+                    },
+                },
+            });
+            if (!responseMetars || responseMetars.length === 0) {
+                return this.metarArray;
+            }
+
+            if (!decode) {
+                this.metarArray.push(responseMetars[0].raw_text);
+                return this.metarArray;
+            } else {
+                this.metarArray.push(this.convertGeneralResponseMetar(responseMetars[0].toJSON()));
+                return this.metarArray;
+            }
+        } catch (e) {
+            return [];
+        }
+    }
+
     async requestMetarWithinRadius_LngLat(lon, lat, distance, decode = false) {
         try {
             const responseMetar = await this.repo

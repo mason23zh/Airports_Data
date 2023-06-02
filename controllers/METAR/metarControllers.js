@@ -103,3 +103,21 @@ module.exports.getRadiusMetarWithLngLat = async (req, res) => {
         });
     }
 };
+
+module.exports.getNearestMetar_icao = async (req, res) => {
+    const { icao } = req.params;
+    let decode = req.query.decode === "true";
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestNearestMetar_icao(icao, decode);
+    if (response.length !== 0) {
+        res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        res.status(404).json({
+            results: response.length,
+            data: response,
+        });
+    }
+};
