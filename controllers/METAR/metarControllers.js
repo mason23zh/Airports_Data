@@ -121,3 +121,23 @@ module.exports.getNearestMetar_icao = async (req, res) => {
         });
     }
 };
+
+module.exports.getNearestMetar_LngLat = async (req, res) => {
+    const { coordinates } = req.params;
+    let decode = req.query.decode === "true";
+    const [lon, lat] = coordinates.split(",");
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    const response = await metarFeatures.requestNearestMetar_LngLat(lon, lat, decode);
+
+    if (response.length !== 0) {
+        res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        res.status(404).json({
+            results: response.length,
+            data: response,
+        });
+    }
+};

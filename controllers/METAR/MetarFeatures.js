@@ -73,13 +73,9 @@ class MetarFeatures {
         }
     }
 
-    async requestNearestMetar_icao(icao, decode = false) {
+    async requestNearestMetar_LngLat(lon, lat, decode = false) {
         try {
-            const originMetar = await this.requestMetarUsingICAO(icao);
-            if (!originMetar) return [];
-            const station = originMetar.getStation();
-            const [lon, lat] = station.location.geometry.coordinates;
-
+            if (!lon || !lat) return [];
             const responseMetars = await AwcWeatherMetarModel.find({
                 location: {
                     $near: {
@@ -95,7 +91,6 @@ class MetarFeatures {
             if (!responseMetars || responseMetars.length === 0) {
                 return this.metarArray;
             }
-
             if (!decode) {
                 this.metarArray.push(responseMetars[0].raw_text);
                 return this.metarArray;
@@ -108,8 +103,23 @@ class MetarFeatures {
         }
     }
 
+    async requestNearestMetar_icao(icao, decode = false) {
+        try {
+            if (!icao) return [];
+            const originMetar = await this.requestMetarUsingICAO(icao);
+            if (!originMetar) return [];
+            const station = originMetar.getStation();
+            const [lon, lat] = station.location.geometry.coordinates;
+
+            return await this.requestNearestMetar_LngLat(lon, lat, decode);
+        } catch (e) {
+            return [];
+        }
+    }
+
     async requestMetarWithinRadius_LngLat(lon, lat, distance, decode = false) {
         try {
+            if (!lon || !lat || !distance) return [];
             const responseMetar = await this.repo
                 .search()
                 .where("location_redis")
