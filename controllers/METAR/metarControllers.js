@@ -45,11 +45,17 @@ module.exports.getMetar = async (req, res) => {
         })
     );
 
-    res.status(200).json({
-        status: "success",
-        results: responseMetarArray.length,
-        data: responseMetarArray,
-    });
+    if (responseMetarArray.length > 0) {
+        res.status(200).json({
+            results: responseMetarArray.length,
+            data: responseMetarArray,
+        });
+    } else {
+        res.status(404).json({
+            results: responseMetarArray.length,
+            data: responseMetarArray,
+        });
+    }
 };
 
 module.exports.getRadiusMetar = async (req, res) => {
@@ -61,8 +67,13 @@ module.exports.getRadiusMetar = async (req, res) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);
 
-    if (response) {
+    if (response.length > 0) {
         res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        res.status(404).json({
             results: response.length,
             data: response,
         });
@@ -80,8 +91,15 @@ module.exports.getRadiusMetarWithLngLat = async (req, res) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarWithinRadius_LngLat(lng, lat, newDistance, decode);
 
-    res.status(200).json({
-        results: response.length,
-        data: response,
-    });
+    if (response.length > 0) {
+        res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        res.status(404).json({
+            results: response.length,
+            data: response,
+        });
+    }
 };

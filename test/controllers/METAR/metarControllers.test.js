@@ -1,10 +1,9 @@
-const request = require("supertest");
-const app = require("../../../app");
 const httpMocks = require("node-mocks-http");
 const { getMetar, getRadiusMetar, getRadiusMetarWithLngLat } = require("../../../controllers/METAR/metarControllers");
+const { distanceConverter } = require("../../../utils/METAR/convert");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
-
 jest.mock("../../../controllers/METAR/MetarFeatures");
+jest.mock("../../../utils/METAR/convert");
 
 const mockRequestMetarUsingICAO = jest.fn(function () {
     return this;
@@ -29,6 +28,7 @@ beforeEach(() => {
     mockGetRawMetar.mockClear();
     mockGetDecodedMetar.mockClear();
     mockRequestMetarUsingICAO.mockClear();
+    distanceConverter.mockClear();
 });
 describe("Test getMetar controller", () => {
     it("check if getRawMetar function being called if decode flag is false", async () => {
@@ -94,15 +94,17 @@ describe("Test getRadiusMetar controller", () => {
 });
 
 describe("Test getRadiusMetarWithLngLat controller", () => {
-    it("Check if requestMetarWithinRadius_LngLat function been called", async () => {
+    it("Check if distanceConverter and requestMetarWithinRadius_LngLat functions been called", async () => {
         const request = httpMocks.createRequest({
             params: { coordinates: "40.1,30.5" },
             query: { distance: 10, unit: "mile", decode: "false" },
         });
 
         const res = httpMocks.createResponse();
+        distanceConverter.mockImplementation(() => {});
 
         await getRadiusMetarWithLngLat(request, res);
+        expect(distanceConverter).toHaveBeenCalledTimes(1);
         expect(MetarFeatures).toHaveBeenCalledTimes(1);
         expect(mockRequestMetarWithinRadius_LngLat).toHaveBeenCalledTimes(1);
     });
