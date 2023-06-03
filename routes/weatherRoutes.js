@@ -31,7 +31,7 @@ router.route("/search-weather/icao/:ICAO").get(getMetarUsingICAO);
 router.route("/search-weather/iata/:IATA").get(getMetarUsingIATA);
 router.route("/search-weather/name/:name").get(getMetarUsingAirportName);
 router.route("/search-weather/generic/:data").get(getMetarUsingGenericInput);
-router.route("/search-weather/weather-within").get(getMetarsWithin);
+router.route("/search-weather/weather-within/:icao").get(getMetarsWithin);
 
 //country
 router.route("/country-weather/:country").get(getWeatherForCountry);

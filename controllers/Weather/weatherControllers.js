@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
 require("dotenv").config({ path: "../../config.env" });
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
@@ -10,6 +9,7 @@ const BadRequestError = require("../../common/errors/BadRequestError");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
 const CustomError = require("../../common/errors/custom-error");
+const { distanceConverter } = require("../../utils/METAR/convert");
 
 const rClient = new RedisClient();
 let repo;
@@ -34,7 +34,7 @@ module.exports.getAwcMetarUsingGenericInput = async (data) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         const responseMetars = await metarFeatures.requestMetarUsingGenericInput(data);
-        if (responseMetars) {
+        if (responseMetars && responseMetars.length > 0) {
             return responseMetars;
         } else {
             return null;
@@ -48,7 +48,7 @@ module.exports.getAwcMetarUsingAirportName = async (name) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         const responseMetars = await metarFeatures.requestMetarUsingAirportName(name);
-        if (responseMetars) {
+        if (responseMetars && responseMetars.length > 0) {
             return responseMetars;
         } else {
             return null;
@@ -59,24 +59,22 @@ module.exports.getAwcMetarUsingAirportName = async (name) => {
 };
 
 module.exports.getMetarsWithin = async (req, res, next) => {
-    let newDistance;
+    const { icao } = req.params;
     //unit: miles, meters, kilometers
-    const { icao, distance, unit } = req.query;
-
-    if (unit.toLowerCase() === "mi" || "miles" || "mile") {
-        newDistance = Number(distance);
-    } else if (unit.toLowerCase() === "km" || "kilometers" || "kilometer") {
-        newDistance = Number(distance) * 0.621371;
-    } else if (unit.toLowerCase() === "nm" || "nauticalmile" || "nauticalmiles") {
-        newDistance = Number(distance) * 1.15078;
-    }
+    const { distance, unit } = req.query;
+    const newDistance = distanceConverter(unit, distance);
 
     if (checkICAO(icao.toUpperCase())) {
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-        const responseMetars = await metarFeatures.requestMetarWithinRadius(icao, newDistance, false);
+        const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, false);
 
-        if (responseMetars) {
+        if (responseMetars && responseMetars.length > 0) {
             res.status(200).json({
+                results: responseMetars.length,
+                data: responseMetars,
+            });
+        } else {
+            res.status(404).json({
                 results: responseMetars.length,
                 data: responseMetars,
             });

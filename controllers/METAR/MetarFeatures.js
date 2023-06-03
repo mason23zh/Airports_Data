@@ -199,7 +199,8 @@ class MetarFeatures {
                 ],
             });
             if (!dbMetars) {
-                return null;
+                this.metarArray = [];
+                return this.metarArray;
             }
 
             this.metarArray = [];
@@ -229,7 +230,8 @@ class MetarFeatures {
         } catch (e) {
             const dbMetars = await this.model.find({ name: { $regex: `${name}`, $options: "i" } });
             if (!dbMetars) {
-                return null;
+                this.metarArray = [];
+                return this.metarArray;
             }
 
             this.metarArray = [];
