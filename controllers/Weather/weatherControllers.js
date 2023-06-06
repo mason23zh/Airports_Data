@@ -18,7 +18,7 @@ let repo;
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
-module.exports.getAwcMetarUsingICAO = async (icao, decode) => {
+const getAwcMetarUsingICAO = async (icao, decode) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         const metar = await metarFeatures.requestMetarUsingICAO(icao);
@@ -36,7 +36,7 @@ module.exports.getAwcMetarUsingICAO = async (icao, decode) => {
     }
 };
 
-module.exports.getAwcMetarUsingGenericInput = async (data, decode) => {
+const getAwcMetarUsingGenericInput = async (data, decode) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         return await metarFeatures.requestMetarUsingGenericInput(data, decode);
@@ -45,7 +45,7 @@ module.exports.getAwcMetarUsingGenericInput = async (data, decode) => {
     }
 };
 
-module.exports.getAwcMetarUsingAirportName = async (name, decode) => {
+const getAwcMetarUsingAirportName = async (name, decode) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         return await metarFeatures.requestMetarUsingAirportName(name, decode);
@@ -54,7 +54,7 @@ module.exports.getAwcMetarUsingAirportName = async (name, decode) => {
     }
 };
 
-module.exports.getMetarsWithin = async (req, res, next) => {
+const getMetarsWithin = async (req, res, next) => {
     const { icao } = req.params;
     //unit: miles, meters, kilometers
     const { distance, unit } = req.query;
@@ -77,16 +77,16 @@ module.exports.getMetarsWithin = async (req, res, next) => {
             });
         }
     } else {
-        throw new NotFoundError("Please provide correct ICAO code.");
+        throw new NotFoundError("Please provide correct ICAO code");
     }
 };
 
-module.exports.getMetarUsingGenericInput = async (req, res, next) => {
+const getMetarUsingGenericInput = async (req, res, next) => {
     const { data } = req.params;
     let decode = req.query.decode === "true";
 
     if (checkICAO(data)) {
-        const responseMetar = await this.getAwcMetarUsingICAO(data, decode);
+        const responseMetar = await getAwcMetarUsingICAO(data, decode);
         if (responseMetar) {
             return res.status(200).json({
                 results: 1,
@@ -99,7 +99,7 @@ module.exports.getMetarUsingGenericInput = async (req, res, next) => {
             });
         }
     } else {
-        const responseMetar = await this.getAwcMetarUsingGenericInput(data, decode);
+        const responseMetar = await getAwcMetarUsingGenericInput(data, decode);
         if (responseMetar && responseMetar.length > 0) {
             return res.status(200).json({
                 results: responseMetar.length,
@@ -117,7 +117,7 @@ module.exports.getMetarUsingGenericInput = async (req, res, next) => {
 module.exports.getMetarUsingAirportName = async (req, res, next) => {
     const { name } = req.params;
     let decode = req.query.decode === "true";
-    const responseMetar = await this.getAwcMetarUsingAirportName(name, decode);
+    const responseMetar = await getAwcMetarUsingAirportName(name, decode);
     if (responseMetar && responseMetar.length > 0) {
         res.status(200).json({
             results: responseMetar.length,
@@ -136,7 +136,7 @@ module.exports.getMetarUsingICAO = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     if (checkICAO(ICAO)) {
-        const responseMetar = await this.getAwcMetarUsingICAO(ICAO, decode);
+        const responseMetar = await getAwcMetarUsingICAO(ICAO, decode);
         if (responseMetar) {
             res.status(200).json({
                 results: 1,
@@ -167,7 +167,7 @@ module.exports.getMetarUsingIATA = async (req, res, next) => {
 
     const airportICAO_Code = airportICAO[0].ident;
 
-    const responseMetar = await this.getAwcMetarUsingICAO(airportICAO_Code.toUpperCase());
+    const responseMetar = await getAwcMetarUsingICAO(airportICAO_Code.toUpperCase());
 
     res.status(200).json({
         status: "success",
@@ -529,4 +529,12 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
         result: response.length,
         data: response,
     });
+};
+
+module.exports = {
+    getAwcMetarUsingICAO,
+    getAwcMetarUsingGenericInput,
+    getAwcMetarUsingAirportName,
+    getMetarsWithin,
+    getMetarUsingGenericInput,
 };

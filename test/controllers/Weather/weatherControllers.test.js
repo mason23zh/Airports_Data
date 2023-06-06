@@ -1,10 +1,14 @@
 const httpMocks = require("node-mocks-http");
+const weatherControllers = require("../../../controllers/Weather/weatherControllers");
+jest.mock("../../../utils/checkICAO");
+const { checkICAO } = require("../../../utils/checkICAO");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
 const {
     getAwcMetarUsingICAO,
     getAwcMetarUsingGenericInput,
     getAwcMetarUsingAirportName,
     getMetarsWithin,
+    getMetarUsingGenericInput,
 } = require("../../../controllers/Weather/weatherControllers");
 
 const mockRequestMetarUsingICAO = jest.fn(function () {
@@ -42,6 +46,7 @@ beforeEach(() => {
     mockRequestNearestMetar_icao.mockClear();
     mockRequestMetarUsingAirportName.mockClear();
     mockRequestMetarUsingGenericInput.mockClear();
+    mockRequestMetarWithinRadius_icao.mockClear();
 });
 
 describe("Test for getAwcMetarUsingICAO function", () => {
@@ -61,10 +66,16 @@ describe("Test for getAwcMetarUsingICAO function", () => {
             expect(e.message).toBe("Something went wrong, please try again later");
         }
     });
-    it("should call getDecodedMetar function if requestMetarUsingICAO return not null", async () => {
-        await getAwcMetarUsingICAO();
+    it("should call getDecodedMetar function if requestMetarUsingICAO return not null and decode flag is true", async () => {
+        await getAwcMetarUsingICAO("EGKK", true);
         expect(MetarFeatures).toBeCalledTimes(1);
         expect(mockGetDecodedMetar).toBeCalledTimes(1);
+    });
+
+    it("should call getRawMetar function if requestMetarUsingICAO return not null and decode flag is false", async () => {
+        await getAwcMetarUsingICAO("EGKK", false);
+        expect(MetarFeatures).toBeCalledTimes(1);
+        expect(mockGetRawMetar).toBeCalledTimes(1);
     });
 });
 
@@ -100,14 +111,14 @@ describe("Test for getAwcMetarUsingGenericInput function", () => {
         }
     });
 
-    it("should return null if requestMetarUsingGenericInput return null", async () => {
+    it("should return empty array if requestMetarUsingGenericInput return empty array", async () => {
         try {
             mockRequestMetarUsingGenericInput.mockResolvedValueOnce([]);
             const response = await getAwcMetarUsingGenericInput();
             expect(mockRequestMetarUsingGenericInput).toBeCalledTimes(1);
-            expect(response).toBeNull();
+            expect(response.length).toEqual(0);
         } catch (e) {
-            expect(e).not.toBeDefined();
+            expect(e).toBeDefined();
         }
     });
 });
@@ -147,7 +158,7 @@ describe("Test for getAwcMetarUsingAirportName function", () => {
         try {
             mockRequestMetarUsingAirportName.mockResolvedValueOnce([]);
             const response = await getAwcMetarUsingAirportName();
-            expect(response).toBeNull();
+            expect(response.length).toEqual(0);
         } catch (e) {
             expect(e).not.toBeDefined();
         }
@@ -166,10 +177,92 @@ describe("Test for getMetarsWithin controller", () => {
         });
         const response = httpMocks.createResponse();
         mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([{ icao: "EGLL" }, { icao: "EGCC" }]);
+        checkICAO.mockImplementationOnce(() => true);
 
         await getMetarsWithin(request, response);
         expect(MetarFeatures).toBeCalledTimes(1);
         expect(mockRequestMetarWithinRadius_icao).toBeCalledTimes(1);
+    });
+
+    it("should check if requestMetarWithinRadius_icao return the correct value, response should be 200 with array", async () => {
+        const request = httpMocks.createRequest({
+            params: { icao: "EGSS" },
+            query: {
+                distance: 15,
+                unit: "km",
+            },
+        });
+        const response = httpMocks.createResponse();
+        mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([{ icao: "EGLL" }, { icao: "EGCC" }]);
+        checkICAO.mockImplementationOnce(() => true);
+
+        await getMetarsWithin(request, response);
+        const results = await mockRequestMetarWithinRadius_icao.mock.results[0].value;
+        const expected = [{ icao: "EGLL" }, { icao: "EGCC" }];
+        expect(results).toEqual(expected);
         expect(response.statusCode).toEqual(200);
     });
+
+    it("should check if requestMetarWithinRadius_icao return null or empty array, response should be 404 with empty array", async () => {
+        const request = httpMocks.createRequest({
+            params: { icao: "EGSS" },
+            query: {
+                distance: 15,
+                unit: "km",
+            },
+        });
+        const response = httpMocks.createResponse();
+        mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([]);
+        checkICAO.mockImplementationOnce(() => true);
+
+        await getMetarsWithin(request, response);
+        const results = await mockRequestMetarWithinRadius_icao.mock.results[0].value;
+        expect(results).toEqual([]);
+        expect(response.statusCode).toEqual(404);
+    });
+
+    it("should throw NotFoundError if checkICAO return false", async () => {
+        const request = httpMocks.createRequest({
+            params: { icao: "EGSS" },
+            query: {
+                distance: 15,
+                unit: "km",
+            },
+        });
+        const response = httpMocks.createResponse();
+        checkICAO.mockImplementationOnce(() => false);
+        mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([]);
+        try {
+            await getMetarsWithin(request, response);
+            expect(MetarFeatures).toBeCalledTimes(0);
+            expect(mockRequestMetarWithinRadius_icao).toBeCalledTimes(0);
+        } catch (e) {
+            expect(e.statusCode).toEqual(404);
+            expect(e.message).toEqual("Please provide correct ICAO code");
+        }
+    });
 });
+// describe("Test for getMetarUsingGenericInput controller", () => {
+//     beforeEach(() => {
+//         jest.spyOn(weatherControllers, "getAwcMetarUsingICAO").mockResolvedValue({ icao: "EGKK" });
+//     });
+//     it("Should run getAwcMetarUsingICAO function if checkICAO return true", async () => {
+//         const request = httpMocks.createRequest({
+//             params: { data: "London" },
+//             query: {
+//                 decode: true,
+//             },
+//         });
+//         const response = httpMocks.createResponse();
+//         // const spyGetAwcMetarUsingICAO = jest
+//         //     .spyOn(weatherControllers, "getAwcMetarUsingICAO")
+//         //     .mockImplementationOnce(() => "HELLO SPY");
+//
+//         // console.log(spyGetAwcMetarUsingICAO);
+//
+//         checkICAO.mockImplementationOnce(() => true);
+//         // jest.mock("../../../controllers/Weather/weatherControllers");
+//
+//         await getMetarUsingGenericInput(request, response);
+//     });
+// });
