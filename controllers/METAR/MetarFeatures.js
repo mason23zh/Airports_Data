@@ -221,7 +221,11 @@ class MetarFeatures {
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
                 redisMetar.map((metar) => {
-                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    if (!decode) {
+                        this.metarArray.push(metar.raw_text);
+                    } else {
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    }
                 });
                 return this.metarArray;
             } else {

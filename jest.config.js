@@ -9,6 +9,7 @@ module.exports = {
     moduleDirectories: ["node_modules"],
     verbose: true,
     forceExit: true,
+    globalTeardown: "./test-teardown-globals.js",
     // All imported modules in your tests should be mocked automatically
     // automock: false,
 

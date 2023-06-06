@@ -24,7 +24,9 @@
     "indent": [
       "error",
       4,
-      {"SwitchCase": 1}
+      {
+        "SwitchCase": 1
+      }
     ],
     "prettier/prettier": "error",
     "spaced-comment": "off",

@@ -18,24 +18,16 @@ let repo;
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
-module.exports.getAwcMetarUsingICAO = async (icao) => {
+module.exports.getAwcMetarUsingICAO = async (icao, decode) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
         const metar = await metarFeatures.requestMetarUsingICAO(icao);
         if (metar) {
-            return metar.getDecodedMetar();
-        }
-    } catch (e) {
-        throw new CustomError("Something went wrong, please try again later", 500);
-    }
-};
-
-module.exports.getAwcMetarUsingGenericInput = async (data) => {
-    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    try {
-        const responseMetars = await metarFeatures.requestMetarUsingGenericInput(data);
-        if (responseMetars && responseMetars.length > 0) {
-            return responseMetars;
+            if (decode === true) {
+                return metar.getDecodedMetar();
+            } else {
+                return metar.getRawMetar();
+            }
         } else {
             return null;
         }
@@ -44,15 +36,19 @@ module.exports.getAwcMetarUsingGenericInput = async (data) => {
     }
 };
 
-module.exports.getAwcMetarUsingAirportName = async (name) => {
+module.exports.getAwcMetarUsingGenericInput = async (data, decode) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     try {
-        const responseMetars = await metarFeatures.requestMetarUsingAirportName(name);
-        if (responseMetars && responseMetars.length > 0) {
-            return responseMetars;
-        } else {
-            return null;
-        }
+        return await metarFeatures.requestMetarUsingGenericInput(data, decode);
+    } catch (e) {
+        throw new CustomError("Something went wrong, please try again later", 500);
+    }
+};
+
+module.exports.getAwcMetarUsingAirportName = async (name, decode) => {
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    try {
+        return await metarFeatures.requestMetarUsingAirportName(name, decode);
     } catch (e) {
         throw new CustomError("Something went wrong, please try again later", 500);
     }
@@ -62,11 +58,12 @@ module.exports.getMetarsWithin = async (req, res, next) => {
     const { icao } = req.params;
     //unit: miles, meters, kilometers
     const { distance, unit } = req.query;
+    let decode = req.query.decode === "true";
     const newDistance = distanceConverter(unit, distance);
 
     if (checkICAO(icao.toUpperCase())) {
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-        const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, false);
+        const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);
 
         if (responseMetars && responseMetars.length > 0) {
             res.status(200).json({
@@ -86,41 +83,69 @@ module.exports.getMetarsWithin = async (req, res, next) => {
 
 module.exports.getMetarUsingGenericInput = async (req, res, next) => {
     const { data } = req.params;
+    let decode = req.query.decode === "true";
 
     if (checkICAO(data)) {
-        const responseMetar = await this.getAwcMetarUsingICAO(data);
-        res.status(200).json({
-            status: "success",
-            data: responseMetar,
-        });
+        const responseMetar = await this.getAwcMetarUsingICAO(data, decode);
+        if (responseMetar) {
+            return res.status(200).json({
+                results: 1,
+                data: [responseMetar],
+            });
+        } else {
+            return res.status(404).json({
+                results: 0,
+                data: [],
+            });
+        }
+    } else {
+        const responseMetar = await this.getAwcMetarUsingGenericInput(data, decode);
+        if (responseMetar && responseMetar.length > 0) {
+            return res.status(200).json({
+                results: responseMetar.length,
+                data: responseMetar,
+            });
+        } else {
+            return res.status(404).json({
+                results: responseMetar.length,
+                data: responseMetar,
+            });
+        }
     }
-    const responseMetar = await this.getAwcMetarUsingGenericInput(data);
-    res.status(200).json({
-        status: "success",
-        results: responseMetar.length,
-        data: responseMetar,
-    });
 };
 
 module.exports.getMetarUsingAirportName = async (req, res, next) => {
     const { name } = req.params;
-    const responseMetar = await this.getAwcMetarUsingAirportName(name);
-
-    res.status(200).json({
-        status: "success",
-        results: responseMetar.length,
-        data: responseMetar,
-    });
+    let decode = req.query.decode === "true";
+    const responseMetar = await this.getAwcMetarUsingAirportName(name, decode);
+    if (responseMetar && responseMetar.length > 0) {
+        res.status(200).json({
+            results: responseMetar.length,
+            data: responseMetar,
+        });
+    } else {
+        res.status(404).json({
+            results: responseMetar.length,
+            data: responseMetar,
+        });
+    }
 };
 
 module.exports.getMetarUsingICAO = async (req, res, next) => {
     const { ICAO } = req.params;
+    let decode = req.query.decode === "true";
+
     if (checkICAO(ICAO)) {
-        const responseMetar = await this.getAwcMetarUsingICAO(ICAO);
-        if (responseMetar && responseMetar.length !== 0) {
+        const responseMetar = await this.getAwcMetarUsingICAO(ICAO, decode);
+        if (responseMetar) {
             res.status(200).json({
-                status: "success",
-                data: responseMetar,
+                results: 1,
+                data: [responseMetar],
+            });
+        } else {
+            res.status(404).json({
+                results: 0,
+                data: [],
             });
         }
     } else {

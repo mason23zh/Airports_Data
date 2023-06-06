@@ -2,9 +2,9 @@ const httpMocks = require("node-mocks-http");
 const {
     getMetar,
     getRadiusMetar,
-    getRadiusMetarWithLngLat,
     getNearestMetar_icao,
     getNearestMetar_LngLat,
+    getRadiusMetarWithLngLat,
 } = require("../../../controllers/METAR/metarControllers");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
 
@@ -17,13 +17,6 @@ const mockRequestMetarWithinRadius_icao = jest.fn().mockResolvedValue([{ icao: "
 const mockRequestMetarWithinRadius_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }, { icao: "CYUL" }]);
 const mockRequestNearestMetar_icao = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
 const mockRequestNearestMetar_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
-const mockDistanceConverter = jest.fn();
-
-jest.mock("../../../utils/METAR/convert", () => {
-    jest.fn().mockImplementation(() => ({
-        distanceConverter: mockDistanceConverter,
-    }));
-});
 
 jest.mock("../../../controllers/METAR/MetarFeatures", () =>
     jest.fn().mockImplementation(() => ({
@@ -44,7 +37,6 @@ beforeEach(() => {
     mockRequestMetarUsingICAO.mockClear();
     mockRequestNearestMetar_LngLat.mockClear();
     mockRequestNearestMetar_icao.mockClear();
-    mockDistanceConverter.mockClear();
 });
 
 describe("Test getMetar controller", () => {
@@ -113,28 +105,27 @@ describe("Test getRadiusMetar controller", () => {
     });
 });
 
-// describe("Test getRadiusMetarWithLngLat controller", () => {
-//     it("Check if distanceConverter and requestMetarWithinRadius_LngLat functions been called", async () => {
-//         const request = httpMocks.createRequest({
-//             params: { coordinates: "40.1,30.5" },
-//             query: { distance: 10, unit: "mile", decode: "false" },
-//         });
-//
-//         const response = httpMocks.createResponse();
-//         mockDistanceConverter.mockImplementation(() => {});
-//
-//         await getRadiusMetarWithLngLat(request, response);
-//         let data = response._getJSONData();
-//         expect(mockDistanceConverter).toHaveBeenCalledTimes(1);
-//         expect(MetarFeatures).toHaveBeenCalledTimes(1);
-//         expect(mockRequestMetarWithinRadius_LngLat).toHaveBeenCalledTimes(1);
-//         expect(data.results).toBeDefined();
-//         expect(data.results).toEqual(2);
-//         expect(data.data).toBeDefined();
-//         expect(data.data[0].icao).toEqual("CYWG");
-//         expect(data.data[1].icao).toEqual("CYUL");
-//     });
-// });
+describe("Test getRadiusMetarWithLngLat controller", () => {
+    it("Check if distanceConverter and requestMetarWithinRadius_LngLat functions been called", async () => {
+        const request = httpMocks.createRequest({
+            params: { coordinates: "40.1,30.5" },
+            query: { distance: 10, unit: "mile", decode: "false" },
+        });
+
+        const response = httpMocks.createResponse();
+
+        await getRadiusMetarWithLngLat(request, response);
+        let data = response._getJSONData();
+        expect(MetarFeatures).toHaveBeenCalledTimes(1);
+        expect(mockRequestMetarWithinRadius_LngLat).toHaveBeenCalledTimes(1);
+        expect(data.results).toBeDefined();
+        expect(data.results).toEqual(2);
+        expect(data.data).toBeDefined();
+        expect(data.data[0].icao).toEqual("CYWG");
+        expect(data.data[1].icao).toEqual("CYUL");
+        // mockDistanceConverter.mockRestore();
+    });
+});
 
 describe("Test getNearestMetar_icao controller", () => {
     it("Check if requestNearestMetar_icao function been called", async () => {

@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
 
 require("dotenv").config({ path: "../../config.env" });
@@ -63,7 +62,6 @@ module.exports.getRadiusMetar = async (req, res) => {
     const { distance, unit = "mile" } = req.query;
     let decode = req.query.decode === "true";
     const newDistance = distanceConverter(unit, distance);
-    console.log(newDistance);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);

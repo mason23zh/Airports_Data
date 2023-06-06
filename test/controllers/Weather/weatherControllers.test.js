@@ -1,11 +1,4 @@
 const httpMocks = require("node-mocks-http");
-// const {
-//     getMetar,
-//     getRadiusMetar,
-//     getRadiusMetarWithLngLat,
-//     getNearestMetar_icao,
-//     getNearestMetar_LngLat,
-// } = require("../../../controllers/METAR/metarControllers");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
 const {
     getAwcMetarUsingICAO,
@@ -13,9 +6,7 @@ const {
     getAwcMetarUsingAirportName,
     getMetarsWithin,
 } = require("../../../controllers/Weather/weatherControllers");
-// const { checkICAO } = require("../../../utils/checkICAO");
-const mockCheckICAO = jest.fn();
-// const mockDistanceConverter = jest.fn();
+
 const mockRequestMetarUsingICAO = jest.fn(function () {
     return this;
 });
@@ -27,18 +18,6 @@ const mockRequestNearestMetar_icao = jest.fn().mockResolvedValue([{ icao: "CYWG"
 const mockRequestNearestMetar_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
 const mockRequestMetarUsingAirportName = jest.fn();
 const mockRequestMetarUsingGenericInput = jest.fn();
-
-// jest.mock("../../../utils/METAR/convert", () => {
-//     jest.fn().mockImplementation(() => ({
-//         distanceConverter: mockDistanceConverter,
-//     }));
-// });
-
-jest.mock("../../../utils/checkICAO", () =>
-    jest.fn().mockImplementation(() => ({
-        checkICAO: mockCheckICAO,
-    }))
-);
 
 jest.mock("../../../controllers/METAR/MetarFeatures", () =>
     jest.fn().mockImplementation(() => ({
@@ -63,21 +42,7 @@ beforeEach(() => {
     mockRequestNearestMetar_icao.mockClear();
     mockRequestMetarUsingAirportName.mockClear();
     mockRequestMetarUsingGenericInput.mockClear();
-    mockCheckICAO.mockClear();
-    //mockDistanceConverter.mockClear();
 });
-
-// afterEach(() => {
-//     MetarFeatures.mockClear();
-//     mockGetRawMetar.mockClear();
-//     mockGetDecodedMetar.mockClear();
-//     mockRequestMetarUsingICAO.mockClear();
-//     mockRequestNearestMetar_LngLat.mockClear();
-//     mockRequestNearestMetar_icao.mockClear();
-//     mockRequestMetarUsingAirportName.mockClear();
-//     mockRequestMetarUsingGenericInput.mockClear();
-//     mockCheckICAO.mockClear();
-// });
 
 describe("Test for getAwcMetarUsingICAO function", () => {
     it("requestMetarUsingICAO function should be called", async () => {
@@ -189,24 +154,22 @@ describe("Test for getAwcMetarUsingAirportName function", () => {
     });
 });
 
-// describe("Test for getMetarsWithin controller", () => {
-//     it("should check if checkICAO return true, MetarFeature and requestMetarWithinRadius_icao function will be called", async () => {
-//         const request = httpMocks.createRequest({
-//             params: { icao: "EGSS" },
-//             query: {
-//                 distance: 15,
-//                 unit: "km",
-//             },
-//         });
-//         const response = httpMocks.createResponse();
-//         mockCheckICAO.mockImplementationOnce((icao) => true);
-//         mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([{ icao: "EGLL" }, { icao: "EGCC" }]);
-//
-//         await getMetarsWithin(request, response);
-//         //expect(mockDistanceConverter).toBeCalledTimes(1);
-//         expect(mockCheckICAO).toBeCalledTimes(1);
-//         expect(MetarFeatures).toBeCalledTimes(1);
-//         expect(mockRequestMetarWithinRadius_icao).toBeCalledTimes(1);
-//         expect(response.statusCode).toEqual(200);
-//     });
-// });
+// mock checkICAO would cause some issue, this test is not complete.
+describe("Test for getMetarsWithin controller", () => {
+    it("should check if checkICAO return true, MetarFeature and requestMetarWithinRadius_icao function will be called", async () => {
+        const request = httpMocks.createRequest({
+            params: { icao: "EGSS" },
+            query: {
+                distance: 15,
+                unit: "km",
+            },
+        });
+        const response = httpMocks.createResponse();
+        mockRequestMetarWithinRadius_icao.mockResolvedValueOnce([{ icao: "EGLL" }, { icao: "EGCC" }]);
+
+        await getMetarsWithin(request, response);
+        expect(MetarFeatures).toBeCalledTimes(1);
+        expect(mockRequestMetarWithinRadius_icao).toBeCalledTimes(1);
+        expect(response.statusCode).toEqual(200);
+    });
+});
