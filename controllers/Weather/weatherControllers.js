@@ -8,8 +8,12 @@ const { Airports } = require("../../models/airports/airportsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
-const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
+const {
+    getAwcMetarUsingICAO,
+    getAwcMetarUsingGenericInput,
+    getAwcMetarUsingAirportName,
+} = require("../../utils/AWC_Weather/controller_helper");
 
 const rClient = new RedisClient();
 let repo;
@@ -17,42 +21,6 @@ let repo;
     await rClient.openNewRedisOMClient(process.env.REDIS_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
-
-const getAwcMetarUsingICAO = async (icao, decode) => {
-    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    try {
-        const metar = await metarFeatures.requestMetarUsingICAO(icao);
-        if (metar) {
-            if (decode === true) {
-                return metar.getDecodedMetar();
-            } else {
-                return metar.getRawMetar();
-            }
-        } else {
-            return null;
-        }
-    } catch (e) {
-        throw new CustomError("Something went wrong, please try again later", 500);
-    }
-};
-
-const getAwcMetarUsingGenericInput = async (data, decode) => {
-    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    try {
-        return await metarFeatures.requestMetarUsingGenericInput(data, decode);
-    } catch (e) {
-        throw new CustomError("Something went wrong, please try again later", 500);
-    }
-};
-
-const getAwcMetarUsingAirportName = async (name, decode) => {
-    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    try {
-        return await metarFeatures.requestMetarUsingAirportName(name, decode);
-    } catch (e) {
-        throw new CustomError("Something went wrong, please try again later", 500);
-    }
-};
 
 const getMetarsWithin = async (req, res, next) => {
     const { icao } = req.params;
@@ -86,7 +54,7 @@ const getMetarUsingGenericInput = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     if (checkICAO(data)) {
-        const responseMetar = await getAwcMetarUsingICAO(data, decode);
+        const responseMetar = await getAwcMetarUsingICAO(data, decode, AwcWeatherMetarModel, repo);
         if (responseMetar) {
             return res.status(200).json({
                 results: 1,
@@ -99,7 +67,7 @@ const getMetarUsingGenericInput = async (req, res, next) => {
             });
         }
     } else {
-        const responseMetar = await getAwcMetarUsingGenericInput(data, decode);
+        const responseMetar = await getAwcMetarUsingGenericInput(data, decode, AwcWeatherMetarModel, repo);
         if (responseMetar && responseMetar.length > 0) {
             return res.status(200).json({
                 results: responseMetar.length,
@@ -107,17 +75,17 @@ const getMetarUsingGenericInput = async (req, res, next) => {
             });
         } else {
             return res.status(404).json({
-                results: responseMetar.length,
-                data: responseMetar,
+                results: 0,
+                data: [],
             });
         }
     }
 };
 
-module.exports.getMetarUsingAirportName = async (req, res, next) => {
+const getMetarUsingAirportName = async (req, res, next) => {
     const { name } = req.params;
     let decode = req.query.decode === "true";
-    const responseMetar = await getAwcMetarUsingAirportName(name, decode);
+    const responseMetar = await getAwcMetarUsingAirportName(name, decode, AwcWeatherMetarModel, repo);
     if (responseMetar && responseMetar.length > 0) {
         res.status(200).json({
             results: responseMetar.length,
@@ -131,7 +99,7 @@ module.exports.getMetarUsingAirportName = async (req, res, next) => {
     }
 };
 
-module.exports.getMetarUsingICAO = async (req, res, next) => {
+const getMetarUsingICAO = async (req, res, next) => {
     const { ICAO } = req.params;
     let decode = req.query.decode === "true";
 
@@ -153,7 +121,7 @@ module.exports.getMetarUsingICAO = async (req, res, next) => {
     }
 };
 
-module.exports.getMetarUsingIATA = async (req, res, next) => {
+const getMetarUsingIATA = async (req, res, next) => {
     const { IATA } = req.params;
     const airportICAO = await Airports.find({
         iata_code: IATA.toUpperCase(),
@@ -175,7 +143,7 @@ module.exports.getMetarUsingIATA = async (req, res, next) => {
     });
 };
 
-module.exports.getWeatherForCountry = async (req, res, next) => {
+const getWeatherForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 30 } = req.query;
 
@@ -206,7 +174,7 @@ module.exports.getWeatherForCountry = async (req, res, next) => {
     }
 };
 
-module.exports.getWindGustForCountry = async (req, res, next) => {
+const getWindGustForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
@@ -227,7 +195,7 @@ module.exports.getWindGustForCountry = async (req, res, next) => {
     });
 };
 
-module.exports.getWindMetarForCountry = async (req, res, next) => {
+const getWindMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
 
@@ -249,7 +217,7 @@ module.exports.getWindMetarForCountry = async (req, res, next) => {
     });
 };
 
-module.exports.getBaroMetarForCountry = async (req, res, next) => {
+const getBaroMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; // 1 would sort low baro to high
 
@@ -271,7 +239,7 @@ module.exports.getBaroMetarForCountry = async (req, res, next) => {
     });
 };
 
-module.exports.getVisibilityMetarForCountry = async (req, res, next) => {
+const getVisibilityMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort bad visibility from good
     //const repo = await awcMetarRepository();
@@ -293,7 +261,7 @@ module.exports.getVisibilityMetarForCountry = async (req, res, next) => {
     });
 };
 
-module.exports.getTempMetarForCountry = async (req, res, next) => {
+const getTempMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort temp from low to high
 
@@ -316,7 +284,7 @@ module.exports.getTempMetarForCountry = async (req, res, next) => {
 };
 
 //continent
-module.exports.getMetarForContinent = async (req, res, next) => {
+const getMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { limit = 10 } = req.query;
     //const repo = await awcMetarRepository();
@@ -350,7 +318,7 @@ module.exports.getMetarForContinent = async (req, res, next) => {
     }
 };
 
-module.exports.getWindGustForContinent = async (req, res, next) => {
+const getWindGustForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
@@ -372,7 +340,7 @@ module.exports.getWindGustForContinent = async (req, res, next) => {
     });
 };
 
-module.exports.getWindMetarForContinent = async (req, res, next) => {
+const getWindMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { limit = 10 } = req.query;
 
@@ -394,7 +362,7 @@ module.exports.getWindMetarForContinent = async (req, res, next) => {
     });
 };
 
-module.exports.getBaroMetarForContinent = async (req, res, next) => {
+const getBaroMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort baro from low to high
     const decode = req.query.decode === "true";
@@ -415,7 +383,7 @@ module.exports.getBaroMetarForContinent = async (req, res, next) => {
     });
 };
 
-module.exports.getVisibilityMetarForContinent = async (req, res, next) => {
+const getVisibilityMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort visibility from low to high
 
@@ -437,7 +405,7 @@ module.exports.getVisibilityMetarForContinent = async (req, res, next) => {
     });
 };
 
-module.exports.getTempMetarForContinent = async (req, res, next) => {
+const getTempMetarForContinent = async (req, res, next) => {
     const { continent } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort temperature from low to high
 
@@ -461,7 +429,7 @@ module.exports.getTempMetarForContinent = async (req, res, next) => {
 
 // Global
 
-module.exports.getWindGustForGlobal = async (req, res, next) => {
+const getWindGustForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
@@ -474,7 +442,7 @@ module.exports.getWindGustForGlobal = async (req, res, next) => {
     });
 };
 
-module.exports.getWindMetarForGlobal = async (req, res, next) => {
+const getWindMetarForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
@@ -488,7 +456,7 @@ module.exports.getWindMetarForGlobal = async (req, res, next) => {
     });
 };
 
-module.exports.getBaroMetarForGlobal = async (req, res, next) => {
+const getBaroMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
@@ -502,7 +470,7 @@ module.exports.getBaroMetarForGlobal = async (req, res, next) => {
     });
 };
 
-module.exports.getVisibilityMetarForGlobal = async (req, res, next) => {
+const getVisibilityMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
@@ -516,7 +484,7 @@ module.exports.getVisibilityMetarForGlobal = async (req, res, next) => {
     });
 };
 
-module.exports.getTempMetarForGlobal = async (req, res, next) => {
+const getTempMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query; //default sort: low temp to high
 
     let decode = req.query.decode === "true";
@@ -532,9 +500,26 @@ module.exports.getTempMetarForGlobal = async (req, res, next) => {
 };
 
 module.exports = {
-    getAwcMetarUsingICAO,
-    getAwcMetarUsingGenericInput,
-    getAwcMetarUsingAirportName,
     getMetarsWithin,
     getMetarUsingGenericInput,
+    getMetarUsingAirportName,
+    getMetarUsingICAO,
+    getTempMetarForGlobal,
+    getMetarUsingIATA,
+    getWeatherForCountry,
+    getWindGustForCountry,
+    getWindMetarForCountry,
+    getBaroMetarForCountry,
+    getVisibilityMetarForCountry,
+    getTempMetarForCountry,
+    getMetarForContinent,
+    getWindGustForContinent,
+    getWindMetarForContinent,
+    getBaroMetarForContinent,
+    getVisibilityMetarForContinent,
+    getTempMetarForContinent,
+    getWindGustForGlobal,
+    getWindMetarForGlobal,
+    getBaroMetarForGlobal,
+    getVisibilityMetarForGlobal,
 };
