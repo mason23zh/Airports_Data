@@ -5,8 +5,6 @@ const {
     getBaroMetarForCountry,
     getWindMetarForCountry,
     getWindGustForCountry,
-    getWeatherForCountry,
-    getMetarForContinent,
     getWindGustForContinent,
     getWindMetarForContinent,
     getBaroMetarForContinent,
@@ -34,7 +32,7 @@ router.route("/search-weather/generic/:data").get(getMetarUsingGenericInput);
 router.route("/search-weather/weather-within/:icao").get(getMetarsWithin);
 
 //country
-router.route("/country-weather/:country").get(getWeatherForCountry);
+// router.route("/country-weather/:country").get(getWeatherForCountry);
 router.route("/country-weather/temperature/:country").get(getTempMetarForCountry);
 router.route("/country-weather/visibility/:country").get(getVisibilityMetarForCountry);
 router.route("/country-weather/baro/:country").get(getBaroMetarForCountry);
@@ -42,7 +40,7 @@ router.route("/country-weather/wind-speed/:country").get(getWindMetarForCountry)
 router.route("/country-weather/wind-gust-speed/:country").get(getWindGustForCountry);
 
 //continent
-router.route("/continent-weather/:continent").get(getMetarForContinent);
+// router.route("/continent-weather/:continent").get(getMetarForContinent);
 router.route("/continent-weather/wind-gust-speed/:continent").get(getWindGustForContinent);
 router.route("/continent-weather/wind-speed/:continent").get(getWindMetarForContinent);
 router.route("/continent-weather/baro/:continent").get(getBaroMetarForContinent);

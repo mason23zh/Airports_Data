@@ -296,7 +296,6 @@ class MetarFeatures {
     }
 
     async requestMetarCategory_local(scope, target, category, sort = 1, limit = 10, decode = false) {
-        //console.log(sort);
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
 
         try {

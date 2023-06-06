@@ -9,7 +9,13 @@ const {
     getAwcMetarUsingGenericInput,
 } = require("../../../utils/AWC_Weather/controller_helper");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
-const { getMetarsWithin, getMetarUsingGenericInput } = require("../../../controllers/Weather/weatherControllers");
+const {
+    getMetarsWithin,
+    getMetarUsingGenericInput,
+    getMetarUsingAirportName,
+    getMetarUsingICAO,
+} = require("../../../controllers/Weather/weatherControllers");
+const { AwcWeatherMetarModel } = require("../../../models/weather/awcWeatherModel");
 
 const mockRequestMetarUsingICAO = jest.fn(function () {
     return this;
@@ -195,7 +201,6 @@ describe("Test for getMetarUsingGenericInput controller", () => {
         checkICAO.mockImplementationOnce(() => false);
         await getMetarUsingGenericInput(request, response);
         getAwcMetarUsingGenericInput.mockResolvedValue([{ icao: "ZSPD" }, { icao: "CYWG" }]);
-        console.log(getAwcMetarUsingGenericInput.mock.results);
 
         expect(getAwcMetarUsingGenericInput).toBeCalledTimes(1);
     });
@@ -204,7 +209,7 @@ describe("Test for getMetarUsingGenericInput controller", () => {
         const request = httpMocks.createRequest({
             params: { data: "London" },
             query: {
-                decode: true,
+                decode: "true",
             },
         });
         const response = httpMocks.createResponse();
@@ -221,7 +226,7 @@ describe("Test for getMetarUsingGenericInput controller", () => {
         const request = httpMocks.createRequest({
             params: { data: "London" },
             query: {
-                decode: true,
+                decode: "true",
             },
         });
         const response = httpMocks.createResponse();
@@ -230,5 +235,118 @@ describe("Test for getMetarUsingGenericInput controller", () => {
         await getMetarUsingGenericInput(request, response);
         expect(response._getStatusCode()).toEqual(404);
         expect(response._getJSONData().data).toEqual([]);
+    });
+});
+
+describe("Test for getMetarUsingAirportName controller", () => {
+    it("Should call getAwcMetarUsingAirportName function", async () => {
+        const request = httpMocks.createRequest({
+            params: { name: "London" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        await getMetarUsingAirportName(request, response);
+        expect(getAwcMetarUsingAirportName).toBeCalledTimes(1);
+        expect(getAwcMetarUsingAirportName).toBeCalledWith("London", true, AwcWeatherMetarModel, undefined);
+    });
+
+    it("Should response with status code 200 and array if getAwcMetarUsingAirportName return not null", async () => {
+        const request = httpMocks.createRequest({
+            params: { name: "London" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+
+        getAwcMetarUsingAirportName.mockResolvedValueOnce([{ icao: "ZSSS" }, { icao: "KBOS" }, { icao: "KJFK" }]);
+        await getMetarUsingAirportName(request, response);
+        const results = await getAwcMetarUsingAirportName.mock.results[0].value;
+        expect(response._getJSONData().data).toEqual(results);
+        jest.resetAllMocks();
+    });
+
+    it("Should response 404 with empty array if getAwcMetarUsingAirport return null or empty array", async () => {
+        const request = httpMocks.createRequest({
+            params: { name: "London" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        await getMetarUsingAirportName(request, response);
+
+        getAwcMetarUsingAirportName.mockResolvedValueOnce(null);
+        expect(response._getJSONData().data).toEqual([]);
+        getAwcMetarUsingAirportName.mockResolvedValueOnce([]);
+        expect(response._getJSONData().data).toEqual([]);
+    });
+});
+
+describe("Test for getMetarUsingICAO controller", () => {
+    it("Should throw new NotFoundError if checkICAO function returns false", async () => {
+        const request = httpMocks.createRequest({
+            params: { name: "London" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        checkICAO.mockImplementationOnce(() => false);
+        try {
+            await getMetarUsingICAO(request, response);
+        } catch (e) {
+            expect(e.statusCode).toEqual(404);
+            expect(e.message).toEqual("Please provide correct ICAO code");
+        }
+    });
+
+    it("Should call getAwcMetarUsingICAO function if checkICAO return true", async () => {
+        const request = httpMocks.createRequest({
+            params: { ICAO: "EGKK" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        checkICAO.mockImplementationOnce(() => true);
+        await getMetarUsingICAO(request, response);
+        expect(getAwcMetarUsingICAO).toBeCalledTimes(1);
+        expect(getAwcMetarUsingICAO).toBeCalledWith("EGKK", true);
+    });
+
+    it("Should response status code 200 if getAwcMetarUsingICAO return not null", async () => {
+        const request = httpMocks.createRequest({
+            params: { ICAO: "EGKK" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        checkICAO.mockImplementationOnce(() => true);
+        getAwcMetarUsingICAO.mockResolvedValueOnce({ ICAO: "EGKK" });
+
+        await getMetarUsingICAO(request, response);
+        const result = await getAwcMetarUsingICAO.mock.results[0].value;
+        expect(response._getJSONData().data).toEqual([result]);
+        expect(response._getStatusCode()).toEqual(200);
+    });
+
+    it("Should response status code 404 if getAwcMetarUsingICAO return null", async () => {
+        const request = httpMocks.createRequest({
+            params: { ICAO: "KMMM" },
+            query: {
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        checkICAO.mockImplementationOnce(() => true);
+        getAwcMetarUsingICAO.mockResolvedValueOnce(null);
+        await getMetarUsingICAO(request, response);
+
+        expect(response._getJSONData().data).toEqual([]);
+        expect(response._getStatusCode()).toEqual(404);
     });
 });

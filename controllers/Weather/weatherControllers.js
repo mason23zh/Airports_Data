@@ -93,8 +93,8 @@ const getMetarUsingAirportName = async (req, res, next) => {
         });
     } else {
         res.status(404).json({
-            results: responseMetar.length,
-            data: responseMetar,
+            results: 0,
+            data: [],
         });
     }
 };
@@ -143,36 +143,36 @@ const getMetarUsingIATA = async (req, res, next) => {
     });
 };
 
-const getWeatherForCountry = async (req, res, next) => {
-    const { country } = req.params;
-    const { limit = 30 } = req.query;
-
-    const sortedMetars = await repo
-        ?.search()
-        .where("ios_country")
-        .equals(country.toUpperCase())
-        .returnPage(0, Number(limit));
-
-    if (sortedMetars && sortedMetars.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
-
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(`Cannot find METARs data for country: ${country}`);
-        }
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    }
-};
+// const getWeatherForCountry = async (req, res, next) => {
+//     const { country } = req.params;
+//     const { limit = 30 } = req.query;
+//
+//     const sortedMetars = await repo
+//         ?.search()
+//         .where("ios_country")
+//         .equals(country.toUpperCase())
+//         .returnPage(0, Number(limit));
+//
+//     if (sortedMetars && sortedMetars.length !== 0) {
+//         return res.status(200).json({
+//             status: "success",
+//             result: sortedMetars.length,
+//             data: sortedMetars,
+//         });
+//     } else {
+//         const sortedMetars = await AwcWeatherMetarModel.find({ ios_country: country.toUpperCase() }).limit(limit);
+//
+//         if (!sortedMetars || sortedMetars.length === 0) {
+//             throw new NotFoundError(`Cannot find METARs data for country: ${country}`);
+//         }
+//
+//         res.status(200).json({
+//             status: "success",
+//             result: sortedMetars.length,
+//             data: sortedMetars,
+//         });
+//     }
+// };
 
 const getWindGustForCountry = async (req, res, next) => {
     const { country } = req.params;
@@ -284,39 +284,39 @@ const getTempMetarForCountry = async (req, res, next) => {
 };
 
 //continent
-const getMetarForContinent = async (req, res, next) => {
-    const { continent } = req.params;
-    const { limit = 10 } = req.query;
-    //const repo = await awcMetarRepository();
-
-    const sortedMetars = await repo
-        ?.search()
-        .where("continent")
-        .equals(continent.toUpperCase())
-        .returnPage(0, Number(limit));
-
-    if (sortedMetars && sortedMetars.length !== 0) {
-        return res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    } else {
-        const sortedMetars = await AwcWeatherMetarModel.find({ continent: continent.toUpperCase() }).limit(limit);
-
-        if (!sortedMetars || sortedMetars.length === 0) {
-            throw new NotFoundError(
-                `Can not find METARs for continent: ${continent}. Please use the correct continent code.`
-            );
-        }
-
-        res.status(200).json({
-            status: "success",
-            result: sortedMetars.length,
-            data: sortedMetars,
-        });
-    }
-};
+// const getMetarForContinent = async (req, res, next) => {
+//     const { continent } = req.params;
+//     const { limit = 10 } = req.query;
+//     //const repo = await awcMetarRepository();
+//
+//     const sortedMetars = await repo
+//         ?.search()
+//         .where("continent")
+//         .equals(continent.toUpperCase())
+//         .returnPage(0, Number(limit));
+//
+//     if (sortedMetars && sortedMetars.length !== 0) {
+//         return res.status(200).json({
+//             status: "success",
+//             result: sortedMetars.length,
+//             data: sortedMetars,
+//         });
+//     } else {
+//         const sortedMetars = await AwcWeatherMetarModel.find({ continent: continent.toUpperCase() }).limit(limit);
+//
+//         if (!sortedMetars || sortedMetars.length === 0) {
+//             throw new NotFoundError(
+//                 `Can not find METARs for continent: ${continent}. Please use the correct continent code.`
+//             );
+//         }
+//
+//         res.status(200).json({
+//             status: "success",
+//             result: sortedMetars.length,
+//             data: sortedMetars,
+//         });
+//     }
+// };
 
 const getWindGustForContinent = async (req, res, next) => {
     const { continent } = req.params;
@@ -506,13 +506,11 @@ module.exports = {
     getMetarUsingICAO,
     getTempMetarForGlobal,
     getMetarUsingIATA,
-    getWeatherForCountry,
     getWindGustForCountry,
     getWindMetarForCountry,
     getBaroMetarForCountry,
     getVisibilityMetarForCountry,
     getTempMetarForCountry,
-    getMetarForContinent,
     getWindGustForContinent,
     getWindMetarForContinent,
     getBaroMetarForContinent,
