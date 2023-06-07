@@ -216,11 +216,17 @@ const getWindMetarForCountry = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        results: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getBaroMetarForCountry = async (req, res, next) => {
@@ -238,11 +244,17 @@ const getBaroMetarForCountry = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getVisibilityMetarForCountry = async (req, res, next) => {
@@ -260,11 +272,17 @@ const getVisibilityMetarForCountry = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getTempMetarForCountry = async (req, res, next) => {
@@ -282,11 +300,17 @@ const getTempMetarForCountry = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 //continent
@@ -339,11 +363,17 @@ const getWindGustForContinent = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getWindMetarForContinent = async (req, res, next) => {
@@ -361,11 +391,17 @@ const getWindMetarForContinent = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        results: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getBaroMetarForContinent = async (req, res, next) => {
@@ -383,10 +419,17 @@ const getBaroMetarForContinent = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getVisibilityMetarForContinent = async (req, res, next) => {
@@ -405,10 +448,17 @@ const getVisibilityMetarForContinent = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getTempMetarForContinent = async (req, res, next) => {
@@ -427,10 +477,17 @@ const getTempMetarForContinent = async (req, res, next) => {
         decode
     );
 
-    res.status(200).json({
-        status: "success",
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 // Global
@@ -440,12 +497,18 @@ const getWindGustForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestWindGustMetar_global(limit, decode);
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    const response = await metarFeatures.requestMetarCategory_global("wind_gust_speed", -1, limit, decode);
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getWindMetarForGlobal = async (req, res, next) => {
@@ -455,11 +518,17 @@ const getWindMetarForGlobal = async (req, res, next) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global("wind_speed_kt", -1, limit, decode);
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getBaroMetarForGlobal = async (req, res, next) => {
@@ -469,11 +538,17 @@ const getBaroMetarForGlobal = async (req, res, next) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global("altim_in_hg", sort, limit, decode);
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getVisibilityMetarForGlobal = async (req, res, next) => {
@@ -483,11 +558,17 @@ const getVisibilityMetarForGlobal = async (req, res, next) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global("visibility_statute_mi", sort, limit, decode);
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 const getTempMetarForGlobal = async (req, res, next) => {
@@ -498,11 +579,17 @@ const getTempMetarForGlobal = async (req, res, next) => {
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global("temp_c", sort, limit, decode);
 
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
 };
 
 module.exports = {
