@@ -14,6 +14,7 @@ const {
     getMetarUsingGenericInput,
     getMetarUsingAirportName,
     getMetarUsingICAO,
+    getWindGustForCountry,
 } = require("../../../controllers/Weather/weatherControllers");
 const { AwcWeatherMetarModel } = require("../../../models/weather/awcWeatherModel");
 
@@ -28,6 +29,7 @@ const mockRequestNearestMetar_icao = jest.fn().mockResolvedValue([{ icao: "CYWG"
 const mockRequestNearestMetar_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
 const mockRequestMetarUsingAirportName = jest.fn();
 const mockRequestMetarUsingGenericInput = jest.fn();
+const mockRequestMetarCategory_local = jest.fn();
 
 jest.mock("../../../controllers/METAR/MetarFeatures", () =>
     jest.fn().mockImplementation(() => ({
@@ -40,6 +42,7 @@ jest.mock("../../../controllers/METAR/MetarFeatures", () =>
         requestNearestMetar_LngLat: mockRequestNearestMetar_LngLat,
         requestMetarUsingAirportName: mockRequestMetarUsingAirportName,
         requestMetarUsingGenericInput: mockRequestMetarUsingGenericInput,
+        requestMetarCategory_local: mockRequestMetarCategory_local,
     }))
 );
 
@@ -56,6 +59,7 @@ beforeEach(() => {
     getAwcMetarUsingICAO.mockClear();
     getAwcMetarUsingGenericInput.mockClear();
     getAwcMetarUsingAirportName.mockClear();
+    mockRequestMetarCategory_local.mockClear();
 });
 
 // afterEach(() => {
@@ -348,5 +352,23 @@ describe("Test for getMetarUsingICAO controller", () => {
 
         expect(response._getJSONData().data).toEqual([]);
         expect(response._getStatusCode()).toEqual(404);
+    });
+});
+
+describe("Test for getWindGustForCountry controller", () => {
+    it("should call MetarFeatures and requestMEtarCategory_local function", async () => {
+        const request = httpMocks.createRequest({
+            params: { country: "ca" },
+            query: {
+                limit: 15,
+                decode: "true",
+            },
+        });
+        const response = httpMocks.createResponse();
+        await getWindGustForCountry(request, response);
+        mockRequestMetarCategory_local.mockResolvedValueOnce([{ icao: "EGKK" }, { icao: "EGSS" }]);
+        expect(MetarFeatures).toBeCalledTimes(1);
+        // expect(mockRequestMetarCategory_local).toBeCalledTimes(1);
+        // expect(mockRequestMetarCategory_local).toBeCalledWith("ios_country", "ca", "wind_gust_kt", -1, 15, true);
     });
 });

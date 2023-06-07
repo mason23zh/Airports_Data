@@ -324,11 +324,11 @@ class MetarFeatures {
         } catch (e) {
             const dbMetar = await this.model
                 .find({
-                    scope: target.toUpperCase(),
-                    category: { $ne: null },
+                    $and: [{ ios_country: target.toUpperCase() }, { category: { $ne: null } }],
                 })
                 .sort({ category: sort })
                 .limit(limit);
+
             if (!dbMetar || dbMetar.length === 0) {
                 return [];
             }

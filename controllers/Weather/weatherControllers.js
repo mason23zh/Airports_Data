@@ -188,11 +188,17 @@ const getWindGustForCountry = async (req, res, next) => {
         limit,
         decode
     );
-    res.status(200).json({
-        status: "success",
-        result: response.length,
-        data: response,
-    });
+    if (response && response.length > 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: response.length || 0,
+            data: response || [],
+        });
+    }
 };
 
 const getWindMetarForCountry = async (req, res, next) => {
