@@ -174,7 +174,7 @@ const getMetarUsingIATA = async (req, res, next) => {
 //     }
 // };
 
-const getWindGustForCountry = async (req, res, next) => {
+const getWindGustForCountry = async (req, res) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
@@ -195,8 +195,8 @@ const getWindGustForCountry = async (req, res, next) => {
         });
     } else {
         return res.status(404).json({
-            results: response.length || 0,
-            data: response || [],
+            results: 0,
+            data: [],
         });
     }
 };

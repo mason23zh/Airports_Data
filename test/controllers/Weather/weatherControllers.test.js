@@ -1,5 +1,5 @@
 const httpMocks = require("node-mocks-http");
-const weatherControllers = require("../../../controllers/Weather/weatherControllers");
+// const weatherControllers = require("../../../controllers/Weather/weatherControllers");
 jest.mock("../../../utils/checkICAO");
 jest.mock("../../../utils/AWC_Weather/controller_helper");
 const { checkICAO } = require("../../../utils/checkICAO");
@@ -42,7 +42,7 @@ jest.mock("../../../controllers/METAR/MetarFeatures", () =>
         requestNearestMetar_LngLat: mockRequestNearestMetar_LngLat,
         requestMetarUsingAirportName: mockRequestMetarUsingAirportName,
         requestMetarUsingGenericInput: mockRequestMetarUsingGenericInput,
-        requestMetarCategory_local: mockRequestMetarCategory_local,
+        requestMetarCategory_local: jest.fn(),
     }))
 );
 
@@ -56,10 +56,10 @@ beforeEach(() => {
     mockRequestMetarUsingAirportName.mockClear();
     mockRequestMetarUsingGenericInput.mockClear();
     mockRequestMetarWithinRadius_icao.mockClear();
+    mockRequestMetarCategory_local.mockClear();
     getAwcMetarUsingICAO.mockClear();
     getAwcMetarUsingGenericInput.mockClear();
     getAwcMetarUsingAirportName.mockClear();
-    mockRequestMetarCategory_local.mockClear();
 });
 
 // afterEach(() => {
@@ -366,9 +366,12 @@ describe("Test for getWindGustForCountry controller", () => {
         });
         const response = httpMocks.createResponse();
         await getWindGustForCountry(request, response);
-        mockRequestMetarCategory_local.mockResolvedValueOnce([{ icao: "EGKK" }, { icao: "EGSS" }]);
         expect(MetarFeatures).toBeCalledTimes(1);
-        // expect(mockRequestMetarCategory_local).toBeCalledTimes(1);
+        const MockMetarFeatures = MetarFeatures.mock.instances[0];
+        const mockRequestMetarCategory_local = MockMetarFeatures.requestMetarCategory_local;
+        // const metarFeatures = new MetarFeatures();
+
+        expect(mockRequestMetarCategory_local).toBeCalledTimes(1);
         // expect(mockRequestMetarCategory_local).toBeCalledWith("ios_country", "ca", "wind_gust_kt", -1, 15, true);
     });
 });
