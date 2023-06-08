@@ -81,6 +81,15 @@ const gns430AirportSchema = new mongoose.Schema(
     }
 );
 
+mongoose.plugin((gns430AirportSchema) => {
+    gns430AirportSchema.options.toJSON = {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+        },
+    };
+});
+
 gns430AirportSchema.index({ location: "2dsphere" });
 
 gns430AirportSchema.virtual("comments", {

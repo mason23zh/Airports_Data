@@ -33,7 +33,6 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res, next) => {
     }
 
     res.status(200).json({
-        status: "success",
         data: {
             airport: gns430Airport,
         },
@@ -44,7 +43,7 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const airportFeatures = new APIFeatures(
-        GNS430Airport.findOne({}, { _id: 0, "runways._id": 0 }, { ICAO: `${req.params.icao.toUpperCase()}` }),
+        GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
         req.query
     ).limitFields();
 
@@ -84,17 +83,7 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
 
     const airportICAO_Code = airportICAO[0].ident;
 
-    const airportFeatures = new APIFeatures(
-        GNS430Airport.findOne(
-            {},
-            {
-                _id: 0,
-                "runways._id": 0,
-            },
-            { ICAO: airportICAO_Code }
-        ),
-        req.query
-    ).limitFields();
+    const airportFeatures = new APIFeatures(GNS430Airport.findOne({ ICAO: airportICAO_Code }), req.query).limitFields();
 
     const gns430Airport = await airportFeatures.query;
 
@@ -123,7 +112,6 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
     const airports = await featuresQuery.query;
 
     res.status(200).json({
-        status: "success",
         results: airports.length,
         data: {
             airport: airports,
@@ -151,7 +139,6 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     );
 
     res.status(200).json({
-        status: "success",
         results: filteredAirports.length,
         data: {
             airport: filteredAirports,
@@ -207,7 +194,6 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
             );
         });
         res.status(200).json({
-            status: "success",
             result: responseAirports.length,
             data: responseAirports,
         });
@@ -234,7 +220,6 @@ module.exports.getAirportWithin = async (req, res) => {
     });
 
     res.status(200).json({
-        status: "success",
         results: targetAirports.length,
         data: {
             airport: targetAirports,
@@ -276,7 +261,6 @@ module.exports.getAirportsDistance = async (req, res) => {
     const distance = unit === "km" ? calculatedDistance : calculatedDistance * 0.539957;
 
     res.status(200).json({
-        status: "success",
         data: {
             distance: distance.toFixed(1),
         },
