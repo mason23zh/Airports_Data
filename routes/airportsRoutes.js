@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllAirports, getAirportByType } = require("../controllers/airportsControllers");
+// const { getAllAirports, getAirportByType } = require("../controllers/airportsControllers");
 
 const {
     getAirportByICAO_GNS430,
@@ -18,11 +18,9 @@ const router = express.Router();
 //nested routes
 router.use("/:airporId/comments", commentRoutes);
 
-router.route("/all-airports").get(getAllAirports);
 router.route("/icao/:icao").get(getAirportByICAO_GNS430);
 router.route("/icao/basic/:icao").get(getAirportByICAO_GNS430_Basic);
 router.route("/iata/:iata").get(getAirportByIATA_GNS430);
-router.route("/type/:type").get(getAirportByType);
 router.route("/city/:name").get(getAirportsByCity_GNS430);
 router.route("/generic/:data").get(getAirportByGenericInput_GNS430);
 //Able to partially match e.g. winnipeg would match 3 resutls

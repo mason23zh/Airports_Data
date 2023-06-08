@@ -1,5 +1,4 @@
 const httpMocks = require("node-mocks-http");
-// const weatherControllers = require("../../../controllers/Weather/weatherControllers");
 jest.mock("../../../utils/checkICAO");
 jest.mock("../../../utils/AWC_Weather/controller_helper");
 const { checkICAO } = require("../../../utils/checkICAO");

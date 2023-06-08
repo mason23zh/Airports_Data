@@ -49,7 +49,7 @@ class MetarFeatures {
     }
 
     /**
-     Covert either Metar from db or Reids into the same format
+     Covert either Metar from db or Redis into the same format
      **/
     #normalizeMetar() {
         if (Object.keys(this.metar).length === 0) {
@@ -461,6 +461,7 @@ class MetarFeatures {
         // check for special weather code
         if (code.length >= 4 && metarWeatherCode[code]) {
             weatherText = `${weatherText} ${metarWeatherCode[code]}`;
+            return weatherText;
         }
 
         for (let i = 0; i < code.length - 1; i += 2) {
