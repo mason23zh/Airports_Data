@@ -14,7 +14,7 @@ let repo;
     await rClient.openNewRedisOMClient(process.env.REDIS_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
-
+//! NEED TO ADD DEFAULT DISTANCE
 module.exports.getMetar = async (req, res) => {
     const { decode } = req.query;
     const icaoArray = req.params.icao.split(",");
