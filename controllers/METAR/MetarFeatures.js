@@ -457,20 +457,28 @@ class MetarFeatures {
 
     #decodeWeatherCode(code) {
         let weatherText = "";
-
         // check for special weather code
         if (code.length >= 4 && metarWeatherCode[code]) {
             weatherText = `${weatherText} ${metarWeatherCode[code]}`;
+            // console.log(code);
             return weatherText;
         }
 
         for (let i = 0; i < code.length - 1; i += 2) {
             const singleCode = code.slice(i, i + 2);
+            // console.log(singleCode);
             if (metarWeatherCode[singleCode]) {
                 weatherText = `${weatherText} ${metarWeatherCode[singleCode]}`;
+            } else {
+                return;
             }
         }
+
         return weatherText;
+    }
+
+    #filterWeatherConditionCode(rawMetarArray, weatherCodeArray) {
+        return rawMetarArray.filter((element) => weatherCodeArray.some((item) => element.includes(item)));
     }
 
     /**
@@ -478,20 +486,27 @@ class MetarFeatures {
      **/
     #generateWeather() {
         const rawMetarSection = this.normalizedMetar.raw_text.split(" ");
-        for (let i = 0; i < rawMetarSection.length; i++) {
+
+        // get weatherCode key
+        const weatherCodeKey = Object.keys(metarWeatherCode);
+        const partialMatchedCode = this.#filterWeatherConditionCode(rawMetarSection, weatherCodeKey);
+
+        for (let i = 0; i < partialMatchedCode.length; i++) {
             let intensityFlag;
             // check if weather code has intensity flag;
-            if (rawMetarSection[i].includes("+") || rawMetarSection[i].includes("-")) {
-                intensityFlag = rawMetarSection[i].slice(0, 1);
-                const tempWeatherCode = rawMetarSection[i].slice(1);
+            if (partialMatchedCode[i].includes("+") || partialMatchedCode[i].includes("-")) {
+                intensityFlag = partialMatchedCode[i].slice(0, 1);
+                const tempWeatherCode = partialMatchedCode[i].slice(1);
                 const tempWeatherText = this.#decodeWeatherCode(tempWeatherCode);
-                //let text = intensityFlag ? `${metarWeatherCode[intensityFlag]} ${tempWeatherText}` : "";
-                let text = intensityFlag ? `${metarWeatherCode[intensityFlag]}${tempWeatherText}` : "";
-                this.weather.push({ code: rawMetarSection[i], text: text });
-            }
-            if (metarWeatherCode[rawMetarSection[i]]) {
-                let text = this.#decodeWeatherCode(rawMetarSection[i]);
-                this.weather.push({ code: rawMetarSection[i], text: text });
+                if (tempWeatherText && tempWeatherText.length !== 0) {
+                    let text = intensityFlag ? `${metarWeatherCode[intensityFlag]}${tempWeatherText}` : "";
+                    this.weather.push({ code: partialMatchedCode[i], text: text });
+                }
+            } else {
+                let text = this.#decodeWeatherCode(partialMatchedCode[i]);
+                if (text && text.length !== 0) {
+                    this.weather.push({ code: partialMatchedCode[i], text: text });
+                }
             }
         }
         return this;
