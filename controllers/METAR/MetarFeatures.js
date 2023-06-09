@@ -389,9 +389,7 @@ class MetarFeatures {
         this.clouds = [];
         if (this.normalizedMetar.raw_text) {
             let finalCloudObject = {};
-            //const rawMetar = this.normalizedMetar.raw_text;
-            const rawMetar =
-                '"CYOW 090000Z VRB02KT 15SM FEW035TCU VV001 SCT050 BKN075 14/13 A2976 RMK TCU1SC2AC4 SH DIST NW SLP081 DENSITY ALT 600FT"';
+            const rawMetar = this.normalizedMetar.raw_text;
 
             if (rawMetar.includes("CAVOK")) {
                 this.clouds.push({ code: "CAVOK", text: "Clouds and visibility are OK" });
