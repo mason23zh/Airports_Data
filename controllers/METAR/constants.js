@@ -23,6 +23,15 @@ module.exports.metarCloudCode = [
         code: "CB",
         name: "Cumulonimbus cloud",
     },
+    {
+        code: "TCU",
+        name: "towering cumulus",
+    },
+    {
+        code: "VV",
+        name: "vertical visibility",
+        density: "8/8",
+    },
 ];
 
 module.exports.metarWeatherCode = {

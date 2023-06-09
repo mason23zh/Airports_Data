@@ -389,7 +389,9 @@ class MetarFeatures {
         this.clouds = [];
         if (this.normalizedMetar.raw_text) {
             let finalCloudObject = {};
-            const rawMetar = this.normalizedMetar.raw_text;
+            //const rawMetar = this.normalizedMetar.raw_text;
+            const rawMetar =
+                '"CYOW 090000Z VRB02KT 15SM FEW035TCU VV001 SCT050 BKN075 14/13 A2976 RMK TCU1SC2AC4 SH DIST NW SLP081 DENSITY ALT 600FT"';
 
             if (rawMetar.includes("CAVOK")) {
                 this.clouds.push({ code: "CAVOK", text: "Clouds and visibility are OK" });
@@ -415,16 +417,16 @@ class MetarFeatures {
                 }
             }
 
-            if (/((SCT)|(BKN)|(FEW)|(OVC))(\d{3})((CB)|(TCB))?/.test(rawMetar)) {
-                let match = rawMetar.match(/((SCT)|(BKN)|(FEW)|(OVC))(\d{3})((CB)|(TCB))?/g).filter((section) => {
-                    return section !== undefined && section.length !== 3;
-                });
+            if (/((SCT)|(BKN)|(FEW)|(OVC)|(VV))(\d{3})((CB)|(TCU))?/.test(rawMetar)) {
+                let match = rawMetar.match(/((SCT)|(BKN)|(FEW)|(OVC)|(VV))(\d{3})((CB)|(TCU))?/g);
                 if (match.length === 0) {
                     return;
                 }
                 match.forEach((section) => {
-                    const cloudCode = section.slice(0, 3);
-                    const cloudHeight = section.slice(3, 6);
+                    let VVFlag = /(VV)(\d{3})/.test(section);
+
+                    const cloudCode = VVFlag ? section.slice(0, 2) : section.slice(0, 3);
+                    const cloudHeight = VVFlag ? section.slice(2, 5) : section.slice(3, 6);
                     const cloudCondition = section.length > 6 ? section.slice(6, section.length) : "";
                     let cloudAdditionalProperty;
 
