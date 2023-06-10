@@ -6,7 +6,7 @@
 
 ## METAR
 
-### **Get METAR using ICAO code**
+### Get METAR using ICAO code
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
@@ -26,10 +26,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg
 $ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg?decode=true
 
 # Multiple ICAOs
-$ https://flight-data.herokuapp.com/api/v1/get-metar/cywg,klas,zspd
+$ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg,klas,zspd
 
 # Multiple ICAOs decoded
-$ https://flight-data.herokuapp.com/api/v1/get-metar/klax,cyvr,cyyz?decode=true
+$ curl https://flight-data.herokuapp.com/api/v1/get-metar/klax,cyvr,cyyz?decode=true
 ```
 
 ---
@@ -395,6 +395,390 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/coordinates/-9
 }
 ```
 
+---
+
+## Weather
+
+### Note:
+
+- All METARs that does not belong to Navdata are removed.
+- The data will be updated every 10 minutes.
+
+---
+
+### Get METARs for country sorted by temperature
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the temperature, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/temperature/:country
+
+```bat
+# Get METARs based on the temperature for Canada, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/ca?sort=-1&limit=20&decode=true
+
+# Get METARs based on the temperature for UK, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/gb
+
+```
+
+---
+
+### Get METARs for country sorted by visibility
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the visibility, 1 for low/bad visibility to good|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/visibility/:country
+
+```bat
+# Get METARs based on the visibility for Canada, sorted from low to high with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/ca?limit=20&decode=true
+
+# Get METARs based on the visibility for China, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/visibility/cn
+
+```
+
+---
+
+### Get METARs for country sorted by barometer
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the barometer, 1 for low baromter to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/baro/:country
+
+```bat
+# Get METARs based on the barometer for Canada, sorted from low to high with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/baro/ca?limit=20&decode=true
+
+# Get METARs based on the barometer for USA, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/baro/us&sort=-1
+
+```
+
+---
+
+### Get METARs for country sorted by wind gust speed
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/wind-gust-speed/:country
+
+```bat
+# Get METARs based on the wind gust speed for Canada, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
+
+# Get METARs based on the wind gust speed for USA, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/us
+
+```
+
+---
+
+### Get METARs for country sorted by wind gust speed
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/wind-gust-speed/:country
+
+```bat
+# Get METARs based on the wind gust speed for Canada, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
+
+# Get METARs based on the wind gust speed for USA, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/us
+
+```
+
+---
+
+### Get METARs for country sorted by wind speed
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| country           | Two letters country code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/country-weather/wind-speed/:country
+
+```bat
+# Get METARs based on the wind speed for Canada, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-speed/ca?limit=20&decode=true
+
+# Get METARs based on the wind speed for Germany, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-speed/de
+
+```
+
+---
+
+### Get METARs for continent sorted by temperature
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| continent           | Two letters continent code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the temperature, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/continent-weather/temperature/:continent
+
+```bat
+# Get METARs based on the temperature for Asia, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/temperature/as?sort=-1&limit=20&decode=true
+
+# Get METARs based on the temperature for Europe, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/temperature/eu
+
+```
+
+---
+
+### Get METARs for continent sorted by visibility
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| continent           | Two letters continent code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the visibility, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/continent-weather/temperature/:continent
+
+```bat
+# Get METARs based on the visibility for Asia, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility/as?sort=-1&limit=20&decode=true
+
+# Get METARs based on the visibility for North America, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility/na
+
+```
+
+---
+
+### Get METARs for continent sorted by barometer
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| continent           | Two letters continent code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the borometer, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/continent-weather/baro/:continent
+
+```bat
+# Get METARs based on the barometer for Asia, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/baro/as?sort=-1&limit=20&decode=true
+
+# Get METARs based on the barometer for North America, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/baro/na
+
+```
+
+---
+
+### Get METARs for continent sorted by wind gust speed
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| continent           | Two letters continent code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/continent-weather/wind-gust-speed/:continent
+
+```bat
+# Get METARs based on the wind gust speed for Asia, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-gust-speed/as?limit=20&decode=true
+
+# Get METARs based on the wind gust speed for Africa, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-gust-speed/af
+
+```
+
+---
+
+### Get METARs for continent sorted by wind speed
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| continent           | Two letters continent code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/continent-weather/wind-speed/:country
+
+```bat
+# Get METARs based on the wind speed for Asia, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-speed/as?limit=20&decode=true
+
+# Get METARs based on the wind speed for Europe, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-speed/eu
+
+```
+
+---
+
+### Get METARs for global sorted by temperature
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the temperature, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/global-weather/temperature
+
+```bat
+# Get METARs based on the temperature for global, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/temperature?sort=-1&limit=20&decode=true
+
+# Get METARs based on the temperature for Europe, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/temperature
+
+```
+
+---
+
+### Get METARs for global sorted by visibility
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the visibility, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/global-weather/temperature
+
+```bat
+# Get METARs based on the visibility for global, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/visibility?sort=-1&limit=20&decode=true
+
+# Get METARs based on the visibility for global, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility
+
+```
+
+---
+
+### Get METARs for global sorted by barometer
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+| sort|Sort the borometer, 1 for low to high|1|
+|limit|Number of returned METARs |10|
+
+    GET /weather/global-weather/baro/:continent
+
+```bat
+# Get METARs based on the barometer for global, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/baro?sort=-1&limit=20&decode=true
+
+# Get METARs based on the barometer for global, sorted from low to high with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/baro
+
+```
+
+---
+
+### Get METARs for global sorted by wind gust speed
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/global-weather/wind-gust-speed
+
+```bat
+# Get METARs based on the wind gust speed for global, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-gust-speed?limit=20&decode=true
+
+# Get METARs based on the wind gust speed for global, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-gust-speed
+
+```
+
+---
+
+### Get METARs for global sorted by wind speed
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/global-weather/wind-speed/:country
+
+```bat
+# Get METARs based on the wind speed for global, sorted from high to low with 20 results and decoded
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-speed?limit=20&decode=true
+
+# Get METARs based on the wind speed for global, sorted from high to low with 10 results and returned as raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-speed
+
+```
+
+---
+
 ## Airports
 
 ### base URL: _/api/v1/airports_
@@ -439,105 +823,6 @@ Example: **_/api/v1/airports/all-airports?limitedResults=3_**
 
 paginate  
 Example: **_/api/v1/airports/all-airports?page=1&limit=3_**
-
----
-
-## Weather
-
-#### All METARs that does not belong to Navdata are removed.
-
-#### The default returning results will be 10 as if no 'limit' is added.
-
-#### The data will be updated every 10 minutes.
-
-#### Base URL: _/api/v1/weather/_
-
-### Generic METAR search
-
-#### Base URL: _/api/v1/weather/search-weather_
-
-**End Points**:
-
-Get METAR using airport ICAO code: \  
-Example: **_/api/v1/weather/search-weather/icao/cywg_**
-
-Get METAR using airport IATA code: \  
-Example: **_/api/v1/weather/search-weather/iata/bos_**
-
-Get METARs using airport name code: \  
-Example: **_/api/v1/weather/search-weather/name/winnipeg_**
-
-Get METARs with generic input, (airport name or city, partial match): \  
-Example: **_/api/v1/weather/search-weather/generic/new york_**
-
-Get METARs within radius of ICAO: \  
-unit can be nm (nm, nauticalmile or nauticalmiles), km (km, kilometers, kilometer) or mi (mi, miles, mile)\  
-Example: **_/api/v1/weather/search-weather/weather-within?icao=klax&distance=50&unit=nm_**
-
-### Bad Weathers For Global
-
-#### Base URL: _/api/v1/weather/global-weather_
-
-**End Points**:
-
-Sort METARs by temperature from lowest to highest:\  
-Example: **_/api/v1/weather/global-weather/temperature?sort=1&limit=10_**
-
-Sort METARs by visibility from worst to best:\  
-Example: **_/api/v1/weather/global-weather/visibility?sort=1&limit=10_**
-
-Sort METARs by barometers from lowest to highest:\  
-Example: **_/api/v1/weather/global-weather/baro?sort=1&limit=10_**
-
-Sort METARs by wind speed from highest to lowest:\  
-Example: **_/api/v1/weather/global-weather/wind-speed?limit=10_**
-
-Sort METARs by wind gust speed from highest to lowest:\  
-Example: **_/api/v1/weather/global-weather/wind-gust-speed?limit=10_**
-
-### Bad Weathers For Continent
-
-#### Base URL: _/api/v1/weather/continent-weather_
-
-**End Points**:
-
-Sort METARs by temperature from lowest to highest:\  
-Example: **_/api/v1/weather/continent-weather/temperature/as?sort=1&limit=10_**
-
-Sort METARs by visibility from worst to best:\  
-Example: **_/api/v1/weather/continent-weather/visibility/na?sort=1&limit=10_**
-
-Sort METARs by barometers from lowest to highest:\  
-Example: **_/api/v1/weather/continent-weather/baro/sa?sort=1&limit=10_**
-
-Sort METARs by wind speed from highest to lowest:\  
-Example: **_/api/v1/weather/continent-weather/wind-speed/oc?limit=10_**
-
-Sort METARs by wind gust speed from highest to lowest:\  
-Example: **_/api/v1/weather/continent-weather/wind-gust-speed/na?limit=10_**
-
-### Bad Weathers For Country
-
-#### Base URL: _/api/v1/weather/country-weather_
-
-**End Points**:
-
-Sort METARs by temperature from lowest to highest:\  
-Example: **_/api/v1/weather/country-weather/temperature/ca?sort=1&limit=10_**
-
-Sort METARs by visibility from worst to best:\  
-Example: **_/api/v1/weather/country-weather/visibility/us?sort=1&limit=10_**
-
-Sort METARs by barometers from lowest to highest:\  
-Example: **_/api/v1/weather/country-weather/baro/ca?sort=1&limit=10_**
-
-Sort METARs by wind speed from highest to lowest:\  
-Example: **_/api/v1/weather/country-weather/wind-speed/ca?limit=10_**
-
-Sort METARs by wind gust speed from highest to lowest:\  
-Example: **_/api/v1/weather/country-weather/wind-gust-speed/ca?limit=10_**
-
----
 
 ### Users: _/api/v1/users_
 
