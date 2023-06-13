@@ -9,7 +9,14 @@ class RedisClient {
     }
 
     async openNewRedisOMClient(REDIS_URL) {
-        this.client = await new Client().open(REDIS_URL);
+        try {
+            this.client = await new Client().open(REDIS_URL);
+            return this.client;
+        } catch (e) {
+            console.log(e);
+            this.client = null;
+            return;
+        }
     }
 
     getCurrentClient() {
@@ -18,9 +25,11 @@ class RedisClient {
 
     createRedisOMRepository(schema) {
         if (this.client !== null) {
-            return (this.repo = this.client.fetchRepository(schema));
+            this.repo = this.client.fetchRepository(schema);
+            return this.repo;
         } else {
-            throw new Error("Client initialization required");
+            // throw new Error("Client initialization required");
+            return null;
         }
     }
 
@@ -32,20 +41,22 @@ class RedisClient {
                 port: REDIS_PORT,
             },
         });
-        await connection.connect();
-        return connection;
+        try {
+            await connection.connect();
+            return connection;
+        } catch (e) {
+            return null;
+        }
     }
 
     async createRedisNodeConnectionWithURL(REDIS_URL) {
-        // const connection = await createClient(REDIS_URL).connect();
-        const connection = createClient(REDIS_URL);
-        await connection.connect();
-        return connection;
-    }
-
-    getNewClient() {
-        this.client = new Client();
-        return this.client;
+        try {
+            const connection = createClient(REDIS_URL);
+            await connection.connect();
+            return connection;
+        } catch (e) {
+            return null;
+        }
     }
 }
 

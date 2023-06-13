@@ -12,6 +12,7 @@ const airportsRoutes = require("./routes/airportsRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
+const metarRoutes = require("./routes/metarRoutes");
 const errorHandler = require("./common/middlewares/error-handler");
 const NotFoundError = require("./common/errors/NotFoundError");
 const AccessNumberExceedError = require("./common/errors/AccessNumberExceedError");
@@ -55,6 +56,11 @@ app.use("/api/v1/airports", airportsRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/weather", weatherRoutes);
+<<<<<<< HEAD
+=======
+app.use("/api/v1/metar", metarRoutes);
+app.use("/dev", devRoutes);
+>>>>>>> METAR_overhaul
 
 app.all("*", (req, res) => {
     throw new NotFoundError("Page Not Found");

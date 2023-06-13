@@ -6,6 +6,9 @@ dev-data/Vamsys_data
 utils/Vamsys
 routes/devRoutes.js
 controllers/Dev
+utils/AWC_Weather/Data/awc_metars.csv
+utils/AWC_Weather/Data/awc_metars.json
+utils/AWC_Weather/Data/raw_awc_metars.csv
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

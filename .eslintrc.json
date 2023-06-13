@@ -23,7 +23,10 @@
     "camelcase": "off",
     "indent": [
       "error",
-      4
+      4,
+      {
+        "SwitchCase": 1
+      }
     ],
     "prettier/prettier": "error",
     "spaced-comment": "off",
