@@ -141,3 +141,51 @@ module.exports.getNearestMetar_LngLat = async (req, res) => {
         });
     }
 };
+
+module.exports.getMetarUsingAirportName = async (req, res) => {
+    const { name = "" } = req.params;
+    let decode = req.query.decode === "true";
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    if (name.length === 0) {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
+    const response = await metarFeatures.requestMetarUsingAirportName(name, decode);
+    if (response.length !== 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: response.length,
+            data: response,
+        });
+    }
+};
+
+module.exports.getMetarUsingGenericInput = async (req, res) => {
+    const { data = "" } = req.params;
+    let decode = req.query.decode === "true";
+    const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
+    if (data.length === 0) {
+        return res.status(404).json({
+            results: 0,
+            data: [],
+        });
+    }
+    const response = await metarFeatures.requestMetarUsingGenericInput(data, decode);
+    if (response.length !== 0) {
+        return res.status(200).json({
+            results: response.length,
+            data: response,
+        });
+    } else {
+        return res.status(404).json({
+            results: response.length,
+            data: response,
+        });
+    }
+};

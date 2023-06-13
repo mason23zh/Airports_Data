@@ -15,10 +15,6 @@ module.exports.normalizeData = async () => {
         }
         return true;
     };
-    // <<<<<<< HEAD
-    // =======
-    //     console.log(redisValidCoordinates(179.98, -89.98));
-    // >>>>>>> METAR_overhaul
 
     for (let airport of gns430Airport) {
         for (let metar of awcMetars) {
