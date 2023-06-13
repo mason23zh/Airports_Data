@@ -405,6 +405,8 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/coordinates/-9
 - The data will be updated every 10 minutes.
 
 ---
+### <p style="text-align: center;">***Country Scope***</p>
+---
 
 ### Get METARs for country sorted by temperature
 
@@ -552,6 +554,8 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-spe
 ```
 
 ---
+### <p style="text-align: center;">***Continent Scope***</p>
+---
 
 ### Get METARs for continent sorted by temperature
 
@@ -675,6 +679,8 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-s
 ```
 
 ---
+### <p style="text-align: center;">***Global Scope***</p>
+---
 
 ### Get METARs for global sorted by temperature
 
@@ -778,38 +784,186 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-spee
 ```
 
 ---
+### <p style="text-align: center;">***METAR Search***</p>
+---
+
+### Search METAR for ICAO code
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| icao           | ICAO code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/search-weather/icao/:icao
+
+```bat
+# Get decoded METAR for CYWG
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/icao/cywg?decode=true
+
+# Get raw METAR for KBOS
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/icao/kbos
+
+```
+
+---
+
+### Search METAR for IATA code
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| iata           | IATA code |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/search-weather/iata/:iata
+
+```bat
+# Get decoded METAR for CYWG
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/iata/ywg?decode=true
+
+# Get raw METAR for KBOS
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/iata/bos
+
+```
+
+---
+
+### Search METAR for airport's name
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| name           | Airport name |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/search-weather/name/:name
+
+```bat
+# Get decoded METAR for airport's name that included "pudong"
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/pudong?decode=true
+
+# Get raw METAR for airport's name that included boston
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/boston
+
+```
+
+---
+
+### Search METAR based on the geneirc input
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| data           | Generic search query |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+|limit|Number of returned METARs |10|
+
+    GET /weather/search-weather/generic/:data
+
+```bat
+# Get decoded METAR for airport's name, city or location that included "shanghai"
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/generic/shanghai?decode=true
+
+# Get raw METAR for airport's name, city or location that included new york
+$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new york
+
+```
 
 ## Airports
 
-### base URL: _/api/v1/airports_
+### Get Airport data using ICAO
 
-**End Points**:
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| icao           | ICAO code |
 
-Get All Airports:\  
-Example: **_/api/v1/airports/all-airports_**
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
 
-Get Airports With Generic Input:\  
-This endpoint would accept city name, airport name or ICAO\  
-Example: **_/api/v1/airports/generic/new york_**\  
-Example: **_/api/v1/airports/generic/CYWG_**
+    GET /airports/icao/:icao
 
-Get Airports By ICAO:\  
-Example: **_/api/v1/airports/icao/cywg_**
+---
 
-Get Airports By IATA:\  
-Example: **_/api/v1/airports/iata/ywg_**
+### Get Airport data using iata
 
-Get Airports By Type (large\*airport, medium_airport, small_airport,heliport,seaplane_base,closed_airport)\  
-Example: \*\*\*/api/v1/airports/type/heliport\_\*\*
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| iata           | IATA code |
 
-Get Airports By Name (Able to partially match e.g. winnipeg would match 3 results)\  
-Example: **_/api/v1/airports/name/Winnipeg_**
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
 
-Get airports within certain radius (km for kilometers, nm or nautical miles )\  
-Example: **_/api/v1/airports/airports-within/icao/katl/distance/30/unit/nm_**
+    GET /airports/iata/:iata
 
-Get distance between origin airport and destination airport (km for kilometers, nm or nautical miles)\  
-Example: **_/api/v1/airports/airports-distance/origin/katl/destination/kjax/unit/nm_**
+---
+
+### Get Airport data using city name
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| name           | city name |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+
+    GET /airports/city/:name
+
+---
+
+### Get Airport data using geneirc info
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| data           | generic serach query |
+
+| URL Queries | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| decode      | return decoded METAR or raw text | false   |
+
+    GET /airports/generic/:data
+
+---
+
+### Get Airport data within radius of ICAO
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| icao        | ICAO code
+|distance	  |distance of radius
+|unit         | km or nm
+
+    GET /airports/airports-within/icao/:icao/distance/:distance/unit/:unit
+
+---
+
+### Get distance from origin airport to destination airport
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| origin   | origin airport ICAO code
+|destination |destination airport ICAO code
+|unit         | km or nm
+
+    GET /airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit
+
+---
+
+
 
 ---
 
@@ -834,44 +988,7 @@ Example: **_/api/v1/users/signup_**
 Login:\  
 Example: **_/api/v1/users/login_**
 
----
 
-### Additional Features
-
-METAR: Decoded + Raw METAR
-
-ATIS: FAA published and Vatsim (if they are available)
-
-Weather: List worst weather for selected country, continent for global.
-
----
-
-### ToDo List:
-
-- ~~Commentary system to allow user to add comment to airport, such like videos, airport remark, landing performances  
-  and  
-  etc.~~
-- ~~ILS~~
-- ~~ATIS~~
-- NOTAM
-- ~~Get Airports by Weather filter~~
-- Geo data:
-    - ~~Nearby airports from selected airport~~
-    - ~~Distance between origin airports to destination airport(approximate ground distance)~~
-    - \*Distance between origin airports to destination airport (approximate air distance)
-- ~~Protected Routes~~
-- Zibo Updates Download (Patch Only, Azure CDN if time allowed)
-- DB modification with Admin authorization.
-- \*Navigraph Navdata parser to update the Airports DB. DB Size reduce.
-- Add Navigraph integration to allow registered user to access more data.
-- Vatsim data display
-
-    - Online regions
-    - ~~ATIS~~
-
-\*Require complete DB model and controllers refactor
-
-\*Need waypoints coordinates to preform graph search
 
 ---
 

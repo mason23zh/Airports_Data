@@ -14,7 +14,7 @@ let repo;
     await rClient.openNewRedisOMClient(process.env.REDIS_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
-//! NEED TO ADD DEFAULT DISTANCE
+
 module.exports.getMetar = async (req, res) => {
     const { decode } = req.query;
     const icaoArray = req.params.icao.split(",");
@@ -59,7 +59,7 @@ module.exports.getMetar = async (req, res) => {
 
 module.exports.getRadiusMetar = async (req, res) => {
     const { icao } = req.params;
-    const { distance, unit = "mile" } = req.query;
+    const { distance = 50, unit = "mile" } = req.query;
     let decode = req.query.decode === "true";
     const newDistance = distanceConverter(unit, distance);
 
@@ -81,7 +81,7 @@ module.exports.getRadiusMetar = async (req, res) => {
 
 module.exports.getRadiusMetarWithLngLat = async (req, res) => {
     const coordinates = req.params.coordinates.split(",");
-    const { distance, unit = "mile" } = req.query;
+    const { distance = 50, unit = "mile" } = req.query;
     let decode = req.query.decode === "true";
     const lng = Number(coordinates[0]) || null;
     const lat = Number(coordinates[1]) || null;
