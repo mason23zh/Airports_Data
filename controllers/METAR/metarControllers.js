@@ -11,12 +11,13 @@ const rClient = new RedisClient();
 
 let repo;
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDIS_URL);
+    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
 module.exports.getMetar = async (req, res) => {
-    const { decode } = req.query;
+    const { decode = "false" } = req.query;
+
     const icaoArray = req.params.icao.split(",");
     const uniqIcaoArray = [...new Set(icaoArray)];
     let responseMetarArray = [];

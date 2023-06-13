@@ -16,7 +16,7 @@ const earthRadiusInKM = 6378.1;
 const rClient = new RedisClient();
 let repo;
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDIS_URL);
+    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 

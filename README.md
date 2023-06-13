@@ -4,13 +4,9 @@
 
 ### Base URL: https://flight-data.herokuapp.com/api/v1
 
-<<<<<<< HEAD
 ### URL: https://flight-data.herokuapp.com
 
-## Airports
-=======
 ## METAR
->>>>>>> METAR_overhaul
 
 ### Get METAR using ICAO code
 
