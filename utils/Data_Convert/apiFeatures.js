@@ -15,7 +15,6 @@ class APIFeatures {
         //filter gte, gt, lte, lt, ne and add $ sign to query in the mongo
         let queryString = JSON.stringify(queryObject); //covert queryObj to String
         queryString = queryString.replace(/\b(gte|gt|lte|lt|ne)\b/g, (match) => `$${match}`);
-
         this.query = this.query.find(JSON.parse(queryString));
 
         //return the entire filter object inorder to be chained
@@ -24,8 +23,8 @@ class APIFeatures {
 
     limitFields() {
         if (this.queryString.fields) {
-            const reqQuery = this.queryString;
-            this.query = this.query.select(reqQuery.fields);
+            const reqQuery = this.queryString.fields.split(",").toString().replace(/,/g, " ");
+            this.query = this.query.select(reqQuery);
         } else {
             this.query = this.query.select("-__v");
         }

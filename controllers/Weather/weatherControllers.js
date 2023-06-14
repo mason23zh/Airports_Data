@@ -430,7 +430,7 @@ const getWindGustForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarCategory_global("wind_gust_speed", -1, limit, decode);
+    const response = await metarFeatures.requestMetarCategory_global("wind_gust_kt", -1, limit, decode);
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,

@@ -20,11 +20,13 @@ let repo;
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
-module.exports.getAirportByICAO_GNS430_Basic = async (req, res, next) => {
+module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const airportFeatures = new APIFeatures(
         GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
         req.query
-    ).limitFields();
+    )
+        .filter()
+        .limitFields();
 
     const gns430Airport = await airportFeatures.query;
 
@@ -39,13 +41,15 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res, next) => {
     });
 };
 
-module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
+module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
     const airportFeatures = new APIFeatures(
         GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
         req.query
-    ).limitFields();
+    )
+        .filter()
+        .limitFields();
 
     airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
     const gns430Airport = await airportFeatures.query;
@@ -66,7 +70,7 @@ module.exports.getAirportByICAO_GNS430 = async (req, res, next) => {
     });
 };
 
-module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
+module.exports.getAirportByIATA_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
     const airportICAO = await Airports.find({
@@ -83,7 +87,9 @@ module.exports.getAirportByIATA_GNS430 = async (req, res, next) => {
 
     const airportICAO_Code = airportICAO[0].ident;
 
-    const airportFeatures = new APIFeatures(GNS430Airport.findOne({ ICAO: airportICAO_Code }), req.query).limitFields();
+    const airportFeatures = new APIFeatures(GNS430Airport.findOne({ ICAO: airportICAO_Code }), req.query)
+        .filter()
+        .limitFields();
 
     const gns430Airport = await airportFeatures.query;
 
@@ -107,7 +113,7 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
         name: { $regex: `${req.params.name}`, $options: "i" },
     });
 
-    const featuresQuery = new APIFeatures(airportQueryObj, req.query).filter().limitFields().limitResults().paginate();
+    const featuresQuery = new APIFeatures(airportQueryObj, req.query).filter().limitFields().limitResults();
 
     const airports = await featuresQuery.query;
 
@@ -119,18 +125,21 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
     });
 };
 
+//! CITY controller always return null
 module.exports.getAirportsByCity_GNS430 = async (req, res) => {
-    const airportsQueryObj = Airports.find({
+    const airportsQueryObj = await Airports.find({
         municipality: { $regex: `${req.params.name}`, $options: "i" },
     });
 
-    const featuresQuery = new APIFeatures(airportsQueryObj, req.query).filter().limitFields().limitResults().paginate();
+    console.log(airportsQueryObj);
 
-    const airports = await featuresQuery.query;
+    //const featuresQuery = new APIFeatures(airportsQueryObj, req.query).filter().limitFields().limitResults();
+
+    //const airports = await featuresQuery.query;
 
     const filteredAirports = [];
     await Promise.all(
-        airports.map(async (airport) => {
+        airportsQueryObj.map(async (airport) => {
             const filteredAirport = await GNS430Airport.find({ ICAO: airport.ident });
             if (filteredAirport.length !== 0) {
                 filteredAirports.push(filteredAirport[0]);
