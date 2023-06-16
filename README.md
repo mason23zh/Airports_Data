@@ -114,6 +114,48 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/coordinates/-9
 
 ---
 
+### Get metar by airport name
+
+| URL Parameters | Description        |
+| -------------- | ------------------ |
+| name           | Airport name |
+
+| URL Queries | Type    | Description                                                                 | Default |
+| ----------- | ------- | --------------------------------------------------------------------------- | ------- |
+| decode      | boolean | return decoded METAR or raw text                                            | false   |
+
+    GET /get-metar/name/:name
+
+```bat
+# Get METAR for airport's name that includ 'winnipeg'
+$ curl https://flight-data.herokuapp.com/api/v1/get-metar/name/winnipeg
+# Get decoded METAR for aiport's name that include 'boston'
+$ curl https://flight-data.herokuapp.com/api/vi/get-metar/name/boston?decode=true
+```
+
+---
+
+### Get metar by geneirc input
+
+| URL Parameters | Description        |
+| -------------- | ------------------ |
+| data           | A generic serch input |
+
+| URL Queries | Type    | Description                                                                 | Default |
+| ----------- | ------- | --------------------------------------------------------------------------- | ------- |
+| decode      | boolean | return decoded METAR or raw text                                            | false   |
+
+    GET /get-metar/generic/:data
+
+```bat
+# Get METAR for airport's name that includ 'winnipeg' and location in 'winnipeg'
+$ curl https://flight-data.herokuapp.com/api/v1/get-metar/generic/winnipeg
+# Get decoded METAR for aiport's name that include 'new york' and location in 'new york'
+$ curl https://flight-data.herokuapp.com/api/vi/get-metar/generic/new york?decode=true
+```
+
+---
+
 ## response
 
 ### Single standard METAR
