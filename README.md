@@ -16,20 +16,20 @@
 | ----------- | -------------------------------- | ------- |
 | decode      | return decoded METAR or raw text | false   |
 
-    GET /get-metar/:icao
+    GET /metar/get-metar/:icao
 
 ```bat
 # Single ICAO
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg
 
 # Single ICAO decoded
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg?decode=true
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg?decode=true
 
 # Multiple ICAOs
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/cywg,klas,zspd
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg,klas,zspd
 
 # Multiple ICAOs decoded
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/klax,cyvr,cyyz?decode=true
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/klax,cyvr,cyyz?decode=true
 ```
 
 ---
@@ -46,7 +46,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/klax,cyvr,cyyz?decode=
 | unit        | string  | mile, miles, mi, kilometer, kilometers, km, nauticalmile, nauticalmiles, nm | mile    |
 | decode      | boolean | return decoded METAR or raw text                                            | false   |
 
-    GET /get-metar/radius/:icao
+    GET /metar/get-metar/radius/:icao
 
 ```bat
 # Get all METARs within 50 miles from CYWG
@@ -71,7 +71,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/radius/cywg?distance=5
 
 ```bat
 # Get all METARs within 50 miles from -97.5 49.9
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/radius/coordinates/-97.5,49.9
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/radius/coordinates/-97.5,49.9
 ```
 
 ---
@@ -86,11 +86,11 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/radius/coordinates/-97
 | ----------- | ------- | -------------------------------- | ------- |
 | decode      | boolean | return decoded METAR or raw text | false   |
 
-    GET /get-metar/radius/nearest/:icao
+    GET /metar/get-metar/radius/nearest/:icao
 
 ```bat
 # Get nearest METAR from KBOS
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/KBOS
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/KBOS
 ```
 
 ---
@@ -109,7 +109,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/KBOS
 
 ```bat
 # Get nearest METAR from -97.5 49.9
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/coordinates/-97.5,49.9
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/coordinates/-97.5,49.9
 ```
 
 ---
@@ -124,7 +124,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/nearest/coordinates/-9
 | ----------- | ------- | --------------------------------------------------------------------------- | ------- |
 | decode      | boolean | return decoded METAR or raw text                                            | false   |
 
-    GET /get-metar/name/:name
+    GET /metar/get-metar/name/:name
 
 ```bat
 # Get METAR for airport's name that includ 'winnipeg'
@@ -145,13 +145,13 @@ $ curl https://flight-data.herokuapp.com/api/vi/get-metar/name/boston?decode=tru
 | ----------- | ------- | --------------------------------------------------------------------------- | ------- |
 | decode      | boolean | return decoded METAR or raw text                                            | false   |
 
-    GET /get-metar/generic/:data
+    GET /metar/get-metar/generic/:data
 
 ```bat
 # Get METAR for airport's name that includ 'winnipeg' and location in 'winnipeg'
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/generic/winnipeg
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/winnipeg
 # Get decoded METAR for aiport's name that include 'new york' and location in 'new york'
-$ curl https://flight-data.herokuapp.com/api/vi/get-metar/generic/new york?decode=true
+$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york?decode=true
 ```
 
 ---
