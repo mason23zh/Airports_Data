@@ -36,8 +36,8 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
 
     res.status(200).json({
         data: {
-            airport: gns430Airport,
-        },
+            airport: gns430Airport
+        }
     });
 };
 
@@ -58,15 +58,20 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
         throw new NotFoundError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
     }
 
-    const responseMetar = await getAwcMetarUsingICAO(req.params.icao.toUpperCase(), decode, AwcWeatherMetarModel, repo);
+    const responseMetar = await getAwcMetarUsingICAO(
+        req.params.icao.toUpperCase(),
+        decode,
+        AwcWeatherMetarModel,
+        repo
+    );
     const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
 
     res.status(200).json({
         data: {
             airport: gns430Airport,
             ATIS,
-            METAR: responseMetar,
-        },
+            METAR: responseMetar
+        }
     });
 };
 
@@ -74,7 +79,7 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
     const airportICAO = await Airports.find({
-        iata_code: `${req.params.iata.toUpperCase()}`,
+        iata_code: `${req.params.iata.toUpperCase()}`
     });
 
     if (airportICAO.length === 0) {
@@ -87,7 +92,10 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
 
     const airportICAO_Code = airportICAO[0].ident;
 
-    const airportFeatures = new APIFeatures(GNS430Airport.findOne({ ICAO: airportICAO_Code }), req.query)
+    const airportFeatures = new APIFeatures(
+        GNS430Airport.findOne({ ICAO: airportICAO_Code }),
+        req.query
+    )
         .filter()
         .limitFields();
 
@@ -95,40 +103,49 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
 
     const ATIS = await generateGeneralATIS(airportICAO_Code);
     if (!gns430Airport) {
-        throw new NotFoundError(`Can Not Found Airport with IATA: ${req.params.iata.toUpperCase()}`);
+        throw new NotFoundError(
+            `Can Not Found Airport with IATA: ${req.params.iata.toUpperCase()}`
+        );
     }
 
-    const responseMetar = await getAwcMetarUsingICAO(airportICAO_Code, decode, AwcWeatherMetarModel, repo);
+    const responseMetar = await getAwcMetarUsingICAO(
+        airportICAO_Code,
+        decode,
+        AwcWeatherMetarModel,
+        repo
+    );
     res.status(200).json({
         data: {
             airport: gns430Airport,
             ATIS,
-            METAR: responseMetar,
-        },
+            METAR: responseMetar
+        }
     });
 };
 
 module.exports.getAirportByName_GNS430 = async (req, res) => {
     const airportQueryObj = GNS430Airport.find({
-        name: { $regex: `${req.params.name}`, $options: "i" },
+        name: { $regex: `${req.params.name}`, $options: "i" }
     });
 
-    const featuresQuery = new APIFeatures(airportQueryObj, req.query).filter().limitFields().limitResults();
+    const featuresQuery = new APIFeatures(airportQueryObj, req.query)
+        .filter()
+        .limitFields()
+        .limitResults();
 
     const airports = await featuresQuery.query;
 
     res.status(200).json({
         results: airports.length,
         data: {
-            airport: airports,
-        },
+            airport: airports
+        }
     });
 };
 
-//! CITY controller always return null
 module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     const airportsQueryObj = await Airports.find({
-        municipality: { $regex: `${req.params.name}`, $options: "i" },
+        municipality: { $regex: `${req.params.name}`, $options: "i" }
     });
 
     console.log(airportsQueryObj);
@@ -150,8 +167,8 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     res.status(200).json({
         results: filteredAirports.length,
         data: {
-            airport: filteredAirports,
-        },
+            airport: filteredAirports
+        }
     });
 };
 
@@ -164,24 +181,29 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
 
     if (checkICAO(userInput)) {
         const airportsWithICAO = await GNS430Airport.findOne({
-            ICAO: userInput.toUpperCase(),
+            ICAO: userInput.toUpperCase()
         });
         if (airportsWithICAO) {
             res.status(200).json({
                 status: "success",
                 results: airportsWithICAO.length,
-                data: airportsWithICAO,
+                data: airportsWithICAO
             });
         } else {
-            throw new NotFoundError(`Cannot find airport with ICAO code: ${userInput.toUpperCase()}`);
+            throw new NotFoundError(
+                `Cannot find airport with ICAO code: ${userInput.toUpperCase()}`
+            );
         }
     } else {
         const airportsWithGNS430 = await GNS430Airport.find({
-            $or: [{ ICAO: `${userInput.toUpperCase()}` }, { name: { $regex: `${userInput}`, $options: "i" } }],
+            $or: [
+                { ICAO: `${userInput.toUpperCase()}` },
+                { name: { $regex: `${userInput}`, $options: "i" } }
+            ]
         });
 
         const airportWithCity = await Airports.find({
-            municipality: { $regex: `${userInput}`, $options: "i" },
+            municipality: { $regex: `${userInput}`, $options: "i" }
         });
 
         await Promise.all(
@@ -204,7 +226,7 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         });
         res.status(200).json({
             result: responseAirports.length,
-            data: responseAirports,
+            data: responseAirports
         });
     }
 };
@@ -218,21 +240,22 @@ module.exports.getAirportWithin = async (req, res) => {
     }
 
     const [lng, lat] = originAirport.location.coordinates;
-    const radius = unit === "km" ? distance / earthRadiusInKM : distance / earthRadiusInNauticalMile;
+    const radius =
+        unit === "km" ? distance / earthRadiusInKM : distance / earthRadiusInNauticalMile;
 
     const targetAirports = await GNS430Airport.find({
         location: {
             $geoWithin: {
-                $centerSphere: [[lng, lat], radius],
-            },
-        },
+                $centerSphere: [[lng, lat], radius]
+            }
+        }
     });
 
     res.status(200).json({
         results: targetAirports.length,
         data: {
-            airport: targetAirports,
-        },
+            airport: targetAirports
+        }
     });
 };
 
@@ -244,7 +267,10 @@ const getDistanceFromLatLonInKm = (originLng, originLat, desLng, desLat) => {
     const dLon = deg2rad(originLng - desLng);
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(originLat)) * Math.cos(deg2rad(desLat)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Math.cos(deg2rad(originLat)) *
+            Math.cos(deg2rad(desLat)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c; // Distance in km
     return d;
@@ -258,7 +284,9 @@ module.exports.getAirportsDistance = async (req, res) => {
         throw new NotFoundError(`Airport with ICAO: ${originICAO.toUpperCase()} not found.`);
     }
 
-    const destinationAirport = await GNS430Airport.findOne({ ICAO: `${destinationICAO.toUpperCase()}` });
+    const destinationAirport = await GNS430Airport.findOne({
+        ICAO: `${destinationICAO.toUpperCase()}`
+    });
     if (destinationAirport === null) {
         throw new NotFoundError(`Airport with ICAO: ${destinationICAO.toUpperCase()} not found.`);
     }
@@ -266,12 +294,17 @@ module.exports.getAirportsDistance = async (req, res) => {
     const [originLng, originLat] = originAirport.location.coordinates;
     const [destinationLng, destinationLat] = destinationAirport.location.coordinates;
 
-    const calculatedDistance = getDistanceFromLatLonInKm(originLng, originLat, destinationLng, destinationLat);
+    const calculatedDistance = getDistanceFromLatLonInKm(
+        originLng,
+        originLat,
+        destinationLng,
+        destinationLat
+    );
     const distance = unit === "km" ? calculatedDistance : calculatedDistance * 0.539957;
 
     res.status(200).json({
         data: {
-            distance: distance.toFixed(1),
-        },
+            distance: distance.toFixed(1)
+        }
     });
 };

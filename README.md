@@ -4,6 +4,54 @@
 
 ### Base URL: https://flight-data.herokuapp.com/api/v1
 
+---
+
+- [Flight Data](#flight-data)
+    - [METAR](#metar)
+        - [Get METAR using ICAO code](#get-metar-using-icao-code)
+        - [Get metar within radius by ICAO](#get-metar-within-radius-by-icao)
+        - [Get metar within radius by longitude and latitude](#get-metar-within-radius-by-longtitude-and-latitude)
+        - [Get nearest METAR by ICAO](#get-nearest-metar-by-icao)
+        - [Get nearest METAR by longitude and latitude](#get-nearest-metar-by-longtitude-and-latitude)
+        - [Get metar by airport name](#get-metar-by-airport-name)
+        - [Get metar by generic input](#get-metar-by-geneirc-input)
+    - [Weather Category](#weather)
+        - **_Country Scope_**
+            - [Get METARs for country sorted by temperature](#get-metars-for-country-sorted-by-temperature)
+            - [Get METARs for country sorted by visibility](#get-metars-for-country-sorted-by-visibility)
+            - [Get METARs for country sorted by barometer](#get-metars-for-country-sorted-by-barometer)
+            - [Get METARs for country sorted by wind gust speed](#get-metars-for-country-sorted-by-wind-gust-speed)
+            - [Get METARs for country sorted by wind gust speed](#get-metars-for-country-sorted-by-wind-gust-speed-1)
+            - [Get METARs for country sorted by wind speed](#get-metars-for-country-sorted-by-wind-speed)
+        - **_Continent Scope_**
+            - [Get METARs for continent sorted by temperature](#get-metars-for-continent-sorted-by-temperature)
+            - [Get METARs for continent sorted by visibility](#get-metars-for-continent-sorted-by-visibility)
+            - [Get METARs for continent sorted by barometer](#get-metars-for-continent-sorted-by-barometer)
+            - [Get METARs for continent sorted by wind gust speed](#get-metars-for-continent-sorted-by-wind-gust-speed)
+            - [Get METARs for continent sorted by wind speed](#get-metars-for-continent-sorted-by-wind-speed)
+        - **_Global Scope_**
+            - [Get METARs for global sorted by temperature](#get-metars-for-global-sorted-by-temperature)
+            - [Get METARs for global sorted by visibility](#get-metars-for-global-sorted-by-visibility)
+            - [Get METARs for global sorted by barometer](#get-metars-for-global-sorted-by-barometer)
+            - [Get METARs for global sorted by wind gust speed](#get-metars-for-global-sorted-by-wind-gust-speed)
+            - [Get METARs for global sorted by wind speed](#get-metars-for-global-sorted-by-wind-speed)
+        - [**_METAR Search_**](#metar-search)
+        - [Search METAR for ICAO code](#search-metar-for-icao-code)
+        - [Search METAR for IATA code](#search-metar-for-iata-code)
+        - [Search METAR for airport's name](#search-metar-for-airports-name)
+        - [Search METAR based on the geneirc input](#search-metar-based-on-the-geneirc-input)
+    - [Airports](#airports)
+        - [Get Airport data using ICAO](#get-airport-data-using-icao)
+        - [Get Airport data using iata](#get-airport-data-using-iata)
+        - [Get Airport data using city name](#get-airport-data-using-city-name)
+        - [Get Airport data using geneirc info](#get-airport-data-using-geneirc-info)
+        - [Get Airport data within radius of ICAO](#get-airport-data-within-radius-of-icao)
+        - [Get distance from origin airport to destination airport](#get-distance-from-origin-airport-to-destination-airport)
+        - [References:](#references)
+        - [Credits](#credits)
+
+---
+
 ## METAR
 
 ### Get METAR using ICAO code
@@ -162,11 +210,11 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york
 
 ```yaml
 {
-  "results": 1,
-  "data":
-    [
-      "CYVR 090200Z 15006KT 20SM FEW100 FEW230 23/10 A2986 RMK AC1CI2 AC TR CONTRAILS SLP115 DENSITY ALT 1000FT",
-    ],
+    "results": 1,
+    "data":
+      [
+          "CYVR 090200Z 15006KT 20SM FEW100 FEW230 23/10 A2986 RMK AC1CI2 AC TR CONTRAILS SLP115 DENSITY ALT 1000FT",
+      ],
 }
 ```
 
@@ -174,62 +222,62 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york
 
 ```yaml
 {
-  "results": 1,
-  "data":
-    [
-      {
-        "icao": "CYVR",
-        "raw_text": "CYVR 090200Z 15006KT 20SM FEW100 FEW230 23/10 A2986 RMK AC1CI2 AC TR CONTRAILS SLP115 DENSITY ALT 1000FT",
-        "barometer":
-          { "hg": "29.86", "hpa": "1011", "kpa": "101.12", "mb": "1011.10" },
-        "wind":
+    "results": 1,
+    "data":
+      [
           {
-            "degrees": 150,
-            "speed_kts": 6,
-            "speed_kph": 11,
-            "speed_mps": 3,
-            "speed_mph": 7,
+              "icao": "CYVR",
+              "raw_text": "CYVR 090200Z 15006KT 20SM FEW100 FEW230 23/10 A2986 RMK AC1CI2 AC TR CONTRAILS SLP115 DENSITY ALT 1000FT",
+              "barometer":
+                { "hg": "29.86", "hpa": "1011", "kpa": "101.12", "mb": "1011.10" },
+              "wind":
+                {
+                    "degrees": 150,
+                    "speed_kts": 6,
+                    "speed_kph": 11,
+                    "speed_mps": 3,
+                    "speed_mph": 7,
+                },
+              "clouds":
+                [
+                    {
+                        "code": "FEW",
+                        "name": "few",
+                        "density": "1/8 - 2/8",
+                        "feet": 10000,
+                        "base_feet_agl": 10000,
+                        "base_meters_agl": 3048,
+                    },
+                    {
+                        "code": "FEW",
+                        "name": "few",
+                        "density": "1/8 - 2/8",
+                        "feet": 23000,
+                        "base_feet_agl": 23000,
+                        "base_meters_agl": 7010,
+                    },
+                ],
+              "visibility": { "miles_float": 20, "meters_float": 32187 },
+              "temperature": { "celsius": 23, "fahrenheit": "73" },
+              "dewpoint": { "celsius": 10, "fahrenheit": "50" },
+              "humidity": { "percent": 44 },
+              "elevation": { "feet": 7, "meters": 2 },
+              "flight_category": "VFR",
+              "station":
+                {
+                    "location":
+                      {
+                          "continent": "NA",
+                          "country": "CA",
+                          "region": "CA-BC",
+                          "city": "Vancouver",
+                          "name": "Vancouver International Airport",
+                          "geometry":
+                            { "coordinates": [ -123.17, 49.17 ], "type": "Point" },
+                      },
+                },
           },
-        "clouds":
-          [
-            {
-              "code": "FEW",
-              "name": "few",
-              "density": "1/8 - 2/8",
-              "feet": 10000,
-              "base_feet_agl": 10000,
-              "base_meters_agl": 3048,
-            },
-            {
-              "code": "FEW",
-              "name": "few",
-              "density": "1/8 - 2/8",
-              "feet": 23000,
-              "base_feet_agl": 23000,
-              "base_meters_agl": 7010,
-            },
-          ],
-        "visibility": { "miles_float": 20, "meters_float": 32187 },
-        "temperature": { "celsius": 23, "fahrenheit": "73" },
-        "dewpoint": { "celsius": 10, "fahrenheit": "50" },
-        "humidity": { "percent": 44 },
-        "elevation": { "feet": 7, "meters": 2 },
-        "flight_category": "VFR",
-        "station":
-          {
-            "location":
-              {
-                "continent": "NA",
-                "country": "CA",
-                "region": "CA-BC",
-                "city": "Vancouver",
-                "name": "Vancouver International Airport",
-                "geometry":
-                  { "coordinates": [ -123.17, 49.17 ], "type": "Point" },
-              },
-          },
-      },
-    ],
+      ],
 }
 ```
 
@@ -237,13 +285,13 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york
 
 ```yaml
 {
-  "results": 3,
-  "data":
-    [
-      "CYVR 092300Z 12009KT 10SM -RA SCT055 BKN070 OVC095 13/11 A3002 RMK SC3AC2AC3 SLP168",
-      "KBOS 092254Z 11004KT 10SM -RA FEW037 SCT080 BKN095 BKN130 14/13 A2972 RMK AO2 RAB16 SLP062 P0002 T01440128",
-      "CYWG 092300Z 36015G21KT 15SM FEW070 24/08 A2986 RMK FU2 SLP116 DENSITY ALT 2200FT",
-    ],
+    "results": 3,
+    "data":
+      [
+          "CYVR 092300Z 12009KT 10SM -RA SCT055 BKN070 OVC095 13/11 A3002 RMK SC3AC2AC3 SLP168",
+          "KBOS 092254Z 11004KT 10SM -RA FEW037 SCT080 BKN095 BKN130 14/13 A2972 RMK AO2 RAB16 SLP062 P0002 T01440128",
+          "CYWG 092300Z 36015G21KT 15SM FEW070 24/08 A2986 RMK FU2 SLP116 DENSITY ALT 2200FT",
+      ],
 }
 ```
 
@@ -251,189 +299,189 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york
 
 ```yaml
 {
-  "results": 3,
-  "data":
-    [
-      {
-        "icao": "CYVR",
-        "raw_text": "CYVR 092300Z 12009KT 10SM -RA SCT055 BKN070 OVC095 13/11 A3002 RMK SC3AC2AC3 SLP168",
-        "barometer":
-          { "hg": "30.02", "hpa": "1017", "kpa": "101.66", "mb": "1016.50" },
-        "wind":
+    "results": 3,
+    "data":
+      [
           {
-            "degrees": 120,
-            "speed_kts": 9,
-            "speed_kph": 17,
-            "speed_mps": 5,
-            "speed_mph": 10,
+              "icao": "CYVR",
+              "raw_text": "CYVR 092300Z 12009KT 10SM -RA SCT055 BKN070 OVC095 13/11 A3002 RMK SC3AC2AC3 SLP168",
+              "barometer":
+                { "hg": "30.02", "hpa": "1017", "kpa": "101.66", "mb": "1016.50" },
+              "wind":
+                {
+                    "degrees": 120,
+                    "speed_kts": 9,
+                    "speed_kph": 17,
+                    "speed_mps": 5,
+                    "speed_mph": 10,
+                },
+              "clouds":
+                [
+                    {
+                        "code": "SCT",
+                        "name": "scattered",
+                        "density": "3/8 - 4/8",
+                        "feet": 5500,
+                        "base_feet_agl": 5500,
+                        "base_meters_agl": 1676,
+                    },
+                    {
+                        "code": "BKN",
+                        "name": "broken",
+                        "density": "5/8 – 7/8",
+                        "feet": 7000,
+                        "base_feet_agl": 7000,
+                        "base_meters_agl": 2134,
+                    },
+                    {
+                        "code": "OVC",
+                        "name": "overcast",
+                        "density": "8/8",
+                        "feet": 9500,
+                        "base_feet_agl": 9500,
+                        "base_meters_agl": 2896,
+                    },
+                ],
+              "conditions":
+                { "0": { "code": "-RA", "text": "light intensity rain" } },
+              "visibility": { "miles_float": 10, "meters_float": 16093 },
+              "temperature": { "celsius": 13, "fahrenheit": "55" },
+              "dewpoint": { "celsius": 11, "fahrenheit": "52" },
+              "humidity": { "percent": 88 },
+              "elevation": { "feet": 7, "meters": 2 },
+              "flight_category": "VFR",
+              "station":
+                {
+                    "location":
+                      {
+                          "continent": "NA",
+                          "country": "CA",
+                          "region": "CA-BC",
+                          "city": "Vancouver",
+                          "name": "Vancouver International Airport",
+                          "geometry":
+                            { "coordinates": [ -123.17, 49.17 ], "type": "Point" },
+                      },
+                },
           },
-        "clouds":
-          [
-            {
-              "code": "SCT",
-              "name": "scattered",
-              "density": "3/8 - 4/8",
-              "feet": 5500,
-              "base_feet_agl": 5500,
-              "base_meters_agl": 1676,
-            },
-            {
-              "code": "BKN",
-              "name": "broken",
-              "density": "5/8 – 7/8",
-              "feet": 7000,
-              "base_feet_agl": 7000,
-              "base_meters_agl": 2134,
-            },
-            {
-              "code": "OVC",
-              "name": "overcast",
-              "density": "8/8",
-              "feet": 9500,
-              "base_feet_agl": 9500,
-              "base_meters_agl": 2896,
-            },
-          ],
-        "conditions":
-          { "0": { "code": "-RA", "text": "light intensity rain" } },
-        "visibility": { "miles_float": 10, "meters_float": 16093 },
-        "temperature": { "celsius": 13, "fahrenheit": "55" },
-        "dewpoint": { "celsius": 11, "fahrenheit": "52" },
-        "humidity": { "percent": 88 },
-        "elevation": { "feet": 7, "meters": 2 },
-        "flight_category": "VFR",
-        "station":
           {
-            "location":
-              {
-                "continent": "NA",
-                "country": "CA",
-                "region": "CA-BC",
-                "city": "Vancouver",
-                "name": "Vancouver International Airport",
-                "geometry":
-                  { "coordinates": [ -123.17, 49.17 ], "type": "Point" },
-              },
+              "icao": "KBOS",
+              "raw_text": "KBOS 092254Z 11004KT 10SM -RA FEW037 SCT080 BKN095 BKN130 14/13 A2972 RMK AO2 RAB16 SLP062 P0002 T01440128",
+              "barometer":
+                { "hg": "29.72", "hpa": "1006", "kpa": "100.64", "mb": "1006.30" },
+              "wind":
+                {
+                    "degrees": 110,
+                    "speed_kts": 4,
+                    "speed_kph": 7,
+                    "speed_mps": 2,
+                    "speed_mph": 5,
+                },
+              "clouds":
+                [
+                    {
+                        "code": "FEW",
+                        "name": "few",
+                        "density": "1/8 - 2/8",
+                        "feet": 3700,
+                        "base_feet_agl": 3700,
+                        "base_meters_agl": 1128,
+                    },
+                    {
+                        "code": "SCT",
+                        "name": "scattered",
+                        "density": "3/8 - 4/8",
+                        "feet": 8000,
+                        "base_feet_agl": 8000,
+                        "base_meters_agl": 2438,
+                    },
+                    {
+                        "code": "BKN",
+                        "name": "broken",
+                        "density": "5/8 – 7/8",
+                        "feet": 9500,
+                        "base_feet_agl": 9500,
+                        "base_meters_agl": 2896,
+                    },
+                    {
+                        "code": "BKN",
+                        "name": "broken",
+                        "density": "5/8 – 7/8",
+                        "feet": 13000,
+                        "base_feet_agl": 13000,
+                        "base_meters_agl": 3962,
+                    },
+                ],
+              "conditions":
+                { "0": { "code": "-RA", "text": "light intensity rain" } },
+              "visibility": { "miles_float": 10, "meters_float": 16093 },
+              "temperature": { "celsius": 14.4, "fahrenheit": "58" },
+              "dewpoint": { "celsius": 12.8, "fahrenheit": "55" },
+              "humidity": { "percent": 90 },
+              "elevation": { "feet": 13, "meters": 4 },
+              "flight_category": "VFR",
+              "station":
+                {
+                    "location":
+                      {
+                          "continent": "NA",
+                          "country": "US",
+                          "region": "US-MA",
+                          "city": "Boston",
+                          "name": "General Edward Lawrence Logan International Airport",
+                          "geometry": { "coordinates": [ -71.02, 42.37 ], "type": "Point" },
+                      },
+                },
           },
-      },
-      {
-        "icao": "KBOS",
-        "raw_text": "KBOS 092254Z 11004KT 10SM -RA FEW037 SCT080 BKN095 BKN130 14/13 A2972 RMK AO2 RAB16 SLP062 P0002 T01440128",
-        "barometer":
-          { "hg": "29.72", "hpa": "1006", "kpa": "100.64", "mb": "1006.30" },
-        "wind":
           {
-            "degrees": 110,
-            "speed_kts": 4,
-            "speed_kph": 7,
-            "speed_mps": 2,
-            "speed_mph": 5,
+              "icao": "CYWG",
+              "raw_text": "CYWG 092300Z 36015G21KT 15SM FEW070 24/08 A2986 RMK FU2 SLP116 DENSITY ALT 2200FT",
+              "barometer":
+                { "hg": "29.86", "hpa": "1011", "kpa": "101.12", "mb": "1011.10" },
+              "wind":
+                {
+                    "degrees": 360,
+                    "speed_kts": 15,
+                    "speed_kph": 28,
+                    "speed_mps": 8,
+                    "speed_mph": 17,
+                    "gust_kts": 21,
+                    "gust_mps": 11,
+                    "gust_kph": 39,
+                    "gust_mph": 24,
+                },
+              "clouds":
+                [
+                    {
+                        "code": "FEW",
+                        "name": "few",
+                        "density": "1/8 - 2/8",
+                        "feet": 7000,
+                        "base_feet_agl": 7000,
+                        "base_meters_agl": 2134,
+                    },
+                ],
+              "conditions": { "0": { "code": "FU2", "text": " smoke" } },
+              "visibility": { "miles_float": 15, "meters_float": 24140 },
+              "temperature": { "celsius": 24, "fahrenheit": "75" },
+              "dewpoint": { "celsius": 8, "fahrenheit": "46" },
+              "humidity": { "percent": 36 },
+              "elevation": { "feet": 781, "meters": 238 },
+              "flight_category": "VFR",
+              "station":
+                {
+                    "location":
+                      {
+                          "continent": "NA",
+                          "country": "CA",
+                          "region": "CA-MB",
+                          "city": "Winnipeg",
+                          "name": "Winnipeg / James Armstrong Richardson International Airport",
+                          "geometry": { "coordinates": [ -97.23, 49.9 ], "type": "Point" },
+                      },
+                },
           },
-        "clouds":
-          [
-            {
-              "code": "FEW",
-              "name": "few",
-              "density": "1/8 - 2/8",
-              "feet": 3700,
-              "base_feet_agl": 3700,
-              "base_meters_agl": 1128,
-            },
-            {
-              "code": "SCT",
-              "name": "scattered",
-              "density": "3/8 - 4/8",
-              "feet": 8000,
-              "base_feet_agl": 8000,
-              "base_meters_agl": 2438,
-            },
-            {
-              "code": "BKN",
-              "name": "broken",
-              "density": "5/8 – 7/8",
-              "feet": 9500,
-              "base_feet_agl": 9500,
-              "base_meters_agl": 2896,
-            },
-            {
-              "code": "BKN",
-              "name": "broken",
-              "density": "5/8 – 7/8",
-              "feet": 13000,
-              "base_feet_agl": 13000,
-              "base_meters_agl": 3962,
-            },
-          ],
-        "conditions":
-          { "0": { "code": "-RA", "text": "light intensity rain" } },
-        "visibility": { "miles_float": 10, "meters_float": 16093 },
-        "temperature": { "celsius": 14.4, "fahrenheit": "58" },
-        "dewpoint": { "celsius": 12.8, "fahrenheit": "55" },
-        "humidity": { "percent": 90 },
-        "elevation": { "feet": 13, "meters": 4 },
-        "flight_category": "VFR",
-        "station":
-          {
-            "location":
-              {
-                "continent": "NA",
-                "country": "US",
-                "region": "US-MA",
-                "city": "Boston",
-                "name": "General Edward Lawrence Logan International Airport",
-                "geometry": { "coordinates": [ -71.02, 42.37 ], "type": "Point" },
-              },
-          },
-      },
-      {
-        "icao": "CYWG",
-        "raw_text": "CYWG 092300Z 36015G21KT 15SM FEW070 24/08 A2986 RMK FU2 SLP116 DENSITY ALT 2200FT",
-        "barometer":
-          { "hg": "29.86", "hpa": "1011", "kpa": "101.12", "mb": "1011.10" },
-        "wind":
-          {
-            "degrees": 360,
-            "speed_kts": 15,
-            "speed_kph": 28,
-            "speed_mps": 8,
-            "speed_mph": 17,
-            "gust_kts": 21,
-            "gust_mps": 11,
-            "gust_kph": 39,
-            "gust_mph": 24,
-          },
-        "clouds":
-          [
-            {
-              "code": "FEW",
-              "name": "few",
-              "density": "1/8 - 2/8",
-              "feet": 7000,
-              "base_feet_agl": 7000,
-              "base_meters_agl": 2134,
-            },
-          ],
-        "conditions": { "0": { "code": "FU2", "text": " smoke" } },
-        "visibility": { "miles_float": 15, "meters_float": 24140 },
-        "temperature": { "celsius": 24, "fahrenheit": "75" },
-        "dewpoint": { "celsius": 8, "fahrenheit": "46" },
-        "humidity": { "percent": 36 },
-        "elevation": { "feet": 781, "meters": 238 },
-        "flight_category": "VFR",
-        "station":
-          {
-            "location":
-              {
-                "continent": "NA",
-                "country": "CA",
-                "region": "CA-MB",
-                "city": "Winnipeg",
-                "name": "Winnipeg / James Armstrong Richardson International Airport",
-                "geometry": { "coordinates": [ -97.23, 49.9 ], "type": "Point" },
-              },
-          },
-      },
-    ],
+      ],
 }
 ```
 
@@ -1011,23 +1059,23 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 
 ### Airports Query:
 
-limitFields\  
+limitFields\
 Example: **_/api/v1/airports/all-airports?fields=icao+type_**
 
-limitResults\n  
+limitResults\n
 Example: **_/api/v1/airports/all-airports?limitedResults=3_**
 
-paginate  
+paginate
 Example: **_/api/v1/airports/all-airports?page=1&limit=3_**
 
 ### Users: _/api/v1/users_
 
 **End Points**:
 
-Signup: \  
+Signup: \
 Example: **_/api/v1/users/signup_**
 
-Login:\  
+Login:\
 Example: **_/api/v1/users/login_**
 
 
