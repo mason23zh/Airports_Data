@@ -15,21 +15,17 @@ const commentRoutes = require("./commentRoutes");
 
 const router = express.Router();
 
-//nested routes
-router.use("/:airporId/comments", commentRoutes);
+router.use("/:airportId/comments", commentRoutes);
 
 router.route("/icao/:icao").get(getAirportByICAO_GNS430);
 router.route("/icao/basic/:icao").get(getAirportByICAO_GNS430_Basic);
 router.route("/iata/:iata").get(getAirportByIATA_GNS430);
 router.route("/city/:name").get(getAirportsByCity_GNS430);
 router.route("/generic/:data").get(getAirportByGenericInput_GNS430);
-//Able to partially match e.g. winnipeg would match 3 resutls
 router.route("/name/:name").get(getAirportByName_GNS430);
 
 // Geo
-// /airports-within/icao/katl/distance/200/unit/km or nm
 router.route("/airports-within/icao/:icao/distance/:distance/unit/:unit").get(getAirportWithin);
-// /airports-distance/origin/katl/destination/kjax/unit/km or nm
 router.route("/airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit").get(getAirportsDistance);
 
 module.exports = router;

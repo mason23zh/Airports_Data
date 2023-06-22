@@ -28,7 +28,6 @@ class RedisClient {
             this.repo = this.client.fetchRepository(schema);
             return this.repo;
         } else {
-            // throw new Error("Client initialization required");
             return null;
         }
     }

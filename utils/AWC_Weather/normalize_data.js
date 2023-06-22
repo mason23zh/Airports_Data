@@ -4,9 +4,7 @@ const gns430_airports_with_location = "./utils/AWC_Weather/Data/GNS430_airports_
 
 module.exports.normalizeData = async () => {
     const awcMetars = JSON.parse(fs.readFileSync(awc_json_metar, "utf-8"));
-    // const globalAirportIcao = JSON.parse(fs.readFileSync(global_airport_icao), "utf-8");
     const gns430Airport = JSON.parse(fs.readFileSync(gns430_airports_with_location, "utf-8"));
-    // console.log(awcMetars[0]);
     let normalizedAwcMetar = [];
 
     const redisValidCoordinates = (lng, lat) => {
