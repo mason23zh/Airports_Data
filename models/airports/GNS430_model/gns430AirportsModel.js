@@ -4,80 +4,80 @@ const gns430AirportSchema = new mongoose.Schema(
     {
         ICAO: {
             type: String,
-            required: [true, "Airport Must have ICAO"],
+            required: [true, "Airport Must have ICAO"]
         },
         name: {
-            type: String,
+            type: String
         },
         location: {
             // GeoJSON
             type: {
                 type: String,
                 default: "Point",
-                enum: ["Point"],
+                enum: ["Point"]
             },
-            coordinates: [Number], //Array of number [lng, lat]
+            coordinates: [Number] //Array of number [lng, lat]
         },
         elevation: {
-            type: Number,
+            type: Number
         },
         transitionAltitude: {
-            type: Number,
+            type: Number
         },
         runways: [
             {
                 runway_id: {
-                    type: String,
+                    type: String
                 },
                 runwayHdg: {
-                    type: Number,
+                    type: Number
                 },
                 runwayWidth: {
-                    type: Number,
+                    type: Number
                 },
                 runwayLength: {
-                    type: Number,
+                    type: Number
                 },
                 runway_ils_avl: {
-                    type: Number,
+                    type: Number
                 },
                 ilsFreq: {
-                    type: Number,
+                    type: Number
                 },
                 ilsHdg: {
-                    type: Number,
+                    type: Number
                 },
                 runwayLocation: {
                     type: {
                         type: String,
                         default: "Point",
-                        enum: ["Point"],
+                        enum: ["Point"]
                     },
-                    coordinates: [Number],
+                    coordinates: [Number]
                 },
                 thresholdElevation: {
-                    type: Number,
+                    type: Number
                 },
                 thresholdOverflyAlt: {
-                    type: Number,
+                    type: Number
                 },
                 gsAngle: {
-                    type: Number,
+                    type: Number
                 },
                 surfaceType: {
                     type: Number,
-                    enum: [0, 1, 2, 3], //0)concrete 1)Asphal/bitumen/blacktop 2)grabel/coral/ice/snow 3)other
+                    enum: [0, 1, 2, 3] //0)concrete 1)Asphal/bitumen/blacktop 2)grabel/coral/ice/snow 3)other
                 },
                 runwayStatus: {
                     type: Number,
-                    enum: [0, 1, 2, 3], //0)takeoff/land 1)takeoff only 2)land only 3)closed
-                },
-            },
-        ],
+                    enum: [0, 1, 2, 3] //0)takeoff/land 1)takeoff only 2)land only 3)closed
+                }
+            }
+        ]
     },
     {
         toJSON: { virtuals: true },
-        toObject: { virtuals: true },
+        toObject: { virtuals: true }
     }
 );
 
@@ -86,7 +86,7 @@ mongoose.plugin((gns430AirportSchema) => {
         transform(doc, ret) {
             ret.id = ret._id;
             delete ret._id;
-        },
+        }
     };
 });
 
@@ -95,7 +95,7 @@ gns430AirportSchema.index({ location: "2dsphere" });
 gns430AirportSchema.virtual("comments", {
     ref: "Comment",
     foreignField: "airport",
-    localField: "_id",
+    localField: "_id"
 });
 
 module.exports.GNS430Airport = mongoose.model("GNS430Airport", gns430AirportSchema);

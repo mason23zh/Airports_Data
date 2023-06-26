@@ -60,7 +60,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
                             visibility_statute_mi: Number(metar.visibility_statute_mi),
                             altim_in_hg: Number(metar.altim_in_hg),
                             elevation_m: Number(metar.elevation_m),
-                            auto: metar.auto || "FALSE",
+                            auto: metar.auto || "FALSE"
                         };
                         await repo.createAndSave(updatedMetar);
                     })
@@ -90,7 +90,10 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
     }
 }
 
-const Latest_AwcWeatherModel = SecondaryConnection.model("AwcWeatherMetarModel_Latest", AwcWeatherMetarSchema);
+const Latest_AwcWeatherModel = SecondaryConnection.model(
+    "AwcWeatherMetarModel_Latest",
+    AwcWeatherMetarSchema
+);
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {

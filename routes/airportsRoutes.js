@@ -9,7 +9,7 @@ const {
     getAirportsDistance,
     getAirportsByCity_GNS430,
     getAirportByGenericInput_GNS430,
-    getAirportByICAO_GNS430_Basic,
+    getAirportByICAO_GNS430_Basic
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -26,6 +26,8 @@ router.route("/name/:name").get(getAirportByName_GNS430);
 
 // Geo
 router.route("/airports-within/icao/:icao/distance/:distance/unit/:unit").get(getAirportWithin);
-router.route("/airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit").get(getAirportsDistance);
+router
+    .route("/airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit")
+    .get(getAirportsDistance);
 
 module.exports = router;

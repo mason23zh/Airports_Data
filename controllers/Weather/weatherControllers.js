@@ -12,7 +12,7 @@ const { distanceConverter } = require("../../utils/METAR/convert");
 const {
     getAwcMetarUsingICAO,
     getAwcMetarUsingGenericInput,
-    getAwcMetarUsingAirportName,
+    getAwcMetarUsingAirportName
 } = require("../../utils/AWC_Weather/controller_helper");
 
 const rClient = new RedisClient();
@@ -31,17 +31,21 @@ const getMetarsWithin = async (req, res, next) => {
 
     if (checkICAO(icao.toUpperCase())) {
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-        const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);
+        const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(
+            icao,
+            newDistance,
+            decode
+        );
 
         if (responseMetars && responseMetars.length > 0) {
             res.status(200).json({
                 results: responseMetars.length,
-                data: responseMetars,
+                data: responseMetars
             });
         } else {
             res.status(404).json({
                 results: responseMetars.length,
-                data: responseMetars,
+                data: responseMetars
             });
         }
     } else {
@@ -58,25 +62,30 @@ const getMetarUsingGenericInput = async (req, res, next) => {
         if (responseMetar) {
             return res.status(200).json({
                 results: 1,
-                data: [responseMetar],
+                data: [responseMetar]
             });
         } else {
             return res.status(404).json({
                 results: 0,
-                data: [],
+                data: []
             });
         }
     } else {
-        const responseMetar = await getAwcMetarUsingGenericInput(data, decode, AwcWeatherMetarModel, repo);
+        const responseMetar = await getAwcMetarUsingGenericInput(
+            data,
+            decode,
+            AwcWeatherMetarModel,
+            repo
+        );
         if (responseMetar && responseMetar.length > 0) {
             return res.status(200).json({
                 results: responseMetar.length,
-                data: responseMetar,
+                data: responseMetar
             });
         } else {
             return res.status(404).json({
                 results: 0,
-                data: [],
+                data: []
             });
         }
     }
@@ -85,16 +94,21 @@ const getMetarUsingGenericInput = async (req, res, next) => {
 const getMetarUsingAirportName = async (req, res, next) => {
     const { name } = req.params;
     let decode = req.query.decode === "true";
-    const responseMetar = await getAwcMetarUsingAirportName(name, decode, AwcWeatherMetarModel, repo);
+    const responseMetar = await getAwcMetarUsingAirportName(
+        name,
+        decode,
+        AwcWeatherMetarModel,
+        repo
+    );
     if (responseMetar && responseMetar.length > 0) {
         res.status(200).json({
             results: responseMetar.length,
-            data: responseMetar,
+            data: responseMetar
         });
     } else {
         res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -108,12 +122,12 @@ const getMetarUsingICAO = async (req, res, next) => {
         if (responseMetar) {
             res.status(200).json({
                 results: 1,
-                data: [responseMetar],
+                data: [responseMetar]
             });
         } else {
             res.status(404).json({
                 results: 0,
-                data: [],
+                data: []
             });
         }
     } else {
@@ -124,12 +138,14 @@ const getMetarUsingICAO = async (req, res, next) => {
 const getMetarUsingIATA = async (req, res, next) => {
     const { IATA } = req.params;
     const airportICAO = await Airports.find({
-        iata_code: IATA.toUpperCase(),
+        iata_code: IATA.toUpperCase()
     });
 
     if (!airportICAO || airportICAO.length === 0) {
         throw new BadRequestError(
-            `Airport with IATA: '${IATA.toUpperCase()}' Not Found ${IATA.length > 3 ? "(IATA code length is 3)" : ""}`
+            `Airport with IATA: '${IATA.toUpperCase()}' Not Found ${
+                IATA.length > 3 ? "(IATA code length is 3)" : ""
+            }`
         );
     }
 
@@ -139,7 +155,7 @@ const getMetarUsingIATA = async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        data: responseMetar,
+        data: responseMetar
     });
 };
 
@@ -160,12 +176,12 @@ const getWindGustForCountry = async (req, res) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -188,12 +204,12 @@ const getWindMetarForCountry = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -216,12 +232,12 @@ const getBaroMetarForCountry = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -243,12 +259,12 @@ const getVisibilityMetarForCountry = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -271,12 +287,12 @@ const getTempMetarForCountry = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -299,12 +315,12 @@ const getWindGustForContinent = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -327,12 +343,12 @@ const getWindMetarForContinent = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -355,12 +371,12 @@ const getBaroMetarForContinent = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -384,12 +400,12 @@ const getVisibilityMetarForContinent = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -413,12 +429,12 @@ const getTempMetarForContinent = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -430,16 +446,21 @@ const getWindGustForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarCategory_global("wind_gust_kt", -1, limit, decode);
+    const response = await metarFeatures.requestMetarCategory_global(
+        "wind_gust_kt",
+        -1,
+        limit,
+        decode
+    );
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -449,17 +470,22 @@ const getWindMetarForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarCategory_global("wind_speed_kt", -1, limit, decode);
+    const response = await metarFeatures.requestMetarCategory_global(
+        "wind_speed_kt",
+        -1,
+        limit,
+        decode
+    );
 
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -469,17 +495,22 @@ const getBaroMetarForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarCategory_global("altim_in_hg", sort, limit, decode);
+    const response = await metarFeatures.requestMetarCategory_global(
+        "altim_in_hg",
+        sort,
+        limit,
+        decode
+    );
 
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -489,17 +520,22 @@ const getVisibilityMetarForGlobal = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarCategory_global("visibility_statute_mi", sort, limit, decode);
+    const response = await metarFeatures.requestMetarCategory_global(
+        "visibility_statute_mi",
+        sort,
+        limit,
+        decode
+    );
 
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -515,12 +551,12 @@ const getTempMetarForGlobal = async (req, res, next) => {
     if (response && response.length > 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
 };
@@ -545,5 +581,5 @@ module.exports = {
     getWindGustForGlobal,
     getWindMetarForGlobal,
     getBaroMetarForGlobal,
-    getVisibilityMetarForGlobal,
+    getVisibilityMetarForGlobal
 };

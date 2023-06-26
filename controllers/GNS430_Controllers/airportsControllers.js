@@ -21,24 +21,21 @@ let repo;
 })();
 
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
-    const airportFeatures = new APIFeatures(
-        GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
-        req.query
-    )
-        .filter()
-        .limitFields();
+    const gns430Airport = await GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` });
 
-    const gns430Airport = await airportFeatures.query;
-
-    if (!gns430Airport) {
-        throw new BadRequestError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
+    if (gns430Airport) {
+        return res.status(200).json({
+            data: {
+                airport: gns430Airport
+            }
+        });
+    } else {
+        return res.status(204).json({
+            data: {
+                airport: []
+            }
+        });
     }
-
-    res.status(200).json({
-        data: {
-            airport: gns430Airport
-        }
-    });
 };
 
 module.exports.getAirportByICAO_GNS430 = async (req, res) => {

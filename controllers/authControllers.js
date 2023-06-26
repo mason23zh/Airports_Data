@@ -9,7 +9,7 @@ const UnAuthorizedError = require("../common/errors/UnAuthorizedError");
 /** create a taken with id **/
 const signToken = (id) =>
     jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
+        expiresIn: process.env.JWT_EXPIRES_IN
     });
 
 /**
@@ -22,10 +22,8 @@ const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
 
     const cookieOptions = {
-        expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-        ),
-        httpOnly: true,
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+        httpOnly: true
     };
 
     //send cookie
@@ -40,17 +38,15 @@ const createSendToken = (user, statusCode, res) => {
         status: "success",
         token,
         data: {
-            user,
-        },
+            user
+        }
     });
 };
 
 exports.restrictTo = function (...roles) {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
-            throw new UnAuthorizedError(
-                "You do not have permission to access this page."
-            );
+            throw new UnAuthorizedError("You do not have permission to access this page.");
         }
         next();
     };
@@ -59,17 +55,12 @@ exports.restrictTo = function (...roles) {
 exports.protect = async (req, res, next) => {
     // Get the token and check if the token is exists
     let token;
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
-    ) {
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1];
     }
 
     if (!token) {
-        throw new UnAuthorizedError(
-            "You are not logged in, please login first."
-        );
+        throw new UnAuthorizedError("You are not logged in, please login first.");
     }
 
     // Token Validation
@@ -83,9 +74,7 @@ exports.protect = async (req, res, next) => {
 
     // Check if user change password after token was issued
     if (currentUser.changedPasswordAfter(decoded.iat)) {
-        throw new UnAuthorizedError(
-            "Password has already changed, please login again"
-        );
+        throw new UnAuthorizedError("Password has already changed, please login again");
     }
 
     // Grant Access to protected user
@@ -101,7 +90,7 @@ exports.signup = async (req, res, next) => {
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
         passwordChangedAt: req.body.passwordChangedAt,
-        role: req.body.role,
+        role: req.body.role
     });
 
     // Create JWT token
@@ -134,9 +123,7 @@ exports.login = async (req, res) => {
  */
 exports.updatePassword = async (req, res) => {
     const user = await User.findById(req.user.id).select("+password");
-    if (
-        !(await user.correctPassword(req.body.currentPassword, user.password))
-    ) {
+    if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
         throw new UnAuthorizedError("Current Password is Incorrect");
     }
 
@@ -149,7 +136,7 @@ exports.updatePassword = async (req, res) => {
         status: "success",
         token,
         data: {
-            user,
-        },
+            user
+        }
     });
 };

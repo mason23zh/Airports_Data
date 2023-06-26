@@ -7,7 +7,7 @@ const {
     statuteMiToMeter,
     celsiusToFahrenheit,
     meterToFeet,
-    calculateHumidity,
+    calculateHumidity
 } = require("../../utils/METAR/convert");
 const earthRadiusInMile = 3963.19;
 
@@ -81,12 +81,12 @@ class MetarFeatures {
                     $near: {
                         $geometry: {
                             type: "Point",
-                            coordinates: [lon, lat],
+                            coordinates: [lon, lat]
                         },
                         $maxDistance: 200000,
-                        $minDistance: 10,
-                    },
-                },
+                        $minDistance: 10
+                    }
+                }
             });
             if (!responseMetars || responseMetars.length === 0) {
                 return this.metarArray;
@@ -142,9 +142,9 @@ class MetarFeatures {
             const responseMetars = await AwcWeatherMetarModel.find({
                 location: {
                     $geoWithin: {
-                        $centerSphere: [[lon, lat], distance / earthRadiusInMile],
-                    },
-                },
+                        $centerSphere: [[lon, lat], distance / earthRadiusInMile]
+                    }
+                }
             });
             if (!responseMetars) {
                 return [];
@@ -176,7 +176,12 @@ class MetarFeatures {
 
     async requestMetarUsingGenericInput(data, decode = false) {
         try {
-            const redisMetar = await this.repo.where("name").matches(data).or("municipality").match(data).returnAll();
+            const redisMetar = await this.repo
+                .where("name")
+                .matches(data)
+                .or("municipality")
+                .match(data)
+                .returnAll();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
                 redisMetar.map((metar) => {
@@ -192,11 +197,11 @@ class MetarFeatures {
                     {
                         municipality: {
                             $regex: `${data}`,
-                            $options: "i",
-                        },
+                            $options: "i"
+                        }
                     },
-                    { name: { $regex: `${data}`, $options: "i" } },
-                ],
+                    { name: { $regex: `${data}`, $options: "i" } }
+                ]
             });
             if (!dbMetars) {
                 this.metarArray = [];
@@ -275,7 +280,7 @@ class MetarFeatures {
         } catch (e) {
             const dbMetars = await this.model
                 .find({
-                    category: { $ne: null },
+                    category: { $ne: null }
                 })
                 .sort({ category: sort })
                 .limit(limit);
@@ -295,7 +300,14 @@ class MetarFeatures {
         }
     }
 
-    async requestMetarCategory_local(scope, target, category, sort = 1, limit = 10, decode = false) {
+    async requestMetarCategory_local(
+        scope,
+        target,
+        category,
+        sort = 1,
+        limit = 10,
+        decode = false
+    ) {
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
 
         try {
@@ -324,7 +336,7 @@ class MetarFeatures {
         } catch (e) {
             const dbMetar = await this.model
                 .find({
-                    $and: [{ ios_country: target.toUpperCase() }, { category: { $ne: null } }],
+                    $and: [{ ios_country: target.toUpperCase() }, { category: { $ne: null } }]
                 })
                 .sort({ category: sort })
                 .limit(limit);
@@ -346,7 +358,11 @@ class MetarFeatures {
 
     async requestMetarUsingICAO(icao) {
         try {
-            const redisMetar = await this.repo?.search().where("station_id").equals(icao.toUpperCase()).returnFirst();
+            const redisMetar = await this.repo
+                ?.search()
+                .where("station_id")
+                .equals(icao.toUpperCase())
+                .returnFirst();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metar = redisMetar.toJSON();
                 this.#normalizeMetar();
@@ -425,27 +441,30 @@ class MetarFeatures {
 
                     const cloudCode = VVFlag ? section.slice(0, 2) : section.slice(0, 3);
                     const cloudHeight = VVFlag ? section.slice(2, 5) : section.slice(3, 6);
-                    const cloudCondition = section.length > 6 ? section.slice(6, section.length) : "";
+                    const cloudCondition =
+                        section.length > 6 ? section.slice(6, section.length) : "";
                     let cloudAdditionalProperty;
 
                     let tempCloudObject = metarCloudCode.find((c) => c.code === cloudCode);
                     if (cloudCondition.length !== 0) {
-                        cloudAdditionalProperty = metarCloudCode.find((c) => c.code === cloudCondition);
+                        cloudAdditionalProperty = metarCloudCode.find(
+                            (c) => c.code === cloudCondition
+                        );
                     }
                     let updatedCloudObject = {
                         ...tempCloudObject,
                         feet: Number(cloudHeight) * 100,
                         base_feet_agl: Number(cloudHeight) * 100,
-                        base_meters_agl: Number((Number(cloudHeight) * 30.48).toFixed()),
+                        base_meters_agl: Number((Number(cloudHeight) * 30.48).toFixed())
                     };
                     if (cloudAdditionalProperty) {
                         finalCloudObject = {
                             ...updatedCloudObject,
-                            additional: { ...cloudAdditionalProperty },
+                            additional: { ...cloudAdditionalProperty }
                         };
                     } else {
                         finalCloudObject = {
-                            ...updatedCloudObject,
+                            ...updatedCloudObject
                         };
                     }
                     this.clouds.push(finalCloudObject);
@@ -478,7 +497,9 @@ class MetarFeatures {
     }
 
     #filterWeatherConditionCode(rawMetarArray, weatherCodeArray) {
-        return rawMetarArray.filter((element) => weatherCodeArray.some((item) => element.includes(item)));
+        return rawMetarArray.filter((element) =>
+            weatherCodeArray.some((item) => element.includes(item))
+        );
     }
 
     /**
@@ -489,7 +510,10 @@ class MetarFeatures {
 
         // get weatherCode key
         const weatherCodeKey = Object.keys(metarWeatherCode);
-        const partialMatchedCode = this.#filterWeatherConditionCode(rawMetarSection, weatherCodeKey);
+        const partialMatchedCode = this.#filterWeatherConditionCode(
+            rawMetarSection,
+            weatherCodeKey
+        );
 
         for (let i = 0; i < partialMatchedCode.length; i++) {
             let intensityFlag;
@@ -499,7 +523,9 @@ class MetarFeatures {
                 const tempWeatherCode = partialMatchedCode[i].slice(1);
                 const tempWeatherText = this.#decodeWeatherCode(tempWeatherCode);
                 if (tempWeatherText && tempWeatherText.length !== 0) {
-                    let text = intensityFlag ? `${metarWeatherCode[intensityFlag]}${tempWeatherText}` : "";
+                    let text = intensityFlag
+                        ? `${metarWeatherCode[intensityFlag]}${tempWeatherText}`
+                        : "";
                     this.weather.push({ code: partialMatchedCode[i], text: text });
                 }
             } else {
@@ -618,8 +644,8 @@ class MetarFeatures {
             name: this.normalizedMetar.name || "",
             geometry: {
                 coordinates: coordinate,
-                type: "Point",
-            },
+                type: "Point"
+            }
         };
         this.station = { location: { ...location } };
         return this;
@@ -658,7 +684,7 @@ class MetarFeatures {
             humidity: { ...this.humidity },
             elevation: { ...this.elevation },
             flight_category: this.normalizedMetar.flight_category,
-            station: { ...this.station },
+            station: { ...this.station }
         };
         this.decodedMetar = this.#clearEmpties(tempDecodedMetar);
         return this;

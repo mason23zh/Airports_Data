@@ -37,8 +37,8 @@ class RedisClient {
             password: REDIS_PASSWORD,
             socket: {
                 host: REDIS_HOST,
-                port: REDIS_PORT,
-            },
+                port: REDIS_PORT
+            }
         });
         try {
             await connection.connect();
