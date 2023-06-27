@@ -6,7 +6,7 @@ const {
     getNearestMetar_icao,
     getNearestMetar_LngLat,
     getMetarUsingAirportName,
-    getMetarUsingGenericInput,
+    getMetarUsingGenericInput
 } = require("../controllers/METAR/metarControllers");
 const router = express.Router();
 

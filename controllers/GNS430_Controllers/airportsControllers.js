@@ -1,11 +1,13 @@
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
-const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
 const { Airports } = require("../../models/airports/airportsModel");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
 const { checkICAO } = require("../../utils/checkICAO");
-const { getAwcMetarUsingICAO } = require("../../utils/AWC_Weather/controller_helper");
+const {
+    getAwcMetarUsingICAO,
+    getAwcMetarUsingAirportName
+} = require("../../utils/AWC_Weather/controller_helper");
 const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
@@ -20,20 +22,20 @@ let repo;
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
+//! header remove
+
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const gns430Airport = await GNS430Airport.findOne({ ICAO: `${req.params.icao.toUpperCase()}` });
 
     if (gns430Airport) {
         return res.status(200).json({
-            data: {
-                airport: gns430Airport
-            }
+            results: gns430Airport.length,
+            data: gns430Airport
         });
     } else {
-        return res.status(204).json({
-            data: {
-                airport: []
-            }
+        return res.status(200).json({
+            results: 0,
+            data: []
         });
     }
 };
@@ -51,25 +53,36 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
     const gns430Airport = await airportFeatures.query;
 
-    if (!gns430Airport) {
-        throw new NotFoundError(`Airport with ICAO ${req.params.icao.toUpperCase()} not found. `);
-    }
+    if (!gns430Airport || gns430Airport.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    } else {
+        let responseObject = {};
+        const responseMetar = await getAwcMetarUsingICAO(
+            req.params.icao.toUpperCase(),
+            decode,
+            AwcWeatherMetarModel,
+            repo
+        );
+        const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
 
-    const responseMetar = await getAwcMetarUsingICAO(
-        req.params.icao.toUpperCase(),
-        decode,
-        AwcWeatherMetarModel,
-        repo
-    );
-    const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
-
-    res.status(200).json({
-        data: {
-            airport: gns430Airport,
-            ATIS,
-            METAR: responseMetar
+        if (responseMetar && responseMetar.length !== 0) {
+            responseObject.METAR = responseMetar;
         }
-    });
+
+        if (Object.keys(ATIS).length !== 0) {
+            responseObject.ATIS = ATIS;
+        }
+
+        responseObject.airport = gns430Airport;
+
+        return res.status(200).json({
+            results: 1,
+            data: [responseObject]
+        });
+    }
 };
 
 module.exports.getAirportByIATA_GNS430 = async (req, res) => {
@@ -79,12 +92,11 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
         iata_code: `${req.params.iata.toUpperCase()}`
     });
 
-    if (airportICAO.length === 0) {
-        throw new NotFoundError(
-            `Airport with IATA: '${req.params.iata.toUpperCase()}' Not Found ${
-                req.params.iata.length > 3 ? "(IATA code length is 3)" : ""
-            }`
-        );
+    if (!airportICAO || airportICAO.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
     }
 
     const airportICAO_Code = airportICAO[0].ident;
@@ -98,32 +110,50 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
 
     const gns430Airport = await airportFeatures.query;
 
-    const ATIS = await generateGeneralATIS(airportICAO_Code);
-    if (!gns430Airport) {
-        throw new NotFoundError(
-            `Can Not Found Airport with IATA: ${req.params.iata.toUpperCase()}`
+    if (!gns430Airport || gns430Airport.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    } else {
+        let responseObject = {};
+        const ATIS = await generateGeneralATIS(airportICAO_Code);
+        const responseMetar = await getAwcMetarUsingICAO(
+            airportICAO_Code,
+            decode,
+            AwcWeatherMetarModel,
+            repo
         );
-    }
 
-    const responseMetar = await getAwcMetarUsingICAO(
-        airportICAO_Code,
-        decode,
-        AwcWeatherMetarModel,
-        repo
-    );
-    res.status(200).json({
-        data: {
-            airport: gns430Airport,
-            ATIS,
-            METAR: responseMetar
+        if (Object.keys(ATIS).length !== 0) {
+            responseObject.ATIS = ATIS;
         }
-    });
+
+        if (responseMetar && responseMetar.length !== 0) {
+            responseObject.responseMetar = responseMetar;
+        }
+
+        return res.status(200).json({
+            results: 1,
+            data: responseObject
+        });
+    }
 };
 
 module.exports.getAirportByName_GNS430 = async (req, res) => {
+    let matchedICAOs;
     const airportQueryObj = GNS430Airport.find({
         name: { $regex: `${req.params.name}`, $options: "i" }
     });
+
+    const airportICAOs = await getAwcMetarUsingAirportName(
+        req.params.name,
+        true,
+        AwcWeatherMetarModel,
+        repo
+    );
+
+    matchedICAOs = airportICAOs.map((airport) => airport.icao);
 
     const featuresQuery = new APIFeatures(airportQueryObj, req.query)
         .filter()
@@ -131,21 +161,37 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
         .limitResults();
 
     const airports = await featuresQuery.query;
+    for (let airport of airports) {
+        matchedICAOs.push(airport.ICAO);
+    }
+    const uniqueArray = [...new Set(matchedICAOs)];
 
-    res.status(200).json({
-        results: airports.length,
-        data: {
-            airport: airports
-        }
-    });
+    if (uniqueArray.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    } else {
+        let responseAirports = [];
+        await Promise.all(
+            uniqueArray.map(async (icao) => {
+                const filteredAirport = await GNS430Airport.find({ ICAO: icao });
+                if (filteredAirport.length !== 0) {
+                    responseAirports.push(filteredAirport[0]);
+                }
+            })
+        );
+        res.status(200).json({
+            results: responseAirports.length,
+            data: responseAirports
+        });
+    }
 };
 
 module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     const airportsQueryObj = await Airports.find({
         municipality: { $regex: `${req.params.name}`, $options: "i" }
     });
-
-    console.log(airportsQueryObj);
 
     //const featuresQuery = new APIFeatures(airportsQueryObj, req.query).filter().limitFields().limitResults();
 
@@ -163,9 +209,7 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
 
     res.status(200).json({
         results: filteredAirports.length,
-        data: {
-            airport: filteredAirports
-        }
+        data: filteredAirports
     });
 };
 
@@ -182,11 +226,11 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         });
         if (airportsWithICAO) {
             res.status(200).json({
-                status: "success",
                 results: airportsWithICAO.length,
                 data: airportsWithICAO
             });
         } else {
+            // fix the error handling
             throw new NotFoundError(
                 `Cannot find airport with ICAO code: ${userInput.toUpperCase()}`
             );
@@ -222,7 +266,7 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
             );
         });
         res.status(200).json({
-            result: responseAirports.length,
+            results: responseAirports.length,
             data: responseAirports
         });
     }
@@ -250,9 +294,7 @@ module.exports.getAirportWithin = async (req, res) => {
 
     res.status(200).json({
         results: targetAirports.length,
-        data: {
-            airport: targetAirports
-        }
+        data: targetAirports
     });
 };
 

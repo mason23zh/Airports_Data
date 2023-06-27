@@ -3,71 +3,71 @@ const mongoose = require("mongoose");
 const awcWeatherSchema = new mongoose.Schema({
     raw_text: {
         type: String,
-        required: [true, "Raw metar must exist"],
+        required: [true, "Raw metar must exist"]
     },
     station_id: {
         type: String,
-        required: [true, "Station id must exist"],
+        required: [true, "Station id must exist"]
     },
     observation_time: {
-        type: Date,
+        type: Date
     },
     location: {
         type: {
             type: String,
             default: "Point",
-            enum: ["Point"],
+            enum: ["Point"]
         },
-        coordinates: [Number],
+        coordinates: [Number]
     },
     temp_c: {
-        type: Number,
+        type: Number
     },
     dewpoint_c: {
-        type: Number,
+        type: Number
     },
     wind_dir_degrees: {
-        type: Number,
+        type: Number
     },
     wind_speed_kt: {
-        type: Number,
+        type: Number
     },
     wind_gust_kt: {
-        type: Number,
+        type: Number
     },
     visibility_statute_mi: {
-        type: Number,
+        type: Number
     },
     altim_in_hg: {
-        type: Number,
+        type: Number
     },
     auto: {
-        type: String,
+        type: String
     },
     flight_category: {
-        type: String,
+        type: String
     },
     metar_type: {
-        type: String,
+        type: String
     },
     elevation_m: {
-        type: Number,
+        type: Number
     },
     ios_country: {
-        type: String,
+        type: String
     },
     ios_region: {
-        type: String,
+        type: String
     },
     continent: {
-        type: String,
+        type: String
     },
     municipality: {
-        type: String,
+        type: String
     },
     name: {
-        type: String,
-    },
+        type: String
+    }
 });
 
 awcWeatherSchema.index({ location: "2dsphere" });
