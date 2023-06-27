@@ -62,8 +62,7 @@ class APIFeatures {
     //TODO
     limitResults() {
         const reqQuery = this.queryString;
-        this.query = this.query.limit(Number(reqQuery.limitResults) || 5);
-
+        this.query = this.query.limit(Number(reqQuery.limitResults) || 10);
         return this;
     }
 }

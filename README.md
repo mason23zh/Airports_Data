@@ -1007,11 +1007,21 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 | -------------- | ------------------------------------------------ |
 | name           | city name |
 
-| URL Queries | Description                      | Default |
-| ----------- | -------------------------------- | ------- |
-| decode      | return decoded METAR or raw text | false   |
+| URL Queries | Description                  | Default |
+|-------------|------------------------------|---------|
+| fields      | only return seleceted fields | off     |
+| limitResults | limit number of results | off     |
 
     GET /airports/city/:name
+
+```bat
+# Get airports with city name that includes "winn"
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn
+
+# Only return 5 results, every result would only have field ICAO and runways
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn?fields=runway,ICAO&limitResults=5
+
+```
 
 ---
 

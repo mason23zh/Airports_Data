@@ -193,24 +193,45 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
         municipality: { $regex: `${req.params.name}`, $options: "i" }
     });
 
-    //const featuresQuery = new APIFeatures(airportsQueryObj, req.query).filter().limitFields().limitResults();
-
-    //const airports = await featuresQuery.query;
+    if (!airportsQueryObj || airportsQueryObj.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    }
 
     const filteredAirports = [];
     await Promise.all(
         airportsQueryObj.map(async (airport) => {
-            const filteredAirport = await GNS430Airport.find({ ICAO: airport.ident });
-            if (filteredAirport.length !== 0) {
-                filteredAirports.push(filteredAirport[0]);
+            const featuresQuery = new APIFeatures(
+                GNS430Airport.find({ ICAO: airport.ident }),
+                req.query
+            )
+                .filter()
+                .limitFields();
+            const airports = await featuresQuery.query;
+
+            if (airports.length !== 0) {
+                filteredAirports.push(airports[0]);
             }
         })
     );
 
-    res.status(200).json({
-        results: filteredAirports.length,
-        data: filteredAirports
-    });
+    if (Object.keys(req.query).length !== 0 && req.query.limitResults) {
+        const limit = Number(req.query.limitResults);
+        if (isNaN(limit)) {
+            return res.status(200).json({
+                results: filteredAirports.length,
+                data: filteredAirports
+            });
+        } else {
+            const newFilteredAirports = filteredAirports.slice(0, limit);
+            return res.status(200).json({
+                results: newFilteredAirports.length,
+                newFilteredAirports
+            });
+        }
+    }
 };
 
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
