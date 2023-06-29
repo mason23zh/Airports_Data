@@ -7,6 +7,7 @@ const { getAwcMetarUsingICAO } = require("../../utils/AWC_Weather/controller_hel
 const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
+const { getDistanceFromLatLonInKm } = require("./converter");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -18,25 +19,15 @@ let repo;
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
 
-//! header remove
-
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const gns430Airport = await GNS430Airport_Update.findOne({
         ICAO: `${req.params.icao.toUpperCase()}`
     });
-    console.log(gns430Airport);
 
-    if (gns430Airport) {
-        return res.status(200).json({
-            results: gns430Airport.length,
-            data: gns430Airport
-        });
-    } else {
-        return res.status(200).json({
-            results: 0,
-            data: []
-        });
-    }
+    res.status(200).json({
+        results: 1,
+        data: [gns430Airport]
+    });
 };
 
 module.exports.getAirportByICAO_GNS430 = async (req, res) => {
@@ -58,13 +49,14 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
             data: []
         });
     } else {
-        let responseObject = {};
+        let responseObject = { airport: gns430Airport[0] };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
             decode,
             AwcWeatherMetarModel,
             repo
         );
+
         const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
 
         if (responseMetar && responseMetar.length !== 0) {
@@ -74,8 +66,6 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
         if (Object.keys(ATIS).length !== 0) {
             responseObject.ATIS = ATIS;
         }
-
-        responseObject.airport = gns430Airport;
 
         return res.status(200).json({
             results: 1,
@@ -103,7 +93,7 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
             data: []
         });
     } else {
-        let responseObject = { airport: gns430Airport };
+        let responseObject = { airport: gns430Airport[0] };
         let icao = gns430Airport[0].ICAO;
         const ATIS = await generateGeneralATIS(icao);
         const responseMetar = await getAwcMetarUsingICAO(icao, decode, AwcWeatherMetarModel, repo);
@@ -113,17 +103,21 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
         }
 
         if (responseMetar && responseMetar.length !== 0) {
-            responseObject.responseMetar = responseMetar;
+            responseObject.METAR = responseMetar;
         }
 
         return res.status(200).json({
             results: 1,
-            data: responseObject
+            data: [responseObject]
         });
     }
 };
 
 module.exports.getAirportByName_GNS430 = async (req, res) => {
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
+    }
     const airportsResponse = await GNS430Airport_Update.aggregate([
         {
             $search: {
@@ -132,8 +126,16 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
                     path: "station.name"
                 }
             }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
         }
-    ]);
+    ]).limit(limitResults);
 
     res.status(200).json({
         results: airportsResponse.length,
@@ -154,6 +156,14 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
                     query: `${req.params.name}`,
                     path: "station.city"
                 }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
             }
         }
     ]).limit(limitResults);
@@ -177,6 +187,14 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
                     query: `${req.params.data}`,
                     path: ["ICAO", "station.name", "station.city"]
                 }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
             }
         }
     ]).limit(limitResults);
@@ -221,23 +239,6 @@ module.exports.getAirportWithin = async (req, res) => {
     });
 };
 
-const deg2rad = (deg) => deg * (Math.PI / 180);
-
-const getDistanceFromLatLonInKm = (originLng, originLat, desLng, desLat) => {
-    const R = 6371; // Radius of the earth in km
-    const dLat = deg2rad(originLat - desLat); // deg2rad below
-    const dLon = deg2rad(originLng - desLng);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(originLat)) *
-            Math.cos(deg2rad(desLat)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const d = R * c; // Distance in km
-    return d;
-};
-
 module.exports.getAirportsDistance = async (req, res) => {
     const { originICAO, destinationICAO, unit } = req.params;
 
@@ -274,6 +275,7 @@ module.exports.getAirportsDistance = async (req, res) => {
 
     res.status(200).json({
         data: {
+            unit: unit === "km" ? "kilometers" : "nauticalmiles",
             distance: distance.toFixed(1)
         }
     });

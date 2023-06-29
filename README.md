@@ -1104,4 +1104,4 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/bos
 
 ### Credits
 
-- [ FAA DATIS ](https://datis.clowd.io/) New Document
+- [ FAA DATIS ](https://datis.clowd.io/)
