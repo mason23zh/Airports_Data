@@ -1,9 +1,5 @@
-const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
-const NotFoundError = require("../../common/errors/NotFoundError");
 const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
-const { Airports } = require("../../models/airports/airportsModel");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
-const { checkICAO } = require("../../utils/checkICAO");
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
@@ -128,41 +124,39 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
 };
 
 module.exports.getAirportByName_GNS430 = async (req, res) => {
-    const airportQueryObj = GNS430Airport_Update.find({
-        "station.name": { $regex: `${req.params.name}`, $options: "i" }
+    const airportsResponse = await GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.name}`,
+                    path: "station.name"
+                }
+            }
+        }
+    ]);
+
+    res.status(200).json({
+        results: airportsResponse.length,
+        data: airportsResponse
     });
-
-    const featuresQuery = new APIFeatures(airportQueryObj, req.query)
-        .filter()
-        .limitFields()
-        .limitResults();
-
-    const airportsResponse = await featuresQuery.query;
-
-    if (!airportsResponse || airportsResponse.length === 0) {
-        return res.status(200).json({
-            results: 0,
-            data: []
-        });
-    } else {
-        return res.status(200).json({
-            results: airportsResponse.length,
-            data: airportsResponse
-        });
-    }
 };
 
 module.exports.getAirportsByCity_GNS430 = async (req, res) => {
-    const airportQueryObj = GNS430Airport_Update.find({
-        "station.city": { $regex: `${req.params.name}`, $options: "i" }
-    });
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
+    }
 
-    const airportFeatures = new APIFeatures(airportQueryObj, req.query)
-        .filter()
-        .limitFields()
-        .limitResults();
-
-    const airportsResponse = await airportFeatures.query;
+    const airportsResponse = await GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.name}`,
+                    path: "station.city"
+                }
+            }
+        }
+    ]).limit(limitResults);
 
     res.status(200).json({
         results: airportsResponse.length,
@@ -171,86 +165,55 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
 };
 
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
-    // If checkICAO return true, check ICAO first
-    const userInput = req.params.data;
-    let airports = [];
-    let filteredAirports = [];
-    let responseAirports = [];
-
-    if (checkICAO(userInput)) {
-        const airportFeature = new APIFeatures(
-            GNS430Airport.findOne({
-                ICAO: userInput.toUpperCase()
-            }),
-            req.query
-        )
-            .filter()
-            .limitFields();
-
-        const airportsWithICAO = await airportFeature.query;
-
-        if (airportsWithICAO) {
-            res.status(200).json({
-                results: airportsWithICAO.length,
-                data: airportsWithICAO
-            });
-        }
-    } else {
-        const airportsWithGNS430 = await GNS430Airport.find({
-            $or: [
-                { ICAO: `${userInput.toUpperCase()}` },
-                { name: { $regex: `${userInput}`, $options: "i" } }
-            ]
-        });
-
-        const airportWithCity = await Airports.find({
-            municipality: { $regex: `${userInput}`, $options: "i" }
-        });
-
-        await Promise.all(
-            airportWithCity.map(async (airport) => {
-                const matchedAirport = await GNS430Airport.findOne({ ICAO: `${airport.ident}` });
-                if (matchedAirport) {
-                    filteredAirports.push(matchedAirport);
-                }
-            })
-        );
-
-        airports = [...filteredAirports, ...airportsWithGNS430];
-        responseAirports = airports.filter((value, index, self) => {
-            return (
-                index ===
-                self.findIndex((t) => {
-                    return t.ICAO === value.ICAO;
-                })
-            );
-        });
-        res.status(200).json({
-            results: responseAirports.length,
-            data: responseAirports
-        });
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
     }
+
+    const responseAirports = await GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.data}`,
+                    path: ["ICAO", "station.name", "station.city"]
+                }
+            }
+        }
+    ]).limit(limitResults);
+
+    res.status(200).json({
+        results: responseAirports.length,
+        data: responseAirports
+    });
 };
 
 module.exports.getAirportWithin = async (req, res) => {
     const { icao, distance, unit } = req.params;
-    const originAirport = await GNS430Airport.findOne({ ICAO: `${icao.toUpperCase()}` });
-
-    if (originAirport === null) {
-        throw new NotFoundError(`Airport with ICAO: ${icao.toUpperCase()} not found`);
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
     }
 
-    const [lng, lat] = originAirport.location.coordinates;
+    const originAirport = await GNS430Airport_Update.findOne({ ICAO: `${icao.toUpperCase()}` });
+
+    if (originAirport === null || originAirport.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    }
+
+    const [lng, lat] = originAirport.station.geometry.coordinates;
     const radius =
         unit === "km" ? distance / earthRadiusInKM : distance / earthRadiusInNauticalMile;
 
-    const targetAirports = await GNS430Airport.find({
-        location: {
+    const targetAirports = await GNS430Airport_Update.find({
+        "station.geometry": {
             $geoWithin: {
                 $centerSphere: [[lng, lat], radius]
             }
         }
-    });
+    }).limit(limitResults);
 
     res.status(200).json({
         results: targetAirports.length,
@@ -278,20 +241,28 @@ const getDistanceFromLatLonInKm = (originLng, originLat, desLng, desLat) => {
 module.exports.getAirportsDistance = async (req, res) => {
     const { originICAO, destinationICAO, unit } = req.params;
 
-    const originAirport = await GNS430Airport.findOne({ ICAO: `${originICAO.toUpperCase()}` });
-    if (originAirport === null) {
-        throw new NotFoundError(`Airport with ICAO: ${originICAO.toUpperCase()} not found.`);
-    }
+    const originAirport = await GNS430Airport_Update.findOne({
+        ICAO: `${originICAO.toUpperCase()}`
+    });
 
-    const destinationAirport = await GNS430Airport.findOne({
+    const destinationAirport = await GNS430Airport_Update.findOne({
         ICAO: `${destinationICAO.toUpperCase()}`
     });
-    if (destinationAirport === null) {
-        throw new NotFoundError(`Airport with ICAO: ${destinationICAO.toUpperCase()} not found.`);
+
+    if (
+        destinationAirport === null ||
+        destinationAirport.length === 0 ||
+        originAirport === null ||
+        originAirport.length === 0
+    ) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
     }
 
-    const [originLng, originLat] = originAirport.location.coordinates;
-    const [destinationLng, destinationLat] = destinationAirport.location.coordinates;
+    const [originLng, originLat] = originAirport.station.geometry.coordinates;
+    const [destinationLng, destinationLat] = destinationAirport.station.geometry.coordinates;
 
     const calculatedDistance = getDistanceFromLatLonInKm(
         originLng,
