@@ -949,7 +949,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/bost
 
 ---
 
-### Search METAR based on the geneirc input
+### Search METAR based on the generic input
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
@@ -991,6 +991,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/icao/cyyz?decode=true
 
 # Get airport with ICAO code, with raw METAR
 $ curl https://flight-data.herokuapp.com/api/v1/airports/icao/ksan
+```
 
 ---
 
@@ -1005,7 +1006,6 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/icao/ksan
 | decode      | return decoded METAR or raw text | false   |
 
     GET /airports/iata/:iata
-
 
 ```bat
 # Get airport with IATA code, with METAR decoded

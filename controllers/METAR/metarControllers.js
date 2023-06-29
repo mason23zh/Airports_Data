@@ -48,12 +48,12 @@ module.exports.getMetar = async (req, res) => {
     if (responseMetarArray.length > 0) {
         res.status(200).json({
             results: responseMetarArray.length,
-            data: responseMetarArray,
+            data: responseMetarArray
         });
     } else {
         res.status(404).json({
             results: responseMetarArray.length,
-            data: responseMetarArray,
+            data: responseMetarArray
         });
     }
 };
@@ -70,12 +70,12 @@ module.exports.getRadiusMetar = async (req, res) => {
     if (response.length > 0) {
         res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
@@ -89,17 +89,22 @@ module.exports.getRadiusMetarWithLngLat = async (req, res) => {
     const newDistance = distanceConverter(unit, distance);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
-    const response = await metarFeatures.requestMetarWithinRadius_LngLat(lng, lat, newDistance, decode);
+    const response = await metarFeatures.requestMetarWithinRadius_LngLat(
+        lng,
+        lat,
+        newDistance,
+        decode
+    );
 
     if (response.length > 0) {
         res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
@@ -112,12 +117,12 @@ module.exports.getNearestMetar_icao = async (req, res) => {
     if (response.length !== 0) {
         res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
@@ -132,12 +137,12 @@ module.exports.getNearestMetar_LngLat = async (req, res) => {
     if (response.length !== 0) {
         res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
@@ -149,19 +154,19 @@ module.exports.getMetarUsingAirportName = async (req, res) => {
     if (name.length === 0) {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
     const response = await metarFeatures.requestMetarUsingAirportName(name, decode);
     if (response.length !== 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
@@ -173,19 +178,19 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
     if (data.length === 0) {
         return res.status(404).json({
             results: 0,
-            data: [],
+            data: []
         });
     }
     const response = await metarFeatures.requestMetarUsingGenericInput(data, decode);
     if (response.length !== 0) {
         return res.status(200).json({
             results: response.length,
-            data: response,
+            data: response
         });
     } else {
         return res.status(404).json({
             results: response.length,
-            data: response,
+            data: response
         });
     }
 };
