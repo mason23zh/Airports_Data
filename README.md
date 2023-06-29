@@ -1070,10 +1070,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/bos
 ### Get Airport data within radius of ICAO
 
 | URL Parameters | Description                                      |
-| -------------- | ------------------------------------------------ |
-| icao        | ICAO code
-|distance	  |distance of radius
-|unit         | km or nm
+|---------------| ------------------------------------------------ |
+| icao          | ICAO code|
+| distance	     | distance of radius|
+| unit          | km or nm|
 
 | URL Queries  | Description                      | Default |
 |--------------| -------------------------------- |---------|
@@ -1087,9 +1087,9 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/bos
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
-| origin   | origin airport ICAO code
-|destination |destination airport ICAO code
-|unit         | km or nm
+| origin   | origin airport ICAO code|
+|destination |destination airport ICAO code|
+|unit         | km or nm|
 
     GET /airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit
 
