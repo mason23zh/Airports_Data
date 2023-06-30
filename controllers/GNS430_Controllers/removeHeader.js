@@ -1,5 +1,4 @@
 const removeHeader = (res) => {
-    res.removeHeader("Access-Control-Allow-Origin");
     res.removeHeader("X-Frame-Options");
     res.removeHeader("ETag");
     res.removeHeader("Vary");

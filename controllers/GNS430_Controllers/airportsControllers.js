@@ -8,7 +8,6 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
-const { removeHeader } = require("./removeHeader");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -24,8 +23,6 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const gns430Airport = await GNS430Airport_Update.findOne({
         ICAO: `${req.params.icao.toUpperCase()}`
     });
-
-    removeHeader(res);
 
     res.status(200).json({
         results: 1,
@@ -47,7 +44,6 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     const gns430Airport = await airportFeatures.query;
 
     if (!gns430Airport || gns430Airport.length === 0) {
-        removeHeader(res);
         return res.status(200).json({
             results: 0,
             data: []
@@ -71,7 +67,6 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
             responseObject.ATIS = ATIS;
         }
 
-        removeHeader(res);
         return res.status(200).json({
             results: 1,
             data: [responseObject]
@@ -93,7 +88,6 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
     const gns430Airport = await airportFeatures.query;
 
     if (!gns430Airport || gns430Airport.length === 0) {
-        removeHeader(res);
         return res.status(200).json({
             results: 0,
             data: []
@@ -112,7 +106,6 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
             responseObject.METAR = responseMetar;
         }
 
-        removeHeader(res);
         return res.status(200).json({
             results: 1,
             data: [responseObject]
@@ -144,7 +137,6 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
         }
     ]).limit(limitResults);
 
-    removeHeader(res);
     res.status(200).json({
         results: airportsResponse.length,
         data: airportsResponse
@@ -176,7 +168,6 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
         }
     ]).limit(limitResults);
 
-    removeHeader(res);
     res.status(200).json({
         results: airportsResponse.length,
         data: airportsResponse
@@ -208,7 +199,6 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         }
     ]).limit(limitResults);
 
-    removeHeader(res);
     res.status(200).json({
         results: responseAirports.length,
         data: responseAirports
@@ -225,7 +215,6 @@ module.exports.getAirportWithin = async (req, res) => {
     const originAirport = await GNS430Airport_Update.findOne({ ICAO: `${icao.toUpperCase()}` });
 
     if (originAirport === null || originAirport.length === 0) {
-        removeHeader(res);
         return res.status(200).json({
             results: 0,
             data: []
@@ -244,7 +233,6 @@ module.exports.getAirportWithin = async (req, res) => {
         }
     }).limit(limitResults);
 
-    removeHeader(res);
     res.status(200).json({
         results: targetAirports.length,
         data: targetAirports
@@ -268,7 +256,6 @@ module.exports.getAirportsDistance = async (req, res) => {
         originAirport === null ||
         originAirport.length === 0
     ) {
-        removeHeader(res);
         return res.status(200).json({
             results: 0,
             data: []
@@ -286,7 +273,6 @@ module.exports.getAirportsDistance = async (req, res) => {
     );
     const distance = unit === "km" ? calculatedDistance : calculatedDistance * 0.539957;
 
-    removeHeader(res);
     res.status(200).json({
         data: {
             unit: unit === "km" ? "kilometers" : "nauticalmiles",

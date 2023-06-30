@@ -37,7 +37,7 @@ const limiter = rateLimit({
     message: "Request number exceeded, try again in an hour.",
     handler: function () {
         throw new AccessNumberExceedError("Request number exceeded, try in an hour.");
-    },
+    }
 });
 // app.use("/api", limiter);
 
