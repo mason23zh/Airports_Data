@@ -13,11 +13,17 @@ module.exports.generateGeneralATIS = async (icao) => {
         //if both faa atis and vatsim atis exist
         ATIS.faa = faaATIS.data;
         ATIS.vatsim = vatsimATIS;
-    } else if (faaATIS.data.includes("NO ATIS found") && !vatsimATIS.includes("No Vatsim Atis Found")) {
+    } else if (
+        faaATIS.data.includes("NO ATIS found") &&
+        !vatsimATIS.includes("No Vatsim Atis Found")
+    ) {
         //if faa atis not found, but vatsim atis found.
         ATIS.faa = faaATIS.data;
         ATIS.vatsim = vatsimATIS;
-    } else if (faaATIS.data.includes("NO ATIS found") && vatsimATIS.includes("No Vatsim Atis Found")) {
+    } else if (
+        faaATIS.data.includes("NO ATIS found") &&
+        vatsimATIS.includes("No Vatsim Atis Found")
+    ) {
         //if both faa atis and vatsim atis not found
         ATIS.faa = faaATIS.data;
         ATIS.vatsim = vatsimATIS;

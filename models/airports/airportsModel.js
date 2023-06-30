@@ -4,67 +4,67 @@ const airportSchema = new mongoose.Schema({
     id: {
         type: String,
         required: [true, "Airport must have id"],
-        unique: true,
+        unique: true
     },
     ident: {
         type: String,
         required: [true, "Airport must have ident"],
-        unique: true,
+        unique: true
     },
     type: {
-        type: String,
+        type: String
     },
     name: {
         type: String,
-        required: [true, "Airport must have name"],
+        required: [true, "Airport must have name"]
     },
     latitude_deg: {
         type: String,
-        required: [true, "Aiport must have latitude degree"],
+        required: [true, "Aiport must have latitude degree"]
     },
     longitude_deg: {
         type: String,
-        required: [true, "Aiport must have longitude degree"],
+        required: [true, "Aiport must have longitude degree"]
     },
     elevation_ft: {
-        type: Number,
+        type: Number
     },
     continent: {
         type: String,
-        required: [true, "Airport must have continent location"],
+        required: [true, "Airport must have continent location"]
     },
     iso_country: {
         type: String,
-        required: [true, "Airport must have iso country code"],
+        required: [true, "Airport must have iso country code"]
     },
     iso_region: {
         type: String,
-        required: [true, "Airport must have iso region code"],
+        required: [true, "Airport must have iso region code"]
     },
     municipality: {
-        type: String,
+        type: String
     },
     scheduled_service: {
-        type: String,
+        type: String
     },
     gps_code: {
-        type: String,
+        type: String
     },
     iata_code: {
-        type: String,
+        type: String
     },
     local_code: {
-        type: String,
+        type: String
     },
     home_link: {
-        type: String,
+        type: String
     },
     wikipedia_link: {
-        type: String,
+        type: String
     },
     keywords: {
-        type: String,
-    },
+        type: String
+    }
 });
 
 module.exports.Airports = mongoose.model("Airports", airportSchema);

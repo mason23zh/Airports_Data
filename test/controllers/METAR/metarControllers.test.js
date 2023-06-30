@@ -4,7 +4,7 @@ const {
     getRadiusMetar,
     getNearestMetar_icao,
     getNearestMetar_LngLat,
-    getRadiusMetarWithLngLat,
+    getRadiusMetarWithLngLat
 } = require("../../../controllers/METAR/metarControllers");
 const MetarFeatures = require("../../../controllers/METAR/MetarFeatures");
 
@@ -13,8 +13,12 @@ const mockRequestMetarUsingICAO = jest.fn(function () {
 });
 const mockGetDecodedMetar = jest.fn();
 const mockGetRawMetar = jest.fn();
-const mockRequestMetarWithinRadius_icao = jest.fn().mockResolvedValue([{ icao: "CYWG" }, { icao: "CYUL" }]);
-const mockRequestMetarWithinRadius_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }, { icao: "CYUL" }]);
+const mockRequestMetarWithinRadius_icao = jest
+    .fn()
+    .mockResolvedValue([{ icao: "CYWG" }, { icao: "CYUL" }]);
+const mockRequestMetarWithinRadius_LngLat = jest
+    .fn()
+    .mockResolvedValue([{ icao: "CYWG" }, { icao: "CYUL" }]);
 const mockRequestNearestMetar_icao = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
 const mockRequestNearestMetar_LngLat = jest.fn().mockResolvedValue([{ icao: "CYWG" }]);
 
@@ -26,7 +30,7 @@ jest.mock("../../../controllers/METAR/MetarFeatures", () =>
         requestMetarWithinRadius_icao: mockRequestMetarWithinRadius_icao,
         requestMetarWithinRadius_LngLat: mockRequestMetarWithinRadius_LngLat,
         requestNearestMetar_icao: mockRequestNearestMetar_icao,
-        requestNearestMetar_LngLat: mockRequestNearestMetar_LngLat,
+        requestNearestMetar_LngLat: mockRequestNearestMetar_LngLat
     }))
 );
 
@@ -43,7 +47,7 @@ describe("Test getMetar controller", () => {
     it("check if getRawMetar function being called if decode flag is false", async () => {
         const request = httpMocks.createRequest({
             params: { icao: "EGKK,EGCC,CYUL,ZSSS,ZSPD" },
-            query: { decode: "false" },
+            query: { decode: "false" }
         });
         const response = httpMocks.createResponse();
         await getMetar(request, response);
@@ -56,7 +60,7 @@ describe("Test getMetar controller", () => {
     it("check if getDecodedMetar function being called if decode flag is true", async () => {
         const request = httpMocks.createRequest({
             params: { icao: "EGKK,EGCC,CYUL,ZSSS,ZSPD" },
-            query: { decode: "true" },
+            query: { decode: "true" }
         });
         const response = httpMocks.createResponse();
         await getMetar(request, response);
@@ -68,8 +72,10 @@ describe("Test getMetar controller", () => {
 
     it("check if Maximum number of reached error being throwed if number of icao reached over 30", async () => {
         const request = httpMocks.createRequest({
-            params: { icao: "EGKK,EGCC,CYUL,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ZSSS,ZSPD" },
-            query: { decode: "true" },
+            params: {
+                icao: "EGKK,EGCC,CYUL,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ZSSS,ZSPD"
+            },
+            query: { decode: "true" }
         });
         const response = httpMocks.createResponse();
 
@@ -90,7 +96,7 @@ describe("Test getRadiusMetar controller", () => {
     it("Check if requestMetarWithinRadius_icao function been called", async () => {
         const request = httpMocks.createRequest({
             params: { icao: "EGKK" },
-            query: { distance: 10, unit: "mile", decode: "false" },
+            query: { distance: 10, unit: "mile", decode: "false" }
         });
         const response = httpMocks.createResponse();
 
@@ -109,7 +115,7 @@ describe("Test getRadiusMetarWithLngLat controller", () => {
     it("Check if distanceConverter and requestMetarWithinRadius_LngLat functions been called", async () => {
         const request = httpMocks.createRequest({
             params: { coordinates: "40.1,30.5" },
-            query: { distance: 10, unit: "mile", decode: "false" },
+            query: { distance: 10, unit: "mile", decode: "false" }
         });
 
         const response = httpMocks.createResponse();
@@ -131,7 +137,7 @@ describe("Test getNearestMetar_icao controller", () => {
     it("Check if requestNearestMetar_icao function been called", async () => {
         const request = httpMocks.createRequest({
             params: { icao: "CYWG" },
-            query: { decode: "false" },
+            query: { decode: "false" }
         });
         const response = httpMocks.createResponse();
         await getNearestMetar_icao(request, response);
@@ -149,7 +155,7 @@ describe("Test getNearestMetar_LngLat controller", () => {
     it("Check if requestNearestMetar_LngLat function been called", async () => {
         const request = httpMocks.createRequest({
             params: { coordinates: "-97.23,49.9" },
-            query: { decode: "false" },
+            query: { decode: "false" }
         });
         const response = httpMocks.createResponse();
         await getNearestMetar_LngLat(request, response);

@@ -39,5 +39,5 @@ const getAwcMetarUsingAirportName = async (name, decode, model, repo) => {
 module.exports = {
     getAwcMetarUsingICAO,
     getAwcMetarUsingGenericInput,
-    getAwcMetarUsingAirportName,
+    getAwcMetarUsingAirportName
 };

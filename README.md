@@ -949,7 +949,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/bost
 
 ---
 
-### Search METAR based on the geneirc input
+### Search METAR based on the generic input
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
@@ -985,6 +985,14 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 
     GET /airports/icao/:icao
 
+```bat
+# Get airport with ICAO code, with METAR decoded
+$ curl https://flight-data.herokuapp.com/api/v1/airports/icao/cyyz?decode=true
+
+# Get airport with ICAO code, with raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/airports/icao/ksan
+```
+
 ---
 
 ### Get Airport data using iata
@@ -999,6 +1007,15 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 
     GET /airports/iata/:iata
 
+```bat
+# Get airport with IATA code, with METAR decoded
+$ curl https://flight-data.herokuapp.com/api/v1/airports/iata/ywg?decode=true
+
+# Get airport with IATA code, with raw METAR
+$ curl https://flight-data.herokuapp.com/api/v1/airports/iata/jfk
+
+```
+
 ---
 
 ### Get Airport data using city name
@@ -1007,35 +1024,60 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 | -------------- | ------------------------------------------------ |
 | name           | city name |
 
-| URL Queries | Description                      | Default |
-| ----------- | -------------------------------- | ------- |
-| decode      | return decoded METAR or raw text | false   |
+| URL Queries | Description                  | Default |
+|-------------|------------------------------|---------|
+| limitResults | limit number of results | 10      |
 
     GET /airports/city/:name
 
+```bat
+# Get airports with city name that includes "winn"
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn
+
+# Only return 5 results, every result would only have field ICAO and runways
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn?fields=runway,ICAO&limitResults=5
+
+```
+
 ---
 
-### Get Airport data using geneirc info
+### Get Airport data using generic info (fuzzy search)
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
 | data           | generic serach query |
 
-| URL Queries | Description                      | Default |
-| ----------- | -------------------------------- | ------- |
-| decode      | return decoded METAR or raw text | false   |
+| URL Queries  | Description                      | Default |
+|--------------| -------------------------------- |---------|
+| limitResults | limit number of results | 10      |
 
     GET /airports/generic/:data
+
+```bat
+# Get airports which includes "new york" text (this would return 68 results)
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york
+
+# Only return 5 results
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york?limitResults=5
+
+# Or only enter ICAO or IATA code
+$ curl https://flight-data.herokuapp.com/api/v1/airports/cywg
+$ curl https://flight-data.herokuapp.com/api/v1/airports/bos
+```
 
 ---
 
 ### Get Airport data within radius of ICAO
 
 | URL Parameters | Description                                      |
-| -------------- | ------------------------------------------------ |
-| icao        | ICAO code
-|distance	  |distance of radius
-|unit         | km or nm
+|---------------| ------------------------------------------------ |
+| icao          | ICAO code|
+| distance	     | distance of radius|
+| unit          | km or nm|
+
+| URL Queries  | Description                      | Default |
+|--------------| -------------------------------- |---------|
+| limitResults | limit number of results | 10      |
 
     GET /airports/airports-within/icao/:icao/distance/:distance/unit/:unit
 
@@ -1045,40 +1087,13 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 
 | URL Parameters | Description                                      |
 | -------------- | ------------------------------------------------ |
-| origin   | origin airport ICAO code
-|destination |destination airport ICAO code
-|unit         | km or nm
+| origin   | origin airport ICAO code|
+|destination |destination airport ICAO code|
+|unit         | km or nm|
 
     GET /airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit
 
 ---
-
-
-
----
-
-### Airports Query:
-
-limitFields\
-Example: **_/api/v1/airports/all-airports?fields=icao+type_**
-
-limitResults\n
-Example: **_/api/v1/airports/all-airports?limitedResults=3_**
-
-paginate
-Example: **_/api/v1/airports/all-airports?page=1&limit=3_**
-
-### Users: _/api/v1/users_
-
-**End Points**:
-
-Signup: \
-Example: **_/api/v1/users/signup_**
-
-Login:\
-Example: **_/api/v1/users/login_**
-
-
 
 ---
 
@@ -1089,4 +1104,4 @@ Example: **_/api/v1/users/login_**
 
 ### Credits
 
-- [ FAA DATIS ](https://datis.clowd.io/) New Document
+- [ FAA DATIS ](https://datis.clowd.io/)
