@@ -1,9 +1,11 @@
 const axios = require("axios");
 const { VATSIM_DATA_URL } = require("../../config");
 const BadRequestError = require("../../common/errors/BadRequestError");
-const { Airports } = require("../../models/airports/airportsModel");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
+const {
+    GNS430Airport_Update
+} = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 
 class VatsimData {
     constructor() {
@@ -56,9 +58,8 @@ class VatsimData {
 
     static async getAirportITAT(icao) {
         try {
-            const airport = await Airports.findOne({ ident: `${icao.toUpperCase()}` });
-            console.log(airport.iata_code);
-            return airport.iata_code;
+            const airport = await GNS430Airport_Update.findOne({ ICAO: `${icao.toUpperCase()}` });
+            return airport.iata;
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
         }
