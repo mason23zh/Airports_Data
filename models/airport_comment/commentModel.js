@@ -5,40 +5,40 @@ const airportCommentSchema = new mongoose.Schema(
         comment: {
             type: String,
             required: [true, "Comment cannot be empty"],
-            maxLength: [500, "Max length of comment is 500 characters"],
+            maxLength: [500, "Max length of comment is 500 characters"]
         },
         landingRate: {
-            type: Number,
+            type: Number
         },
         route: {
-            type: String,
+            type: String
         },
         originAirport: {
             type: mongoose.Schema.ObjectId,
-            ref: "GNS430Airport",
+            ref: "GNS430AirportTestModel"
         },
         destinationAirport: {
             type: mongoose.Schema.ObjectId,
-            ref: "GNS430Airport",
+            ref: "GNS430AirportTestModel"
         },
         createdAt: {
             type: Date,
-            default: Date.now(),
+            default: Date.now()
         },
         airport: {
             type: mongoose.Schema.ObjectId,
-            ref: "GNS430Airport",
-            required: [true, "Comment must belong to an airport"],
+            ref: "GNS430AirportTestModel",
+            required: [true, "Comment must belong to an airport"]
         },
         user: {
             type: mongoose.Schema.ObjectId,
             ref: "User",
-            required: [true, "Comment must belong to a user"],
-        },
+            required: [true, "Comment must belong to a user"]
+        }
     },
     {
         toJSON: { virtuals: true },
-        toObject: { virtuals: true },
+        toObject: { virtuals: true }
     }
 );
 

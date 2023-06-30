@@ -11,38 +11,38 @@ class VatsimData {
             {
                 id: 0,
                 short: "OBS",
-                long: "Observer",
+                long: "Observer"
             },
             {
                 id: 1,
                 short: "FSS",
-                long: "Flight Service Station",
+                long: "Flight Service Station"
             },
             {
                 id: 2,
                 short: "DEL",
-                long: "Clearance Delivery",
+                long: "Clearance Delivery"
             },
             {
                 id: 3,
                 short: "GND",
-                long: "Ground",
+                long: "Ground"
             },
             {
                 id: 4,
                 short: "TWR",
-                long: "Tower",
+                long: "Tower"
             },
             {
                 id: 5,
                 short: "APP",
-                long: "Approach/Departure",
+                long: "Approach/Departure"
             },
             {
                 id: 6,
                 short: "CTR",
-                long: "Enroute",
-            },
+                long: "Enroute"
+            }
         ];
     }
 
