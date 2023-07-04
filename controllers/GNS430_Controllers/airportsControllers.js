@@ -181,6 +181,43 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     });
 };
 
+module.exports.getAirportsByCountry = async (req, res) => {
+    const { country } = req.params;
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
+    }
+    if (/^[a-z]+$/i.test(country)) {
+        const code = iso3166.country(req.params.country);
+        if (!code) {
+            return res.status(200).json({
+                results: 0,
+                data: []
+            });
+        }
+
+        const airportResponse = await GNS430Airport_Update.aggregate([
+            {
+                $search: {
+                    text: {
+                        query: `${code.code}`,
+                        path: "station.country"
+                    }
+                }
+            }
+        ]).limit(limitResults);
+
+        return res.status(200).json({
+            results: airportResponse.length,
+            data: airportResponse
+        });
+    } else {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    }
+};
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
