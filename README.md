@@ -1031,11 +1031,37 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/iata/jfk
     GET /airports/city/:name
 
 ```bat
-# Get airports with city name that includes "winn"
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn
+# Get airports with city named winnipeg
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winnipeg
 
-# Only return 5 results, every result would only have field ICAO and runways
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winn?fields=runway,ICAO&limitResults=5
+# Only return25 results
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/boston?limitResults=2
+
+# Get airports with region name, region name can be either province or state or state
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/manitoba?limitResults=2
+$ curl https://flight-data.herokuapp.com/api/v1/airports/city/california?limitResults=3
+```
+
+---
+
+### Get Airport data using country name or country code
+
+| URL Parameters | Description                                      |
+|----------------| ------------------------------------------------ |
+| country        | city name |
+
+| URL Queries | Description                  | Default |
+|-------------|------------------------------|---------|
+| limitResults | limit number of results | 10      |
+
+    GET /airports/city/:name
+
+```bat
+# Get airports with country code: ca
+$ curl https://flight-data.herokuapp.com/api/v1/airports/country/ca?limitResults=2
+
+# Get airport with country name: united states
+curl https://flight-data.herokuapp.com/api/v1/airports/country/united states?limitResults=15
 
 ```
 
@@ -1061,8 +1087,15 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york
 $ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york?limitResults=5
 
 # Or only enter ICAO or IATA code
-$ curl https://flight-data.herokuapp.com/api/v1/airports/cywg
-$ curl https://flight-data.herokuapp.com/api/v1/airports/bos
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/cywg
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/bos
+
+# Or enter region name or city name
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/manitoba
+
+# or enter country name
+$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/China
+
 ```
 
 ---

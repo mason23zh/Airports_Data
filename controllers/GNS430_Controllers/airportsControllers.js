@@ -154,11 +154,7 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
             $search: {
                 text: {
                     query: `${req.params.name}`,
-                    path: [
-                        "station.city",
-                        "station.region.region_name",
-                        "station.region.region_code"
-                    ]
+                    path: ["station.city", "station.region.region_name"]
                 }
             }
         },
@@ -192,6 +188,14 @@ module.exports.getAirportsByCountry = async (req, res) => {
                     path: ["station.country.country_name", "station.country.country_code"]
                 }
             }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
         }
     ]).limit(limitResults);
 
@@ -213,6 +217,7 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
                     query: `${req.params.data}`,
                     path: [
                         "ICAO",
+                        "iata",
                         "station.name",
                         "station.city",
                         "station.country.country_name",
