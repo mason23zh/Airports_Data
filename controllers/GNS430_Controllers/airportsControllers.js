@@ -1,4 +1,3 @@
-const iso3166 = require("iso-3166-2");
 const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
 const {
