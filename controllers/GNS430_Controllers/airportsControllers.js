@@ -155,7 +155,11 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
             $search: {
                 text: {
                     query: `${req.params.name}`,
-                    path: "station.city"
+                    path: [
+                        "station.city",
+                        "station.region.region_name",
+                        "station.region.region_code"
+                    ]
                 }
             }
         },
@@ -176,41 +180,26 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
 };
 
 module.exports.getAirportsByCountry = async (req, res) => {
-    const { country } = req.params;
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
         limitResults = Number(req.query.limitResults);
     }
-    if (/^[a-z]+$/i.test(country)) {
-        const code = iso3166.country(req.params.country);
-        if (!code) {
-            return res.status(200).json({
-                results: 0,
-                data: []
-            });
-        }
 
-        const airportResponse = await GNS430Airport_Update.aggregate([
-            {
-                $search: {
-                    text: {
-                        query: `${code.code}`,
-                        path: "station.country"
-                    }
+    const responseAirports = await GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.country}`,
+                    path: ["station.country.country_name", "station.country.country_code"]
                 }
             }
-        ]).limit(limitResults);
+        }
+    ]).limit(limitResults);
 
-        return res.status(200).json({
-            results: airportResponse.length,
-            data: airportResponse
-        });
-    } else {
-        return res.status(200).json({
-            results: 0,
-            data: []
-        });
-    }
+    res.status(200).json({
+        results: responseAirports.length,
+        data: responseAirports
+    });
 };
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     let limitResults = 10;
