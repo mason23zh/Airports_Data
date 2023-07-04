@@ -9,6 +9,7 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
+const { ISO_3166_Data } = require("../../models/ISO_CountryModel/ISO_3166_2_model");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -19,12 +20,6 @@ let repo;
     await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
-
-module.exports.isoTest = async (req, res) => {
-    const { data } = req.params;
-    console.log(iso3166.country("CA"));
-    res.status(200).json({});
-};
 
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const gns430Airport = await GNS430Airport_Update.findOne({
@@ -182,6 +177,9 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
 };
 
 module.exports.getAirportsByCountry = async (req, res) => {
+    const test = await ISO_3166_Data.findOne({ regionCode: "CA-MB" });
+    console.log(test);
+
     const { country } = req.params;
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
