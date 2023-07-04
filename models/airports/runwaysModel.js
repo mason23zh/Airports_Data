@@ -3,67 +3,67 @@ const mongoose = require("mongoose");
 const runwaySchema = new mongoose.Schema({
     id: {
         type: String,
-        required: [true, "Runway needs ID"],
+        required: [true, "Runway needs ID"]
     },
     airport_ref: {
         type: String,
-        required: [true, "Runway need airport id"],
+        required: [true, "Runway need airport id"]
     },
     airport_ident: {
         type: String,
-        required: [true, "Runway need airport ident"],
+        required: [true, "Runway need airport ident"]
     },
     length_ft: {
-        type: Number,
+        type: Number
     },
     width_ft: {
-        type: Number,
+        type: Number
     },
     surface: {
-        type: String,
+        type: String
     },
     lighted: {
-        type: String,
+        type: String
     },
     closed: {
-        type: String,
+        type: String
     },
     le_ident: {
-        type: String,
+        type: String
     },
     le_latitude_deg: {
-        type: String,
+        type: String
     },
     le_longitude_deg: {
-        type: String,
+        type: String
     },
     le_elevation_ft: {
-        type: Number,
+        type: Number
     },
     le_heading_degT: {
-        type: Number,
+        type: Number
     },
     le_displaced_threshold_ft: {
-        type: Number,
+        type: Number
     },
     he_ident: {
-        type: String,
+        type: String
     },
     he_latitude_deg: {
-        type: String,
+        type: String
     },
     he_longitude_deg: {
-        type: String,
+        type: String
     },
     he_elevation_ft: {
-        type: Number,
+        type: Number
     },
     he_heading_degT: {
-        type: String,
+        type: String
     },
     he_displaced_threshold_ft: {
-        type: Number,
-    },
+        type: Number
+    }
 });
 
 module.exports.Runways = mongoose.model("Runways", runwaySchema);

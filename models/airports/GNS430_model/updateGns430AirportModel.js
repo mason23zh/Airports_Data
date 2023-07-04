@@ -28,10 +28,23 @@ const gns430AirportSchema = new mongoose.Schema(
                 type: String
             },
             country: {
-                type: String
+                country_code: {
+                    type: String
+                },
+                country_name: {
+                    type: String
+                }
             },
             region: {
-                type: String
+                region_code: {
+                    type: String
+                },
+                local_code: {
+                    type: String
+                },
+                region_name: {
+                    type: String
+                }
             },
             city: {
                 type: String
@@ -130,4 +143,9 @@ gns430AirportSchema.virtual("comments", {
     localField: "_id"
 });
 
-module.exports.GNS430Airport_Update = mongoose.model("GNS430AirportTestModel", gns430AirportSchema);
+//GNS430AirportTestModel
+module.exports.GNS430Airport_Update = mongoose.model(
+    "GNS430AirportWithUpdateRegion",
+    gns430AirportSchema,
+    "Gns430AirportWithUpdateRegion"
+);

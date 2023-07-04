@@ -154,7 +154,7 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
             $search: {
                 text: {
                     query: `${req.params.name}`,
-                    path: "station.city"
+                    path: ["station.city", "station.region.region_name"]
                 }
             }
         },
@@ -174,6 +174,36 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
     });
 };
 
+module.exports.getAirportsByCountry = async (req, res) => {
+    let limitResults = 10;
+    if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
+        limitResults = Number(req.query.limitResults);
+    }
+
+    const responseAirports = await GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.country}`,
+                    path: ["station.country.country_name", "station.country.country_code"]
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]).limit(limitResults);
+
+    res.status(200).json({
+        results: responseAirports.length,
+        data: responseAirports
+    });
+};
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
@@ -185,7 +215,14 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
             $search: {
                 text: {
                     query: `${req.params.data}`,
-                    path: ["ICAO", "station.name", "station.city"]
+                    path: [
+                        "ICAO",
+                        "iata",
+                        "station.name",
+                        "station.city",
+                        "station.country.country_name",
+                        "station.region.region_name"
+                    ]
                 }
             }
         },
