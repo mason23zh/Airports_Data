@@ -130,4 +130,9 @@ gns430AirportSchema.virtual("comments", {
     localField: "_id"
 });
 
-module.exports.GNS430Airport_Update = mongoose.model("GNS430AirportTestModel", gns430AirportSchema);
+//GNS430AirportTestModel
+module.exports.GNS430Airport_Update = mongoose.model(
+    "GNS430AirportsDevModel",
+    gns430AirportSchema,
+    "Gns430AirportDevModel"
+);
