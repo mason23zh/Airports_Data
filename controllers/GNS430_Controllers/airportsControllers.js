@@ -9,7 +9,6 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
-const { ISO_3166_Data } = require("../../models/ISO_CountryModel/ISO_3166_2_model");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -177,9 +176,6 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
 };
 
 module.exports.getAirportsByCountry = async (req, res) => {
-    const test = await ISO_3166_Data.findOne({ regionCode: "CA-MB" });
-    console.log(test);
-
     const { country } = req.params;
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
@@ -227,7 +223,13 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
             $search: {
                 text: {
                     query: `${req.params.data}`,
-                    path: ["ICAO", "station.name", "station.city"]
+                    path: [
+                        "ICAO",
+                        "station.name",
+                        "station.city",
+                        "station.country.country_name",
+                        "station.region.region_name"
+                    ]
                 }
             }
         },
