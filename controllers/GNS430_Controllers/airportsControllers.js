@@ -1,3 +1,4 @@
+const iso3166 = require("iso-3166-2");
 const APIFeatures = require("../../utils/Data_Convert/apiFeatures");
 const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimATIS");
 const {
@@ -18,6 +19,12 @@ let repo;
     await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
     repo = rClient.createRedisOMRepository(awcMetarSchema);
 })();
+
+module.exports.isoTest = async (req, res) => {
+    const { data } = req.params;
+    console.log(iso3166.country("CA"));
+    res.status(200).json({});
+};
 
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
     const gns430Airport = await GNS430Airport_Update.findOne({
