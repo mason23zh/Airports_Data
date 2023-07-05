@@ -143,7 +143,6 @@ gns430AirportSchema.virtual("comments", {
     localField: "_id"
 });
 
-//GNS430AirportTestModel
 module.exports.GNS430Airport_Update = mongoose.model(
     "GNS430AirportWithUpdateRegion",
     gns430AirportSchema,

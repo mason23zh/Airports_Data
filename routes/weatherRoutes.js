@@ -19,7 +19,7 @@ const {
     getMetarUsingAirportName,
     getMetarUsingGenericInput,
     getMetarsWithin,
-    getMetarUsingIATA,
+    getMetarUsingIATA
 } = require("../controllers/Weather/weatherControllers");
 
 const router = express.Router();

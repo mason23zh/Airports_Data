@@ -4,8 +4,6 @@ const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel")
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
-const { Airports } = require("../../models/airports/airportsModel");
-const BadRequestError = require("../../common/errors/BadRequestError");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
 const { distanceConverter } = require("../../utils/METAR/convert");
@@ -14,6 +12,9 @@ const {
     getAwcMetarUsingGenericInput,
     getAwcMetarUsingAirportName
 } = require("../../utils/AWC_Weather/controller_helper");
+const {
+    GNS430Airport_Update
+} = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 
 const rClient = new RedisClient();
 let repo;
@@ -137,26 +138,23 @@ const getMetarUsingICAO = async (req, res, next) => {
 
 const getMetarUsingIATA = async (req, res, next) => {
     const { IATA } = req.params;
-    const airportICAO = await Airports.find({
-        iata_code: IATA.toUpperCase()
-    });
+    let decode = req.query.decode === "true";
 
-    if (!airportICAO || airportICAO.length === 0) {
-        throw new BadRequestError(
-            `Airport with IATA: '${IATA.toUpperCase()}' Not Found ${
-                IATA.length > 3 ? "(IATA code length is 3)" : ""
-            }`
-        );
+    const airportICAO = await GNS430Airport_Update.findOne({ iata: `${IATA.toUpperCase()}` });
+    if (!airportICAO) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    } else {
+        const airportICAO_Code = airportICAO.ICAO;
+        const responseMetar = await getAwcMetarUsingICAO(airportICAO_Code.toUpperCase(), decode);
+
+        return res.status(200).json({
+            results: 1,
+            data: [responseMetar]
+        });
     }
-
-    const airportICAO_Code = airportICAO[0].ident;
-
-    const responseMetar = await getAwcMetarUsingICAO(airportICAO_Code.toUpperCase());
-
-    res.status(200).json({
-        status: "success",
-        data: responseMetar
-    });
 };
 
 const getWindGustForCountry = async (req, res) => {
