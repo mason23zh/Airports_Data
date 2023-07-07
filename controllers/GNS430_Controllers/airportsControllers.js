@@ -8,6 +8,7 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -204,6 +205,7 @@ module.exports.getAirportsByCountry = async (req, res) => {
         data: responseAirports
     });
 };
+
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
@@ -240,6 +242,61 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         results: responseAirports.length,
         data: responseAirports
     });
+};
+
+module.exports.getAirportByGenericInput_Paginate = async (req, res) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.limit && !isNaN(Number(req.query.limit))) {
+        limit = Number(req.query.limit);
+    }
+    if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+    }
+
+    const aggregateAirports = GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.data}`,
+                    path: [
+                        "ICAO",
+                        "iata",
+                        "station.name",
+                        "station.city",
+                        "station.country.country_name",
+                        "station.region.region_name"
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]);
+
+    try {
+        const responseAirports = await GNS430Airport_Update.aggregatePaginate(aggregateAirports, {
+            page: page,
+            limit: limit,
+            customLabels: { docs: "airports" }
+        });
+
+        res.status(200).json({
+            data: responseAirports
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {
+                airports: []
+            }
+        });
+    }
 };
 
 module.exports.getAirportWithin = async (req, res) => {

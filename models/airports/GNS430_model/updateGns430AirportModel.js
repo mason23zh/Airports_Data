@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const gns430AirportSchema = new mongoose.Schema(
     {
@@ -134,6 +135,8 @@ mongoose.plugin((gns430AirportSchema) => {
         }
     };
 });
+
+gns430AirportSchema.plugin(aggregatePaginate);
 
 gns430AirportSchema.index({ location: "2dsphere" });
 
