@@ -43,8 +43,8 @@
     - [Airports](#airports)
         - [Get Airport data using ICAO](#get-airport-data-using-icao)
         - [Get Airport data using iata](#get-airport-data-using-iata)
-        - [Get Airport data using city name](#get-airport-data-using-city-name)
-        - [Get Airport data using geneirc info](#get-airport-data-using-geneirc-info)
+        - [Get Airport data using city or region name](#Get-Airport-data-using-region-name)
+        - [Get Airport data using generic info](#get-airport-data-using-geneirc-info)
         - [Get Airport data within radius of ICAO](#get-airport-data-within-radius-of-icao)
         - [Get distance from origin airport to destination airport](#get-distance-from-origin-airport-to-destination-airport)
         - [References:](#references)
@@ -1018,17 +1018,56 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/iata/jfk
 
 ---
 
-### Get Airport data using city name
+### Get Airports using airport name
 
-| URL Parameters | Description                                      |
-| -------------- | ------------------------------------------------ |
-| name           | city name |
+| URL Parameters | Description |
+|----------------|--|
+| name | airport name |
 
 | URL Queries | Description                  | Default |
 |-------------|------------------------------|---------|
 | limitResults | limit number of results | 10      |
 
-    GET /airports/city/:name
+    GET /airports/name/:name
+
+```bat
+# Get airports with name included "Richardson"
+$ curl https://flight-data.herokuapp.com/api/v1/airports/name/Richardon
+```
+
+---
+
+### Get Airports using airport name (Pagination)
+
+| URL Parameters | Description |
+|----------------|--|
+| name | airport name |
+
+| URL Queries | Description                 | Default |
+|-------------|-----------------------------|---------|
+| limit       | number of airports per page | 10      |
+|page | page number | 1|
+
+    GET /airports/name/paginate/:name
+
+```bat
+# Get airports with name included "James", 15 airports per page, at page 2
+$ curl https://flight-data.herokuapp.com/api/v1/airports/name/paginate/james?limit=15&page=2
+```
+
+---
+
+### Get Airport data using region name
+
+| URL Parameters | Description         |
+|----------------|---------------------|
+| region         | city or region name |
+
+| URL Queries | Description                  | Default |
+|-------------|------------------------------|---------|
+| limitResults | limit number of results | 10      |
+
+    GET /airports/region/:name
 
 ```bat
 # Get airports with city named winnipeg
@@ -1044,17 +1083,37 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/city/california?limitRe
 
 ---
 
+### Get Airport data using region name (Pagination)
+
+| URL Parameters | Description         |
+|----------------|---------------------|
+| region         | city or region name |
+
+| URL Queries | Description                 | Default |
+|-------------|-----------------------------|---------|
+| limit       | number of airports per page | 10      |
+|page|page number|1|
+
+    GET /airports/region/paginate/:region
+
+```bat
+# Get airports in Boston region, number of airports per page: 15, on page number: 2
+$ curl https://flight-data.herokuapp.com/api/v1/airports/region/paginate/boston?limit=15&page=2
+```
+
+---
+
 ### Get Airport data using country name or country code
 
-| URL Parameters | Description                                      |
-|----------------| ------------------------------------------------ |
-| country        | city name |
+| URL Parameters | Description                  |
+|----------------|------------------------------|
+| country        | country name or country code |
 
 | URL Queries | Description                  | Default |
 |-------------|------------------------------|---------|
 | limitResults | limit number of results | 10      |
 
-    GET /airports/city/:name
+    GET /airports/country/:country
 
 ```bat
 # Get airports with country code: ca
@@ -1063,6 +1122,26 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/country/ca?limitResults
 # Get airport with country name: united states
 curl https://flight-data.herokuapp.com/api/v1/airports/country/united states?limitResults=15
 
+```
+
+---
+
+### Get Airport data using country name or country code (Pagination)
+
+| URL Parameters | Description                  |
+|----------------|------------------------------|
+| country        | country name or country code |
+
+| URL Queries | Description                  | Default |
+|-------------|------------------------------|---------|
+| limit       | number of items per page | 10      |
+|page|page number|1|
+
+    GET /airports/country/paginate/:country
+
+```bat
+# Get airports with country code: ca, 25 airports per page, on page 3
+$ curl https://flight-data.herokuapp.com/api/v1/airports/country/paginate/ca?limit=25&page=3
 ```
 
 ---
