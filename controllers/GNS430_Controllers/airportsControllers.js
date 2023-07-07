@@ -113,7 +113,55 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
     }
 };
 
-module.exports.getAirportByName_GNS430 = async (req, res) => {
+module.exports.getAirportsByName_Paginate = async (req, res) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+    }
+    if (req.query.limit && !isNaN(Number(req.query.limit))) {
+        limit = Number(req.query.limit);
+    }
+
+    const aggregateAirports = GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.name}`,
+                    path: "station.name"
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]);
+
+    try {
+        const responseAirports = await GNS430Airport_Update.aggregatePaginate(aggregateAirports, {
+            page: page,
+            limit: limit,
+            customLabels: { docs: "airports", totalDocs: "totalAirports" }
+        });
+
+        res.status(200).json({
+            data: responseAirports
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {
+                airports: []
+            }
+        });
+    }
+};
+
+module.exports.getAirportsByName_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
         limitResults = Number(req.query.limitResults);
@@ -143,7 +191,55 @@ module.exports.getAirportByName_GNS430 = async (req, res) => {
     });
 };
 
-module.exports.getAirportsByCity_GNS430 = async (req, res) => {
+module.exports.getAirportByRegion_Paginate = async (req, res) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+    }
+    if (req.query.limit && !isNaN(Number(req.query.limit))) {
+        limit = Number(req.query.limit);
+    }
+
+    const aggregateAirports = GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.region}`,
+                    path: ["station.city", "station.region.region_name"]
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]);
+
+    try {
+        const responseAirports = await GNS430Airport_Update.aggregatePaginate(aggregateAirports, {
+            page: page,
+            limit: limit,
+            customLabels: { docs: "airports", totalDocs: "totalAirports" }
+        });
+
+        res.status(200).json({
+            data: responseAirports
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {
+                airports: []
+            }
+        });
+    }
+};
+
+module.exports.getAirportsByRegion_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
         limitResults = Number(req.query.limitResults);
@@ -172,6 +268,54 @@ module.exports.getAirportsByCity_GNS430 = async (req, res) => {
         results: airportsResponse.length,
         data: airportsResponse
     });
+};
+
+module.exports.getAirportsByCountry_Paginate = async (req, res) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+    }
+    if (req.query.limit && !isNaN(Number(req.query.limit))) {
+        limit = Number(req.query.limit);
+    }
+
+    const aggregateAirports = GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.country}`,
+                    path: ["station.country.country_name", "station.country.country_code"]
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]);
+
+    try {
+        const responseAirports = await GNS430Airport_Update.aggregatePaginate(aggregateAirports, {
+            page: page,
+            limit: limit,
+            customLabels: { docs: "airports", totalDocs: "totalAirports" }
+        });
+
+        res.status(200).json({
+            data: responseAirports
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {
+                airports: []
+            }
+        });
+    }
 };
 
 module.exports.getAirportsByCountry = async (req, res) => {
@@ -204,6 +348,7 @@ module.exports.getAirportsByCountry = async (req, res) => {
         data: responseAirports
     });
 };
+
 module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
     let limitResults = 10;
     if (req.query.limitResults && !isNaN(Number(req.query.limitResults))) {
@@ -240,6 +385,61 @@ module.exports.getAirportByGenericInput_GNS430 = async (req, res) => {
         results: responseAirports.length,
         data: responseAirports
     });
+};
+
+module.exports.getAirportByGenericInput_Paginate = async (req, res) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.limit && !isNaN(Number(req.query.limit))) {
+        limit = Number(req.query.limit);
+    }
+    if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+    }
+
+    const aggregateAirports = GNS430Airport_Update.aggregate([
+        {
+            $search: {
+                text: {
+                    query: `${req.params.data}`,
+                    path: [
+                        "ICAO",
+                        "iata",
+                        "station.name",
+                        "station.city",
+                        "station.country.country_name",
+                        "station.region.region_name"
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                id: 0,
+                __v: 0,
+                "runways._id": 0
+            }
+        }
+    ]);
+
+    try {
+        const responseAirports = await GNS430Airport_Update.aggregatePaginate(aggregateAirports, {
+            page: page,
+            limit: limit,
+            customLabels: { docs: "airports", totalDocs: "totalAirports" }
+        });
+
+        res.status(200).json({
+            data: responseAirports
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {
+                airports: []
+            }
+        });
+    }
 };
 
 module.exports.getAirportWithin = async (req, res) => {
