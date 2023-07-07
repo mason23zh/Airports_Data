@@ -1100,6 +1100,27 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/generic/China
 
 ---
 
+### Get Airport data using generic info (fuzzy search & pagination)
+
+| URL Parameters | Description                                      |
+| -------------- | ------------------------------------------------ |
+| data           | generic serach query |
+
+| URL Queries  | Description              | Default |
+|--------------|--------------------------|---------|
+| limit | number of items per page | 10      |
+|page| page number | 1|
+
+    GET /airports/generic/paginate/:data
+
+```bat
+# Get airports located in New York, each page return 15 airports, current page: 1
+$ curl https://flight-data.herokuapp.com/api/v1/airports/geneirc/paginate/new york?limit=15&page=1
+
+```
+
+---
+
 ### Get Airport data within radius of ICAO
 
 | URL Parameters | Description                                      |

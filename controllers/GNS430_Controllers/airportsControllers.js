@@ -8,7 +8,6 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
-const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
