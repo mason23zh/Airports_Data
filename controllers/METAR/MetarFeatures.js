@@ -677,7 +677,7 @@ class MetarFeatures {
             barometer: { ...this.barometer },
             wind: { ...this.wind },
             clouds: this.clouds,
-            conditions: { ...this.weather },
+            conditions: this.weather,
             visibility: { ...this.visibility },
             temperature: { ...this.temperature },
             dewpoint: { ...this.dewpoint },
