@@ -8,6 +8,7 @@ const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { getDistanceFromLatLonInKm } = require("./converter");
+const axios = require("axios");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -58,6 +59,67 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
         );
 
         const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
+
+        if (responseMetar && responseMetar.length !== 0) {
+            responseObject.METAR = responseMetar;
+        }
+
+        if (Object.keys(ATIS).length !== 0) {
+            responseObject.ATIS = ATIS;
+        }
+
+        return res.status(200).json({
+            results: 1,
+            data: [responseObject]
+        });
+    }
+};
+
+//https://www.avionio.com/widget/en/TPE/departures
+//! This is a temporary solution to by-pass the CORS issue in the frontend
+// In order to avoid Avionic data error or data not available
+module.exports.getAirportByICAO_GNS430_With_Widget = async (req, res) => {
+    let decode = req.query.decode === "true";
+
+    const airportFeatures = new APIFeatures(
+        GNS430Airport_Update.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
+        req.query
+    )
+        .filter()
+        .limitFields();
+
+    airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
+    const gns430Airport = await airportFeatures.query;
+
+    if (!gns430Airport || gns430Airport.length === 0) {
+        return res.status(200).json({
+            results: 0,
+            data: []
+        });
+    } else {
+        let responseObject = { airport: gns430Airport[0] };
+        const responseMetar = await getAwcMetarUsingICAO(
+            req.params.icao.toUpperCase(),
+            decode,
+            AwcWeatherMetarModel,
+            repo
+        );
+
+        const ATIS = await generateGeneralATIS(req.params.icao.toUpperCase());
+
+        // check if Avionio data is available
+        if (gns430Airport[0].iata) {
+            try {
+                const avionioResponse = await axios.get(
+                    `https://www.avionio.com/widget/en/${gns430Airport[0].iata}/departures`
+                );
+                if (avionioResponse.data && avionioResponse.data.length > 0) {
+                    responseObject.widget = true;
+                }
+            } catch (e) {
+                responseObject.widget = false;
+            }
+        }
 
         if (responseMetar && responseMetar.length !== 0) {
             responseObject.METAR = responseMetar;

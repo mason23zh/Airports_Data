@@ -14,7 +14,8 @@ const {
     getAirportByGenericInput_Paginate,
     getAirportsByCountry_Paginate,
     getAirportByRegion_Paginate,
-    getAirportsByName_Paginate
+    getAirportsByName_Paginate,
+    getAirportByICAO_GNS430_With_Widget
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -29,6 +30,9 @@ router.route("/region/:region").get(getAirportsByRegion_GNS430);
 router.route("/country/:country").get(getAirportsByCountry);
 router.route("/generic/:data").get(getAirportByGenericInput_GNS430);
 router.route("/name/:name").get(getAirportsByName_GNS430);
+
+//temporary working airport route: only use for certain frontend to check widget data from avionio
+router.route("/icao/widget/:icao").get(getAirportByICAO_GNS430_With_Widget);
 
 // Paginate
 router.route("/name/paginate/:name").get(getAirportsByName_Paginate);
