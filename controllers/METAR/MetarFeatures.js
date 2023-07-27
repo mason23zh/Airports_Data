@@ -181,6 +181,8 @@ class MetarFeatures {
                 .matches(data)
                 .or("municipality")
                 .match(data)
+                .or("station_id")
+                .match(data.toUpperCase())
                 .returnAll();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
@@ -200,7 +202,8 @@ class MetarFeatures {
                             $options: "i"
                         }
                     },
-                    { name: { $regex: `${data}`, $options: "i" } }
+                    { name: { $regex: `${data}`, $options: "i" } },
+                    { station_id: data.toUpperCase() }
                 ]
             });
             if (!dbMetars) {
