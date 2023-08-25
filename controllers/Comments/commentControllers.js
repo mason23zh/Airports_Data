@@ -23,7 +23,8 @@ exports.createComment = async (req, res) => {
     if (!req.body.user) {
         req.body.user = req.user.id;
     }
-    const { comment, landingRate, route, originAirport, destinationAirport, airport, user } = req.body;
+    const { comment, landingRate, route, originAirport, destinationAirport, airport, user } =
+        req.body;
     const newComment = await Comment.create({
         comment,
         landingRate,
@@ -31,13 +32,13 @@ exports.createComment = async (req, res) => {
         originAirport,
         destinationAirport,
         airport,
-        user,
+        user
     });
     res.status(201).json({
         status: "success",
         data: {
-            newComment,
-        },
+            newComment
+        }
     });
 };
 
@@ -59,8 +60,8 @@ exports.updateComment = async (req, res) => {
     res.status(201).json({
         status: "success",
         data: {
-            comment,
-        },
+            comment
+        }
     });
 };
 
@@ -74,6 +75,6 @@ exports.deleteComment = async (req, res) => {
 
     res.status(204).json({
         status: "success",
-        data: null,
+        data: null
     });
 };

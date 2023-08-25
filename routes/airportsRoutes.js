@@ -1,5 +1,4 @@
 const express = require("express");
-// const { getAllAirports, getAirportByType } = require("../controllers/airportsControllers");
 
 const {
     getAirportByICAO_GNS430,
@@ -15,7 +14,9 @@ const {
     getAirportsByCountry_Paginate,
     getAirportByRegion_Paginate,
     getAirportsByName_Paginate,
-    getAirportByICAO_GNS430_With_Widget
+    getAirportByICAO_GNS430_With_Widget,
+    updateVisited,
+    getPopularAirports
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -45,5 +46,11 @@ router.route("/airports-within/icao/:icao/distance/:distance/unit/:unit").get(ge
 router
     .route("/airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit")
     .get(getAirportsDistance);
+
+// visited counter update
+router.route("/update-visited").put(updateVisited);
+
+// get top 10 most visited airports
+router.route("/get-most-popular-airports").get(getPopularAirports);
 
 module.exports = router;
