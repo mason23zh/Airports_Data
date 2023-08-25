@@ -13,6 +13,10 @@ const gns430AirportSchema = new mongoose.Schema(
         name: {
             type: String
         },
+        visited: {
+            type: Number,
+            default: 0
+        },
         station: {
             name: {
                 type: String

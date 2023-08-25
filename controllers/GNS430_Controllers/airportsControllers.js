@@ -35,13 +35,16 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
     const airportFeatures = new APIFeatures(
-        GNS430Airport_Update.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
+        GNS430Airport_Update.findOne({
+            ICAO: `${req.params.icao.toUpperCase()}`
+        }),
         req.query
     )
         .filter()
         .limitFields();
 
     airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
+
     const gns430Airport = await airportFeatures.query;
 
     if (!gns430Airport || gns430Airport.length === 0) {
@@ -577,5 +580,34 @@ module.exports.getAirportsDistance = async (req, res) => {
             unit: unit === "km" ? "kilometers" : "nauticalmiles",
             distance: distance.toFixed(1)
         }
+    });
+};
+
+module.exports.updateVisited = async (req, res) => {
+    const { icao } = req.body;
+
+    try {
+        const gns430Airport = await GNS430Airport_Update.findOneAndUpdate(
+            {
+                ICAO: `${icao.toUpperCase()}`
+            },
+            {
+                $inc: { visited: 1 }
+            }
+        );
+        res.status(200).json({
+            data: gns430Airport.visited
+        });
+    } catch (e) {
+        res.status(400).json({
+            message: "Update Airport Failed"
+        });
+    }
+};
+
+module.exports.getPopularAirports = async (req, res) => {
+    const popularAirports = await GNS430Airport_Update.find().sort({ visited: -1 }).limit(10);
+    res.status(200).json({
+        data: popularAirports
     });
 };

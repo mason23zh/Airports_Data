@@ -176,7 +176,7 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
     let decode = req.query.decode === "true";
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     if (data.length === 0) {
-        return res.status(404).json({
+        return res.status(200).json({
             results: 0,
             data: []
         });
@@ -188,9 +188,9 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
             data: response
         });
     } else {
-        return res.status(404).json({
-            results: response.length,
-            data: response
+        return res.status(200).json({
+            results: 0,
+            data: []
         });
     }
 };

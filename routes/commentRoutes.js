@@ -4,7 +4,7 @@ const {
     createComment,
     setCommentUserId,
     deleteComment,
-    updateComment,
+    updateComment
 } = require("../controllers/Comments/commentControllers");
 const { protect, restrictTo } = require("../controllers/authControllers");
 

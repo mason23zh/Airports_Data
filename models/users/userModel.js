@@ -5,20 +5,20 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Must have user name"],
+        required: [true, "Must have user name"]
     },
     email: {
         type: String,
         required: [true, "Must have Email"],
         unique: true,
         lowercase: true,
-        validate: [validator.isEmail, "Please provide a validate Email"],
+        validate: [validator.isEmail, "Please provide a validate Email"]
     },
     password: {
         type: String,
         required: [true, "Must have password"],
         minlength: 8,
-        select: false,
+        select: false
     },
     passwordConfirm: {
         type: String,
@@ -28,22 +28,22 @@ const userSchema = new mongoose.Schema({
             validator: function (el) {
                 return el === this.password;
             },
-            message: "Password are not the same",
-        },
+            message: "Password are not the same"
+        }
     },
     passwordChangedAt: Date,
     inactiveStartDate: Date,
     role: {
         type: String,
         enum: ["admin", "user"],
-        default: "user",
+        default: "user"
     },
     active: {
         type: Boolean,
         default: true,
-        select: false,
+        select: false
     },
-    photo: String,
+    photo: String
 });
 
 // modified the password before saving to the DB
