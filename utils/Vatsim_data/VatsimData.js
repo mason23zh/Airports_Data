@@ -91,12 +91,19 @@ class VatsimData {
         if (vatsimAtisList) {
             for (const atis of vatsimAtisList) {
                 if (atis.callsign.includes(icao.toUpperCase())) {
-                    return atis.text_atis;
+                    let vatsimAtis = { data: {} };
+                    vatsimAtis.data.code = atis.atis_code ? atis.atis_code : "-";
+                    vatsimAtis.data.datis = atis.text_atis.join(" ");
+                    return vatsimAtis;
+                    // return atis.text_atis;
                 }
             }
-            return `No Vatsim ATIS found in ${icao.toUpperCase()}`;
+            return {
+                data: `No Vatsim ATIS found in ${icao.toUpperCase()}`
+            };
+            // return `No Vatsim ATIS found in ${icao.toUpperCase()}`;
         }
-        return "Vatsim API not available";
+        return { data: "Vatsim API not available" };
     }
 
     async onlineControllersInAirport(icao) {

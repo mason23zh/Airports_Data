@@ -8,25 +8,21 @@ module.exports.generateGeneralATIS = async (icao) => {
     const vatsimATIS = await vatsimData.getATIS(icao.toUpperCase());
 
     const ATIS = {};
-
-    if (!faaATIS.data.includes("NO ATIS found") && !vatsimATIS.includes("No Vatsim Atis Found")) {
+    if (!faaATIS.data.includes("NO ATIS found") && !vatsimATIS.datis) {
         //if both faa atis and vatsim atis exist
         ATIS.faa = faaATIS.data;
-        ATIS.vatsim = vatsimATIS;
-    } else if (
-        faaATIS.data.includes("NO ATIS found") &&
-        !vatsimATIS.includes("No Vatsim Atis Found")
-    ) {
+        ATIS.vatsim = vatsimATIS.data;
+    } else if (faaATIS.data.includes("NO ATIS found") && !vatsimATIS.datis) {
         //if faa atis not found, but vatsim atis found.
         ATIS.faa = faaATIS.data;
-        ATIS.vatsim = vatsimATIS;
+        ATIS.vatsim = vatsimATIS.data;
     } else if (
         faaATIS.data.includes("NO ATIS found") &&
-        vatsimATIS.includes("No Vatsim Atis Found")
+        vatsimATIS.data.includes("No Vatsim Atis Found")
     ) {
         //if both faa atis and vatsim atis not found
         ATIS.faa = faaATIS.data;
-        ATIS.vatsim = vatsimATIS;
+        ATIS.vatsim = vatsimATIS.data;
     }
 
     return ATIS;
