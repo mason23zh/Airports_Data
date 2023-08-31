@@ -54,6 +54,6 @@ router.route("/update-visited").put(updateVisited);
 // get top 10 most visited airports
 router.route("/get-most-popular-airports").get(getPopularAirports);
 
-// test
+// Vatsim
 router.route("/vatsim-popular-airports").get(getVatsimPopularAirports);
 module.exports = router;
