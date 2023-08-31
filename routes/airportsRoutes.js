@@ -16,7 +16,8 @@ const {
     getAirportsByName_Paginate,
     getAirportByICAO_GNS430_With_Widget,
     updateVisited,
-    getPopularAirports
+    getPopularAirports,
+    getVatsimPopularAirports
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -53,4 +54,6 @@ router.route("/update-visited").put(updateVisited);
 // get top 10 most visited airports
 router.route("/get-most-popular-airports").get(getPopularAirports);
 
+// test
+router.route("/vatsim-popular-airports").get(getVatsimPopularAirports);
 module.exports = router;
