@@ -661,9 +661,17 @@ module.exports.getVatsimPopularAirports = async (req, res) => {
             });
         }
 
+        // re-sort the response array
+        // Db query messed up the order of the original sorted array
+        let sortedResponseArray = [];
+        combinedAirports.map((airport) => {
+            let tempObj = responseArray.find((o) => o.ICAO === airport.ICAO);
+            sortedResponseArray.push(tempObj);
+        });
+
         res.status(200).json({
             data: {
-                airports: responseArray
+                airports: sortedResponseArray
             }
         });
     } catch (e) {
