@@ -9,6 +9,9 @@ const {
 
 class VatsimData {
     constructor() {
+        this.vatsimPilots = [];
+        this.vatsimControllers = [];
+        this.vatsimAtis = [];
         this.facilities = [
             {
                 id: 0,
@@ -48,20 +51,32 @@ class VatsimData {
         ];
     }
 
-    static async requestVatsimData() {
-        try {
-            return await axios.get(VATSIM_DATA_URL);
-        } catch (e) {
-            throw new BadRequestError("Vatsim API ERROR");
-        }
-    }
-
     static async getAirportITAT(icao) {
         try {
             const airport = await GNS430Airport_Update.findOne({ ICAO: `${icao.toUpperCase()}` });
             return airport.iata;
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
+        }
+    }
+
+    async requestVatsimData() {
+        try {
+            const response = await axios.get(VATSIM_DATA_URL);
+            if (response) {
+                if (response.data.pilots.length > 0) {
+                    this.vatsimPilots = response.data.pilots;
+                }
+                if (response.data.controllers.length > 0) {
+                    this.vatsimControllers = response.data.controllers;
+                }
+                if (response.data.atis.length > 0) {
+                    this.vatsimAtis = response.data.atis;
+                }
+                return response;
+            }
+        } catch (e) {
+            throw new BadRequestError("Vatsim API ERROR");
         }
     }
 
@@ -86,6 +101,7 @@ class VatsimData {
     }
 
     async getPopularAirports() {
+        const { vatsimPilots } = this;
         const sortAirports = (airportsArray) => {
             return Object.values(
                 airportsArray.reduce((p, v) => {
@@ -105,9 +121,6 @@ class VatsimData {
             });
         };
 
-        const vatsimData = await VatsimData.requestVatsimData();
-
-        const vatsimPilots = vatsimData.data.pilots;
         let depAirports = [];
         let arrAirports = [];
         if (vatsimPilots) {
@@ -170,16 +183,35 @@ class VatsimData {
             }
         }
 
+        // attach controller information
+        let tempCombined = [];
+        for await (let airport of combinedAirports) {
+            const controllerStatus = await this.onlineControllerStatus(airport.ICAO);
+            tempCombined.push({ ...airport, ...controllerStatus });
+        }
+
         return {
             arrival: sortedArrAirports,
             departure: sortedDepAirports,
-            combined: combinedAirports
+            combined: tempCombined
         };
     }
 
-    async getATIS(icao) {
-        const vatsimData = await VatsimData.requestVatsimData();
-        const vatsimAtisList = vatsimData.data.atis;
+    checkATIS(icao) {
+        const vatsimAtisList = this.vatsimAtis;
+        if (vatsimAtisList.length !== 0) {
+            for (const atis of vatsimAtisList) {
+                if (atis.callsign.includes(icao.toUpperCase())) {
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    getATIS(icao) {
+        const vatsimAtisList = this.vatsimAtis;
         if (vatsimAtisList) {
             for (const atis of vatsimAtisList) {
                 if (atis.callsign.includes(icao.toUpperCase())) {
@@ -187,20 +219,17 @@ class VatsimData {
                     vatsimAtis.data.code = atis.atis_code ? atis.atis_code : "-";
                     vatsimAtis.data.datis = atis.text_atis.join(" ");
                     return vatsimAtis;
-                    // return atis.text_atis;
                 }
             }
             return {
                 data: `No Vatsim ATIS found in ${icao.toUpperCase()}`
             };
-            // return `No Vatsim ATIS found in ${icao.toUpperCase()}`;
         }
         return { data: "Vatsim API not available" };
     }
 
     async onlineControllersInAirport(icao) {
-        const vatsimData = await VatsimData.requestVatsimData();
-        const controllerList = vatsimData.data.controllers;
+        const controllerList = this.vatsimControllers;
         if (icao.length === 4 && icao.toUpperCase().startsWith("K")) {
             const iata = await VatsimData.getAirportITAT(icao);
             if (iata) {
@@ -219,6 +248,34 @@ class VatsimData {
             });
             return controllerLists;
         }
+    }
+
+    async onlineControllerStatus(icao) {
+        const controllers = await this.onlineControllersInAirport(icao);
+
+        let tempObj = {
+            DEL: false,
+            GND: false,
+            TWR: false,
+            APP: false
+        };
+        for (let controller of controllers) {
+            if (controller) {
+                if (controller.callsign.includes("DEL")) {
+                    tempObj.DEL = true;
+                }
+                if (controller.callsign.includes("GND")) {
+                    tempObj.GND = true;
+                }
+                if (controller.callsign.includes("TWR")) {
+                    tempObj.TWR = true;
+                }
+                if (controller.callsign.includes("APP")) {
+                    tempObj.APP = true;
+                }
+            }
+        }
+        return tempObj;
     }
 
     async displayControllerRange(icao) {

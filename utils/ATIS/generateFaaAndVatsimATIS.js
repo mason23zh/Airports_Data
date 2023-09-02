@@ -3,9 +3,10 @@ const VatsimData = require("../Vatsim_data/VatsimData");
 
 module.exports.generateGeneralATIS = async (icao) => {
     const vatsimData = new VatsimData(icao);
+    await vatsimData.requestVatsimData();
 
     const faaATIS = await generateFAAResponseATIS(icao.toUpperCase());
-    const vatsimATIS = await vatsimData.getATIS(icao.toUpperCase());
+    const vatsimATIS = vatsimData.getATIS(icao.toUpperCase());
 
     const ATIS = {};
     if (!faaATIS.data.includes("NO ATIS found") && !vatsimATIS.datis) {
