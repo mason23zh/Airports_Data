@@ -616,42 +616,72 @@ module.exports.getPopularAirports = async (req, res) => {
 module.exports.getVatsimPopularAirports = async (req, res) => {
     const { limit = 10 } = req.query;
     const vatsimData = new VatsimData();
-    const popularAirports = await vatsimData.getPopularAirports();
 
-    let combinedAirports = [];
-    let responseArray = [];
-    let searchAirportArrays;
-    if (popularAirports) {
-        combinedAirports = popularAirports.combined.slice(0, limit);
-        searchAirportArrays = combinedAirports.map((airport) => {
-            return airport.ICAO;
+    try {
+        await vatsimData.requestVatsimData();
+        const popularAirports = await vatsimData.getPopularAirports();
+
+        let combinedAirports = [];
+        let responseArray = [];
+        let searchAirportArrays;
+        if (popularAirports) {
+            combinedAirports = popularAirports.combined.slice(0, limit);
+            searchAirportArrays = combinedAirports.map((airport) => {
+                return airport.ICAO;
+            });
+        }
+
+        // find all targets airport in Database
+        const vatPopularAirports = await GNS430Airport_Update.find({
+            ICAO: { $in: searchAirportArrays }
+        }).lean();
+
+        if (vatPopularAirports) {
+            // Map through the returned documents list
+            responseArray = vatPopularAirports.map((dbAirport) => {
+                // find arrival and departure count in combined airport array
+                const tempAirport = combinedAirports.find((o) => o.ICAO === dbAirport.ICAO);
+                // Check ATIS availability
+                const atisFlag = vatsimData.checkATIS(tempAirport.ICAO);
+                // remove id fields in documents
+                delete dbAirport._id;
+                // construct new airport object to be returned
+                return {
+                    ...dbAirport,
+                    arrivalNumber: tempAirport.arrival,
+                    departureNumber: tempAirport.departure,
+                    controller: {
+                        DEL: tempAirport.DEL,
+                        GND: tempAirport.GND,
+                        TWR: tempAirport.TWR,
+                        APP: tempAirport.APP,
+                        ATIS: atisFlag
+                    }
+                };
+            });
+        }
+
+        res.status(200).json({
+            data: {
+                airports: responseArray
+            }
+        });
+    } catch (e) {
+        res.status(200).json({
+            airports: []
         });
     }
+};
 
-    // find all targets airport in Database
-    const vatPopularAirports = await GNS430Airport_Update.find({
-        ICAO: { $in: searchAirportArrays }
-    }).lean();
-
-    if (vatPopularAirports) {
-        // Map through the returned documents list
-        responseArray = vatPopularAirports.map((dbAirport) => {
-            // find arrival and departure count in combined airport array
-            const tempAirport = combinedAirports.find((o) => o.ICAO === dbAirport.ICAO);
-            // remove id fields in documents
-            delete dbAirport._id;
-            // construct new airport object to be returned
-            return {
-                ...dbAirport,
-                arrivalNumber: tempAirport.arrival,
-                departureNumber: tempAirport.departure
-            };
-        });
-    }
-
+module.exports.getVatsimControllers = async (req, res) => {
+    const { ICAO } = req.params;
+    const vatsimData = new VatsimData();
+    await vatsimData.requestVatsimData();
+    const response = await vatsimData.onlineControllerStatus(ICAO);
+    const atisFlag = vatsimData.checkATIS(ICAO);
     res.status(200).json({
         data: {
-            airports: responseArray
+            controllers: { ...response, ATIS: atisFlag }
         }
     });
 };
