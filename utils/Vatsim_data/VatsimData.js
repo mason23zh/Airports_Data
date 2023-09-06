@@ -100,7 +100,8 @@ class VatsimData {
         return -1;
     }
 
-    async getPopularAirports() {
+    async getPopularAirports(limit) {
+        if (!limit) limit = 10;
         const { vatsimPilots } = this;
         const sortAirports = (airportsArray) => {
             return Object.values(
@@ -135,51 +136,50 @@ class VatsimData {
             }
         }
 
-        const sortedArrAirports = sortAirports(arrAirports);
-        const sortedDepAirports = sortAirports(depAirports);
+        let sortedArrAirports = sortAirports(arrAirports).slice(0, limit);
+        let sortedDepAirports = sortAirports(depAirports).slice(0, limit);
         const combinedAirports = [];
+        const airportSortingOrder = [];
 
-        for (let i = 0; i < sortedArrAirports.length; i++) {
-            let curArrAirport = sortedArrAirports[i];
-
-            // out-of-bounds condition check
-            if (i <= sortedDepAirports.length - 1) {
-                let curDepAirport = sortedDepAirports[i];
-                // parallel comparison
-                if (curArrAirport.count > curDepAirport.count) {
-                    // if Arrival airport has more traffic, find corresponding departure traffic number
-                    let targetDepAirport = sortedDepAirports.find(
-                        (o) => o.ICAO === curArrAirport.ICAO
-                    );
-                    // if found
-                    if (targetDepAirport) {
-                        // construct new airport object
-                        let tempMax = {
-                            ICAO: curArrAirport.ICAO,
-                            arrival: curArrAirport.count,
-                            departure: targetDepAirport.count
-                        };
-                        // add to array
-                        combinedAirports.push(tempMax);
-                    } else {
-                        // if not found target airport, break
-                        break;
-                    }
-                } else {
-                    let targetArrAirport = sortedArrAirports.find(
-                        (o) => o.ICAO === curDepAirport.ICAO
-                    );
-                    if (targetArrAirport) {
-                        let tempMax = {
-                            ICAO: curDepAirport.ICAO,
-                            arrival: targetArrAirport.count,
-                            departure: curDepAirport.count
-                        };
-                        combinedAirports.push(tempMax);
-                    } else {
-                        break;
-                    }
+        while (sortedDepAirports.length > 0 && sortedArrAirports.length > 0) {
+            // compare first element of both array
+            if (sortedArrAirports[0].count > sortedDepAirports[0].count) {
+                let arrICAO = sortedArrAirports[0].ICAO;
+                let arrCount = sortedArrAirports[0].count;
+                let depAirport = sortedDepAirports.find((e) => e.ICAO === arrICAO);
+                if (depAirport) {
+                    let tempAirportObj = {
+                        ICAO: arrICAO,
+                        arrival: arrCount,
+                        departure: depAirport.count
+                    };
+                    //combineAirportsSet.add(tempAirportObj);
+                    combinedAirports.push(tempAirportObj);
+                    airportSortingOrder.push(arrICAO);
                 }
+                // remove element with same ICAO in depAirport list
+                sortedDepAirports = sortedDepAirports.filter((e) => e.ICAO !== arrICAO);
+                // remove first element in arrAirport list
+                sortedArrAirports.shift();
+            } else {
+                //dep > arr
+                let depICAO = sortedDepAirports[0].ICAO;
+                let depCount = sortedArrAirports[0].count;
+                let arrAirport = sortedDepAirports.find((e) => e.ICAO === depICAO);
+
+                if (arrAirport) {
+                    let tempAirportObj = {
+                        ICAO: depICAO,
+                        arrival: arrAirport.count,
+                        departure: depCount
+                    };
+                    airportSortingOrder.push(depICAO);
+                    combinedAirports.push(tempAirportObj);
+                }
+                // remove element with same ICAO in arrAirport list
+                sortedArrAirports = sortedArrAirports.filter((e) => e.ICAO !== depICAO);
+                // remove first element in depAirport list
+                sortedDepAirports.shift();
             }
         }
 
@@ -187,13 +187,20 @@ class VatsimData {
         let tempCombined = [];
         for await (let airport of combinedAirports) {
             const controllerStatus = await this.onlineControllerStatus(airport.ICAO);
-            tempCombined.push({ ...airport, ...controllerStatus });
+            const controllerATIS = this.checkATIS(airport.ICAO);
+            let tempObj = {
+                ...airport,
+                ...controllerStatus,
+                ATIS: controllerATIS
+            };
+            tempCombined.push(tempObj);
         }
 
         return {
             arrival: sortedArrAirports,
             departure: sortedDepAirports,
-            combined: tempCombined
+            combined: tempCombined,
+            sortingOrder: airportSortingOrder
         };
     }
 

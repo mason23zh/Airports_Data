@@ -619,21 +619,14 @@ module.exports.getVatsimPopularAirports = async (req, res) => {
 
     try {
         await vatsimData.requestVatsimData();
-        const popularAirports = await vatsimData.getPopularAirports();
+        const popularAirports = await vatsimData.getPopularAirports(limit);
 
-        let combinedAirports = [];
+        let combinedAirports = popularAirports.combined;
         let responseArray = [];
-        let searchAirportArrays;
-        if (popularAirports) {
-            combinedAirports = popularAirports.combined.slice(0, limit);
-            searchAirportArrays = combinedAirports.map((airport) => {
-                return airport.ICAO;
-            });
-        }
 
         // find all targets airport in Database
         const vatPopularAirports = await GNS430Airport_Update.find({
-            ICAO: { $in: searchAirportArrays }
+            ICAO: { $in: popularAirports.sortingOrder }
         }).lean();
 
         if (vatPopularAirports) {
@@ -641,33 +634,33 @@ module.exports.getVatsimPopularAirports = async (req, res) => {
             responseArray = vatPopularAirports.map((dbAirport) => {
                 // find arrival and departure count in combined airport array
                 const tempAirport = combinedAirports.find((o) => o.ICAO === dbAirport.ICAO);
-                // Check ATIS availability
-                const atisFlag = vatsimData.checkATIS(tempAirport.ICAO);
-                // remove id fields in documents
-                delete dbAirport._id;
-                // construct new airport object to be returned
-                return {
-                    ...dbAirport,
-                    arrivalNumber: tempAirport.arrival,
-                    departureNumber: tempAirport.departure,
-                    controller: {
-                        DEL: tempAirport.DEL,
-                        GND: tempAirport.GND,
-                        TWR: tempAirport.TWR,
-                        APP: tempAirport.APP,
-                        ATIS: atisFlag
-                    }
-                };
+                if (tempAirport) {
+                    // Check ATIS availability
+                    // remove id fields in documents
+                    delete dbAirport._id;
+                    // construct new airport object to be returned
+                    return {
+                        ...dbAirport,
+                        arrivalNumber: tempAirport.arrival,
+                        departureNumber: tempAirport.departure,
+                        controller: {
+                            DEL: tempAirport.DEL,
+                            GND: tempAirport.GND,
+                            TWR: tempAirport.TWR,
+                            APP: tempAirport.APP,
+                            ATIS: tempAirport.ATIS
+                        }
+                    };
+                }
             });
         }
 
         // re-sort the response array
         // Db query messed up the order of the original sorted array
         let sortedResponseArray = [];
-        combinedAirports.map((airport) => {
-            let tempObj = responseArray.find((o) => o.ICAO === airport.ICAO);
-            sortedResponseArray.push(tempObj);
-        });
+        for (let ICAO of popularAirports.sortingOrder) {
+            sortedResponseArray.push(responseArray.find((o) => o.ICAO === ICAO));
+        }
 
         res.status(200).json({
             data: {
