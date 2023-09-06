@@ -113,8 +113,7 @@ class VatsimData {
                             count: 1
                         };
                     //if not found, copy object and set count to 1
-                    // eslint-disable-next-line no-plusplus
-                    else p[v.ICAO].count++; //if found, increase counter by 1
+                    else p[v.ICAO].count += 1; //if found, increase counter by 1
                     return p;
                 }, {})
             ).sort((a, b) => {
@@ -142,7 +141,7 @@ class VatsimData {
         const airportSortingOrder = [];
 
         while (sortedDepAirports.length > 0 && sortedArrAirports.length > 0) {
-            // compare first element of both array
+            // compare first element of both array since they are sorted
             if (sortedArrAirports[0].count > sortedDepAirports[0].count) {
                 let arrICAO = sortedArrAirports[0].ICAO;
                 let arrCount = sortedArrAirports[0].count;
@@ -153,7 +152,6 @@ class VatsimData {
                         arrival: arrCount,
                         departure: depAirport.count
                     };
-                    //combineAirportsSet.add(tempAirportObj);
                     combinedAirports.push(tempAirportObj);
                     airportSortingOrder.push(arrICAO);
                 }
@@ -162,7 +160,7 @@ class VatsimData {
                 // remove first element in arrAirport list
                 sortedArrAirports.shift();
             } else {
-                //dep > arr
+                //dep count > arr count
                 let depICAO = sortedDepAirports[0].ICAO;
                 let depCount = sortedArrAirports[0].count;
                 let arrAirport = sortedDepAirports.find((e) => e.ICAO === depICAO);
@@ -183,7 +181,7 @@ class VatsimData {
             }
         }
 
-        // attach controller information
+        // attach controller information and ATIS information
         let tempCombined = [];
         for await (let airport of combinedAirports) {
             const controllerStatus = await this.onlineControllerStatus(airport.ICAO);

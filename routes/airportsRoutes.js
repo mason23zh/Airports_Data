@@ -17,9 +17,7 @@ const {
     getAirportByICAO_GNS430_With_Widget,
     updateVisited,
     getPopularAirports,
-    getVatsimPopularAirports,
-    getVatsimControllers,
-    testVatsimPopularAirports
+    getVatsimPopularAirports
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
