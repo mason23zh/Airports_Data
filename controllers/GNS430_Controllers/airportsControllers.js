@@ -10,6 +10,7 @@ const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel")
 const { getDistanceFromLatLonInKm } = require("./converter");
 const axios = require("axios");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
+const OnlineFlightData = require("../../utils/Online_Flight_Data/OnlineFlightData");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -685,4 +686,27 @@ module.exports.getVatsimControllers = async (req, res) => {
             controllers: { ...response, ATIS: atisFlag }
         }
     });
+};
+
+module.exports.getOnlineFlightData = async (req, res) => {
+    const { ICAO } = req.params;
+    const onlineFlight = new OnlineFlightData(ICAO.trim());
+    try {
+        await onlineFlight.getHTML();
+        const departureData = onlineFlight.getDeparturesData();
+        const arrivalData = onlineFlight.getArrivalsData();
+
+        res.status(200).json({
+            data: {
+                departureCount: departureData.length,
+                arrivalCount: departureData.length,
+                departure: departureData,
+                arrival: arrivalData
+            }
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {}
+        });
+    }
 };

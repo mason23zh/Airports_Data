@@ -17,7 +17,8 @@ const {
     getAirportByICAO_GNS430_With_Widget,
     updateVisited,
     getPopularAirports,
-    getVatsimPopularAirports
+    getVatsimPopularAirports,
+    getOnlineFlightData
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -57,4 +58,6 @@ router.route("/get-most-popular-airports").get(getPopularAirports);
 // Vatsim
 router.route("/vatsim-popular-airports").get(getVatsimPopularAirports);
 
+// Online
+router.route("/online-flight/:ICAO").get(getOnlineFlightData);
 module.exports = router;
