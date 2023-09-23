@@ -3,6 +3,7 @@ const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimAT
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
+const { ShareAirport } = require("../../models/airports/shareAirportModel");
 const { getAwcMetarUsingICAO } = require("../../utils/AWC_Weather/controller_helper");
 const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
@@ -708,5 +709,33 @@ module.exports.getOnlineFlightData = async (req, res) => {
         res.status(200).json({
             data: {}
         });
+    }
+};
+
+module.exports.storeShareAirport = async (req, res) => {
+    function generateRandomString(strLength) {
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        let randomstring = "";
+        for (let i = 0; i < strLength; i++) {
+            let rnum = Math.floor(Math.random() * chars.length);
+            randomstring += chars[rnum];
+        }
+        return randomstring;
+    }
+
+    const randomString = generateRandomString(10);
+
+    if (req.body) {
+        try {
+            await ShareAirport.create({
+                url: randomString,
+                airport: JSON.stringify(req.body)
+            });
+            res.status(201).json({ status: "success" });
+        } catch (e) {
+            return -1;
+        }
+    } else {
+        res.status(200).json({ status: "fail" });
     }
 };

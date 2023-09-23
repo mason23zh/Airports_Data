@@ -18,7 +18,8 @@ const {
     updateVisited,
     getPopularAirports,
     getVatsimPopularAirports,
-    getOnlineFlightData
+    getOnlineFlightData,
+    storeShareAirport
 } = require("../controllers/GNS430_Controllers/airportsControllers");
 const commentRoutes = require("./commentRoutes");
 
@@ -60,4 +61,8 @@ router.route("/vatsim-popular-airports").get(getVatsimPopularAirports);
 
 // Online
 router.route("/online-flight/:ICAO").get(getOnlineFlightData);
+
+// Share airport
+router.route("/share-airport").post(storeShareAirport);
+
 module.exports = router;
