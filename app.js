@@ -43,6 +43,7 @@ const limiter = rateLimit({
 
 const corsOptions = {
     origin: [
+        "https://stage.airportweather.org",
         "https://airportweather.org",
         "https://www.airportweather.org",
         "http://localhost:3000"
