@@ -715,27 +715,50 @@ module.exports.getOnlineFlightData = async (req, res) => {
 module.exports.storeShareAirport = async (req, res) => {
     function generateRandomString(strLength) {
         const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        let randomstring = "";
+        let randomString = "";
         for (let i = 0; i < strLength; i++) {
-            let rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars[rnum];
+            let rNum = Math.floor(Math.random() * chars.length);
+            randomString += chars[rNum];
         }
-        return randomstring;
+        return randomString;
     }
 
     const randomString = generateRandomString(10);
 
-    if (req.body) {
+    if (req.body && Object.keys(req.body).length !== 0) {
         try {
-            await ShareAirport.create({
+            const response = await ShareAirport.create({
                 url: randomString,
                 airport: JSON.stringify(req.body)
             });
-            res.status(201).json({ status: "success" });
+            if (res) {
+                res.status(201).json({ status: "success", url: response.url });
+            }
         } catch (e) {
             return -1;
         }
     } else {
         res.status(200).json({ status: "fail" });
+    }
+};
+
+module.exports.getShareAirport = async (req, res) => {
+    const { uniqueURL } = req.params;
+    if (uniqueURL && uniqueURL.length > 0) {
+        try {
+            const response = await ShareAirport.findOne({ url: uniqueURL });
+            let tempObj = {
+                url: response.url,
+                airport: JSON.parse(response.airport)
+            };
+
+            res.status(200).json({
+                data: tempObj
+            });
+        } catch (e) {
+            return -1;
+        }
+    } else {
+        res.status(200).json({ data: null });
     }
 };

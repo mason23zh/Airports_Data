@@ -13,6 +13,7 @@ const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const metarRoutes = require("./routes/metarRoutes");
+const puzzlesRoutes = require("./routes/puzzlesRoutes");
 const errorHandler = require("./common/middlewares/error-handler");
 const NotFoundError = require("./common/errors/NotFoundError");
 const AccessNumberExceedError = require("./common/errors/AccessNumberExceedError");
@@ -39,6 +40,15 @@ const limiter = rateLimit({
         throw new AccessNumberExceedError("Request number exceeded, try in an hour.");
     }
 });
+
+const corsOptions = {
+    origin: [
+        "https://airportweather.org",
+        "https://www.airportweather.org",
+        "http://localhost:3000"
+    ],
+    optionsSuccessStatus: 200
+};
 // app.use("/api", limiter);
 
 app.use(express.json({ limit: "10kb" }));
@@ -50,13 +60,14 @@ app.use(xss());
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/api/v1/airports", airportsRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/weather", weatherRoutes);
 app.use("/api/v1/metar", metarRoutes);
+app.use("/api/v1/puzzle", puzzlesRoutes);
 
 app.all("*", (req, res) => {
     throw new NotFoundError("Page Not Found");
