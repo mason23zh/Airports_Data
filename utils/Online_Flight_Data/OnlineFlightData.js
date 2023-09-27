@@ -1,6 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const { getRandomUserAgent } = require("./randomUserAgent");
+const { HttpsProxyAgent } = require("https-proxy-agent");
 
 class OnlineFlightData {
     constructor(ICAO) {
@@ -52,7 +53,11 @@ class OnlineFlightData {
     }
 
     async getHTML() {
+        const proxyUrl = `https://customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}@${process.env.Oxylabs_Proxy}`;
+        const agent = new HttpsProxyAgent(proxyUrl);
+
         const response = await axios.get(this.flightAwareUrl, {
+            httpsAgent: agent,
             headers: {
                 "User-Agent": getRandomUserAgent()
             }

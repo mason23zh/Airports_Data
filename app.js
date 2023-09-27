@@ -63,12 +63,12 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use(cors(corsOptions));
 
-app.use("/api/v1/airports", airportsRoutes);
-app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/comments", commentRoutes);
-app.use("/api/v1/weather", weatherRoutes);
-app.use("/api/v1/metar", metarRoutes);
-app.use("/api/v1/puzzle", puzzlesRoutes);
+app.use("/v1/airports", airportsRoutes);
+app.use("/v1/users", userRoutes);
+app.use("/v1/comments", commentRoutes);
+app.use("/v1/weather", weatherRoutes);
+app.use("/v1/metar", metarRoutes);
+app.use("/v1/puzzle", puzzlesRoutes);
 
 app.all("*", (req, res) => {
     throw new NotFoundError("Page Not Found");
