@@ -23,31 +23,28 @@ class OnlineFlightData {
         //     headers: {
         //         "User-Agent": getRandomUserAgent()
         //     },
-        //     proxy: false,
-        //     httpsAgent: tunnel.httpsOverHttp({
-        //         proxy: {
-        //             host: process.env.Oxylabs_Proxy,
-        //             port: process.env.Oxylabs_Port,
-        //             proxyAuth: `customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}`
-        //             // headers: {
-        //             //     "User-Agent": getRandomUserAgent()
-        //             // }
+        //     proxy: {
+        //         host: process.env.Oxylabs_Proxy,
+        //         port: process.env.Oxylabs_Port,
+        //         auth: {
+        //             username: `customer-${process.env.Oxylabs_UserName}`,
+        //             password: process.env.Oxylabs_Password
         //         }
-        //     })
+        //     }
         // })
 
         await axios(this.flightAwareUrl, {
             headers: {
                 "User-Agent": getRandomUserAgent()
             },
-            proxy: {
-                host: process.env.Oxylabs_Proxy,
-                port: process.env.Oxylabs_Port,
-                auth: {
-                    username: `customer-${process.env.Oxylabs_UserName}`,
-                    password: process.env.Oxylabs_Password
+            proxy: false,
+            httpsAgent: tunnel.httpsOverHttp({
+                proxy: {
+                    host: process.env.Oxylabs_Proxy,
+                    port: process.env.Oxylabs_Port,
+                    proxyAuth: `customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}`
                 }
-            }
+            })
         })
             .then((response) => {
                 if (response && response.status === 200) {
