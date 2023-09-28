@@ -2,7 +2,7 @@
 
 ## This is an API to get data for the airports, runways, METARs and etc.
 
-### Base URL: https://flight-data.herokuapp.com/api/v1
+### Base URL: https://api.airportweather.org/v1
 
 ---
 
