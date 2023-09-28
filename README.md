@@ -71,15 +71,16 @@
 $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg
 
 # Single ICAO decoded
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg?decode=true
+$ curl https://api.airportweather.org/v1/metar/get-metar/cywg?decode=true
 
 # Multiple ICAOs
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg,klas,zspd
+$ curl https://api.airportweather.org/v1/metar/get-metar/cywg,klas,zspd
 
 # Multiple ICAOs decoded
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/klax,cyvr,cyyz?decode=true
+$ curl https://api.airportweather.org/v1/metar/get-metar/klax,cyvr,cyyz?decode=true
 ```
 
+ 
 ---
 
 ### Get metar within radius by ICAO
@@ -98,7 +99,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/klax,cyvr,cyyz?d
 
 ```bat
 # Get all METARs within 50 miles from CYWG
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/radius/cywg?distance=50&unit=mile&decode=true
+$ curl https://api.airportweather.org/v1/get-metar/radius/cywg?distance=50&unit=mile&decode=true
 ```
 
 ---
@@ -119,7 +120,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/get-metar/radius/cywg?distance=5
 
 ```bat
 # Get all METARs within 50 miles from -97.5 49.9
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/radius/coordinates/-97.5,49.9
+$ curl https://api.airportweather.org/v1/metar/get-metar/radius/coordinates/-97.5,49.9
 ```
 
 ---
@@ -138,7 +139,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/radius/coordinat
 
 ```bat
 # Get nearest METAR from KBOS
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/KBOS
+$ curl https://api.airportweather.org/v1/metar/get-metar/nearest/KBOS
 ```
 
 ---
@@ -157,7 +158,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/KBOS
 
 ```bat
 # Get nearest METAR from -97.5 49.9
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/coordinates/-97.5,49.9
+$ curl https://api.airportweather.org/v1/metar/get-metar/nearest/coordinates/-97.5,49.9
 ```
 
 ---
@@ -176,9 +177,9 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/nearest/coordina
 
 ```bat
 # Get METAR for airport's name that includ 'winnipeg'
-$ curl https://flight-data.herokuapp.com/api/v1/get-metar/name/winnipeg
+$ curl https://api.airportweather.org/v1/get-metar/name/winnipeg
 # Get decoded METAR for aiport's name that include 'boston'
-$ curl https://flight-data.herokuapp.com/api/vi/get-metar/name/boston?decode=true
+$ curl https://api.airportweather.org/vi/get-metar/name/boston?decode=true
 ```
 
 ---
@@ -197,9 +198,9 @@ $ curl https://flight-data.herokuapp.com/api/vi/get-metar/name/boston?decode=tru
 
 ```bat
 # Get METAR for airport's name that includ 'winnipeg' and location in 'winnipeg'
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/winnipeg
+$ curl https://api.airportweather.org/v1/metar/get-metar/generic/winnipeg
 # Get decoded METAR for aiport's name that include 'new york' and location in 'new york'
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york?decode=true
+$ curl https://api.airportweather.org/v1/metar/get-metar/generic/new york?decode=true
 ```
 
 ---
@@ -514,10 +515,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/generic/new york
 
 ```bat
 # Get METARs based on the temperature for Canada, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/ca?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/temperature/ca?sort=-1&limit=20&decode=true
 
 # Get METARs based on the temperature for UK, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/gb
+$ curl https://api.airportweather.org/v1/weather/country-weather/temperature/gb
 
 ```
 
@@ -539,10 +540,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperat
 
 ```bat
 # Get METARs based on the visibility for Canada, sorted from low to high with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/temperature/ca?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/temperature/ca?limit=20&decode=true
 
 # Get METARs based on the visibility for China, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/visibility/cn
+$ curl https://api.airportweather.org/v1/weather/country-weather/visibility/cn
 
 ```
 
@@ -564,10 +565,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/visibili
 
 ```bat
 # Get METARs based on the barometer for Canada, sorted from low to high with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/baro/ca?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/baro/ca?limit=20&decode=true
 
 # Get METARs based on the barometer for USA, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/baro/us&sort=-1
+$ curl https://api.airportweather.org/v1/weather/country-weather/baro/us&sort=-1
 
 ```
 
@@ -588,10 +589,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/baro/us&
 
 ```bat
 # Get METARs based on the wind gust speed for Canada, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
 
 # Get METARs based on the wind gust speed for USA, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/us
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-gust-speed/us
 
 ```
 
@@ -612,10 +613,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gus
 
 ```bat
 # Get METARs based on the wind gust speed for Canada, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-gust-speed/ca?limit=20&decode=true
 
 # Get METARs based on the wind gust speed for USA, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gust-speed/us
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-gust-speed/us
 
 ```
 
@@ -636,10 +637,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-gus
 
 ```bat
 # Get METARs based on the wind speed for Canada, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-speed/ca?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-speed/ca?limit=20&decode=true
 
 # Get METARs based on the wind speed for Germany, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-speed/de
+$ curl https://api.airportweather.org/v1/weather/country-weather/wind-speed/de
 
 ```
 
@@ -663,10 +664,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/country-weather/wind-spe
 
 ```bat
 # Get METARs based on the temperature for Asia, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/temperature/as?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/continent-weather/temperature/as?sort=-1&limit=20&decode=true
 
 # Get METARs based on the temperature for Europe, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/temperature/eu
+$ curl https://api.airportweather.org/v1/weather/continent-weather/temperature/eu
 
 ```
 
@@ -688,10 +689,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/temper
 
 ```bat
 # Get METARs based on the visibility for Asia, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility/as?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/continent-weather/visibility/as?sort=-1&limit=20&decode=true
 
 # Get METARs based on the visibility for North America, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility/na
+$ curl https://api.airportweather.org/v1/weather/continent-weather/visibility/na
 
 ```
 
@@ -713,10 +714,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibi
 
 ```bat
 # Get METARs based on the barometer for Asia, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/baro/as?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/continent-weather/baro/as?sort=-1&limit=20&decode=true
 
 # Get METARs based on the barometer for North America, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/baro/na
+$ curl https://api.airportweather.org/v1/weather/continent-weather/baro/na
 
 ```
 
@@ -737,10 +738,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/baro/n
 
 ```bat
 # Get METARs based on the wind gust speed for Asia, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-gust-speed/as?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/continent-weather/wind-gust-speed/as?limit=20&decode=true
 
 # Get METARs based on the wind gust speed for Africa, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-gust-speed/af
+$ curl https://api.airportweather.org/v1/weather/continent-weather/wind-gust-speed/af
 
 ```
 
@@ -761,10 +762,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-g
 
 ```bat
 # Get METARs based on the wind speed for Asia, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-speed/as?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/continent-weather/wind-speed/as?limit=20&decode=true
 
 # Get METARs based on the wind speed for Europe, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-speed/eu
+$ curl https://api.airportweather.org/v1/weather/continent-weather/wind-speed/eu
 
 ```
 
@@ -784,10 +785,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/wind-s
 
 ```bat
 # Get METARs based on the temperature for global, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/temperature?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/global-weather/temperature?sort=-1&limit=20&decode=true
 
 # Get METARs based on the temperature for Europe, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/temperature
+$ curl https://api.airportweather.org/v1/weather/global-weather/temperature
 
 ```
 
@@ -805,10 +806,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/temperatu
 
 ```bat
 # Get METARs based on the visibility for global, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/visibility?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/global-weather/visibility?sort=-1&limit=20&decode=true
 
 # Get METARs based on the visibility for global, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibility
+$ curl https://api.airportweather.org/v1/weather/continent-weather/visibility
 
 ```
 
@@ -826,10 +827,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/continent-weather/visibi
 
 ```bat
 # Get METARs based on the barometer for global, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/baro?sort=-1&limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/global-weather/baro?sort=-1&limit=20&decode=true
 
 # Get METARs based on the barometer for global, sorted from low to high with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/baro
+$ curl https://api.airportweather.org/v1/weather/global-weather/baro
 
 ```
 
@@ -846,10 +847,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/baro
 
 ```bat
 # Get METARs based on the wind gust speed for global, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-gust-speed?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/global-weather/wind-gust-speed?limit=20&decode=true
 
 # Get METARs based on the wind gust speed for global, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-gust-speed
+$ curl https://api.airportweather.org/v1/weather/global-weather/wind-gust-speed
 
 ```
 
@@ -866,10 +867,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-gust
 
 ```bat
 # Get METARs based on the wind speed for global, sorted from high to low with 20 results and decoded
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-speed?limit=20&decode=true
+$ curl https://api.airportweather.org/v1/weather/global-weather/wind-speed?limit=20&decode=true
 
 # Get METARs based on the wind speed for global, sorted from high to low with 10 results and returned as raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-speed
+$ curl https://api.airportweather.org/v1/weather/global-weather/wind-speed
 
 ```
 
@@ -892,10 +893,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/global-weather/wind-spee
 
 ```bat
 # Get decoded METAR for CYWG
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/icao/cywg?decode=true
+$ curl https://api.airportweather.org/v1/weather/search-weather/icao/cywg?decode=true
 
 # Get raw METAR for KBOS
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/icao/kbos
+$ curl https://api.airportweather.org/v1/weather/search-weather/icao/kbos
 
 ```
 
@@ -916,10 +917,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/icao/kbos
 
 ```bat
 # Get decoded METAR for CYWG
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/iata/ywg?decode=true
+$ curl https://api.airportweather.org/v1/weather/search-weather/iata/ywg?decode=true
 
 # Get raw METAR for KBOS
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/iata/bos
+$ curl https://api.airportweather.org/v1/weather/search-weather/iata/bos
 
 ```
 
@@ -940,10 +941,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/iata/bos
 
 ```bat
 # Get decoded METAR for airport's name that included "pudong"
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/pudong?decode=true
+$ curl https://api.airportweather.org/v1/weather/search-weather/name/pudong?decode=true
 
 # Get raw METAR for airport's name that included boston
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/boston
+$ curl https://api.airportweather.org/v1/weather/search-weather/name/boston
 
 ```
 
@@ -964,10 +965,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/bost
 
 ```bat
 # Get decoded METAR for airport's name, city or location that included "shanghai"
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/generic/shanghai?decode=true
+$ curl https://api.airportweather.org/v1/weather/search-weather/generic/shanghai?decode=true
 
 # Get raw METAR for airport's name, city or location that included new york
-$ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new york
+$ curl https://api.airportweather.org/v1/weather/search-weather/name/new york
 
 ```
 
@@ -987,10 +988,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/weather/search-weather/name/new 
 
 ```bat
 # Get airport with ICAO code, with METAR decoded
-$ curl https://flight-data.herokuapp.com/api/v1/airports/icao/cyyz?decode=true
+$ curl https://api.airportweather.org/v1/airports/icao/cyyz?decode=true
 
 # Get airport with ICAO code, with raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/airports/icao/ksan
+$ curl https://api.airportweather.org/v1/airports/icao/ksan
 ```
 
 ---
@@ -1009,10 +1010,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/icao/ksan
 
 ```bat
 # Get airport with IATA code, with METAR decoded
-$ curl https://flight-data.herokuapp.com/api/v1/airports/iata/ywg?decode=true
+$ curl https://api.airportweather.org/v1/airports/iata/ywg?decode=true
 
 # Get airport with IATA code, with raw METAR
-$ curl https://flight-data.herokuapp.com/api/v1/airports/iata/jfk
+$ curl https://api.airportweather.org/v1/airports/iata/jfk
 
 ```
 
@@ -1032,7 +1033,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/iata/jfk
 
 ```bat
 # Get airports with name included "Richardson"
-$ curl https://flight-data.herokuapp.com/api/v1/airports/name/Richardon
+$ curl https://api.airportweather.org/v1/airports/name/Richardon
 ```
 
 ---
@@ -1052,7 +1053,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/name/Richardon
 
 ```bat
 # Get airports with name included "James", 15 airports per page, at page 2
-$ curl https://flight-data.herokuapp.com/api/v1/airports/name/paginate/james?limit=15&page=2
+$ curl https://api.airportweather.org/v1/airports/name/paginate/james?limit=15&page=2
 ```
 
 ---
@@ -1071,14 +1072,14 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/name/paginate/james?lim
 
 ```bat
 # Get airports with city named winnipeg
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/winnipeg
+$ curl https://api.airportweather.org/v1/airports/city/winnipeg
 
 # Only return25 results
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/boston?limitResults=2
+$ curl https://api.airportweather.org/v1/airports/city/boston?limitResults=2
 
 # Get airports with region name, region name can be either province or state or state
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/manitoba?limitResults=2
-$ curl https://flight-data.herokuapp.com/api/v1/airports/city/california?limitResults=3
+$ curl https://api.airportweather.org/v1/airports/city/manitoba?limitResults=2
+$ curl https://api.airportweather.org/v1/airports/city/california?limitResults=3
 ```
 
 ---
@@ -1098,7 +1099,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/city/california?limitRe
 
 ```bat
 # Get airports in Boston region, number of airports per page: 15, on page number: 2
-$ curl https://flight-data.herokuapp.com/api/v1/airports/region/paginate/boston?limit=15&page=2
+$ curl https://api.airportweather.org/v1/airports/region/paginate/boston?limit=15&page=2
 ```
 
 ---
@@ -1117,10 +1118,10 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/region/paginate/boston?
 
 ```bat
 # Get airports with country code: ca
-$ curl https://flight-data.herokuapp.com/api/v1/airports/country/ca?limitResults=2
+$ curl https://api.airportweather.org/v1/airports/country/ca?limitResults=2
 
 # Get airport with country name: united states
-curl https://flight-data.herokuapp.com/api/v1/airports/country/united states?limitResults=15
+curl https://api.airportweather.org/v1/airports/country/united states?limitResults=15
 
 ```
 
@@ -1141,7 +1142,7 @@ curl https://flight-data.herokuapp.com/api/v1/airports/country/united states?lim
 
 ```bat
 # Get airports with country code: ca, 25 airports per page, on page 3
-$ curl https://flight-data.herokuapp.com/api/v1/airports/country/paginate/ca?limit=25&page=3
+$ curl https://api.airportweather.org/v1/airports/country/paginate/ca?limit=25&page=3
 ```
 
 ---
@@ -1160,20 +1161,20 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/country/paginate/ca?lim
 
 ```bat
 # Get airports which includes "new york" text (this would return 68 results)
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york
+$ curl https://api.airportweather.org/v1/airports/generic/new york
 
 # Only return 5 results
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/new york?limitResults=5
+$ curl https://api.airportweather.org/v1/airports/generic/new york?limitResults=5
 
 # Or only enter ICAO or IATA code
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/cywg
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/bos
+$ curl https://api.airportweather.org/v1/airports/generic/cywg
+$ curl https://api.airportweather.org/v1/airports/generic/bos
 
 # Or enter region name or city name
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/manitoba
+$ curl https://api.airportweather.org/v1/airports/generic/manitoba
 
 # or enter country name
-$ curl https://flight-data.herokuapp.com/api/v1/airports/generic/China
+$ curl https://api.airportweather.org/v1/airports/generic/China
 
 ```
 
@@ -1194,7 +1195,7 @@ $ curl https://flight-data.herokuapp.com/api/v1/airports/generic/China
 
 ```bat
 # Get airports located in New York, each page return 15 airports, current page: 1
-$ curl https://flight-data.herokuapp.com/api/v1/airports/geneirc/paginate/new york?limit=15&page=1
+$ curl https://api.airportweather.org/v1/airports/geneirc/paginate/new york?limit=15&page=1
 
 ```
 
