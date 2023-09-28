@@ -80,7 +80,6 @@ $ curl https://api.airportweather.org/v1/metar/get-metar/cywg,klas,zspd
 $ curl https://api.airportweather.org/v1/metar/get-metar/klax,cyvr,cyyz?decode=true
 ```
 
- 
 ---
 
 ### Get metar within radius by ICAO
