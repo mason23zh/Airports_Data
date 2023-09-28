@@ -1,7 +1,9 @@
-const axios = require("axios");
+// const axios = require("axios");
 const cheerio = require("cheerio");
 const { getRandomUserAgent } = require("./randomUserAgent");
-const { HttpsProxyAgent } = require("https-proxy-agent");
+const tunnel = require("tunnel");
+const axios = require("axios-https-proxy-fix");
+axios.defaults.timeout = 15000;
 
 class OnlineFlightData {
     constructor(ICAO) {
@@ -13,6 +15,39 @@ class OnlineFlightData {
         this.departurePlainData = [];
         this.formattedArrivalData = [];
         this.formattedDepartureData = [];
+    }
+
+    async getHTML() {
+        await axios(this.flightAwareUrl, {
+            headers: {
+                "User-Agent": getRandomUserAgent()
+            },
+            proxy: false,
+            httpsAgent: tunnel.httpsOverHttp({
+                proxy: {
+                    host: process.env.Oxylabs_Proxy,
+                    port: process.env.Oxylabs_port,
+                    proxyAuth: `customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}`
+                }
+            })
+        })
+            .then((response) => {
+                if (response && response.status === 200) {
+                    this.originalHTML = response.data;
+                    this.extractDepartureData();
+                    this.extractArrivalData();
+                    this.formatDepartureData();
+                    this.formatArrivalData();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        return null;
+    }
+
+    getKeyByValue(object, value) {
+        return Object.keys(object).find((key) => object[key] === value);
     }
 
     formatPlainData(planData, departure) {
@@ -45,29 +80,6 @@ class OnlineFlightData {
             return formattedData;
         } else {
             return formattedData;
-        }
-    }
-
-    getKeyByValue(object, value) {
-        return Object.keys(object).find((key) => object[key] === value);
-    }
-
-    async getHTML() {
-        const proxyUrl = `http://customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}@${process.env.Oxylabs_Proxy}`;
-        const agent = new HttpsProxyAgent(proxyUrl);
-
-        const response = await axios.get(this.flightAwareUrl, {
-            httpAgent: agent,
-            headers: {
-                "User-Agent": getRandomUserAgent()
-            }
-        });
-        if (response && response.status === 200) {
-            this.originalHTML = response.data;
-            this.extractArrivalData();
-            this.extractDepartureData();
-            this.formatArrivalData();
-            this.formatDepartureData();
         }
     }
 
@@ -129,7 +141,9 @@ class OnlineFlightData {
     }
 
     getArrivalsData() {
-        return this.formattedArrivalData;
+        if (this.formattedArrivalData) {
+            return this.formattedArrivalData;
+        }
     }
 
     getDeparturesData() {

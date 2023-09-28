@@ -694,6 +694,7 @@ module.exports.getOnlineFlightData = async (req, res) => {
     const onlineFlight = new OnlineFlightData(ICAO.trim());
     try {
         await onlineFlight.getHTML();
+
         const departureData = onlineFlight.getDeparturesData();
         const arrivalData = onlineFlight.getArrivalsData();
 
