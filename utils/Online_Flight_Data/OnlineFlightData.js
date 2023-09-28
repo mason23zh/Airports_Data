@@ -53,11 +53,11 @@ class OnlineFlightData {
     }
 
     async getHTML() {
-        const proxyUrl = `https://customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}@${process.env.Oxylabs_Proxy}`;
+        const proxyUrl = `http://customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}@${process.env.Oxylabs_Proxy}`;
         const agent = new HttpsProxyAgent(proxyUrl);
 
         const response = await axios.get(this.flightAwareUrl, {
-            httpsAgent: agent,
+            httpAgent: agent,
             headers: {
                 "User-Agent": getRandomUserAgent()
             }
