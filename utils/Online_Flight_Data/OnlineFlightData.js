@@ -19,20 +19,6 @@ class OnlineFlightData {
     }
 
     async getHTML() {
-        // await axios(this.flightAwareUrl, {
-        //     headers: {
-        //         "User-Agent": getRandomUserAgent()
-        //     },
-        //     proxy: {
-        //         host: process.env.Oxylabs_Proxy,
-        //         port: process.env.Oxylabs_Port,
-        //         auth: {
-        //             username: `customer-${process.env.Oxylabs_UserName}`,
-        //             password: process.env.Oxylabs_Password
-        //         }
-        //     }
-        // })
-
         await axios(this.flightAwareUrl, {
             headers: {
                 "User-Agent": getRandomUserAgent()
