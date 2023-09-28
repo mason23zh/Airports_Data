@@ -3,6 +3,7 @@ const { generateGeneralATIS } = require("../../utils/ATIS/generateFaaAndVatsimAT
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
+const { ShareAirport } = require("../../models/airports/shareAirportModel");
 const { getAwcMetarUsingICAO } = require("../../utils/AWC_Weather/controller_helper");
 const RedisClient = require("../../redis/RedisClient");
 const { awcMetarSchema } = require("../../redis/awcMetar");
@@ -10,6 +11,7 @@ const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel")
 const { getDistanceFromLatLonInKm } = require("./converter");
 const axios = require("axios");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
+const OnlineFlightData = require("../../utils/Online_Flight_Data/OnlineFlightData");
 
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
@@ -619,21 +621,14 @@ module.exports.getVatsimPopularAirports = async (req, res) => {
 
     try {
         await vatsimData.requestVatsimData();
-        const popularAirports = await vatsimData.getPopularAirports();
+        const popularAirports = await vatsimData.getPopularAirports(limit);
 
-        let combinedAirports = [];
+        let combinedAirports = popularAirports.combined;
         let responseArray = [];
-        let searchAirportArrays;
-        if (popularAirports) {
-            combinedAirports = popularAirports.combined.slice(0, limit);
-            searchAirportArrays = combinedAirports.map((airport) => {
-                return airport.ICAO;
-            });
-        }
 
         // find all targets airport in Database
         const vatPopularAirports = await GNS430Airport_Update.find({
-            ICAO: { $in: searchAirportArrays }
+            ICAO: { $in: popularAirports.sortingOrder }
         }).lean();
 
         if (vatPopularAirports) {
@@ -641,33 +636,33 @@ module.exports.getVatsimPopularAirports = async (req, res) => {
             responseArray = vatPopularAirports.map((dbAirport) => {
                 // find arrival and departure count in combined airport array
                 const tempAirport = combinedAirports.find((o) => o.ICAO === dbAirport.ICAO);
-                // Check ATIS availability
-                const atisFlag = vatsimData.checkATIS(tempAirport.ICAO);
-                // remove id fields in documents
-                delete dbAirport._id;
-                // construct new airport object to be returned
-                return {
-                    ...dbAirport,
-                    arrivalNumber: tempAirport.arrival,
-                    departureNumber: tempAirport.departure,
-                    controller: {
-                        DEL: tempAirport.DEL,
-                        GND: tempAirport.GND,
-                        TWR: tempAirport.TWR,
-                        APP: tempAirport.APP,
-                        ATIS: atisFlag
-                    }
-                };
+                if (tempAirport) {
+                    // Check ATIS availability
+                    // remove id fields in documents
+                    delete dbAirport._id;
+                    // construct new airport object to be returned
+                    return {
+                        ...dbAirport,
+                        arrivalNumber: tempAirport.arrival,
+                        departureNumber: tempAirport.departure,
+                        controller: {
+                            DEL: tempAirport.DEL,
+                            GND: tempAirport.GND,
+                            TWR: tempAirport.TWR,
+                            APP: tempAirport.APP,
+                            ATIS: tempAirport.ATIS
+                        }
+                    };
+                }
             });
         }
 
         // re-sort the response array
         // Db query messed up the order of the original sorted array
         let sortedResponseArray = [];
-        combinedAirports.map((airport) => {
-            let tempObj = responseArray.find((o) => o.ICAO === airport.ICAO);
-            sortedResponseArray.push(tempObj);
-        });
+        for (let ICAO of popularAirports.sortingOrder) {
+            sortedResponseArray.push(responseArray.find((o) => o.ICAO === ICAO));
+        }
 
         res.status(200).json({
             data: {
@@ -692,4 +687,79 @@ module.exports.getVatsimControllers = async (req, res) => {
             controllers: { ...response, ATIS: atisFlag }
         }
     });
+};
+
+module.exports.getOnlineFlightData = async (req, res) => {
+    const { ICAO } = req.params;
+    const onlineFlight = new OnlineFlightData(ICAO.trim());
+    try {
+        await onlineFlight.getHTML();
+
+        const departureData = onlineFlight.getDeparturesData();
+        const arrivalData = onlineFlight.getArrivalsData();
+
+        res.status(200).json({
+            data: {
+                departureCount: departureData.length,
+                arrivalCount: departureData.length,
+                departure: departureData,
+                arrival: arrivalData
+            }
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {}
+        });
+    }
+};
+
+module.exports.storeShareAirport = async (req, res) => {
+    function generateRandomString(strLength) {
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        let randomString = "";
+        for (let i = 0; i < strLength; i++) {
+            let rNum = Math.floor(Math.random() * chars.length);
+            randomString += chars[rNum];
+        }
+        return randomString;
+    }
+
+    const randomString = generateRandomString(10);
+
+    if (req.body && Object.keys(req.body).length !== 0) {
+        try {
+            const response = await ShareAirport.create({
+                url: randomString,
+                airport: JSON.stringify(req.body)
+            });
+            if (res) {
+                res.status(201).json({ status: "success", url: response.url });
+            }
+        } catch (e) {
+            return -1;
+        }
+    } else {
+        res.status(200).json({ status: "fail" });
+    }
+};
+
+module.exports.getShareAirport = async (req, res) => {
+    const { uniqueURL } = req.params;
+    if (uniqueURL && uniqueURL.length > 0) {
+        try {
+            const response = await ShareAirport.findOne({ url: uniqueURL });
+            let tempObj = {
+                url: response.url,
+                airport: JSON.parse(response.airport)
+            };
+
+            res.status(200).json({
+                data: tempObj
+            });
+        } catch (e) {
+            return -1;
+        }
+    } else {
+        res.status(200).json({ data: null });
+    }
 };
