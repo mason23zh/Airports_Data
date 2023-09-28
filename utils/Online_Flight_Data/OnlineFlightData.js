@@ -1,4 +1,5 @@
 // const axios = require("axios");
+require("dotenv").config({ path: "../../../config.env" });
 const cheerio = require("cheerio");
 const { getRandomUserAgent } = require("./randomUserAgent");
 const tunnel = require("tunnel");
@@ -18,18 +19,35 @@ class OnlineFlightData {
     }
 
     async getHTML() {
+        // await axios(this.flightAwareUrl, {
+        //     headers: {
+        //         "User-Agent": getRandomUserAgent()
+        //     },
+        //     proxy: false,
+        //     httpsAgent: tunnel.httpsOverHttp({
+        //         proxy: {
+        //             host: process.env.Oxylabs_Proxy,
+        //             port: process.env.Oxylabs_Port,
+        //             proxyAuth: `customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}`
+        //             // headers: {
+        //             //     "User-Agent": getRandomUserAgent()
+        //             // }
+        //         }
+        //     })
+        // })
+
         await axios(this.flightAwareUrl, {
             headers: {
                 "User-Agent": getRandomUserAgent()
             },
-            proxy: false,
-            httpsAgent: tunnel.httpsOverHttp({
-                proxy: {
-                    host: process.env.Oxylabs_Proxy,
-                    port: process.env.Oxylabs_port,
-                    proxyAuth: `customer-${process.env.Oxylabs_UserName}:${process.env.Oxylabs_Password}`
+            proxy: {
+                host: process.env.Oxylabs_Proxy,
+                port: process.env.Oxylabs_Port,
+                auth: {
+                    username: `customer-${process.env.Oxylabs_UserName}`,
+                    password: process.env.Oxylabs_Password
                 }
-            })
+            }
         })
             .then((response) => {
                 if (response && response.status === 200) {
@@ -43,7 +61,6 @@ class OnlineFlightData {
             .catch((error) => {
                 console.log(error);
             });
-        return null;
     }
 
     getKeyByValue(object, value) {
