@@ -68,7 +68,7 @@
 
 ```bat
 # Single ICAO
-$ curl https://flight-data.herokuapp.com/api/v1/metar/get-metar/cywg
+$ curl https://api.airportweather.org/v1/metar/get-metar/cywg
 
 # Single ICAO decoded
 $ curl https://api.airportweather.org/v1/metar/get-metar/cywg?decode=true

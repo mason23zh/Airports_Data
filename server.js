@@ -107,9 +107,9 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             console.log("Error connecting to Redis", e);
         }
     })();
-    schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB(Latest_AwcWeatherModel);
-    });
+    // schedule.scheduleJob("*/10 * * * *", async () => {
+    //     await importMetarsToDB(Latest_AwcWeatherModel);
+    // });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {

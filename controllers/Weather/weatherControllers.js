@@ -15,6 +15,7 @@ const {
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
+const axios = require("axios");
 
 const rClient = new RedisClient();
 let repo;
@@ -559,7 +560,28 @@ const getTempMetarForGlobal = async (req, res, next) => {
     }
 };
 
+const getAirportTAF = async (req, res) => {
+    const { icao } = req.params;
+    const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icao
+        .trim()
+        .toUpperCase()}&format=decoded`;
+    axios(url, {
+        method: "GET"
+    })
+        .then((response) => {
+            res.status(200).json({
+                data: response.data
+            });
+        })
+        .catch(() => {
+            res.status(200).json({
+                data: {}
+            });
+        });
+};
+
 module.exports = {
+    getAirportTAF,
     getMetarsWithin,
     getMetarUsingGenericInput,
     getMetarUsingAirportName,
