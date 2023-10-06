@@ -6,6 +6,7 @@ const { awcMetarSchema } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
+const TafFeatures = require("../Taf/TafFeatures");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const {
     getAwcMetarUsingICAO,
@@ -15,7 +16,6 @@ const {
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
-const axios = require("axios");
 
 const rClient = new RedisClient();
 let repo;
@@ -562,22 +562,31 @@ const getTempMetarForGlobal = async (req, res, next) => {
 
 const getAirportTAF = async (req, res) => {
     const { icao } = req.params;
-    const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icao
-        .trim()
-        .toUpperCase()}&format=decoded`;
-    axios(url, {
-        method: "GET"
-    })
-        .then((response) => {
-            res.status(200).json({
-                data: response.data
-            });
-        })
-        .catch(() => {
-            res.status(200).json({
-                data: {}
-            });
+    let decode = req.query.decode === "true";
+    let rawTaf;
+    let decodedForecast;
+    let tafTime;
+    let tafStation;
+
+    const tafFeatures = new TafFeatures();
+    const taf = await tafFeatures.requestTaf(icao.trim().toUpperCase());
+    if (!taf) {
+        res.status(200).json({
+            data: {}
         });
+    } else {
+        rawTaf = taf.getRawTaf();
+        decodedForecast = taf.getDecodeForecast();
+        tafTime = taf.getTafTime();
+        tafStation = taf.getTafStation();
+    }
+
+    res.status(200).json({
+        raw: rawTaf,
+        decodedForecast: decodedForecast,
+        tafTime: tafTime,
+        tafStation: tafStation
+    });
 };
 
 module.exports = {
