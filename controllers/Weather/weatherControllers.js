@@ -560,37 +560,7 @@ const getTempMetarForGlobal = async (req, res, next) => {
     }
 };
 
-const getAirportTAF = async (req, res) => {
-    const { icao } = req.params;
-    let decode = req.query.decode === "true";
-    let rawTaf;
-    let decodedForecast;
-    let tafTime;
-    let tafStation;
-
-    const tafFeatures = new TafFeatures();
-    const taf = await tafFeatures.requestTaf(icao.trim().toUpperCase());
-    if (!taf) {
-        res.status(200).json({
-            data: {}
-        });
-    } else {
-        rawTaf = taf.getRawTaf();
-        decodedForecast = taf.getDecodeForecast();
-        tafTime = taf.getTafTime();
-        tafStation = taf.getTafStation();
-    }
-
-    res.status(200).json({
-        raw: rawTaf,
-        decodedForecast: decodedForecast,
-        tafTime: tafTime,
-        tafStation: tafStation
-    });
-};
-
 module.exports = {
-    getAirportTAF,
     getMetarsWithin,
     getMetarUsingGenericInput,
     getMetarUsingAirportName,

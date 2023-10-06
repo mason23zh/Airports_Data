@@ -13,6 +13,7 @@ const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const metarRoutes = require("./routes/metarRoutes");
+const tafRoutes = require("./routes/tafRoutes");
 const puzzlesRoutes = require("./routes/puzzlesRoutes");
 const errorHandler = require("./common/middlewares/error-handler");
 const NotFoundError = require("./common/errors/NotFoundError");
@@ -68,6 +69,7 @@ app.use("/v1/users", userRoutes);
 app.use("/v1/comments", commentRoutes);
 app.use("/v1/weather", weatherRoutes);
 app.use("/v1/metar", metarRoutes);
+app.use("/v1/taf", tafRoutes);
 app.use("/v1/puzzle", puzzlesRoutes);
 
 app.all("*", (req, res) => {

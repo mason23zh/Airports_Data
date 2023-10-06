@@ -79,6 +79,9 @@ class TafFeatures {
         if (response && response.data) {
             this.rawXMLTaf = response.data;
             this.parsedWholeTaf = this.#convertXmlToJson();
+            if (!this.parsedWholeTaf) {
+                return Promise.reject(null);
+            }
             return Promise.resolve(this);
         } else {
             this.rawXMLTaf = "";
@@ -170,7 +173,7 @@ class TafFeatures {
     }
 
     getTafStation() {
-        if (this.parsedWholeTaf) {
+        if (this.parsedWholeTaf && this.parsedWholeTaf.station) {
             return {
                 station: this.parsedWholeTaf?.station_id._text,
                 geometry: [
