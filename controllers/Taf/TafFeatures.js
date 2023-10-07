@@ -82,10 +82,6 @@ class TafFeatures {
             if (!this.parsedWholeTaf) {
                 return Promise.reject(null);
             }
-            // Non-existing ICAO will return some random airports, hence check is required here.
-            if (this.parsedWholeTaf?.station_id._text !== this.icao.toUpperCase().trim()) {
-                return Promise.reject(null);
-            }
             return Promise.resolve(this);
         } else {
             this.rawXMLTaf = "";
@@ -119,6 +115,11 @@ class TafFeatures {
      */
     getDecodeForecast() {
         if (this.parsedWholeTaf && this.parsedWholeTaf.forecast) {
+            // forecast might be an object ot array
+            // if forecast is an object, add the object into array
+            if (!_.isArray(this.parsedWholeTaf.forecast)) {
+                this.parsedWholeTaf.forecast = [this.parsedWholeTaf.forecast];
+            }
             this.parsedWholeTaf.forecast.map((f) => {
                 let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
                 tempForecastObj.from = f.fcst_time_from._text;

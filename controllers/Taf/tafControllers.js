@@ -15,14 +15,12 @@ const getAirportTAF = async (req, res) => {
         } else {
             responseData.raw = taf.getRawTaf();
         }
-        console.log("TRY BLOCK");
 
         res.status(200).json({
             data: [responseData],
             results: 1
         });
     } catch (e) {
-        console.log("CATCH BLOCK");
         res.status(200).json({ data: [], results: 0 });
     }
 };
