@@ -4,7 +4,8 @@ const { metarWeatherCode } = require("../METAR/constants");
 const _ = require("lodash");
 
 class TafFeatures {
-    constructor() {
+    constructor(icao) {
+        this.icao = icao;
         this.rawXMLTaf = "";
         this.parsedWholeTaf = undefined;
         this.parsedForecast = [];
@@ -32,7 +33,6 @@ class TafFeatures {
 
         for (let i = 0; i < code.length - 1; i += 2) {
             const singleCode = code.slice(i, i + 2);
-            // console.log(singleCode);
             if (metarWeatherCode[singleCode]) {
                 weatherText = `${weatherText} ${metarWeatherCode[singleCode]}`;
             } else {
@@ -72,14 +72,18 @@ class TafFeatures {
      * Make request to NOAA and parse the XML
      * @param icao
      */
-    async requestTaf(icao) {
-        const url = `https://beta.aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=tafs&requestType=retrieve&format=xml&hoursBeforeNow=3&timeType=issue&mostRecent=true&stationString=${icao.toUpperCase()}`;
-
+    async requestTaf() {
+        // const url = `https://beta.aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=tafs&requestType=retrieve&format=xml&hoursBeforeNow=3&timeType=issue&mostRecent=true&stationString=${this.icao.toUpperCase()}`;
+        const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${this.icao}&format=xml`;
         const response = await axios.get(url);
         if (response && response.data) {
             this.rawXMLTaf = response.data;
             this.parsedWholeTaf = this.#convertXmlToJson();
             if (!this.parsedWholeTaf) {
+                return Promise.reject(null);
+            }
+            // Non-existing ICAO will return some random airports, hence check is required here.
+            if (this.parsedWholeTaf?.station_id._text !== this.icao.toUpperCase().trim()) {
                 return Promise.reject(null);
             }
             return Promise.resolve(this);
