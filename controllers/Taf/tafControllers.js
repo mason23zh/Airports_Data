@@ -8,16 +8,17 @@ const getAirportTAF = async (req, res) => {
     try {
         const taf = await tafFeatures.requestTaf();
         if (decode === true) {
+            console.log("DECODED");
             responseData.raw = taf.getRawTaf();
             responseData.time = taf.getTafTime();
             responseData.station = taf.getTafStation();
             responseData.forecast = taf.getDecodeForecast();
         } else {
-            responseData.raw = taf.getRawTaf();
+            responseData = taf.getRawTaf();
         }
 
         res.status(200).json({
-            data: [responseData],
+            data: responseData,
             results: 1
         });
     } catch (e) {

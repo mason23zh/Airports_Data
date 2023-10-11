@@ -73,12 +73,16 @@ class TafFeatures {
      * @param icao
      */
     async requestTaf() {
-        // const url = `https://beta.aviationweather.gov/cgi-bin/data/dataserver.php?dataSource=tafs&requestType=retrieve&format=xml&hoursBeforeNow=3&timeType=issue&mostRecent=true&stationString=${this.icao.toUpperCase()}`;
-        const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${this.icao}&format=xml`;
+        // multiple ICAO will return an array
+        const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=KSAN,KJFK&format=xml`;
+
         const response = await axios.get(url);
         if (response && response.data) {
             this.rawXMLTaf = response.data;
             this.parsedWholeTaf = this.#convertXmlToJson();
+            if (!_.isArray(this.parsedWholeTaf)) {
+                this.parsedWholeTaf = [this.parsedWholeTaf];
+            }
             if (!this.parsedWholeTaf) {
                 return Promise.reject(null);
             }
@@ -104,9 +108,12 @@ class TafFeatures {
      */
     getRawTaf() {
         if (this.parsedWholeTaf) {
-            return this.parsedWholeTaf.raw_text._text;
+            const rawRaf = this.parsedWholeTaf.map((taf) => {
+                return taf.raw_text._text;
+            });
+            return rawRaf;
         } else {
-            return "";
+            return [];
         }
     }
 
