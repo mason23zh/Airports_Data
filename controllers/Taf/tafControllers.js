@@ -1,25 +1,27 @@
 const TafFeatures = require("./TafFeatures");
+const CustomError = require("../../common/errors/custom-error");
 const getAirportTAF = async (req, res) => {
-    const { icao } = req.params;
     let decode = req.query.decode === "true";
+    const icaoArray = req.params.icao.split(",");
+    const uniqIcaoArray = [...new Set(icaoArray)];
 
-    const tafFeatures = new TafFeatures(icao.trim().toUpperCase());
+    if (uniqIcaoArray.length > 3) {
+        throw new CustomError("Maximum number of icao reached. Limited to 3", 429);
+    }
+
+    const tafFeatures = new TafFeatures(uniqIcaoArray);
     let responseData = {};
     try {
         const taf = await tafFeatures.requestTaf();
         if (decode === true) {
-            console.log("DECODED");
-            responseData.raw = taf.getRawTaf();
-            responseData.time = taf.getTafTime();
-            responseData.station = taf.getTafStation();
-            responseData.forecast = taf.getDecodeForecast();
+            responseData = taf.getDecodeTaf();
         } else {
             responseData = taf.getRawTaf();
         }
 
         res.status(200).json({
-            data: responseData,
-            results: 1
+            results: responseData.length,
+            data: responseData
         });
     } catch (e) {
         res.status(200).json({ data: [], results: 0 });

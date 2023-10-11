@@ -4,8 +4,8 @@ const { metarWeatherCode } = require("../METAR/constants");
 const _ = require("lodash");
 
 class TafFeatures {
-    constructor(icao) {
-        this.icao = icao;
+    constructor(icaoArray) {
+        this.icaoArray = icaoArray;
         this.rawXMLTaf = "";
         this.parsedWholeTaf = undefined;
         this.parsedForecast = [];
@@ -18,7 +18,7 @@ class TafFeatures {
             if (JSON.parse(result).response.data.TAF) {
                 return JSON.parse(result).response.data.TAF;
             } else {
-                return "";
+                return null;
             }
         }
     }
@@ -68,23 +68,34 @@ class TafFeatures {
         return this;
     }
 
+    #generateRequestURL() {
+        const icaoString = this.icaoArray
+            .map((icao) => {
+                return icao.trim().toUpperCase();
+            })
+            .toString();
+        return `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`;
+    }
+
     /**
      * Make request to NOAA and parse the XML
-     * @param icao
      */
     async requestTaf() {
-        // multiple ICAO will return an array
-        const url = `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=KSAN,KJFK&format=xml`;
+        const url = this.#generateRequestURL();
 
         const response = await axios.get(url);
         if (response && response.data) {
             this.rawXMLTaf = response.data;
             this.parsedWholeTaf = this.#convertXmlToJson();
-            if (!_.isArray(this.parsedWholeTaf)) {
-                this.parsedWholeTaf = [this.parsedWholeTaf];
+            if (!this.parsedWholeTaf) {
+                return Promise.reject(null);
             }
             if (!this.parsedWholeTaf) {
                 return Promise.reject(null);
+            }
+            // multiple ICAO will return an array, single ICAO will return as an object
+            if (!_.isArray(this.parsedWholeTaf)) {
+                this.parsedWholeTaf = [this.parsedWholeTaf];
             }
             return Promise.resolve(this);
         } else {
@@ -120,55 +131,65 @@ class TafFeatures {
     /**
      * Decode and return the forecast section of TAF
      */
-    getDecodeForecast() {
-        if (this.parsedWholeTaf && this.parsedWholeTaf.forecast) {
-            // forecast might be an object ot array
-            // if forecast is an object, add the object into array
-            if (!_.isArray(this.parsedWholeTaf.forecast)) {
-                this.parsedWholeTaf.forecast = [this.parsedWholeTaf.forecast];
-            }
-            this.parsedWholeTaf.forecast.map((f) => {
-                let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
-                tempForecastObj.from = f.fcst_time_from._text;
-                tempForecastObj.to = f.fcst_time_to._text;
-                if (f.change_indicator) {
-                    tempForecastObj.forecastType = f.change_indicator._text;
-                }
-                if (f.wind_dir_degrees) {
-                    tempForecastObj.wind.windDirection = f.wind_dir_degrees._text;
-                }
-                if (f.wind_speed_kt) {
-                    tempForecastObj.wind.windSpeedKt = f.wind_speed_kt._text;
-                }
-                if (f.visibility_statute_mi) {
-                    tempForecastObj.visibilityMile = f.visibility_statute_mi._text;
-                }
-                if (f.sky_condition) {
-                    // check if sky_condition is an array
-                    if (_.isArray(f.sky_condition)) {
-                        const skyConditionArray = [];
-                        f.sky_condition.map((s) => {
-                            let tempSkyCondition = {};
-                            tempSkyCondition.skyCover = s._attributes.sky_cover;
-                            tempSkyCondition.cloudBaseAgl = s._attributes.cloud_base_ft_agl;
-                            skyConditionArray.push(tempSkyCondition);
-                        });
-                        tempForecastObj.skyCondition = skyConditionArray;
-                    } else {
-                        // if sky_condition is NOT an array
-                        let tempSkyCondition = {};
-                        tempSkyCondition.skyCover = f.sky_condition._attributes.sky_cover;
-                        tempSkyCondition.cloudBaseAgl =
-                            f.sky_condition._attributes.cloud_base_ft_agl;
-                        tempForecastObj.skyCondition = [{ ...tempSkyCondition }];
+    getDecodeTaf() {
+        if (this.parsedWholeTaf) {
+            this.parsedWholeTaf.map((taf) => {
+                let tempParsedTaf = {
+                    icao: taf?.station_id?._text,
+                    raw_text: taf?.raw_text?._text,
+                    forecast: []
+                };
+                if (taf.forecast) {
+                    // forecast might be an object ot array
+                    // if forecast is an object, add the object into array
+                    if (!_.isArray(taf.forecast)) {
+                        tempParsedTaf.forecast = [taf.forecast];
                     }
+                    taf.forecast.map((f) => {
+                        let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
+                        tempForecastObj.from = f.fcst_time_from._text;
+                        tempForecastObj.to = f.fcst_time_to._text;
+                        if (f.change_indicator) {
+                            tempForecastObj.forecastType = f.change_indicator._text;
+                        }
+                        if (f.wind_dir_degrees) {
+                            tempForecastObj.wind.windDirection = f.wind_dir_degrees._text;
+                        }
+                        if (f.wind_speed_kt) {
+                            tempForecastObj.wind.windSpeedKt = f.wind_speed_kt._text;
+                        }
+                        if (f.visibility_statute_mi) {
+                            tempForecastObj.visibilityMile = f.visibility_statute_mi._text;
+                        }
+                        if (f.sky_condition) {
+                            // check if sky_condition is an array
+                            if (_.isArray(f.sky_condition)) {
+                                const skyConditionArray = [];
+                                f.sky_condition.map((s) => {
+                                    let tempSkyCondition = {};
+                                    tempSkyCondition.skyCover = s._attributes.sky_cover;
+                                    tempSkyCondition.cloudBaseAgl = s._attributes.cloud_base_ft_agl;
+                                    skyConditionArray.push(tempSkyCondition);
+                                });
+                                tempForecastObj.skyCondition = skyConditionArray;
+                            } else {
+                                // if sky_condition is NOT an array
+                                let tempSkyCondition = {};
+                                tempSkyCondition.skyCover = f.sky_condition._attributes.sky_cover;
+                                tempSkyCondition.cloudBaseAgl =
+                                    f.sky_condition._attributes.cloud_base_ft_agl;
+                                tempForecastObj.skyCondition = [{ ...tempSkyCondition }];
+                            }
+                        }
+                        if (f.wx_string) {
+                            let weatherStr = f.wx_string._text.split(" ");
+                            this.#generateWeather(weatherStr);
+                            tempForecastObj.weather = this.weather;
+                        }
+                        tempParsedTaf.forecast.push(tempForecastObj);
+                    });
                 }
-                if (f.wx_string) {
-                    let weatherStr = f.wx_string._text.split(" ");
-                    this.#generateWeather(weatherStr);
-                    tempForecastObj.weather = this.weather;
-                }
-                this.parsedForecast.push(tempForecastObj);
+                this.parsedForecast.push(tempParsedTaf);
             });
         }
         return this.parsedForecast;
@@ -176,23 +197,29 @@ class TafFeatures {
 
     getTafTime() {
         if (this.parsedWholeTaf) {
-            return {
-                issueTime: this.parsedWholeTaf?.issue_time._text,
-                validTimeFrom: this.parsedWholeTaf?.valid_time_from._text,
-                validTimeTo: this.parsedWholeTaf?.valid_time_to._text
-            };
+            this.parsedWholeTaf.map((taf) => {
+                return [
+                    {
+                        icao: taf?.station_id?._text,
+                        issueTime: taf?.issue_time._text,
+                        validTimeFrom: taf?.valid_time_from._text,
+                        validTimeTo: taf?.valid_time_to._text
+                    }
+                ];
+            });
         }
     }
 
     getTafStation() {
-        if (this.parsedWholeTaf && this.parsedWholeTaf.station) {
-            return {
-                station: this.parsedWholeTaf?.station_id._text,
-                geometry: [
-                    this.parsedWholeTaf?.longitude._text,
-                    this.parsedWholeTaf?.latitude._text
-                ]
-            };
+        if (this.parsedWholeTaf) {
+            this.parsedWholeTaf.map((taf) => {
+                return [
+                    {
+                        station: taf?.station_id._text,
+                        geometry: [taf?.longitude._text, taf?.latitude._text]
+                    }
+                ];
+            });
         }
     }
 }
