@@ -2,6 +2,7 @@ const axios = require("axios");
 const convert = require("xml-js");
 const { metarWeatherCode } = require("../METAR/constants");
 const _ = require("lodash");
+const { globalICAO } = require("../../utils/AWC_Weather/airportsICAO");
 
 class TafFeatures {
     constructor(icaoArray) {
@@ -70,10 +71,18 @@ class TafFeatures {
 
     #generateRequestURL() {
         const icaoString = this.icaoArray
-            .map((icao) => {
-                return icao.trim().toUpperCase();
+            .filter((icao) => {
+                if (globalICAO.includes(icao.toUpperCase())) {
+                    return icao;
+                }
             })
-            .toString();
+            .toString()
+            .toUpperCase()
+            .trim();
+        // console.log(icaoString);
+        // console.log(
+        //     `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`
+        // );
         return `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`;
     }
 
@@ -142,8 +151,10 @@ class TafFeatures {
                 if (taf.forecast) {
                     // forecast might be an object ot array
                     // if forecast is an object, add the object into array
-                    if (!_.isArray(taf.forecast)) {
-                        tempParsedTaf.forecast = [taf.forecast];
+                    if (_.isArray(taf.forecast) === false) {
+                        const tempForecastObj = taf.forecast;
+                        taf.forecast = [];
+                        taf.forecast.push(tempForecastObj);
                     }
                     taf.forecast.map((f) => {
                         let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
