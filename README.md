@@ -491,9 +491,9 @@ $ curl https://api.airportweather.org/v1/metar/get-metar/generic/new york?decode
 
 ### Get TAF using ICAO code
 
-| URL Parameters | Description                   |
-| -------------- | ----------------------------- |
-| icao           | A single ICAO code |
+| URL Parameters | Description         |
+| -------------- |---------------------|
+| icao           | A single or multiple ICAO codes (Max Number: 3)  |
 
 | URL Queries | Description                    | Default |
 | ----------- |--------------------------------| ------- |
@@ -508,6 +508,7 @@ $ curl https://api.airportweather.org/v1/taf/get-taf/cyyz
 # Get decoded TAF for ZSSS
 $ curl https://api.airportweather.org/v1/taf/get-taf/zsss?decoded=true
 ```
+
 
 ---
 

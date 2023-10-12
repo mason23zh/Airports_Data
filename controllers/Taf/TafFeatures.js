@@ -151,7 +151,7 @@ class TafFeatures {
                 if (taf.forecast) {
                     // forecast might be an object ot array
                     // if forecast is an object, add the object into array
-                    if (_.isArray(taf.forecast) === false) {
+                    if (!_.isArray(taf.forecast)) {
                         const tempForecastObj = taf.forecast;
                         taf.forecast = [];
                         taf.forecast.push(tempForecastObj);
