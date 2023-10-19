@@ -66,12 +66,19 @@ class TafFeatures {
             .toString()
             .toUpperCase()
             .trim();
+        if (!icaoString) {
+            return null;
+        }
 
         return `https://aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&sep=true&format=json`;
     }
 
     async requestTafNew() {
         const url = this.#generateRequestURL();
+        if (!url) {
+            this.parsedWholeTaf = null;
+            return;
+        }
         const response = await axios.get(url);
         if (response && response.data) {
             this.parsedWholeTaf = response.data;
@@ -95,7 +102,6 @@ class TafFeatures {
      */
     getDecodeTaf() {
         if (this.parsedWholeTaf) {
-            // console.log(this.parsedWholeTaf);
             this.parsedWholeTaf.map((taf) => {
                 let tempParsedTaf = {
                     icao: taf?.icaoId,
@@ -104,7 +110,6 @@ class TafFeatures {
                 };
                 if (taf.fcsts) {
                     taf.fcsts.map((f) => {
-                        //console.log(f);
                         let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
                         tempForecastObj.from = f.timeFrom;
                         tempForecastObj.to = f.timeTo;
