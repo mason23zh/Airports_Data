@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { metarWeatherCode } = require("../METAR/constants");
+const { metarWeatherCode, metarCloudCode, tafForecastType } = require("../METAR/constants");
 const { globalICAO } = require("../../utils/AWC_Weather/airportsICAO");
 
 class TafFeatures {
@@ -9,6 +9,42 @@ class TafFeatures {
         this.parsedWholeTaf = undefined;
         this.parsedForecast = [];
         this.weather = [];
+    }
+
+    async requestTafNew() {
+        const url = this.#generateRequestURL();
+        if (!url) {
+            this.parsedWholeTaf = null;
+            return;
+        }
+        try {
+            const response = await axios.get(url);
+            if (response && response.data) {
+                this.parsedWholeTaf = response.data;
+                return Promise.resolve(this);
+            } else {
+                return Promise.reject(null);
+            }
+        } catch (e) {
+            return Promise.reject(null);
+        }
+    }
+
+    #generateRequestURL() {
+        const icaoString = this.icaoArray
+            .filter((icao) => {
+                if (globalICAO.includes(icao.toUpperCase())) {
+                    return icao;
+                }
+            })
+            .toString()
+            .toUpperCase()
+            .trim();
+        if (!icaoString) {
+            return null;
+        }
+
+        return `https://aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&sep=true&format=json`;
     }
 
     #decodeWeatherCode(code) {
@@ -56,35 +92,6 @@ class TafFeatures {
         return this;
     }
 
-    #generateRequestURL() {
-        const icaoString = this.icaoArray
-            .filter((icao) => {
-                if (globalICAO.includes(icao.toUpperCase())) {
-                    return icao;
-                }
-            })
-            .toString()
-            .toUpperCase()
-            .trim();
-        if (!icaoString) {
-            return null;
-        }
-
-        return `https://aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&sep=true&format=json`;
-    }
-
-    async requestTafNew() {
-        const url = this.#generateRequestURL();
-        if (!url) {
-            this.parsedWholeTaf = null;
-            return;
-        }
-        const response = await axios.get(url);
-        if (response && response.data) {
-            this.parsedWholeTaf = response.data;
-        }
-    }
-
     /**
      * Return the raw TAF
      */
@@ -106,6 +113,7 @@ class TafFeatures {
                 let tempParsedTaf = {
                     icao: taf?.icaoId,
                     raw_text: taf?.rawTAF,
+                    remarks: taf?.remarks,
                     forecast: []
                 };
                 if (taf.fcsts) {
@@ -113,14 +121,44 @@ class TafFeatures {
                         let tempForecastObj = { from: "", to: "", wind: {}, skyCondition: [] };
                         tempForecastObj.from = f.timeFrom;
                         tempForecastObj.to = f.timeTo;
+
+                        if (f.probability) {
+                            let tempProbabilityObj = {
+                                probabilityCode: `PROB${f.probability}`,
+                                probability: f.probability,
+                                description: "Probable condition in the period between"
+                            };
+                            tempForecastObj.probability = { ...tempProbabilityObj };
+                        }
+
                         if (f.fcstChange) {
-                            tempForecastObj.forecastType = f.fcstChange;
+                            let tempForecastType = {};
+                            const fcstCode = f.fcstChange;
+                            let tempForecast = tafForecastType.find((f) => f.code === fcstCode);
+                            if (tempForecast) {
+                                tempForecastType.code = tempForecast.code;
+                                tempForecastType.text = tempForecast.name;
+                                tempForecastType.description = tempForecast.description;
+                                tempForecastObj.forecastType = { ...tempForecastType };
+                            }
                         }
                         if (f.wdir) {
                             tempForecastObj.wind.windDirection = f.wdir;
                         }
                         if (f.wspd) {
                             tempForecastObj.wind.windSpeedKt = f.wspd;
+                        }
+                        if (f.wgst) {
+                            tempForecastObj.wind.windGustKt = f.wgst;
+                        }
+                        if (f.wshearHgt) {
+                            tempForecastObj.wind.windshearHeight = f.wshearHgt;
+                        }
+                        if (f.wshearDir) {
+                            tempForecastObj.wind.windshearDireaction = f.wshearDir;
+                        }
+                        if (f.wshearSpd) {
+                            tempForecastObj.wind.windShearSpeed = f.wshearSpd;
                         }
                         if (f.visib) {
                             tempForecastObj.visibilityMile = f.visib;
@@ -129,8 +167,66 @@ class TafFeatures {
                             const skyConditionArray = [];
                             f.clouds.map((s) => {
                                 let tempSkyCondition = {};
-                                tempSkyCondition.skyCover = s.cover;
-                                tempSkyCondition.cloudBaseAgl = s.base;
+                                let tempCloudObject;
+
+                                if (s.cover) {
+                                    if (s.cover.includes("CAVOK")) {
+                                        tempSkyCondition.cloudCode = "CAVOK";
+                                        tempSkyCondition.cloudText = "Clouds and visibility are OK";
+                                        skyConditionArray.push(tempSkyCondition);
+                                        return;
+                                    }
+
+                                    if (
+                                        /(\bSKC\b)|(\bOVX\b)|(\bNCD\b)|(\bNSC\b)|(\bCLR\b)/g.test(
+                                            s.cover
+                                        )
+                                    ) {
+                                        if (s.cover.match("SKC")) {
+                                            skyConditionArray.push({
+                                                cloudCode: "SKC",
+                                                cloudText: "Sky clear"
+                                            });
+                                            return;
+                                        }
+                                        if (s.cover.match("NCD")) {
+                                            skyConditionArray.push({
+                                                cloudCode: "NCD",
+                                                cloudText: "No cloud detected"
+                                            });
+                                            return;
+                                        }
+                                        if (s.cover.match("NSC")) {
+                                            skyConditionArray.push({
+                                                cloudCode: "NSC",
+                                                cloudText: "No significant cloud"
+                                            });
+                                            return;
+                                        }
+                                        if (s.cover.match("CLR")) {
+                                            skyConditionArray.push({
+                                                cloudCode: "CLR",
+                                                cloudText: "Clear sky"
+                                            });
+                                            return;
+                                        }
+                                        if (s.cover.match("OVX")) {
+                                            skyConditionArray.push({
+                                                cloudCode: "OVX",
+                                                cloudText: "Obscured Sky"
+                                            });
+                                            return;
+                                        }
+                                    }
+
+                                    tempCloudObject = metarCloudCode.find(
+                                        (c) => c.code === s.cover
+                                    );
+                                    tempSkyCondition.cloudCode = tempCloudObject.code;
+                                    tempSkyCondition.cloudText = tempCloudObject.name;
+                                    tempSkyCondition.cloudDensity = tempCloudObject.density;
+                                    tempSkyCondition.cloudBaseAgl = s.base;
+                                }
                                 skyConditionArray.push(tempSkyCondition);
                             });
                             tempForecastObj.skyCondition = skyConditionArray;
