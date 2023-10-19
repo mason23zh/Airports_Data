@@ -12,17 +12,18 @@ const getAirportTAF = async (req, res) => {
     const tafFeatures = new TafFeatures(uniqIcaoArray);
     let responseData = {};
     try {
-        const taf = await tafFeatures.requestTaf();
-        if (decode === true) {
-            responseData = taf.getDecodeTaf();
-        } else {
-            responseData = taf.getRawTaf();
-        }
-
-        res.status(200).json({
-            results: responseData.length,
-            data: responseData
-        });
+        await tafFeatures.requestTafNew();
+        res.status(200).json({});
+        // if (decode === true) {
+        //     responseData = taf.getDecodeTaf();
+        // } else {
+        //     responseData = taf.getRawTaf();
+        // }
+        //
+        // res.status(200).json({
+        //     results: responseData.length,
+        //     data: responseData
+        // });
     } catch (e) {
         res.status(200).json({ data: [], results: 0 });
     }

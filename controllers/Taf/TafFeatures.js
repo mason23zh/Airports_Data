@@ -83,7 +83,17 @@ class TafFeatures {
         // console.log(
         //     `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`
         // );
-        return `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`;
+        console.log(`https://aviationweather.gov/api/data/taf?ids=${icaoString}`);
+        return `https://aviationweather.gov/api/data/taf?ids=${icaoString}`;
+        // return `https://beta.aviationweather.gov/cgi-bin/data/taf.php?ids=${icaoString}&format=xml`;
+    }
+
+    async requestTafNew() {
+        const url = this.#generateRequestURL();
+        const response = await axios.get(url);
+        if (response && response.data) {
+            console.log(response.data);
+        }
     }
 
     /**
@@ -94,6 +104,7 @@ class TafFeatures {
 
         const response = await axios.get(url);
         if (response && response.data) {
+            console.log(response.data);
             this.rawXMLTaf = response.data;
             this.parsedWholeTaf = this.#convertXmlToJson();
             if (!this.parsedWholeTaf) {
