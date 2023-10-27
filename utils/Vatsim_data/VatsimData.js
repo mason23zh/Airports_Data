@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { VATSIM_DATA_URL } = require("../../config");
+const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
@@ -12,6 +12,7 @@ class VatsimData {
         this.vatsimPilots = [];
         this.vatsimControllers = [];
         this.vatsimAtis = [];
+        this.vatsimEvents = [];
         this.facilities = [
             {
                 id: 0,
@@ -58,6 +59,20 @@ class VatsimData {
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
         }
+    }
+
+    async requestVatsimEventsData() {
+        try {
+            const response = await axios.get(VATSIM_EVENTS_URL);
+            if (response) {
+                if (response.data.data.length > 0) {
+                    this.vatsimEvents = response.data.data;
+                }
+            }
+        } catch (e) {
+            throw new BadRequestError("Vatsim API ERROR");
+        }
+        return this.vatsimEvents;
     }
 
     async requestVatsimData() {

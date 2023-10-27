@@ -9,6 +9,7 @@ const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
 const airportsRoutes = require("./routes/airportsRoutes");
+const vatsimRoutes = require("./routes/vatsimRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
@@ -70,6 +71,7 @@ app.use("/v1/comments", commentRoutes);
 app.use("/v1/weather", weatherRoutes);
 app.use("/v1/metar", metarRoutes);
 app.use("/v1/taf", tafRoutes);
+app.use("/v1/vatsim", vatsimRoutes);
 app.use("/v1/puzzle", puzzlesRoutes);
 
 app.all("*", (req, res) => {
