@@ -6,6 +6,7 @@ const { awcMetarSchema } = require("../../redis/awcMetar");
 const { checkICAO } = require("../../utils/checkICAO");
 const RedisClient = require("../../redis/RedisClient");
 const MetarFeatures = require("../METAR/MetarFeatures");
+const TafFeatures = require("../Taf/TafFeatures");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const {
     getAwcMetarUsingICAO,

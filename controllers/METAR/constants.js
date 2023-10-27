@@ -1,37 +1,55 @@
+module.exports.tafForecastType = [
+    {
+        code: "FM",
+        name: "FROM",
+        description: "Standard forecast or significant change"
+    },
+    {
+        code: "TEMPO",
+        name: "TEMPORARY",
+        description: "The following changes expected for less than half the time period"
+    },
+    {
+        code: "BECMG",
+        name: "BECOMING",
+        description: "Changes expected for the time period"
+    }
+];
+
 module.exports.metarCloudCode = [
     {
         code: "FEW",
         name: "few",
-        density: "1/8 - 2/8",
+        density: "1/8 - 2/8"
     },
     {
         code: "SCT",
         name: "scattered",
-        density: "3/8 - 4/8",
+        density: "3/8 - 4/8"
     },
     {
         code: "BKN",
         name: "broken",
-        density: "5/8 – 7/8",
+        density: "5/8 – 7/8"
     },
     {
         code: "OVC",
         name: "overcast",
-        density: "8/8",
+        density: "8/8"
     },
     {
         code: "CB",
-        name: "Cumulonimbus cloud",
+        name: "Cumulonimbus cloud"
     },
     {
         code: "TCU",
-        name: "towering cumulus",
+        name: "towering cumulus"
     },
     {
         code: "VV",
         name: "vertical visibility",
-        density: "8/8",
-    },
+        density: "8/8"
+    }
 ];
 
 module.exports.metarWeatherCode = {
@@ -68,5 +86,5 @@ module.exports.metarWeatherCode = {
     DS: "duststorm",
     SS: "sandstorm",
     FC: "funnel cloud",
-    RE: "recent",
+    RE: "recent"
 };
