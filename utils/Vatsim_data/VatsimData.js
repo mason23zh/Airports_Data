@@ -72,7 +72,30 @@ class VatsimData {
         } catch (e) {
             throw new BadRequestError("Vatsim API ERROR");
         }
+        return this;
+    }
+
+    getAllVatsimEvents() {
         return this.vatsimEvents;
+    }
+
+    sortVatsimEventsByTime(timeFlag, order) {
+        // 1 for ascending order
+        // -1 for descending order
+        if (this.vatsimEvents.length === 0) {
+            return [];
+        }
+        let timeStatus = timeFlag === "start" ? "start_time" : "end_time";
+        return this.vatsimEvents.sort((a, b) => {
+            if (a[timeStatus] && b[timeStatus]) {
+                if (order === 1) {
+                    return new Date(a[timeStatus]).getTime() - new Date(b[timeStatus]).getTime();
+                }
+                if (order === -1) {
+                    return new Date(b[timeStatus]).getTime() - new Date(a[timeStatus]).getTime();
+                }
+            }
+        });
     }
 
     async requestVatsimData() {
