@@ -98,6 +98,23 @@ class VatsimData {
         });
     }
 
+    getCurrentVatsimEvents() {
+        if (this.vatsimEvents.length === 0) {
+            return [];
+        }
+        let currentTime = new Date().getTime();
+        const sortedTime = this.sortVatsimEventsByTime(1, "start");
+        return sortedTime.filter((t) => {
+            if (t.start_time && t.end_time) {
+                let startTimeStamp = new Date(t.start_time).getTime();
+                let endTimeStamp = new Date(t.end_time).getTime();
+                if (startTimeStamp <= currentTime && endTimeStamp >= currentTime) {
+                    return t;
+                }
+            }
+        });
+    }
+
     async requestVatsimData() {
         try {
             const response = await axios.get(VATSIM_DATA_URL);
