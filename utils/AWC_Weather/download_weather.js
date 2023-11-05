@@ -3,6 +3,7 @@ const util = require("util");
 const stream = require("stream");
 const axios = require("axios");
 const fs = require("fs");
+const zlib = require("zlib");
 const CSVToJson = require("../Data_Convert/csvToJson");
 const pipeline = util.promisify(stream.pipeline);
 const awc_csv_metar = "./utils/AWC_Weather/Data/raw_awc_metars.csv";
@@ -15,13 +16,23 @@ module.exports.downloadAndProcessAWCMetars = async (url) => {
         warning: "",
         sources: "",
         time: "",
-        results: "",
+        results: ""
     };
 
     const request = await axios.get(url, {
-        responseType: "stream",
+        responseType: "stream"
     });
-    await pipeline(request.data, fs.createWriteStream("./utils/AWC_Weather/Data/raw_awc_metars.csv"));
+    // await pipeline(
+    //     request.data,
+    //     fs.createWriteStream("./utils/AWC_Weather/Data/raw_awc_metars.csv")
+    // );
+    await pipeline(request.data, fs.createWriteStream("./utils/AWC_Weather/Data/awcMetarZip.gz"));
+    //unzip
+    const readZip = fs.createReadStream("./utils/AWC_Weather/Data/awcMetarZip.gz");
+    const writeUnzip = fs.createWriteStream("./utils/AWC_Weather/Data/awc_metars.csv");
+    const unzip = zlib.createGunzip();
+    readZip.pipe(unzip).pipe(writeUnzip);
+
     let csvContent = fs.readFileSync(awc_csv_metar).toString().split("\n");
     awcWeatherStatus.error = csvContent[0];
     awcWeatherStatus.warning = csvContent[1];

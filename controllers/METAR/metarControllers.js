@@ -8,6 +8,12 @@ const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
+const axios = require("axios");
+const fs = require("fs");
+const util = require("util");
+const stream = require("stream");
+const zlib = require("zlib");
+const pipeline = util.promisify(stream.pipeline);
 
 let repo;
 (async () => {
@@ -193,4 +199,21 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
             data: []
         });
     }
+};
+
+// TEST Decompress gzip
+module.exports.testRequest = async (req, res) => {
+    console.log("test request");
+    const request = await axios.get("https://aviationweather.gov/data/cache/metars.cache.csv.gz", {
+        responseType: "stream"
+    });
+    await pipeline(request.data, fs.createWriteStream("./utils/METAR/awc_metar.gz"));
+
+    const input = fs.createReadStream("./utils/METAR/awc_metar.gz");
+    const output = fs.createWriteStream("./utils/METAR/awc_metar_unzip.csv");
+
+    const unzip = zlib.createGunzip();
+    input.pipe(unzip).pipe(output);
+
+    res.status(200).json({});
 };

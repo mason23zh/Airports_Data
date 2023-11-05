@@ -15,8 +15,11 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
         let repo;
         console.log("start downloading data from AWC...");
+        // const awcMetars = await downloadAndProcessAWCMetars(
+        //     "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
+        // );
         const awcMetars = await downloadAndProcessAWCMetars(
-            "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
+            "https://aviationweather.gov/data/cache/metars.cache.csv.gz"
         );
         if (awcMetars.length && awcMetars.length > 0) {
             console.log("Download Finished, data length:", awcMetars.length);
@@ -107,9 +110,9 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             console.log("Error connecting to Redis", e);
         }
     })();
-    schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB(Latest_AwcWeatherModel);
-    });
+    // schedule.scheduleJob("*/10 * * * *", async () => {
+    //     await importMetarsToDB(Latest_AwcWeatherModel);
+    // });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
