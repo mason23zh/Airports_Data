@@ -10,7 +10,7 @@ const awc_csv_metar = "./utils/AWC_Weather/Data/raw_awc_metars.csv";
 const awc_csv_modified_metar = "./utils/AWC_Weather/Data/awc_metars.csv";
 const awc_json_metar = "./utils/AWC_Weather/Data/awc_metars.json";
 
-module.exports.downloadAndProcessAWCMetars = async (url) => {
+const processCSV = async () => {
     let awcWeatherStatus = {
         error: "",
         warning: "",
@@ -18,35 +18,84 @@ module.exports.downloadAndProcessAWCMetars = async (url) => {
         time: "",
         results: ""
     };
+    // let csvContent = fs.readFile(awc_csv_metar, (err, data) => {
+    //     console.log(data);
+    // });
 
-    const request = await axios.get(url, {
-        responseType: "stream"
-    });
-    // await pipeline(
-    //     request.data,
-    //     fs.createWriteStream("./utils/AWC_Weather/Data/raw_awc_metars.csv")
-    // );
-    await pipeline(request.data, fs.createWriteStream("./utils/AWC_Weather/Data/awcMetarZip.gz"));
+    let csvContent = fs.readFileSync(awc_csv_metar);
+    csvContent = csvContent.toString().split("\n");
+    if (csvContent.length > 1) {
+        awcWeatherStatus.error = csvContent[0];
+        awcWeatherStatus.warning = csvContent[1];
+        awcWeatherStatus.time = csvContent[2];
+        awcWeatherStatus.sources = csvContent[3];
+        awcWeatherStatus.results = csvContent[4];
+
+        csvContent.splice(0, 5);
+        csvContent = csvContent.join("\n");
+        // console.log("CSV content:", csvContent);
+        fs.writeFileSync("./utils/AWC_Weather/Data/awc_metars.csv", csvContent);
+
+        const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
+        await awc_metars.csvToJson();
+    }
+    return JSON.parse(fs.readFileSync(awc_json_metar));
+};
+
+const downloadFile = async (url) => {
+    try {
+        const request = await axios.get(url, {
+            responseType: "stream"
+        });
+        await pipeline(
+            request.data,
+            fs.createWriteStream("./utils/AWC_Weather/Data/awcMetarZip.gz")
+        );
+        console.log("download AWC Zip file pipeline successful");
+        return new Promise((resolve) => {
+            resolve();
+        });
+    } catch (error) {
+        console.error("download AWC Zip file pipeline failed", error);
+        return new Promise((res, rej) => {
+            rej(error);
+        });
+    }
+};
+
+const unzipFile = async () => {
     //unzip
-    const readZip = fs.createReadStream("./utils/AWC_Weather/Data/awcMetarZip.gz");
-    const writeUnzip = fs.createWriteStream("./utils/AWC_Weather/Data/awc_metars.csv");
-    const unzip = zlib.createGunzip();
-    readZip.pipe(unzip).pipe(writeUnzip);
+    const zipFile = fs.readFileSync("./utils/AWC_Weather/Data/awcMetarZip.gz");
+    const unzippedFile = zlib.unzipSync(zipFile);
+    fs.writeFileSync("./utils/AWC_Weather/Data/raw_awc_metars.csv", unzippedFile);
+};
 
-    let csvContent = fs.readFileSync(awc_csv_metar).toString().split("\n");
-    awcWeatherStatus.error = csvContent[0];
-    awcWeatherStatus.warning = csvContent[1];
-    awcWeatherStatus.time = csvContent[2];
-    awcWeatherStatus.sources = csvContent[3];
-    awcWeatherStatus.results = csvContent[4];
+module.exports.downloadAndProcessAWCMetars = async (url) => {
+    // let awcWeatherStatus = {
+    //     error: "",
+    //     warning: "",
+    //     sources: "",
+    //     time: "",
+    //     results: ""
+    // };
+    // const readZip = fs.createReadStream("./utils/AWC_Weather/Data/awcMetarZip.gz");
+    // const writeUnzip = fs.createWriteStream(awc_csv_metar);
+    downloadFile(url)
+        .then(() => {
+            unzipFile().then(() => {
+                processCSV();
+            });
+        })
+        .catch();
 
-    csvContent.splice(0, 5);
-    csvContent = csvContent.join("\n");
-
-    fs.writeFileSync("./utils/AWC_Weather/Data/awc_metars.csv", csvContent);
-
-    const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
-    await awc_metars.csvToJson();
-
-    return JSON.parse(fs.readFileSync(awc_json_metar, "utf-8"));
+    // return result;
+    // await downloadFile(url).catch();
+    // await unzipFile(readZip, writeUnzip);
+    //
+    // if (fs.readFileSync(awc_csv_metar)) {
+    //     const content = await processCSV();
+    //     return content;
+    // } else {
+    //     return [];
+    // }
 };

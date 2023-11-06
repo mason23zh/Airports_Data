@@ -8,7 +8,12 @@ module.exports.normalizeData = async () => {
     let normalizedAwcMetar = [];
 
     const redisValidCoordinates = (lng, lat) => {
-        if (Number(lng) < -180 || Number(lng) > 180 || Number(lat) < -85.05112878 || Number(lat) > 85.05112878) {
+        if (
+            Number(lng) < -180 ||
+            Number(lng) > 180 ||
+            Number(lat) < -85.05112878 ||
+            Number(lat) > 85.05112878
+        ) {
             return false;
         }
         return true;
@@ -22,11 +27,11 @@ module.exports.normalizeData = async () => {
             ) {
                 const tempObject = {
                     type: "Point",
-                    coordinates: [Number(metar.longitude), Number(metar.latitude)],
+                    coordinates: [Number(metar.longitude), Number(metar.latitude)]
                 };
                 const locationRedis = {
                     longitude: Number(metar.longitude),
-                    latitude: Number(metar.latitude),
+                    latitude: Number(metar.latitude)
                 };
                 let updatedMetar = {
                     ...metar,
@@ -36,7 +41,7 @@ module.exports.normalizeData = async () => {
                     municipality: airport.municipality,
                     name: airport.name,
                     location: tempObject,
-                    location_redis: locationRedis,
+                    location_redis: locationRedis
                 };
                 normalizedAwcMetar.push(updatedMetar);
             }
