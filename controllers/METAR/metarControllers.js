@@ -195,15 +195,3 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
         });
     }
 };
-
-// TEST Decompress gzip
-module.exports.testRequest = async (req, res) => {
-    console.log("test request");
-    const response = await downloadAndProcessAWCMetars(
-        "https://aviationweather.gov/data/cache/metars.cache.csv.gz"
-    );
-
-    res.status(200).json({
-        data: response
-    });
-};
