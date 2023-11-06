@@ -25,6 +25,12 @@ module.exports.normalizeData = async () => {
                 metar.station_id === airport.ident &&
                 redisValidCoordinates(Number(metar.longitude), Number(metar.latitude))
             ) {
+                let tempVisibility = metar.visibility_statute_mi.includes("+")
+                    ? Number(metar.visibility_statute_mi.replace("+", ""))
+                    : Number(metar.visibility_statute_mi);
+                let tempWindDir = metar.wind_dir_degrees.includes("VRB")
+                    ? -1
+                    : Number(metar.wind_dir_degrees);
                 const tempObject = {
                     type: "Point",
                     coordinates: [Number(metar.longitude), Number(metar.latitude)]
@@ -35,6 +41,8 @@ module.exports.normalizeData = async () => {
                 };
                 let updatedMetar = {
                     ...metar,
+                    visibility_statute_mi: Number(tempVisibility),
+                    wind_dir_degrees: tempWindDir,
                     ios_country: airport.iso_country,
                     ios_region: airport.iso_region,
                     continent: airport.continent,

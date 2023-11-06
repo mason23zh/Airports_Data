@@ -38,8 +38,10 @@ const processCSV = async () => {
 
         const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
         await awc_metars.csvToJson();
+        return JSON.parse(fs.readFileSync(awc_json_metar));
+    } else {
+        return [];
     }
-    return JSON.parse(fs.readFileSync(awc_json_metar));
 };
 
 const downloadFile = async (url) => {
@@ -71,31 +73,19 @@ const unzipFile = async () => {
 };
 
 module.exports.downloadAndProcessAWCMetars = async (url) => {
-    // let awcWeatherStatus = {
-    //     error: "",
-    //     warning: "",
-    //     sources: "",
-    //     time: "",
-    //     results: ""
-    // };
-    // const readZip = fs.createReadStream("./utils/AWC_Weather/Data/awcMetarZip.gz");
-    // const writeUnzip = fs.createWriteStream(awc_csv_metar);
-    downloadFile(url)
-        .then(() => {
-            unzipFile().then(() => {
-                processCSV();
-            });
-        })
-        .catch();
-
-    // return result;
-    // await downloadFile(url).catch();
-    // await unzipFile(readZip, writeUnzip);
-    //
-    // if (fs.readFileSync(awc_csv_metar)) {
-    //     const content = await processCSV();
-    //     return content;
-    // } else {
-    //     return [];
-    // }
+    try {
+        await downloadFile(url);
+        await unzipFile();
+        const result = await processCSV();
+        return JSON.stringify(result);
+    } catch (e) {
+        return [];
+    }
+    // downloadFile(url)
+    //     .then(() => {
+    //         unzipFile().then(() => {
+    //             processCSV();
+    //         });
+    //     })
+    //     .catch();
 };

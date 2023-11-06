@@ -11,7 +11,6 @@ class CSVToJson {
         csv()
             .fromFile(this.csvFilePath)
             .then((data) => {
-                console.log(data);
                 fs.writeFileSync(`${this.outputFilePath}`, JSON.stringify(data));
             });
     }
