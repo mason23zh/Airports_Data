@@ -36,3 +36,11 @@ module.exports.getCurrentVatsimEvents = async (req, res) => {
         events: currentEvents
     });
 };
+
+module.exports.importToDB = async (req, res) => {
+    const vatsimData = (await new VatsimData()).requestVatsimEventsData();
+    const result = await (await vatsimData).storeVatsimEventsToDB();
+    res.status(200).json({
+        data: result
+    });
+};

@@ -8,8 +8,19 @@ const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
 const { SecondaryConnection } = require("./secondaryDbConnection");
 const { awcMetarSchema } = require("./redis/awcMetar");
 const RedisClient = require("./redis/RedisClient");
+const VatsimData = require("./utils/Vatsim_data/VatsimData");
 
 const redisClient = new RedisClient();
+
+async function importVatsimEventsToDb() {
+    try {
+        const vatsimData = (await new VatsimData()).requestVatsimEventsData();
+        const result = await (await vatsimData).storeVatsimEventsToDB();
+        return result;
+    } catch (e) {
+        return null;
+    }
+}
 
 async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
@@ -113,6 +124,10 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // schedule.scheduleJob("*/10 * * * *", async () => {
     //     await importMetarsToDB(Latest_AwcWeatherModel);
     // });
+    // every 12 hours
+    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+        await importVatsimEventsToDb();
+    });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {

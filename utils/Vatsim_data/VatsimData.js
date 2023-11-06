@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
+const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
@@ -58,6 +59,25 @@ class VatsimData {
             return airport.iata;
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
+        }
+    }
+
+    async storeVatsimEventsToDB() {
+        if (this.vatsimEvents.length <= 0) {
+            return null;
+        }
+        try {
+            console.log("starting import vatsim events to db...");
+            // delete all previous events
+            await VatsimEvents.deleteMany({});
+            const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
+            if (doc.length > 0) {
+                console.log("successfully import vatsim events to db ");
+            }
+            return doc.length;
+        } catch (e) {
+            console.error(e);
+            return null;
         }
     }
 
