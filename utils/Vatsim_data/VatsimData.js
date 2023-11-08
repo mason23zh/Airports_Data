@@ -126,21 +126,26 @@ class VatsimData {
         }
     }
 
-    getCurrentVatsimEvents() {
-        if (this.vatsimEvents.length === 0) {
+    async getCurrentVatsimEvents() {
+        try {
+            const currentTime = new Date().getTime();
+            const docs = await VatsimEvents.find({}).sort({ start_time: 1 });
+            if (docs && docs.length > 0) {
+                return docs.filter((t) => {
+                    if (t.start_time && t.end_time) {
+                        let startTimeStamp = new Date(t.start_time).getTime();
+                        let endTimeStamp = new Date(t.end_time).getTime();
+                        if (startTimeStamp <= currentTime && endTimeStamp >= currentTime) {
+                            return t;
+                        }
+                    }
+                });
+            } else {
+                return [];
+            }
+        } catch (e) {
             return [];
         }
-        let currentTime = new Date().getTime();
-        const sortedTime = this.sortVatsimEventsByTime(1, "start");
-        return sortedTime.filter((t) => {
-            if (t.start_time && t.end_time) {
-                let startTimeStamp = new Date(t.start_time).getTime();
-                let endTimeStamp = new Date(t.end_time).getTime();
-                if (startTimeStamp <= currentTime && endTimeStamp >= currentTime) {
-                    return t;
-                }
-            }
-        });
     }
 
     async requestVatsimData() {

@@ -40,8 +40,8 @@ module.exports.sortVatsimEventsByTime = async (req, res) => {
 };
 
 module.exports.getCurrentVatsimEvents = async (req, res) => {
-    const vatsimData = (await new VatsimData()).requestVatsimEventsData();
-    const currentEvents = (await vatsimData).getCurrentVatsimEvents();
+    const vatsimData = new VatsimData();
+    const currentEvents = await vatsimData.getCurrentVatsimEvents();
     res.status(200).json({
         results: currentEvents.length,
         events: currentEvents
