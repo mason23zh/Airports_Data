@@ -3,12 +3,11 @@ const router = express.Router();
 const {
     getVatsimEvents,
     sortVatsimEventsByTime,
-    getCurrentVatsimEvents,
-    importToDB
+    getCurrentVatsimEvents
 } = require("../controllers/Vatsim/vatsimControllers");
 
 router.get("/getEvents", getVatsimEvents);
 router.get("/getSortedEventsByDate", sortVatsimEventsByTime);
 router.get("/getCurrentEvents", getCurrentVatsimEvents);
-router.get("/test", importToDB);
+//router.get("/test", importToDB);
 module.exports = router;

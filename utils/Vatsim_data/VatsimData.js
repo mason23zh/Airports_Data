@@ -9,8 +9,6 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 
 class VatsimData {
-    s;
-
     constructor() {
         this.vatsimPilots = [];
         this.vatsimControllers = [];
