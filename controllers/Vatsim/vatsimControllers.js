@@ -1,7 +1,7 @@
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 module.exports.getVatsimEvents = async (req, res) => {
     const vatsimData = new VatsimData();
-    const response = (await vatsimData.requestVatsimEventsData()).getAllVatsimEvents();
+    const response = await vatsimData.getAllVatsimEvents();
 
     res.status(200).json({
         results: response.length,
@@ -10,17 +10,28 @@ module.exports.getVatsimEvents = async (req, res) => {
 };
 
 module.exports.sortVatsimEventsByTime = async (req, res) => {
-    let { target = "start" } = req.query;
+    let { target } = req.query;
     let { sort } = req.query;
-    if (target !== "start" || target !== "end") {
-        target = "start";
+    if (!target || target.length === 0) {
+        target = "start_time";
+    } else if (target !== "start" || target !== "end") {
+        target = "start_time";
+    } else if (target.includes("start")) {
+        target = "start_time";
+    } else if (target.includes("end")) {
+        console.log("trigger");
+        target = "end_time";
     }
     if (!req.query.sort || (req.query.sort !== "-1" && req.query.sort !== "1")) {
-        sort = "1";
+        sort = 1;
+    } else if (req.query.sort === "1") {
+        sort = 1;
+    } else if (req.query.sort === "-1") {
+        sort = -1;
     }
 
-    const vatsimData = (await new VatsimData()).requestVatsimEventsData();
-    const sortedEvents = (await vatsimData).sortVatsimEventsByTime(target, Number(sort));
+    const vatsimData = new VatsimData();
+    const sortedEvents = await vatsimData.sortVatsimEventsByTime(target, sort);
 
     res.status(200).json({
         results: sortedEvents.length,
