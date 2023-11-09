@@ -97,7 +97,9 @@ class VatsimData {
 
     async getAllVatsimEvents() {
         try {
-            const docs = await VatsimEvents.find({});
+            const currentTime = new Date(new Date()).toISOString();
+            // filter out the events that already ended
+            const docs = await VatsimEvents.find({ end_time: { $gte: currentTime } });
             if (docs && docs.length > 0) {
                 return docs;
             } else {
@@ -111,10 +113,16 @@ class VatsimData {
     async sortVatsimEventsByTime(timeFlag, order) {
         try {
             let docs;
+            const currentTime = new Date(new Date()).toISOString();
+
             if (timeFlag === "start_time") {
-                docs = await VatsimEvents.find({}).sort({ start_time: order });
+                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                    start_time: order
+                });
             } else if (timeFlag === "end_time") {
-                docs = await VatsimEvents.find({}).sort({ end_time: order });
+                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                    end_time: order
+                });
             }
             if (docs && docs.length > 0) {
                 return docs;
@@ -127,7 +135,9 @@ class VatsimData {
     async getCurrentVatsimEvents() {
         try {
             const currentTime = new Date().getTime();
-            const docs = await VatsimEvents.find({}).sort({ start_time: 1 });
+            const docs = await VatsimEvents.find({
+                end_time: { $gte: new Date(new Date()).toISOString() }
+            }).sort({ start_time: 1 });
             if (docs && docs.length > 0) {
                 return docs.filter((t) => {
                     if (t.start_time && t.end_time) {
