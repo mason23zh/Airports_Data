@@ -8,6 +8,7 @@ const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
+const { downloadAndProcessAWCMetars } = require("../../utils/AWC_Weather/download_weather");
 
 let repo;
 (async () => {

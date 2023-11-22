@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { VATSIM_DATA_URL } = require("../../config");
+const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
+const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
@@ -12,6 +13,7 @@ class VatsimData {
         this.vatsimPilots = [];
         this.vatsimControllers = [];
         this.vatsimAtis = [];
+        this.vatsimEvents = [];
         this.facilities = [
             {
                 id: 0,
@@ -57,6 +59,100 @@ class VatsimData {
             return airport.iata;
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
+        }
+    }
+
+    async storeVatsimEventsToDB() {
+        if (this.vatsimEvents.length <= 0) {
+            return null;
+        }
+        try {
+            console.log("starting import vatsim events to db...");
+            // delete all previous events
+            await VatsimEvents.deleteMany({});
+            const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
+            if (doc.length > 0) {
+                console.log("successfully import vatsim events to db ");
+            }
+            return doc.length;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+
+    async requestVatsimEventsData() {
+        try {
+            const response = await axios.get(VATSIM_EVENTS_URL);
+            if (response) {
+                if (response.data.data.length > 0) {
+                    this.vatsimEvents = response.data.data;
+                }
+            }
+        } catch (e) {
+            throw new BadRequestError("Vatsim API ERROR");
+        }
+        return this;
+    }
+
+    async getAllVatsimEvents() {
+        try {
+            const currentTime = new Date(new Date()).toISOString();
+            // filter out the events that already ended
+            const docs = await VatsimEvents.find({ end_time: { $gte: currentTime } });
+            if (docs && docs.length > 0) {
+                return docs;
+            } else {
+                return this.vatsimEvents;
+            }
+        } catch (e) {
+            return [];
+        }
+    }
+
+    async sortVatsimEventsByTime(timeFlag, order) {
+        try {
+            let docs;
+            const currentTime = new Date(new Date()).toISOString();
+
+            if (timeFlag === "start_time") {
+                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                    start_time: order
+                });
+            } else if (timeFlag === "end_time") {
+                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                    end_time: order
+                });
+            }
+            if (docs && docs.length > 0) {
+                return docs;
+            }
+        } catch (e) {
+            return [];
+        }
+    }
+
+    async getCurrentVatsimEvents() {
+        try {
+            const currentTime = new Date().getTime();
+            const docs = await VatsimEvents.find({
+                end_time: { $gte: new Date(new Date()).toISOString() }
+            }).sort({ start_time: 1 });
+            if (docs && docs.length > 0) {
+                return docs.filter((t) => {
+                    if (t.start_time && t.end_time) {
+                        let startTimeStamp = new Date(t.start_time).getTime();
+                        let endTimeStamp = new Date(t.end_time).getTime();
+                        if (startTimeStamp <= currentTime && endTimeStamp >= currentTime) {
+                            return t;
+                        }
+                    }
+                });
+            } else {
+                return [];
+            }
+        } catch (e) {
+            return [];
         }
     }
 
@@ -298,6 +394,13 @@ class VatsimData {
         controllerObject.airportLocation = airport.location;
 
         return controllerObject;
+    }
+
+    getVatsimPilots() {
+        if (this.vatsimPilots.length > 0) {
+            return this.vatsimPilots;
+        }
+        return [];
     }
 }
 

@@ -8,7 +8,12 @@ module.exports.normalizeData = async () => {
     let normalizedAwcMetar = [];
 
     const redisValidCoordinates = (lng, lat) => {
-        if (Number(lng) < -180 || Number(lng) > 180 || Number(lat) < -85.05112878 || Number(lat) > 85.05112878) {
+        if (
+            Number(lng) < -180 ||
+            Number(lng) > 180 ||
+            Number(lat) < -85.05112878 ||
+            Number(lat) > 85.05112878
+        ) {
             return false;
         }
         return true;
@@ -20,23 +25,31 @@ module.exports.normalizeData = async () => {
                 metar.station_id === airport.ident &&
                 redisValidCoordinates(Number(metar.longitude), Number(metar.latitude))
             ) {
+                let tempVisibility = metar.visibility_statute_mi.includes("+")
+                    ? Number(metar.visibility_statute_mi.replace("+", ""))
+                    : Number(metar.visibility_statute_mi);
+                let tempWindDir = metar.wind_dir_degrees.includes("VRB")
+                    ? -1
+                    : Number(metar.wind_dir_degrees);
                 const tempObject = {
                     type: "Point",
-                    coordinates: [Number(metar.longitude), Number(metar.latitude)],
+                    coordinates: [Number(metar.longitude), Number(metar.latitude)]
                 };
                 const locationRedis = {
                     longitude: Number(metar.longitude),
-                    latitude: Number(metar.latitude),
+                    latitude: Number(metar.latitude)
                 };
                 let updatedMetar = {
                     ...metar,
+                    visibility_statute_mi: Number(tempVisibility),
+                    wind_dir_degrees: tempWindDir,
                     ios_country: airport.iso_country,
                     ios_region: airport.iso_region,
                     continent: airport.continent,
                     municipality: airport.municipality,
                     name: airport.name,
                     location: tempObject,
-                    location_redis: locationRedis,
+                    location_redis: locationRedis
                 };
                 normalizedAwcMetar.push(updatedMetar);
             }

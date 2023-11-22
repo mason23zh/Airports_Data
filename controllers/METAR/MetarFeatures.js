@@ -482,13 +482,11 @@ class MetarFeatures {
         // check for special weather code
         if (code.length >= 4 && metarWeatherCode[code]) {
             weatherText = `${weatherText} ${metarWeatherCode[code]}`;
-            // console.log(code);
             return weatherText;
         }
 
         for (let i = 0; i < code.length - 1; i += 2) {
             const singleCode = code.slice(i, i + 2);
-            // console.log(singleCode);
             if (metarWeatherCode[singleCode]) {
                 weatherText = `${weatherText} ${metarWeatherCode[singleCode]}`;
             } else {
