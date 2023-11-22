@@ -55,3 +55,18 @@ module.exports.importToDB = async (req, res) => {
         data: result
     });
 };
+
+module.exports.getVatsimPilots = async (req, res) => {
+    let vatsimPilots;
+    const vatsim = new VatsimData();
+    const vatsimData = await vatsim.requestVatsimData();
+    if (vatsimData) {
+        vatsimPilots = vatsim.getVatsimPilots();
+    }
+    res.status(200).json({
+        data: {
+            results: vatsimPilots.length,
+            pilots: vatsimPilots
+        }
+    });
+};

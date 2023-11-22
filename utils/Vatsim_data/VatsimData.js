@@ -395,6 +395,13 @@ class VatsimData {
 
         return controllerObject;
     }
+
+    getVatsimPilots() {
+        if (this.vatsimPilots.length > 0) {
+            return this.vatsimPilots;
+        }
+        return [];
+    }
 }
 
 module.exports = VatsimData;
