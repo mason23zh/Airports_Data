@@ -121,13 +121,13 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             console.log("Error connecting to Redis", e);
         }
     })();
-    schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB(Latest_AwcWeatherModel);
-    });
-    // every 12 hours
-    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-        await importVatsimEventsToDb();
-    });
+    // schedule.scheduleJob("*/10 * * * *", async () => {
+    //     await importMetarsToDB(Latest_AwcWeatherModel);
+    // });
+    // // every 12 hours
+    // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+    //     await importVatsimEventsToDb();
+    // });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
