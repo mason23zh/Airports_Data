@@ -4,12 +4,14 @@ const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
+const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 
 class VatsimData {
     constructor() {
+        this.normalizedVatsimTraffics = [];
         this.vatsimPilots = [];
         this.vatsimControllers = [];
         this.vatsimAtis = [];
@@ -394,6 +396,84 @@ class VatsimData {
         controllerObject.airportLocation = airport.location;
 
         return controllerObject;
+    }
+
+    #validateVatsimTraffic(flight) {
+        // console.log(flight);
+        if (
+            !flight.cid ||
+            !flight.callsign ||
+            !flight.latitude ||
+            !flight.longitude ||
+            !flight.altitude ||
+            !flight.groundspeed ||
+            !flight.heading ||
+            !flight.flight_plan?.aircraft ||
+            !flight.flight_plan?.departure ||
+            !flight.flight_plan?.arrival
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+    #buildTrafficObject(traffic) {
+        let tempObject = {
+            track: [],
+            aircraft: {}
+        };
+        let tempObjectTrack = {};
+        tempObject.cid = traffic.cid;
+        tempObject.name = traffic.name;
+        tempObject.callsign = traffic.callsign;
+        tempObject.server = traffic.server;
+        tempObject.transponder = traffic.transponder;
+        tempObject.flightRules = traffic.flight_plan.flight_rules;
+        tempObject.aircraft.full = traffic.flight_plan.aircraft;
+        tempObject.aircraft.faa = traffic.flight_plan.aircraft_faa;
+        tempObject.aircraft.short = traffic.flight_plan.aircraft_short;
+        tempObject.arrival = traffic.flight_plan.arrival;
+        tempObject.departure = traffic.flight_plan.departure;
+        tempObject.alternate = traffic.flight_plan.alternate;
+        tempObject.depTime = traffic.flight_plan.deptime;
+        tempObject.enrouteTime = traffic.flight_plan.enroute_time;
+        tempObject.fuelTime = traffic.flight_plan.fuel_time;
+        tempObject.remarks = traffic.flight_plan.remarks;
+        tempObject.route = traffic.flight_plan.route;
+        tempObject.logonTime = traffic.logon_time;
+        tempObject.lastUpdated = traffic.last_updated;
+        tempObjectTrack.latitude = traffic.latitude;
+        tempObjectTrack.longitude = traffic.longitude;
+        tempObjectTrack.altitude = traffic.altitude;
+        tempObjectTrack.groundSpeed = traffic.groundspeed;
+        tempObjectTrack.heading = traffic.heading;
+        tempObjectTrack.qnhIgh = traffic.qnh_i_hg;
+        tempObject.track.push(tempObjectTrack);
+        return tempObject;
+    }
+
+    normalizeVatsimTraffic() {
+        if (this.vatsimPilots.length > 0) {
+            this.vatsimPilots.filter((p) => {
+                if (this.#validateVatsimTraffic(p)) {
+                    this.normalizedVatsimTraffics.push(this.#buildTrafficObject(p));
+                }
+            });
+        }
+        console.log(this.normalizedVatsimTraffics);
+        return this.normalizedVatsimTraffics;
+    }
+
+    async importVatsimTrafficToDB() {
+        const normalizedTraffic = this.normalizeVatsimTraffic();
+        console.log(normalizedTraffic);
+        try {
+            const response = await VatsimTraffics.insertMany(normalizedTraffic);
+            return response;
+        } catch (e) {
+            console.error(e);
+            return -1;
+        }
     }
 
     getVatsimPilots() {

@@ -4,12 +4,14 @@ const {
     getVatsimEvents,
     sortVatsimEventsByTime,
     getCurrentVatsimEvents,
-    getVatsimPilots
+    getVatsimPilots,
+    importVatsimTrafficToDb
 } = require("../controllers/Vatsim/vatsimControllers");
 
 router.get("/getEvents", getVatsimEvents);
 router.get("/getSortedEventsByDate", sortVatsimEventsByTime);
 router.get("/getCurrentEvents", getCurrentVatsimEvents);
 router.get("/getPilots", getVatsimPilots);
+router.get("/test", importVatsimTrafficToDb);
 //router.get("/test", importToDB);
 module.exports = router;

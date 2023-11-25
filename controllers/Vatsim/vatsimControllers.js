@@ -70,3 +70,15 @@ module.exports.getVatsimPilots = async (req, res) => {
         }
     });
 };
+
+module.exports.importVatsimTrafficToDb = async (req, res) => {
+    const vatsim = new VatsimData();
+    const vatsimData = await vatsim.requestVatsimData();
+    let response;
+    if (vatsimData) {
+        response = await vatsim.importVatsimTrafficToDB();
+    }
+    res.status(200).json({
+        data: response
+    });
+};
