@@ -406,12 +406,12 @@ class VatsimData {
             !flight.latitude ||
             !flight.longitude ||
             !flight.altitude ||
-            !flight.groundspeed ||
             !flight.heading ||
             !flight.flight_plan?.aircraft ||
             !flight.flight_plan?.departure ||
             !flight.flight_plan?.arrival
         ) {
+            console.log("invalid flight:", flight);
             return false;
         }
         return true;
@@ -510,22 +510,18 @@ class VatsimData {
                         tempTrackObj.heading = p.heading;
                         matchedPilot.track.push(tempTrackObj);
                         matchedPilot.lastUpdated = p.last_updated;
-                        // console.log(matchedPilot);
                         return matchedPilot;
                     } else {
                         return this.#buildTrafficObject(p);
                     }
                 });
 
-            for (let t of updatedTraffic) {
-                console.log(t);
-            }
             // update db
             await VatsimTraffics.deleteMany({});
             const result = await VatsimTraffics.insertMany(updatedTraffic);
             return result;
         }
-        return false;
+        return null;
     }
 
     getVatsimPilots() {

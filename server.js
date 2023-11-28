@@ -9,8 +9,19 @@ const { SecondaryConnection } = require("./secondaryDbConnection");
 const { awcMetarSchema } = require("./redis/awcMetar");
 const RedisClient = require("./redis/RedisClient");
 const VatsimData = require("./utils/Vatsim_data/VatsimData");
+const { CronJob } = require("cron");
 
 const redisClient = new RedisClient();
+
+async function importVatsimTrafficsToDb() {
+    try {
+        const vatsimData = new VatsimData();
+        const result = await vatsimData.updateVatsimTraffics();
+        return result;
+    } catch (e) {
+        return null;
+    }
+}
 
 async function importVatsimEventsToDb() {
     try {
@@ -127,6 +138,18 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // // every 12 hours
     // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
     //     await importVatsimEventsToDb();
+    // });
+    // every 20 seconds
+
+    const job = CronJob.from({
+        cronTime: "*/20 * * * * *",
+        onTick: async () => await importVatsimTrafficsToDb(),
+        start: true,
+        timeZone: "America/Los_Angeles"
+    });
+
+    // schedule.scheduleJob("20 0 0 ? * * *", async () => {
+    //     await importVatsimTrafficsToDb();
     // });
 });
 const port = process.env.PORT || 80;
