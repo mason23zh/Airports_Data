@@ -82,3 +82,11 @@ module.exports.importVatsimTrafficToDb = async (req, res) => {
         data: response
     });
 };
+
+module.exports.updateVatsimTrafficToDb = async (req, res) => {
+    const vatsim = new VatsimData();
+    const response = await vatsim.updateVatsimTraffics();
+    res.status(200).json({
+        results: response
+    });
+};

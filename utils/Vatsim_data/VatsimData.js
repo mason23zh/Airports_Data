@@ -8,6 +8,7 @@ const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
+const _ = require("lodash");
 
 class VatsimData {
     constructor() {
@@ -399,7 +400,6 @@ class VatsimData {
     }
 
     #validateVatsimTraffic(flight) {
-        // console.log(flight);
         if (
             !flight.cid ||
             !flight.callsign ||
@@ -464,6 +464,10 @@ class VatsimData {
         return this.normalizedVatsimTraffics;
     }
 
+    /**
+     * This function will be ONLY use for the first time
+     * to import the traffic
+     * */
     async importVatsimTrafficToDB() {
         const normalizedTraffic = this.normalizeVatsimTraffic();
         console.log(normalizedTraffic);
@@ -474,6 +478,54 @@ class VatsimData {
             console.error(e);
             return -1;
         }
+    }
+
+    // #updateTraffic(cid, dbData, onlineData){
+    //     let updatedTraffics = [];
+    //
+    // }
+
+    async updateVatsimTraffics() {
+        // get the current online traffics
+        const onlineData = await this.requestVatsimData();
+        if (onlineData) {
+            // get previous db data
+            const dbTraffics = await VatsimTraffics.find({});
+            // map through the onlineData
+            const updatedTraffic = this.vatsimPilots
+                .filter((t) => {
+                    if (this.#validateVatsimTraffic(t)) {
+                        return t;
+                    }
+                })
+                .map((p) => {
+                    const matchedPilot = _.find(dbTraffics, { cid: p.cid });
+                    if (matchedPilot) {
+                        // if found match, only update the track
+                        let tempTrackObj = {};
+                        tempTrackObj.latitude = p.latitude;
+                        tempTrackObj.longitude = p.longitude;
+                        tempTrackObj.altitude = p.altitude;
+                        tempTrackObj.groundSpeed = p.groundspeed;
+                        tempTrackObj.heading = p.heading;
+                        matchedPilot.track.push(tempTrackObj);
+                        matchedPilot.lastUpdated = p.last_updated;
+                        // console.log(matchedPilot);
+                        return matchedPilot;
+                    } else {
+                        return this.#buildTrafficObject(p);
+                    }
+                });
+
+            for (let t of updatedTraffic) {
+                console.log(t);
+            }
+            // update db
+            await VatsimTraffics.deleteMany({});
+            const result = await VatsimTraffics.insertMany(updatedTraffic);
+            return result;
+        }
+        return false;
     }
 
     getVatsimPilots() {
