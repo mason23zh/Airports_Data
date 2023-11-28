@@ -405,13 +405,10 @@ class VatsimData {
             !flight.callsign ||
             !flight.latitude ||
             !flight.longitude ||
-            !flight.altitude ||
-            !flight.heading ||
-            !flight.flight_plan?.aircraft ||
-            !flight.flight_plan?.departure ||
-            !flight.flight_plan?.arrival
+            (!flight.altitude && flight.altitude !== 0) ||
+            (!flight.heading && flight.heading !== 0)
         ) {
-            console.log("invalid flight:", flight);
+            console.log("invalid flights:", flight);
             return false;
         }
         return true;
@@ -428,18 +425,18 @@ class VatsimData {
         tempObject.callsign = traffic.callsign;
         tempObject.server = traffic.server;
         tempObject.transponder = traffic.transponder;
-        tempObject.flightRules = traffic.flight_plan.flight_rules;
-        tempObject.aircraft.full = traffic.flight_plan.aircraft;
-        tempObject.aircraft.faa = traffic.flight_plan.aircraft_faa;
-        tempObject.aircraft.short = traffic.flight_plan.aircraft_short;
-        tempObject.arrival = traffic.flight_plan.arrival;
-        tempObject.departure = traffic.flight_plan.departure;
-        tempObject.alternate = traffic.flight_plan.alternate;
-        tempObject.depTime = traffic.flight_plan.deptime;
-        tempObject.enrouteTime = traffic.flight_plan.enroute_time;
-        tempObject.fuelTime = traffic.flight_plan.fuel_time;
-        tempObject.remarks = traffic.flight_plan.remarks;
-        tempObject.route = traffic.flight_plan.route;
+        tempObject.flightRules = !traffic.flight_plan?.flight_rules || "N/A";
+        tempObject.aircraft.full = traffic.flight_plan?.aircraft || "N/A";
+        tempObject.aircraft.faa = traffic.flight_plan?.aircraft_faa || "N/A";
+        tempObject.aircraft.short = traffic.flight_plan?.aircraft_short || "N/A";
+        tempObject.arrival = traffic.flight_plan?.arrival || "N/A";
+        tempObject.departure = traffic.flight_plan?.departure || "N/A";
+        tempObject.alternate = traffic.flight_plan?.alternate || "N/A";
+        tempObject.depTime = traffic.flight_plan?.deptime || "N/A";
+        tempObject.enrouteTime = traffic.flight_plan?.enroute_time || "N/A";
+        tempObject.fuelTime = traffic.flight_plan?.fuel_time || "N/A";
+        tempObject.remarks = traffic.flight_plan?.remarks || "N/A";
+        tempObject.route = traffic.flight_plan?.route || "N/A";
         tempObject.logonTime = traffic.logon_time;
         tempObject.lastUpdated = traffic.last_updated;
         tempObjectTrack.latitude = traffic.latitude;
@@ -466,7 +463,7 @@ class VatsimData {
 
     /**
      * This function will be ONLY use for the first time
-     * to import the traffic
+     * to import the traffics
      * */
     async importVatsimTrafficToDB() {
         const normalizedTraffic = this.normalizeVatsimTraffic();
@@ -480,48 +477,48 @@ class VatsimData {
         }
     }
 
-    // #updateTraffic(cid, dbData, onlineData){
-    //     let updatedTraffics = [];
-    //
-    // }
-
     async updateVatsimTraffics() {
         // get the current online traffics
-        const onlineData = await this.requestVatsimData();
-        if (onlineData) {
-            // get previous db data
-            const dbTraffics = await VatsimTraffics.find({});
-            // map through the onlineData
-            const updatedTraffic = this.vatsimPilots
-                .filter((t) => {
-                    if (this.#validateVatsimTraffic(t)) {
-                        return t;
-                    }
-                })
-                .map((p) => {
-                    const matchedPilot = _.find(dbTraffics, { cid: p.cid });
-                    if (matchedPilot) {
-                        // if found match, only update the track
-                        let tempTrackObj = {};
-                        tempTrackObj.latitude = p.latitude;
-                        tempTrackObj.longitude = p.longitude;
-                        tempTrackObj.altitude = p.altitude;
-                        tempTrackObj.groundSpeed = p.groundspeed;
-                        tempTrackObj.heading = p.heading;
-                        matchedPilot.track.push(tempTrackObj);
-                        matchedPilot.lastUpdated = p.last_updated;
-                        return matchedPilot;
-                    } else {
-                        return this.#buildTrafficObject(p);
-                    }
-                });
+        try {
+            const onlineData = await this.requestVatsimData();
+            if (onlineData) {
+                // get previous db data
+                const dbTraffics = await VatsimTraffics.find({});
+                // map through the onlineData
+                const updatedTraffic = this.vatsimPilots
+                    .filter((t) => {
+                        if (this.#validateVatsimTraffic(t)) {
+                            return t;
+                        }
+                    })
+                    .map((p) => {
+                        const matchedPilot = _.find(dbTraffics, { cid: p.cid });
+                        if (matchedPilot) {
+                            // if found match, only update the track
+                            let tempTrackObj = {};
+                            tempTrackObj.latitude = p.latitude;
+                            tempTrackObj.longitude = p.longitude;
+                            tempTrackObj.altitude = p.altitude;
+                            tempTrackObj.groundSpeed = p.groundspeed;
+                            tempTrackObj.heading = p.heading;
+                            matchedPilot.track.push(tempTrackObj);
+                            matchedPilot.lastUpdated = p.last_updated;
+                            return matchedPilot;
+                        } else {
+                            return this.#buildTrafficObject(p);
+                        }
+                    });
+                console.log("internal update completed");
 
-            // update db
-            await VatsimTraffics.deleteMany({});
-            const result = await VatsimTraffics.insertMany(updatedTraffic);
-            return result;
+                // update db
+                await VatsimTraffics.deleteMany({});
+                const result = await VatsimTraffics.insertMany(updatedTraffic);
+                return result;
+            }
+            return null;
+        } catch (e) {
+            console.error("updateVatsimTraffics:", e);
         }
-        return null;
     }
 
     getVatsimPilots() {

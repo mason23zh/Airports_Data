@@ -141,16 +141,13 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // });
     // every 20 seconds
 
-    const job = CronJob.from({
+    CronJob.from({
         cronTime: "*/20 * * * * *",
         onTick: async () => await importVatsimTrafficsToDb(),
         start: true,
-        timeZone: "America/Los_Angeles"
+        timeZone: "America/Los_Angeles",
+        runOnInit: true
     });
-
-    // schedule.scheduleJob("20 0 0 ? * * *", async () => {
-    //     await importVatsimTrafficsToDb();
-    // });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
