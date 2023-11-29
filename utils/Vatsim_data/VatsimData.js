@@ -477,6 +477,71 @@ class VatsimData {
         }
     }
 
+    async updateVatsimTrafficsDB(dbTraffics, updatedTraffics) {
+        // find out what traffics that NOT in the dbTraffics
+        const newTraffics = updatedTraffics.filter((p) => {
+            if (!_.find(dbTraffics, { cid: p.cid }) && this.#validateVatsimTraffic(p)) {
+                return this.#buildTrafficObject(p);
+            }
+        });
+
+        // add new traffics to the db
+        if (newTraffics.length > 0) {
+            VatsimTraffics.insertMany(newTraffics, (err, docs) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("New traffics added, total number:", docs.length);
+                }
+            });
+        }
+
+        // find out what traffics that NOT in updatedTraffics BUT in dbTraffics
+        const trafficToBeRemoved = dbTraffics.filter((p) => {
+            if (!_.find(updatedTraffics, { cid: p.cid })) {
+                return p;
+            }
+        });
+
+        // remove traffics that now in the network
+        for (let t of trafficToBeRemoved) {
+            VatsimTraffics.findOneAndRemove({ cid: t.cid }, (err, doc) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("Traffic not in the net are removed, cid:", doc?.cid || -1);
+                }
+            });
+        }
+
+        for (let p of updatedTraffics) {
+            const matchedPilot = _.find(dbTraffics, { cid: p.cid });
+            // remove pilots from db if no records shown in the updatedTraffics
+
+            if (matchedPilot) {
+                // if found match, only update the track
+                let tempTrackObj = {};
+                tempTrackObj.latitude = p.latitude;
+                tempTrackObj.longitude = p.longitude;
+                tempTrackObj.altitude = p.altitude;
+                tempTrackObj.groundSpeed = p.groundspeed;
+                tempTrackObj.heading = p.heading;
+                VatsimTraffics.updateOne(
+                    { cid: p.cid },
+                    {
+                        $set: { lastUpdated: p.last_updated },
+                        $push: { track: tempTrackObj }
+                    },
+                    (err, doc) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    }
+                );
+            }
+        }
+    }
+
     async updateVatsimTraffics() {
         // get the current online traffics
         try {
@@ -485,35 +550,14 @@ class VatsimData {
                 // get previous db data
                 const dbTraffics = await VatsimTraffics.find({});
                 // map through the onlineData
-                const updatedTraffic = this.vatsimPilots
-                    .filter((t) => {
-                        if (this.#validateVatsimTraffic(t)) {
-                            return t;
-                        }
-                    })
-                    .map((p) => {
-                        const matchedPilot = _.find(dbTraffics, { cid: p.cid });
-                        if (matchedPilot) {
-                            // if found match, only update the track
-                            let tempTrackObj = {};
-                            tempTrackObj.latitude = p.latitude;
-                            tempTrackObj.longitude = p.longitude;
-                            tempTrackObj.altitude = p.altitude;
-                            tempTrackObj.groundSpeed = p.groundspeed;
-                            tempTrackObj.heading = p.heading;
-                            matchedPilot.track.push(tempTrackObj);
-                            matchedPilot.lastUpdated = p.last_updated;
-                            return matchedPilot;
-                        } else {
-                            return this.#buildTrafficObject(p);
-                        }
-                    });
-                console.log("internal update completed");
+                const updatedTraffic = this.vatsimPilots.filter((t) => {
+                    if (this.#validateVatsimTraffic(t)) {
+                        return t;
+                    }
+                });
+                await this.updateVatsimTrafficsDB(dbTraffics, updatedTraffic);
 
-                // update db
-                await VatsimTraffics.deleteMany({});
-                const result = await VatsimTraffics.insertMany(updatedTraffic);
-                return result;
+                console.log("internal update completed");
             }
             return null;
         } catch (e) {

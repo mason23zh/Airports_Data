@@ -1,4 +1,5 @@
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
+const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
 module.exports.getVatsimEvents = async (req, res) => {
     const vatsimData = new VatsimData();
     const response = await vatsimData.getAllVatsimEvents();
@@ -71,6 +72,34 @@ module.exports.getVatsimPilots = async (req, res) => {
     });
 };
 
+module.exports.getVatsimTraffics = async (req, res) => {
+    try {
+        const response = await VatsimTraffics.find({});
+        console.log(response);
+        if (!response) {
+            res.status(200).json({
+                data: {
+                    results: 0,
+                    traffics: []
+                }
+            });
+        } else {
+            res.status(200).json({
+                data: {
+                    results: response.length,
+                    traffics: response
+                }
+            });
+        }
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+
+/**
+ * Internal usage only
+ **/
 module.exports.importVatsimTrafficToDb = async (req, res) => {
     const vatsim = new VatsimData();
     const vatsimData = await vatsim.requestVatsimData();
@@ -83,6 +112,9 @@ module.exports.importVatsimTrafficToDb = async (req, res) => {
     });
 };
 
+/**
+ * Internal usage only
+ * */
 module.exports.updateVatsimTrafficToDb = async (req, res) => {
     const vatsim = new VatsimData();
     const response = await vatsim.updateVatsimTraffics();
