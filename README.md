@@ -47,6 +47,12 @@
         - [Get Airport data using generic info](#get-airport-data-using-geneirc-info)
         - [Get Airport data within radius of ICAO](#get-airport-data-within-radius-of-icao)
         - [Get distance from origin airport to destination airport](#get-distance-from-origin-airport-to-destination-airport)
+    - [Vatsim](#vatsim)
+        - [Get current Vatsim traffics with tracks](#get-current-vatsim-traffics-track-included)
+        - [Get Current vatsim pilots](#get-current-vatsim-pilots)
+        - [Get Current vatsim events](#get-current-vatsim-events)
+        - [Get sorted vatsim events](#get-sorted-vatsim-events)
+    - [Reference & Credits](#references)
         - [References:](#references)
         - [Credits](#credits)
 
@@ -508,7 +514,6 @@ $ curl https://api.airportweather.org/v1/taf/get-taf/cyyz
 # Get decoded TAF for ZSSS
 $ curl https://api.airportweather.org/v1/taf/get-taf/zsss?decoded=true
 ```
-
 
 ---
 
@@ -1252,6 +1257,48 @@ $ curl https://api.airportweather.org/v1/airports/geneirc/paginate/new york?limi
     GET /airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit
 
 ---
+
+## Vatsim
+
+---
+
+### Get current vatsim traffics (track included)
+
+    GET /vatsim/getTraffics
+
+---
+
+### Get Current vatsim pilots
+
+    GET /vatsim/getPilots
+
+---
+
+### Get current vatsim events
+
+#### Only current in progress events will be returned
+
+    GET /vatsim/getCurrentEvents
+
+---
+
+### Get sorted vatsim events
+
+| URL Queries | Description                                       | Default    |
+|-------------|---------------------------------------------------|------------|
+| target      | Sort events time by either start time or end time | start_time |
+|sort| sorting order, either descending or ascending | 1|
+
+    GET /vatsim/getSortedEventsByDate
+
+```bat
+# Get sorted vatsim events by start time in descending order (most recent events first)
+$ curl https://api.airportweather.org/v1/vatsim/getSortedEventsByDate?target=start_time&sort=1
+
+```
+
+---
+
 
 ---
 
