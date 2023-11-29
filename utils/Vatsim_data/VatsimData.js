@@ -9,6 +9,7 @@ const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
+const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
 
 class VatsimData {
     constructor() {
@@ -509,6 +510,15 @@ class VatsimData {
                 if (err) {
                     console.error(err);
                 } else {
+                    const trafficToBeMoved = { ...doc.toObject() };
+                    delete trafficToBeMoved._id;
+                    VatsimHistoryTraffics.create(trafficToBeMoved, (e, d) => {
+                        if (e) {
+                            console.error("Add to history flight failed:", e);
+                        } else {
+                            console.log("Added flight to history");
+                        }
+                    });
                     console.log("Traffic not in the net are removed, cid:", doc?.cid || -1);
                 }
             });

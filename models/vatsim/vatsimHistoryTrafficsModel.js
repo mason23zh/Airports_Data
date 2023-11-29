@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const vatsimTrafficsSchema = new mongoose.Schema(
+const vatsimHistoryTrafficsSchema = new mongoose.Schema(
     {
         cid: {
-            type: Number,
-            required: [true, "vatsim cid required"]
+            type: Number
         },
         name: {
             type: String
@@ -91,8 +90,8 @@ const vatsimTrafficsSchema = new mongoose.Schema(
     }
 );
 
-mongoose.plugin((vatsimTrafficsSchema) => {
-    vatsimTrafficsSchema.options.toJSON = {
+mongoose.plugin((vatsimHistoryTrafficsSchema) => {
+    vatsimHistoryTrafficsSchema.options.toJSON = {
         transform(doc, ret) {
             ret.id = ret._id;
             delete ret._id;
@@ -100,4 +99,7 @@ mongoose.plugin((vatsimTrafficsSchema) => {
     };
 });
 
-module.exports.VatsimTraffics = mongoose.model("VatsimTraffics", vatsimTrafficsSchema);
+module.exports.VatsimHistoryTraffics = mongoose.model(
+    "VatsimHistoryTraffics",
+    vatsimHistoryTrafficsSchema
+);
