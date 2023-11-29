@@ -75,7 +75,6 @@ module.exports.getVatsimPilots = async (req, res) => {
 module.exports.getVatsimTraffics = async (req, res) => {
     try {
         const response = await VatsimTraffics.find({});
-        console.log(response);
         if (!response) {
             res.status(200).json({
                 data: {

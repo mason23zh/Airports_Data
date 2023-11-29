@@ -488,11 +488,9 @@ class VatsimData {
                     newTraffics.push(this.#buildTrafficObject(t));
                 }
             }
-            VatsimTraffics.insertMany(newTraffics, (err, docs) => {
+            VatsimTraffics.insertMany(newTraffics, (err) => {
                 if (err) {
                     console.error(err);
-                } else {
-                    console.log("New traffics added, total number:", docs);
                 }
             });
         }
@@ -512,14 +510,11 @@ class VatsimData {
                 } else {
                     const trafficToBeMoved = { ...doc.toObject() };
                     delete trafficToBeMoved._id;
-                    VatsimHistoryTraffics.create(trafficToBeMoved, (e, d) => {
+                    VatsimHistoryTraffics.create(trafficToBeMoved, (e) => {
                         if (e) {
                             console.error("Add to history flight failed:", e);
-                        } else {
-                            console.log("Added flight to history");
                         }
                     });
-                    console.log("Traffic not in the net are removed, cid:", doc?.cid || -1);
                 }
             });
         }
@@ -559,7 +554,7 @@ class VatsimData {
                         },
                         $push: { track: tempTrackObj }
                     },
-                    (err, doc) => {
+                    (err) => {
                         if (err) {
                             console.error(err);
                         }
@@ -583,8 +578,6 @@ class VatsimData {
                     }
                 });
                 await this.updateVatsimTrafficsDB(dbTraffics, updatedTraffic);
-
-                console.log("internal update completed");
             }
             return null;
         } catch (e) {
