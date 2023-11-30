@@ -415,7 +415,7 @@ class VatsimData {
         return true;
     }
 
-    #buildTrafficObject(traffic) {
+    #buildTrafficObject(traffic, trackFlag) {
         let tempObject = {
             track: [],
             aircraft: {}
@@ -445,16 +445,21 @@ class VatsimData {
         tempObjectTrack.altitude = traffic.altitude;
         tempObjectTrack.groundSpeed = traffic.groundspeed;
         tempObjectTrack.heading = traffic.heading;
-        tempObjectTrack.qnhIgh = traffic.qnh_i_hg;
-        tempObject.track.push(tempObjectTrack);
-        return tempObject;
+        tempObjectTrack.qnhIhg = traffic.qnh_i_hg;
+        if (trackFlag) {
+            tempObject.track.push(tempObjectTrack);
+            return tempObject;
+        } else {
+            delete tempObject.track;
+            return tempObject;
+        }
     }
 
     normalizeVatsimTraffic() {
         if (this.vatsimPilots.length > 0) {
             this.vatsimPilots.filter((p) => {
                 if (this.#validateVatsimTraffic(p)) {
-                    this.normalizedVatsimTraffics.push(this.#buildTrafficObject(p));
+                    this.normalizedVatsimTraffics.push(this.#buildTrafficObject(p, true));
                 }
             });
         }
@@ -479,22 +484,6 @@ class VatsimData {
     }
 
     async updateVatsimTrafficsDB(dbTraffics, updatedTraffics) {
-        // add new traffics to the db
-        if (updatedTraffics.length > 0) {
-            // find out what traffics that NOT in the dbTraffics
-            let newTraffics = [];
-            for (let t of updatedTraffics) {
-                if (!_.find(dbTraffics, { cid: t.cid }) && this.#validateVatsimTraffic(t)) {
-                    newTraffics.push(this.#buildTrafficObject(t));
-                }
-            }
-            VatsimTraffics.insertMany(newTraffics, (err) => {
-                if (err) {
-                    console.error(err);
-                }
-            });
-        }
-
         // find out what traffics that NOT in updatedTraffics BUT in dbTraffics
         const trafficToBeRemoved = dbTraffics.filter((p) => {
             if (!_.find(updatedTraffics, { cid: p.cid })) {
@@ -504,63 +493,52 @@ class VatsimData {
 
         // remove traffics that now in the network
         for (let t of trafficToBeRemoved) {
-            VatsimTraffics.findOneAndRemove({ cid: t.cid }, (err, doc) => {
+            VatsimTraffics.findOneAndDelete({ cid: t.cid }, (err, doc) => {
                 if (err) {
                     console.error(err);
                 } else {
-                    const trafficToBeMoved = { ...doc.toObject() };
-                    delete trafficToBeMoved._id;
-                    VatsimHistoryTraffics.create(trafficToBeMoved, (e) => {
-                        if (e) {
-                            console.error("Add to history flight failed:", e);
-                        }
-                    });
+                    if (doc) {
+                        const trafficToBeMoved = { ...doc.toObject() };
+                        delete trafficToBeMoved._id;
+                        VatsimHistoryTraffics.create(trafficToBeMoved, (e, d) => {
+                            if (e) {
+                                console.error("Add to history flight failed:", e);
+                            } else {
+                                console.log("Added flight to history");
+                            }
+                        });
+                        console.log("Traffic not in the net are removed, cid:", doc?.cid || -1);
+                    }
                 }
             });
         }
 
         for (let p of updatedTraffics) {
-            const matchedPilot = _.find(dbTraffics, { cid: p.cid });
             // remove pilots from db if no records shown in the updatedTraffics
-
-            if (matchedPilot) {
-                // if found match, update existing traffics.
-                let tempTrackObj = {};
-                let tempAircraftObj = {};
-                tempAircraftObj.full = p.flight_plan?.aircraft || "N/A";
-                tempAircraftObj.faa = p.flight_plan?.aircraft_faa || "N/A";
-                tempAircraftObj.short = p.flight_plan?.aircraft_short || "N/A";
-                tempTrackObj.latitude = p.latitude;
-                tempTrackObj.longitude = p.longitude;
-                tempTrackObj.altitude = p.altitude;
-                tempTrackObj.groundSpeed = p.groundspeed;
-                tempTrackObj.heading = p.heading;
-                VatsimTraffics.updateOne(
-                    { cid: p.cid },
-                    {
-                        $set: {
-                            lastUpdated: p.last_update,
-                            departure: p.flight_plan?.departure || "N/A",
-                            arrival: p.flight_plan?.arrival || "N/A",
-                            alternate: p.flight_plan?.alternate || "N/A",
-                            depTime: p.flight_plan?.deptime || "N/A",
-                            enrouteTime: p.flight_plan?.enroute_time || "N/A",
-                            fuelTime: p.flight_plan?.fuel_time || "N/A",
-                            remarks: p.flight_plan?.remarks || "N/A",
-                            flightRules: p.flight_plan?.flight_rules || "N/A",
-                            route: p.flight_plan?.route || "N/A",
-                            transponder: p.transponder || "N/A",
-                            aircraft: tempAircraftObj
-                        },
-                        $push: { track: tempTrackObj }
+            // if found match, update existing traffics.
+            const newTrafficObject = this.#buildTrafficObject(p, false);
+            let tempTrackObj = {};
+            tempTrackObj.latitude = p.latitude;
+            tempTrackObj.longitude = p.longitude;
+            tempTrackObj.altitude = p.altitude;
+            tempTrackObj.groundSpeed = p.groundspeed;
+            tempTrackObj.heading = p.heading;
+            tempTrackObj.qnhIhg = p.qnh_i_hg;
+            VatsimTraffics.findOneAndUpdate(
+                { cid: p.cid },
+                {
+                    $set: {
+                        ...newTrafficObject
                     },
-                    (err) => {
-                        if (err) {
-                            console.error(err);
-                        }
+                    $push: { track: tempTrackObj }
+                },
+                { upsert: true },
+                (err, doc) => {
+                    if (err) {
+                        console.error(err);
                     }
-                );
-            }
+                }
+            );
         }
     }
 
@@ -578,6 +556,8 @@ class VatsimData {
                     }
                 });
                 await this.updateVatsimTrafficsDB(dbTraffics, updatedTraffic);
+
+                console.log("internal update completed");
             }
             return null;
         } catch (e) {
