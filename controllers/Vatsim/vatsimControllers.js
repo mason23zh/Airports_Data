@@ -73,26 +73,22 @@ module.exports.getVatsimPilots = async (req, res) => {
 };
 
 module.exports.getVatsimTraffics = async (req, res) => {
-    try {
-        const response = await VatsimTraffics.find({});
-        if (!response) {
-            res.status(200).json({
-                data: {
-                    results: 0,
-                    traffics: []
-                }
-            });
-        } else {
-            res.status(200).json({
-                data: {
-                    results: response.length,
-                    traffics: response
-                }
-            });
-        }
-    } catch (e) {
-        console.error(e);
-        return null;
+    const vatsim = new VatsimData();
+    const vatsimTraffics = await vatsim.getVatsimTraffics();
+    if (!vatsimTraffics) {
+        res.status(200).json({
+            data: {
+                results: 0,
+                traffics: []
+            }
+        });
+    } else {
+        res.status(200).json({
+            data: {
+                results: vatsimTraffics.length,
+                traffics: vatsimTraffics
+            }
+        });
     }
 };
 
@@ -120,4 +116,16 @@ module.exports.updateVatsimTrafficToDb = async (req, res) => {
     res.status(200).json({
         results: response
     });
+};
+
+//Test import vatsim traffics to redis db
+module.exports.importVatsimToRedis = async (req, res) => {
+    const vatsim = new VatsimData();
+    try {
+        //const vatsimData = await vatsim.requestVatsimData();
+        await vatsim.importVatsimTrafficToRedis();
+        res.status(200).json({});
+    } catch (e) {
+        res.status(500).json({});
+    }
 };

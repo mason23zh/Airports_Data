@@ -13,7 +13,7 @@ class RedisClient {
             this.client = await new Client().open(REDIS_URL);
             return this.client;
         } catch (e) {
-            console.log(e);
+            console.log("error connecting to redis:", e);
             this.client = null;
             return;
         }

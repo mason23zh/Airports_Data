@@ -16,7 +16,6 @@ const vatsimTrafficsSchema = new mongoose.Schema(
         },
         track: [
             {
-                _id: false,
                 latitude: {
                     type: Number
                 },

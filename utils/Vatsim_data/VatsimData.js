@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "../../config.env" });
+const redis = require("redis");
 const axios = require("axios");
 const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
 const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
@@ -10,6 +12,10 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
 const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
+const { VatsimTraffics_Prods } = require("../../models/vatsim/vatsimTrafficModel_Prod");
+const RedisClient = require("../../redis/RedisClient");
+const { vatsimTrafficsSchema, exampleSchema } = require("../../redis/vatsimTraffics");
+const { Client, Repository, EntityId } = require("redis-om");
 
 class VatsimData {
     constructor() {
@@ -467,6 +473,82 @@ class VatsimData {
         return this.normalizedVatsimTraffics;
     }
 
+    async importVatsimTrafficToRedis() {
+        let exampleTraffic = {
+            cid: 123,
+            callsign: "ABC123",
+            aircraft: {
+                full: "b737-800",
+                faa: "B738",
+                short: "38W"
+            },
+            track: [
+                {
+                    longitude: "123.0",
+                    latitude: "90.1",
+                    groundSpeed: "300",
+                    altitude: "34000"
+                }
+            ],
+            name: "John"
+        };
+        let exampleTrafficJSON = JSON.stringify(exampleTraffic);
+        // const client = redis.createClient();
+        // client.on("error", (err) => console.log("redis client error: ", err));
+        // await client.conenct();
+        // await client.set("key", "value");
+        // console.log("Redis connected");
+        // let exampleObjectTwo = {
+        //     accountNumber: "12345",
+        //     verified: true,
+        //     transactions: [
+        //         {
+        //             approver: "Alice",
+        //             amount: 12.34,
+        //             posted: true
+        //         },
+        //         {
+        //             approver: "Bob",
+        //             amount: 34.56,
+        //             posted: false
+        //         }
+        //     ]
+        // };
+
+        try {
+            const client = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+            const repo = client.fetchRepository(vatsimTrafficsSchema);
+            const result = await repo.save(exampleTraffic);
+            console.log(result[EntityId]);
+            console.log(client.isOpen());
+        } catch (e) {
+            console.error("redis error:", e);
+        }
+        // const foo = await repo.createEntity();
+        // foo.aString = "bar";
+        // foo.aBooolean = false;
+        // await repo.save(foo);
+        // console.log("repo:", repo);
+        // const repo = new Repository(vatsimTrafficsSchema, client);
+        // await repo.createIndex();
+        // const vatsimRepo = client.fetchRepository(repo);
+        // let repo;
+        // const redisClient = new RedisClient();
+        // // create redis node connection
+        // const rClient = await redisClient.openNewRedisOMClient("redis://localhost:6379");
+        // console.log(rClient);
+        //
+        // const normalizedTraffics = this.normalizedVatsimTraffics();;
+        // repo = redisClient.createRedisOMRepository(vatsimTrafficsSchema);
+        // await Promise.all(
+        //     JSON.parse(normalizedTraffics).map(async (traffic) => {
+        //         await vatsimRepo.createAndSave(traffic);
+        //     })
+        // );
+        // const currentClient = client.getCurrentClient();
+        // currentClient.close();
+    }
+
     /**
      * This function will be ONLY use for the first time
      * to import the traffics
@@ -556,12 +638,27 @@ class VatsimData {
                     }
                 });
                 await this.updateVatsimTrafficsDB(dbTraffics, updatedTraffic);
+                // move traffics to prod db
+                // await VatsimTraffics_Prods.deleteMany({});
+                // await VatsimTraffics.aggregate([{ $out: "vatsimtraffic_prods" }]);
 
                 console.log("internal update completed");
             }
             return null;
         } catch (e) {
             console.error("updateVatsimTraffics:", e);
+        }
+    }
+
+    async getVatsimTraffics() {
+        try {
+            const dbTraffics = await VatsimTraffics.find({});
+            if (dbTraffics) {
+                return dbTraffics;
+            }
+        } catch (e) {
+            console.error(e);
+            return null;
         }
     }
 

@@ -141,13 +141,13 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // });
     // every 20 seconds
 
-    CronJob.from({
-        cronTime: "*/20 * * * * *",
-        onTick: async () => await importVatsimTrafficsToDb(),
-        start: true,
-        timeZone: "America/Los_Angeles",
-        runOnInit: true
-    });
+    // CronJob.from({
+    //     cronTime: "*/20 * * * * *",
+    //     onTick: async () => await importVatsimTrafficsToDb(),
+    //     start: true,
+    //     timeZone: "America/Los_Angeles",
+    //     runOnInit: true
+    // });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {

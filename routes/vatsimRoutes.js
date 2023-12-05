@@ -7,7 +7,8 @@ const {
     getVatsimPilots,
     importVatsimTrafficToDb,
     updateVatsimTrafficToDb,
-    getVatsimTraffics
+    getVatsimTraffics,
+    importVatsimToRedis
 } = require("../controllers/Vatsim/vatsimControllers");
 
 router.get("/getEvents", getVatsimEvents);
@@ -18,4 +19,5 @@ router.get("/getTraffics", getVatsimTraffics);
 router.get("/test", importVatsimTrafficToDb);
 router.get("/testUpdate", updateVatsimTrafficToDb);
 //router.get("/test", importToDB);
+router.get("/importToRedis", importVatsimToRedis);
 module.exports = router;
