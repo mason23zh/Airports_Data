@@ -9,14 +9,19 @@ const { SecondaryConnection } = require("./secondaryDbConnection");
 const { awcMetarSchema } = require("./redis/awcMetar");
 const RedisClient = require("./redis/RedisClient");
 const VatsimData = require("./utils/Vatsim_data/VatsimData");
+const { Client } = require("redis-om");
 const { CronJob } = require("cron");
 
 const redisClient = new RedisClient();
+let vatsimRedisClient;
+(async () => {
+    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+})();
 
 async function importVatsimTrafficsToDb() {
     try {
         const vatsimData = new VatsimData();
-        const result = await vatsimData.updateVatsimTraffics();
+        const result = await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
         return result;
     } catch (e) {
         return null;
@@ -119,6 +124,7 @@ const Latest_AwcWeatherModel = SecondaryConnection.model(
     "AwcWeatherMetarModel_Latest",
     AwcWeatherMetarSchema
 );
+mongoose.set("strictQuery", false); //to avoid 'strictQuery' deprecation warning
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
     console.log("DB connected");
     (async () => {
@@ -141,13 +147,13 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // });
     // every 20 seconds
 
-    // CronJob.from({
-    //     cronTime: "*/20 * * * * *",
-    //     onTick: async () => await importVatsimTrafficsToDb(),
-    //     start: true,
-    //     timeZone: "America/Los_Angeles",
-    //     runOnInit: true
-    // });
+    CronJob.from({
+        cronTime: "*/20 * * * * *",
+        onTick: async () => await importVatsimTrafficsToDb(),
+        start: true,
+        timeZone: "America/Los_Angeles",
+        runOnInit: true
+    });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {

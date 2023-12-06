@@ -469,84 +469,67 @@ class VatsimData {
                 }
             });
         }
-        console.log(this.normalizedVatsimTraffics);
+        //console.log(this.normalizedVatsimTraffics);
         return this.normalizedVatsimTraffics;
     }
 
     async importVatsimTrafficToRedis() {
-        let exampleTraffic = {
-            cid: 123,
-            callsign: "ABC123",
-            aircraft: {
-                full: "b737-800",
-                faa: "B738",
-                short: "38W"
-            },
-            track: [
-                {
-                    longitude: "123.0",
-                    latitude: "90.1",
-                    groundSpeed: "300",
-                    altitude: "34000"
-                }
-            ],
-            name: "John"
-        };
-        let exampleTrafficJSON = JSON.stringify(exampleTraffic);
-        // const client = redis.createClient();
-        // client.on("error", (err) => console.log("redis client error: ", err));
-        // await client.conenct();
-        // await client.set("key", "value");
-        // console.log("Redis connected");
-        // let exampleObjectTwo = {
-        //     accountNumber: "12345",
-        //     verified: true,
-        //     transactions: [
-        //         {
-        //             approver: "Alice",
-        //             amount: 12.34,
-        //             posted: true
-        //         },
-        //         {
-        //             approver: "Bob",
-        //             amount: 34.56,
-        //             posted: false
-        //         }
-        //     ]
-        // };
-
         try {
+            const normalizedTraffics = this.normalizeVatsimTraffic();
             const client = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
             const repo = client.fetchRepository(vatsimTrafficsSchema);
-            const result = await repo.save(exampleTraffic);
-            console.log(result[EntityId]);
-            console.log(client.isOpen());
+            await repo.createIndex();
+            normalizedTraffics.map(async (traffic) => {
+                await repo.save(traffic);
+            });
         } catch (e) {
             console.error("redis error:", e);
         }
-        // const foo = await repo.createEntity();
-        // foo.aString = "bar";
-        // foo.aBooolean = false;
-        // await repo.save(foo);
-        // console.log("repo:", repo);
-        // const repo = new Repository(vatsimTrafficsSchema, client);
-        // await repo.createIndex();
-        // const vatsimRepo = client.fetchRepository(repo);
-        // let repo;
-        // const redisClient = new RedisClient();
-        // // create redis node connection
-        // const rClient = await redisClient.openNewRedisOMClient("redis://localhost:6379");
-        // console.log(rClient);
-        //
-        // const normalizedTraffics = this.normalizedVatsimTraffics();;
-        // repo = redisClient.createRedisOMRepository(vatsimTrafficsSchema);
-        // await Promise.all(
-        //     JSON.parse(normalizedTraffics).map(async (traffic) => {
-        //         await vatsimRepo.createAndSave(traffic);
-        //     })
-        // );
-        // const currentClient = client.getCurrentClient();
-        // currentClient.close();
+    }
+
+    async updateVatsimTrafficRedis(client) {
+        // TEST SEARCH
+        try {
+            await this.requestVatsimData();
+            const updatedTraffic = this.vatsimPilots.filter((t) => {
+                if (this.#validateVatsimTraffic(t)) {
+                    return t;
+                }
+            });
+            if (!client) {
+                throw new Error("Redis Connect Failed");
+            }
+            const repo = client.fetchRepository(vatsimTrafficsSchema);
+
+            //remove traffics that are not in the latest fetched data
+            const allRedisTraffics = await repo.search().all();
+            allRedisTraffics.map(async (p) => {
+                if (!_.find(updatedTraffic, { cid: p.cid })) {
+                    await repo.remove(p[EntityId]);
+                }
+            });
+
+            updatedTraffic.map(async (pilot) => {
+                const entity = await repo.search().where("cid").eq(pilot.cid).returnFirst();
+                if (entity) {
+                    let tempObj = { ...entity };
+                    // console.log(tempObj);
+                    tempObj.track.push({
+                        latitude: pilot.latitude,
+                        longitude: pilot.longitude,
+                        altitude: pilot.altitude,
+                        heading: pilot.heading,
+                        qnhIhg: pilot.qnh_i_hg
+                    });
+                    await repo.save(tempObj);
+                } else {
+                    await repo.save(this.#buildTrafficObject(pilot, true));
+                }
+            });
+            console.log("vatsim traffics updated");
+        } catch (e) {
+            console.error("redis error:", e);
+        }
     }
 
     /**

@@ -17,11 +17,11 @@ exports.vatsimTrafficsSchema = new Schema(
         server: {
             type: "string"
         },
-        track_longitude: { type: "string[]", path: "$.track[*].longitude" },
-        track_latitude: { type: "string[]", path: "$.track[*].latitude" },
-        track_heading: { type: "string[]", path: "$.track[*].heading" },
-        track_altitude: { type: "string[]", path: "$.track[*].altitude" },
-        track_groundSpeed: { type: "string[]", path: "$.track[*].groundSpeed" },
+        track_longitude: { type: "number[]", path: "$.track[*].longitude" },
+        track_latitude: { type: "number[]", path: "$.track[*].latitude" },
+        track_heading: { type: "number[]", path: "$.track[*].heading" },
+        track_altitude: { type: "number[]", path: "$.track[*].altitude" },
+        track_groundSpeed: { type: "number[]", path: "$.track[*].groundSpeed" },
         track_updateTime: { type: "string[]", path: "$.track[*].updateTime" },
         transponder: {
             type: "string"
@@ -42,7 +42,7 @@ exports.vatsimTrafficsSchema = new Schema(
             type: "string"
         },
         depTime: {
-            type: "date"
+            type: "string"
         },
         enrouteTime: {
             type: "string"

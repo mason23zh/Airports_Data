@@ -122,8 +122,20 @@ module.exports.updateVatsimTrafficToDb = async (req, res) => {
 module.exports.importVatsimToRedis = async (req, res) => {
     const vatsim = new VatsimData();
     try {
-        //const vatsimData = await vatsim.requestVatsimData();
-        await vatsim.importVatsimTrafficToRedis();
+        const vatsimData = await vatsim.requestVatsimData();
+        if (vatsimData) {
+            await vatsim.importVatsimTrafficToRedis();
+        }
+        res.status(200).json({});
+    } catch (e) {
+        res.status(500).json({});
+    }
+};
+
+module.exports.updateVatsimTrafficToRedis = async (req, res) => {
+    const vatsim = new VatsimData();
+    try {
+        await vatsim.updateVatsimTrafficRedis();
         res.status(200).json({});
     } catch (e) {
         res.status(500).json({});
