@@ -1,6 +1,7 @@
 const { Client } = require("redis-om");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
+const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 module.exports.getVatsimEvents = async (req, res) => {
     const vatsimData = new VatsimData();
     const response = await vatsimData.getAllVatsimEvents();
@@ -71,6 +72,23 @@ module.exports.getVatsimPilots = async (req, res) => {
             pilots: vatsimPilots
         }
     });
+};
+
+module.exports.getVatsimTrafficByCallsign = async (req, res) => {
+    try {
+        const vatsimRedisClient = await new Client().open(
+            process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
+        );
+        const repo = vatsimRedisClient.fetchRepository(vatsimTrafficsSchema);
+        const results = await repo.search().where("callsign").eq(req.params.callsign).returnFirst();
+        res.status(200).json({
+            data: results
+        });
+    } catch (e) {
+        res.status(200).json({
+            data: {}
+        });
+    }
 };
 
 module.exports.getVatsimTraffics = async (req, res) => {

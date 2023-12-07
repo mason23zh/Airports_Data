@@ -491,30 +491,18 @@ class VatsimData {
     }
 
     #trackCompensation(latestTrack, dbTrack) {
-        // If latestTrack return groundSpeed as 0, and dep/arr remains the same, return null
-        // If latestTrack return groundSpeed as 0, but dep/arr changed, return latestTrack
+        // If latestTrack return groundSpeed as 0, don't push new track, only update the flight info
         // If latestTrack has the same heading with dbTrack, don't update track, only increment compensation number
         // Otherwise push the coordinates to new track
         if (latestTrack.track.at(-1).groundSpeed === 0) {
             return latestTrack;
-            // if (
-            //     latestTrack.arrival !== dbTrack.arrival ||
-            //     latestTrack.departure !== dbTrack.departure ||
-            //     latestTrack.alternate !== dbTrack.alternate
-            // ) {
-            //     return latestTrack;
-            // } else {
-            //     return null;
-            // }
         } else if (latestTrack.track.at(-1).heading === dbTrack.track.at(-1).heading) {
             const tempObject = { ...dbTrack };
             tempObject.track.at(-1).compensation = dbTrack.track.at(-1).compensation + 1;
-            // console.log(tempObject);
             return tempObject;
         } else {
             const tempObject = { ...dbTrack };
             tempObject.track.push(latestTrack.track[0]);
-            // console.log(tempObject);
             return tempObject;
         }
     }
