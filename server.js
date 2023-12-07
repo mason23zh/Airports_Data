@@ -14,14 +14,21 @@ const { CronJob } = require("cron");
 
 const redisClient = new RedisClient();
 let vatsimRedisClient;
+let vatsimRedisClientNoTrack;
 (async () => {
     vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+    vatsimRedisClientNoTrack = await new Client().open(
+        process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+    );
 })();
 
 async function importVatsimTrafficsToDb() {
     try {
         const vatsimData = new VatsimData();
-        const result = await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
+        const result = await vatsimData.updateVatsimTrafficRedis(
+            vatsimRedisClient,
+            vatsimRedisClientNoTrack
+        );
         return result;
     } catch (e) {
         return null;

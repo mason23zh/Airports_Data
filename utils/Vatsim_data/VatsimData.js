@@ -476,10 +476,10 @@ class VatsimData {
         return this.normalizedVatsimTraffics;
     }
 
-    async importVatsimTrafficToRedis() {
+    async importVatsimTrafficToRedis(connectionUrl) {
         try {
             const normalizedTraffics = this.normalizeVatsimTraffic();
-            const client = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+            const client = await new Client().open(connectionUrl);
             const repo = client.fetchRepository(vatsimTrafficsSchema);
             await repo.createIndex();
             normalizedTraffics.map(async (traffic) => {
@@ -507,35 +507,61 @@ class VatsimData {
         }
     }
 
-    async updateVatsimTrafficRedis(client) {
+    /* *
+     trackClient: the Redis client that contains all track for every traffic
+     noTrackClient: the redis client that only contains the latest track
+     * */
+    async updateVatsimTrafficRedis(trackClient, noTrackClient) {
         try {
             await this.requestVatsimData();
             const updatedTraffic = this.normalizeVatsimTraffic();
 
-            if (!client) {
+            if (!trackClient || !noTrackClient) {
                 throw new Error("Redis Connect Failed");
             }
-            const repo = client.fetchRepository(vatsimTrafficsSchema);
+            const trafficRepo = trackClient.fetchRepository(vatsimTrafficsSchema);
+            const trafficNoTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
 
             //remove traffics that are not in the latest fetched data
-            const allRedisTraffics = await repo.search().all();
+            const allRedisTrafficsNoTrack = await trafficNoTrackRepo.search().all();
+            allRedisTrafficsNoTrack.map(async (p) => {
+                if (!_.find(updatedTraffic, { cid: p.cid })) {
+                    await trafficNoTrackRepo.remove(p[EntityId]);
+                }
+            });
+
+            const allRedisTraffics = await trafficRepo.search().all();
             allRedisTraffics.map(async (p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
-                    await repo.remove(p[EntityId]);
+                    await trafficRepo.remove(p[EntityId]);
                 }
             });
 
             updatedTraffic.map(async (pilot) => {
-                const entity = await repo.search().where("cid").eq(pilot.cid).returnFirst();
-                if (entity) {
-                    const compensationTrack = this.#trackCompensation(pilot, entity);
+                const noTrackEntity = await trafficNoTrackRepo
+                    .search()
+                    .where("cid")
+                    .eq(pilot.cid)
+                    .returnFirst();
+                const trackEntity = await trafficRepo
+                    .search()
+                    .where("cid")
+                    .eq(pilot.cid)
+                    .returnFirst();
+                if (noTrackEntity) {
+                    await trafficNoTrackRepo.save(noTrackEntity[EntityId], pilot);
+                } else {
+                    await trafficNoTrackRepo.save(pilot);
+                }
+                if (trackEntity) {
+                    const compensationTrack = this.#trackCompensation(pilot, trackEntity);
                     if (!compensationTrack) {
                         return;
                     } else {
-                        await repo.save(entity[EntityId], compensationTrack);
+                        await trafficRepo.save(trackEntity[EntityId], compensationTrack);
                     }
                 } else {
-                    await repo.save(this.#buildTrafficObject(pilot, true));
+                    await trafficRepo.save(this.#buildTrafficObject(pilot, true));
                 }
             });
             console.log("vatsim traffics updated");

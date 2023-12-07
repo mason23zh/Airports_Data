@@ -119,7 +119,9 @@ module.exports.importVatsimToRedis = async (req, res) => {
     try {
         const vatsimData = await vatsim.requestVatsimData();
         if (vatsimData) {
-            await vatsim.importVatsimTrafficToRedis();
+            await vatsim.importVatsimTrafficToRedis(
+                process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+            );
         }
         res.status(200).json({});
     } catch (e) {
