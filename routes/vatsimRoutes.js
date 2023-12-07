@@ -5,8 +5,6 @@ const {
     sortVatsimEventsByTime,
     getCurrentVatsimEvents,
     getVatsimPilots,
-    importVatsimTrafficToDb,
-    updateVatsimTrafficToDb,
     getVatsimTraffics,
     importVatsimToRedis,
     updateVatsimTrafficToRedis
@@ -17,8 +15,6 @@ router.get("/getSortedEventsByDate", sortVatsimEventsByTime);
 router.get("/getCurrentEvents", getCurrentVatsimEvents);
 router.get("/getPilots", getVatsimPilots);
 router.get("/getTraffics", getVatsimTraffics);
-router.get("/test", importVatsimTrafficToDb);
-router.get("/testUpdate", updateVatsimTrafficToDb);
 //router.get("/test", importToDB);
 router.get("/importToRedis", importVatsimToRedis);
 router.get("/updateToRedis", updateVatsimTrafficToRedis);

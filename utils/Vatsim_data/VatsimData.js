@@ -24,6 +24,9 @@ class VatsimData {
         this.vatsimControllers = [];
         this.vatsimAtis = [];
         this.vatsimEvents = [];
+        this.L1 = 0;
+        this.L2 = 0;
+        this.L3 = 0;
         this.facilities = [
             {
                 id: 0,
@@ -452,6 +455,7 @@ class VatsimData {
         tempObjectTrack.groundSpeed = traffic.groundspeed;
         tempObjectTrack.heading = traffic.heading;
         tempObjectTrack.qnhIhg = traffic.qnh_i_hg;
+        tempObjectTrack.compensation = 0;
         if (trackFlag) {
             tempObject.track.push(tempObjectTrack);
             return tempObject;
@@ -469,7 +473,6 @@ class VatsimData {
                 }
             });
         }
-        //console.log(this.normalizedVatsimTraffics);
         return this.normalizedVatsimTraffics;
     }
 
@@ -487,15 +490,40 @@ class VatsimData {
         }
     }
 
+    #trackCompensation(latestTrack, dbTrack) {
+        // If latestTrack return groundSpeed as 0, and dep/arr remains the same, return null
+        // If latestTrack return groundSpeed as 0, but dep/arr changed, return latestTrack
+        // If latestTrack has the same heading with dbTrack, don't update track, only increment compensation number
+        // Otherwise push the coordinates to new track
+        if (latestTrack.track.at(-1).groundSpeed === 0) {
+            return latestTrack;
+            // if (
+            //     latestTrack.arrival !== dbTrack.arrival ||
+            //     latestTrack.departure !== dbTrack.departure ||
+            //     latestTrack.alternate !== dbTrack.alternate
+            // ) {
+            //     return latestTrack;
+            // } else {
+            //     return null;
+            // }
+        } else if (latestTrack.track.at(-1).heading === dbTrack.track.at(-1).heading) {
+            const tempObject = { ...dbTrack };
+            tempObject.track.at(-1).compensation = dbTrack.track.at(-1).compensation + 1;
+            // console.log(tempObject);
+            return tempObject;
+        } else {
+            const tempObject = { ...dbTrack };
+            tempObject.track.push(latestTrack.track[0]);
+            // console.log(tempObject);
+            return tempObject;
+        }
+    }
+
     async updateVatsimTrafficRedis(client) {
-        // TEST SEARCH
         try {
             await this.requestVatsimData();
-            const updatedTraffic = this.vatsimPilots.filter((t) => {
-                if (this.#validateVatsimTraffic(t)) {
-                    return t;
-                }
-            });
+            const updatedTraffic = this.normalizeVatsimTraffic();
+
             if (!client) {
                 throw new Error("Redis Connect Failed");
             }
@@ -512,16 +540,12 @@ class VatsimData {
             updatedTraffic.map(async (pilot) => {
                 const entity = await repo.search().where("cid").eq(pilot.cid).returnFirst();
                 if (entity) {
-                    let tempObj = { ...entity };
-                    // console.log(tempObj);
-                    tempObj.track.push({
-                        latitude: pilot.latitude,
-                        longitude: pilot.longitude,
-                        altitude: pilot.altitude,
-                        heading: pilot.heading,
-                        qnhIhg: pilot.qnh_i_hg
-                    });
-                    await repo.save(tempObj);
+                    const compensationTrack = this.#trackCompensation(pilot, entity);
+                    if (!compensationTrack) {
+                        return;
+                    } else {
+                        await repo.save(entity[EntityId], compensationTrack);
+                    }
                 } else {
                     await repo.save(this.#buildTrafficObject(pilot, true));
                 }
@@ -532,112 +556,19 @@ class VatsimData {
         }
     }
 
-    /**
-     * This function will be ONLY use for the first time
-     * to import the traffics
-     * */
-    async importVatsimTrafficToDB() {
-        const normalizedTraffic = this.normalizeVatsimTraffic();
-        console.log(normalizedTraffic);
+    async getVatsimTraffics(client) {
         try {
-            const response = await VatsimTraffics.insertMany(normalizedTraffic);
-            return response;
-        } catch (e) {
-            console.error(e);
-            return -1;
-        }
-    }
-
-    async updateVatsimTrafficsDB(dbTraffics, updatedTraffics) {
-        // find out what traffics that NOT in updatedTraffics BUT in dbTraffics
-        const trafficToBeRemoved = dbTraffics.filter((p) => {
-            if (!_.find(updatedTraffics, { cid: p.cid })) {
-                return p;
+            if (!client) {
+                throw new Error("Redis Connect Failed");
             }
-        });
+            const repo = client.fetchRepository(vatsimTrafficsSchema);
 
-        // remove traffics that now in the network
-        for (let t of trafficToBeRemoved) {
-            VatsimTraffics.findOneAndDelete({ cid: t.cid }, (err, doc) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    if (doc) {
-                        const trafficToBeMoved = { ...doc.toObject() };
-                        delete trafficToBeMoved._id;
-                        VatsimHistoryTraffics.create(trafficToBeMoved, (e, d) => {
-                            if (e) {
-                                console.error("Add to history flight failed:", e);
-                            } else {
-                                console.log("Added flight to history");
-                            }
-                        });
-                        console.log("Traffic not in the net are removed, cid:", doc?.cid || -1);
-                    }
-                }
-            });
-        }
-
-        for (let p of updatedTraffics) {
-            // remove pilots from db if no records shown in the updatedTraffics
-            // if found match, update existing traffics.
-            const newTrafficObject = this.#buildTrafficObject(p, false);
-            let tempTrackObj = {};
-            tempTrackObj.latitude = p.latitude;
-            tempTrackObj.longitude = p.longitude;
-            tempTrackObj.altitude = p.altitude;
-            tempTrackObj.groundSpeed = p.groundspeed;
-            tempTrackObj.heading = p.heading;
-            tempTrackObj.qnhIhg = p.qnh_i_hg;
-            VatsimTraffics.findOneAndUpdate(
-                { cid: p.cid },
-                {
-                    $set: {
-                        ...newTrafficObject
-                    },
-                    $push: { track: tempTrackObj }
-                },
-                { upsert: true },
-                (err, doc) => {
-                    if (err) {
-                        console.error(err);
-                    }
-                }
-            );
-        }
-    }
-
-    async updateVatsimTraffics() {
-        // get the current online traffics
-        try {
-            const onlineData = await this.requestVatsimData();
-            if (onlineData) {
-                // get previous db data
-                const dbTraffics = await VatsimTraffics.find({});
-                // map through the onlineData
-                const updatedTraffic = this.vatsimPilots.filter((t) => {
-                    if (this.#validateVatsimTraffic(t)) {
-                        return t;
-                    }
-                });
-                await this.updateVatsimTrafficsDB(dbTraffics, updatedTraffic);
-                // move traffics to prod db
-                // await VatsimTraffics_Prods.deleteMany({});
-                // await VatsimTraffics.aggregate([{ $out: "vatsimtraffic_prods" }]);
-
-                console.log("internal update completed");
-            }
-            return null;
-        } catch (e) {
-            console.error("updateVatsimTraffics:", e);
-        }
-    }
-
-    async getVatsimTraffics() {
-        try {
-            const dbTraffics = await VatsimTraffics.find({});
-            if (dbTraffics) {
-                return dbTraffics;
+            //remove traffics that are not in the latest fetched data
+            const allRedisTraffics = await repo.search().all();
+            if (allRedisTraffics) {
+                return allRedisTraffics;
+            } else {
+                return null;
             }
         } catch (e) {
             console.error(e);

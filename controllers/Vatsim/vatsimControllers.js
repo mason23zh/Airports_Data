@@ -1,3 +1,4 @@
+const { Client } = require("redis-om");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
 module.exports.getVatsimEvents = async (req, res) => {
@@ -73,8 +74,9 @@ module.exports.getVatsimPilots = async (req, res) => {
 };
 
 module.exports.getVatsimTraffics = async (req, res) => {
+    const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
     const vatsim = new VatsimData();
-    const vatsimTraffics = await vatsim.getVatsimTraffics();
+    const vatsimTraffics = await vatsim.getVatsimTraffics(vatsimRedisClient);
     if (!vatsimTraffics) {
         res.status(200).json({
             data: {
@@ -92,33 +94,8 @@ module.exports.getVatsimTraffics = async (req, res) => {
     }
 };
 
-/**
- * Internal usage only
- **/
-module.exports.importVatsimTrafficToDb = async (req, res) => {
-    const vatsim = new VatsimData();
-    const vatsimData = await vatsim.requestVatsimData();
-    let response;
-    if (vatsimData) {
-        response = await vatsim.importVatsimTrafficToDB();
-    }
-    res.status(200).json({
-        data: response
-    });
-};
-
-/**
- * Internal usage only
- * */
-module.exports.updateVatsimTrafficToDb = async (req, res) => {
-    const vatsim = new VatsimData();
-    const response = await vatsim.updateVatsimTraffics();
-    res.status(200).json({
-        results: response
-    });
-};
-
-//Test import vatsim traffics to redis db
+//Import vatsim traffics to redis db
+//Internal use only, only run once if redis db is empty
 module.exports.importVatsimToRedis = async (req, res) => {
     const vatsim = new VatsimData();
     try {
@@ -133,9 +110,10 @@ module.exports.importVatsimToRedis = async (req, res) => {
 };
 
 module.exports.updateVatsimTrafficToRedis = async (req, res) => {
+    const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
     const vatsim = new VatsimData();
     try {
-        await vatsim.updateVatsimTrafficRedis();
+        await vatsim.updateVatsimTrafficRedis(vatsimRedisClient);
         res.status(200).json({});
     } catch (e) {
         res.status(500).json({});

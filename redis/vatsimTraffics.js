@@ -23,6 +23,7 @@ exports.vatsimTrafficsSchema = new Schema(
         track_altitude: { type: "number[]", path: "$.track[*].altitude" },
         track_groundSpeed: { type: "number[]", path: "$.track[*].groundSpeed" },
         track_updateTime: { type: "string[]", path: "$.track[*].updateTime" },
+        track_compensation: { type: "number[]", path: "$.track[*].compensation" },
         transponder: {
             type: "string"
         },
