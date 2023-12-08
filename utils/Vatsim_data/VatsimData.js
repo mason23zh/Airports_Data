@@ -552,16 +552,14 @@ class VatsimData {
                 }
                 if (trackEntity) {
                     const compensationTrack = this.#trackCompensation(pilot, trackEntity);
-                    if (!compensationTrack) {
-                        return;
-                    } else {
+                    if (compensationTrack) {
                         await trafficRepo.save(trackEntity[EntityId], compensationTrack);
                     }
                 } else {
                     await trafficRepo.save(this.#buildTrafficObject(pilot, true));
                 }
             });
-            console.log("vatsim traffics updated");
+            //console.log("vatsim traffics updated");
         } catch (e) {
             console.error("redis error:", e);
         }
