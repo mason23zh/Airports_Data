@@ -1,21 +1,17 @@
 require("dotenv").config({ path: "../../config.env" });
-const redis = require("redis");
 const axios = require("axios");
 const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
 const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
+const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
-const { VatsimTraffics } = require("../../models/vatsim/vatsimTrafficsModel");
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
-const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
-const { VatsimTraffics_Prods } = require("../../models/vatsim/vatsimTrafficModel_Prod");
-const RedisClient = require("../../redis/RedisClient");
-const { vatsimTrafficsSchema, exampleSchema } = require("../../redis/vatsimTraffics");
-const { Client, Repository, EntityId } = require("redis-om");
+const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
+const { Client, EntityId } = require("redis-om");
 
 class VatsimData {
     constructor() {
@@ -533,6 +529,7 @@ class VatsimData {
             const allRedisTraffics = await trafficRepo.search().all();
             allRedisTraffics.map(async (p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
+                    await VatsimHistoryTraffics.create(p);
                     await trafficRepo.remove(p[EntityId]);
                 }
             });
