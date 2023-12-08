@@ -570,7 +570,7 @@ class VatsimData {
         }
     }
 
-    async getVatsimTraffics(client) {
+    async getAllVatsimTraffics(client) {
         try {
             if (!client) {
                 throw new Error("Redis Connect Failed");
