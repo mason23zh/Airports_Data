@@ -1,6 +1,15 @@
 const { Client } = require("redis-om");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
+let vatsimRedisClient;
+let vatsimRedisClientNoTrack;
+(async () => {
+    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+    vatsimRedisClientNoTrack = await new Client().open(
+        process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+    );
+})();
+
 module.exports.getVatsimEvents = async (req, res) => {
     const vatsimData = new VatsimData();
     const response = await vatsimData.getAllVatsimEvents();
@@ -75,10 +84,7 @@ module.exports.getVatsimPilots = async (req, res) => {
 
 module.exports.getVatsimTrafficByCID = async (req, res) => {
     try {
-        const vatsimRedisClient = await new Client().open(
-            process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-        );
-        const repo = vatsimRedisClient.fetchRepository(vatsimTrafficsSchema);
+        const repo = vatsimRedisClientNoTrack.fetchRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("cid").eq(Number(req.params.cid)).returnFirst();
         res.status(200).json({
             data: results
@@ -92,9 +98,6 @@ module.exports.getVatsimTrafficByCID = async (req, res) => {
 
 module.exports.getVatsimTrafficByCID_Track = async (req, res) => {
     try {
-        const vatsimRedisClient = await new Client().open(
-            process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
-        );
         const repo = vatsimRedisClient.fetchRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("cid").eq(Number(req.params.cid)).returnFirst();
         res.status(200).json({
@@ -109,10 +112,7 @@ module.exports.getVatsimTrafficByCID_Track = async (req, res) => {
 
 module.exports.getVatsimTrafficByCallsign = async (req, res) => {
     try {
-        const vatsimRedisClient = await new Client().open(
-            process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-        );
-        const repo = vatsimRedisClient.fetchRepository(vatsimTrafficsSchema);
+        const repo = vatsimRedisClientNoTrack.fetchRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("callsign").eq(req.params.callsign).returnFirst();
         res.status(200).json({
             data: results
@@ -126,9 +126,6 @@ module.exports.getVatsimTrafficByCallsign = async (req, res) => {
 
 module.exports.getVatsimTrafficByCallsign_Track = async (req, res) => {
     try {
-        const vatsimRedisClient = await new Client().open(
-            process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
-        );
         const repo = vatsimRedisClient.fetchRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("callsign").eq(req.params.callsign).returnFirst();
         res.status(200).json({
@@ -142,7 +139,6 @@ module.exports.getVatsimTrafficByCallsign_Track = async (req, res) => {
 };
 
 module.exports.getVatsimTraffics_Track = async (req, res) => {
-    const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
     const vatsim = new VatsimData();
     const vatsimTraffics = await vatsim.getAllVatsimTraffics(vatsimRedisClient);
     if (!vatsimTraffics) {
@@ -163,11 +159,8 @@ module.exports.getVatsimTraffics_Track = async (req, res) => {
 };
 
 module.exports.getVatsimTraffics = async (req, res) => {
-    const vatsimRedisClient = await new Client().open(
-        process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-    );
     const vatsim = new VatsimData();
-    const vatsimTraffics = await vatsim.getAllVatsimTraffics(vatsimRedisClient);
+    const vatsimTraffics = await vatsim.getAllVatsimTraffics(vatsimRedisClientNoTrack);
     if (!vatsimTraffics) {
         res.status(200).json({
             data: {
@@ -192,9 +185,10 @@ module.exports.importVatsimToRedis = async (req, res) => {
     try {
         const vatsimData = await vatsim.requestVatsimData();
         if (vatsimData) {
-            await vatsim.importVatsimTrafficToRedis(
-                process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-            );
+            // await vatsim.importVatsimTrafficToRedis(
+            //     process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+            // );
+            await vatsim.importVatsimTrafficToRedis(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
         }
         res.status(200).json({});
     } catch (e) {
