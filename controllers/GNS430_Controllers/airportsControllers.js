@@ -37,26 +37,17 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
 module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
-    const airportFeatures = new APIFeatures(
-        GNS430Airport_Update.findOne({
-            ICAO: `${req.params.icao.toUpperCase()}`
-        }),
-        req.query
-    )
-        .filter()
-        .limitFields();
+    const gns430Airport = await GNS430Airport_Update.findOne({
+        ICAO: `${req.params.icao.toUpperCase()}`
+    });
 
-    airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
-
-    const gns430Airport = await airportFeatures.query;
-
-    if (!gns430Airport || gns430Airport.length === 0) {
+    if (!gns430Airport) {
         return res.status(200).json({
             results: 0,
             data: []
         });
     } else {
-        let responseObject = { airport: gns430Airport[0] };
+        let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
             decode,
@@ -87,23 +78,17 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
 module.exports.getAirportByICAO_GNS430_With_Widget = async (req, res) => {
     let decode = req.query.decode === "true";
 
-    const airportFeatures = new APIFeatures(
-        GNS430Airport_Update.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
-        req.query
-    )
-        .filter()
-        .limitFields();
+    const gns430Airport = await GNS430Airport_Update.findOne({
+        ICAO: `${req.params.icao.toUpperCase()}`
+    });
 
-    airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
-    const gns430Airport = await airportFeatures.query;
-
-    if (!gns430Airport || gns430Airport.length === 0) {
+    if (!gns430Airport) {
         return res.status(200).json({
             results: 0,
             data: []
         });
     } else {
-        let responseObject = { airport: gns430Airport[0] };
+        let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
             decode,
