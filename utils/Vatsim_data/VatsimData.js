@@ -529,7 +529,7 @@ class VatsimData {
             const allRedisTraffics = await trafficRepo.search().all();
             allRedisTraffics.map(async (p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
-                    await VatsimHistoryTraffics.create(p);
+                    //await VatsimHistoryTraffics.create(p);
                     await trafficRepo.remove(p[EntityId]);
                 }
             });
