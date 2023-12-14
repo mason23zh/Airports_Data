@@ -79,6 +79,7 @@ module.exports.downloadAndProcessAWCMetars = async (url) => {
         const result = await processCSV();
         return JSON.stringify(result);
     } catch (e) {
+        console.error("error download and process AWC metar:", e);
         return [];
     }
     // downloadFile(url)

@@ -47,7 +47,7 @@ async function importVatsimEventsToDb() {
 
 async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
-        let repo;
+        let awcRepo;
         console.log("start downloading data from AWC...");
         // const awcMetars = await downloadAndProcessAWCMetars(
         //     "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
@@ -80,10 +80,10 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
 
                 console.log("Connecting to Redis...");
                 await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-                repo = redisClient.createRedisOMRepository(awcMetarSchema);
+                awcRepo = redisClient.createRedisOMRepository(awcMetarSchema);
 
                 console.log("store normalized metar into redis");
-                await repo.createIndex();
+                await awcRepo.createIndex();
 
                 await Promise.all(
                     JSON.parse(normalizedAwcMetar).map(async (metar) => {
@@ -99,7 +99,7 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
                             elevation_m: Number(metar.elevation_m),
                             auto: metar.auto || "FALSE"
                         };
-                        await repo.createAndSave(updatedMetar);
+                        await awcRepo.save(updatedMetar);
                     })
                 );
                 console.log("Disconnect redis client");
@@ -137,8 +137,8 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     (async () => {
         try {
             await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-            const repo = redisClient.createRedisOMRepository(awcMetarSchema);
-            await repo.createIndex();
+            const awcRepo = redisClient.createRedisOMRepository(awcMetarSchema);
+            await awcRepo.createIndex();
             const currentClient = redisClient.getCurrentClient();
             currentClient.close();
         } catch (e) {
