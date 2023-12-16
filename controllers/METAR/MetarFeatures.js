@@ -1,5 +1,6 @@
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { metarCloudCode, metarWeatherCode } = require("./constants");
+const { EntityId } = require("redis-om");
 const {
     ktsToMps,
     ktsTokph,
@@ -57,10 +58,10 @@ class MetarFeatures {
             return;
         }
         /* eslint-disable no-unused-vars */
-        if (Object.hasOwn(this.metar, "entityId")) {
+        if (Object.hasOwn(this.metar, EntityId)) {
             const { longitude, latitude } = this.metar.location_redis;
             const location = [longitude, latitude];
-            const { entityId, location_redis, auto, ...rest } = this.metar;
+            const { EntityId, location_redis, auto, ...rest } = this.metar;
             rest.location = location;
             this.normalizedMetar = rest;
         } else {
@@ -131,7 +132,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -187,7 +188,7 @@ class MetarFeatures {
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
                 redisMetar.map((metar) => {
-                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar));
                 });
                 return this.metarArray;
             } else {
@@ -232,7 +233,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -273,7 +274,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -329,7 +330,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -366,8 +367,8 @@ class MetarFeatures {
                 .where("station_id")
                 .equals(icao.toUpperCase())
                 .returnFirst();
-            if (redisMetar && redisMetar.length !== 0) {
-                this.metar = redisMetar.toJSON();
+            if (redisMetar) {
+                this.metar = redisMetar;
                 this.#normalizeMetar();
                 this.#generateDecodedMetar();
                 return this;
