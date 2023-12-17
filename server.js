@@ -155,7 +155,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // every 20 seconds
 
     CronJob.from({
-        cronTime: "*/25 * * * * *",
+        cronTime: "*/35 * * * * *",
         onTick: async () => await importVatsimTrafficsToDb(),
         start: true,
         timeZone: "America/Los_Angeles",
