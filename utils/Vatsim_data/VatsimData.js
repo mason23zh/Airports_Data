@@ -11,7 +11,7 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
-const { Client, EntityId } = require("redis-om");
+const { Client } = require("redis-om");
 
 class VatsimData {
     constructor() {
@@ -479,7 +479,8 @@ class VatsimData {
             const repo = client.fetchRepository(vatsimTrafficsSchema);
             await repo.createIndex();
             normalizedTraffics.map(async (traffic) => {
-                await repo.save(traffic);
+                if (!traffic.cid) return;
+                await repo.save(`${traffic.cid}`, traffic);
             });
         } catch (e) {
             console.error("redis error:", e);
@@ -503,9 +504,10 @@ class VatsimData {
         }
     }
 
-    async asyncForEach(array, cb) {
-        for (let index = 0; index < array.length; index++) {
-            await cb(array[index], index);
+    async batchProcess(promiseArray, batchSize) {
+        for (let i = 0; i < promiseArray.length; i += batchSize) {
+            const batch = promiseArray.slice(i, i + batchSize);
+            await Promise.all(batch);
         }
     }
 
@@ -522,85 +524,22 @@ class VatsimData {
                 throw new Error("Redis Connect Failed");
             }
             const trafficRepo = trackClient.fetchRepository(vatsimTrafficsSchema);
-            // const trafficNoTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
-
-            //remove traffics that are not in the latest fetched data
-            // const allRedisTrafficsNoTrack = await trafficNoTrackRepo.search().all();
-            // allRedisTrafficsNoTrack.map(async (p) => {
-            //     if (!_.find(updatedTraffic, { cid: p.cid })) {
-            //         console.log("traffic removed from no track:", p.cid, p.callsign);
-            //         await trafficNoTrackRepo.remove(p[EntityId]);
-            //     }
-            // });
+            const noTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
 
             const allRedisTraffics = await trafficRepo.search().all();
             const entityToRemove = [];
+            const noTrackEntityToRemove = [];
             allRedisTraffics.map((p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
-                    entityToRemove.push(p[EntityId]);
+                    entityToRemove.push(`${p.cid}`);
+                    noTrackEntityToRemove.push(`${p.cid}`);
                 }
             });
-            console.log(entityToRemove, entityToRemove.length);
+
             const trafficToBeRemoved = await trafficRepo.remove(entityToRemove);
-
-            // for (let idx = 0; idx < updatedTraffic.length; idx++) {
-            //     const trackEntity = await trafficRepo
-            //         .search()
-            //         .where("cid")
-            //         .eq(updatedTraffic[idx].cid)
-            //         .returnFirst();
-            //     if (trackEntity) {
-            //         const compensationTrack = this.#trackCompensation(
-            //             updatedTraffic[idx],
-            //             trackEntity
-            //         );
-            //         if (compensationTrack) {
-            //             await trafficRepo.save(trackEntity[EntityId], compensationTrack);
-            //             console.log("update");
-            //         }
-            //     } else {
-            //         await trafficRepo.save(this.#buildTrafficObject(updatedTraffic[idx], true));
-            //         console.log("add");
-            //     }
-            // }
-
-            // await this.asyncForEach(updatedTraffic, async (pilot) => {
-            //     const trackEntity = await trafficRepo
-            //         .search()
-            //         .where("cid")
-            //         .eq(pilot.cid)
-            //         .returnFirst();
-            //     if (trackEntity) {
-            //         const compensationTrack = this.#trackCompensation(pilot, trackEntity);
-            //         if (compensationTrack) {
-            //             await trafficRepo.save(trackEntity[EntityId], compensationTrack);
-            //             console.log("update");
-            //         }
-            //     } else {
-            //         await trafficRepo.save(this.#buildTrafficObject(pilot, true));
-            //         console.log("add");
-            //     }
-            // });
-
-            // for (const pilot of updatedTraffic) {
-            //     const trackEntity = await trafficRepo
-            //         .search()
-            //         .where("cid")
-            //         .eq(pilot.cid)
-            //         .returnFirst();
-            //
-            //     if (trackEntity) {
-            //         const compensationTrack = this.#trackCompensation(pilot, trackEntity);
-            //         if (compensationTrack) {
-            //             await trafficRepo.save(trackEntity[EntityId], compensationTrack);
-            //         }
-            //     } else {
-            //         await trafficRepo.save(this.#buildTrafficObject(pilot, true));
-            //     }
-            // }
-            // let updateNumber = 0;
-            // let addNumber = 0;
+            const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
             const trafficPromise = updatedTraffic.map(async (pilot) => {
+                noTrackRepo.save(`${pilot.cid}`, pilot);
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")
@@ -610,21 +549,14 @@ class VatsimData {
                 if (trackEntity) {
                     const compensationTrack = this.#trackCompensation(pilot, trackEntity);
                     if (compensationTrack) {
-                        // updateNumber += 1;
-                        // console.log("update:");
-                        return await trafficRepo.save(trackEntity[EntityId], compensationTrack);
+                        return trafficRepo.save(`${pilot.cid}`, compensationTrack);
                     }
                 } else {
-                    // addNumber += 1;
-                    // console.log("add:", (addNumber += 1));
-                    return await trafficRepo.save(this.#buildTrafficObject(pilot, true));
+                    return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
                 }
             });
-            trafficPromise.push(trafficToBeRemoved);
-            await Promise.all(trafficPromise);
-            // console.log("updated:", updateNumber);
-            // console.log("added:", addNumber);
-            // console.log("vatsim traffics updated");
+            trafficPromise.push(trafficToBeRemoved, noTrackTrafficToBeRemoved);
+            await this.batchProcess(trafficPromise, 30);
         } catch (e) {
             console.error("redis error:", e);
         }

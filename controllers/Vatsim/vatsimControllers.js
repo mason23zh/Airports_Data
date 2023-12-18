@@ -4,7 +4,7 @@ const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 let vatsimRedisClient;
 let vatsimRedisClientNoTrack;
 (async () => {
-    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
     vatsimRedisClientNoTrack = await new Client().open(
         process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
     );
@@ -185,10 +185,10 @@ module.exports.importVatsimToRedis = async (req, res) => {
     try {
         const vatsimData = await vatsim.requestVatsimData();
         if (vatsimData) {
-            // await vatsim.importVatsimTrafficToRedis(
-            //     process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-            // );
-            await vatsim.importVatsimTrafficToRedis(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+            //await vatsim.importVatsimTrafficToRedis(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
+            await vatsim.importVatsimTrafficToRedis(
+                process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+            );
         }
         res.status(200).json({});
     } catch (e) {

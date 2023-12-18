@@ -16,7 +16,7 @@ const redisClient = new RedisClient();
 let vatsimRedisClient;
 let vatsimRedisClientNoTrack;
 (async () => {
-    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
     vatsimRedisClientNoTrack = await new Client().open(
         process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
     );
@@ -145,17 +145,17 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             console.log("Error connecting to Redis", e);
         }
     })();
-    schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB(Latest_AwcWeatherModel);
-    });
+    // schedule.scheduleJob("*/10 * * * *", async () => {
+    //     await importMetarsToDB(Latest_AwcWeatherModel);
+    // });
     // // every 12 hours
-    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-        await importVatsimEventsToDb();
-    });
+    // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+    //     await importVatsimEventsToDb();
+    // });
     // every 20 seconds
 
     CronJob.from({
-        cronTime: "*/35 * * * * *",
+        cronTime: "*/20 * * * * *",
         onTick: async () => await importVatsimTrafficsToDb(),
         start: true,
         timeZone: "America/Los_Angeles",

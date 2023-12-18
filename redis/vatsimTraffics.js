@@ -64,16 +64,7 @@ exports.vatsimTrafficsSchema = new Schema(
             type: "date"
         }
     },
-    { dataStructure: "JSON" }
-);
-
-exports.exampleSchema = new Schema(
-    "Account",
     {
-        accountNumber: { type: "string" },
-        verified: { type: "boolean" },
-        approvers: { type: "string[]", path: "$.transactions[*].approver" },
-        amounts: { type: "string[]", path: "$.transactions[*].amount" }
-    },
-    { dataStructure: "JSON" }
+        dataStructure: "JSON"
+    }
 );
