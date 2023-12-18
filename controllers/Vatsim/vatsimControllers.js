@@ -4,7 +4,7 @@ const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 let vatsimRedisClient;
 let vatsimRedisClientNoTrack;
 (async () => {
-    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
+    vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
     vatsimRedisClientNoTrack = await new Client().open(
         process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
     );
