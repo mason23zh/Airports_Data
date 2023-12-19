@@ -529,6 +529,7 @@ class VatsimData {
             const allRedisTraffics = await trafficRepo.search().all();
             const entityToRemove = [];
             const noTrackEntityToRemove = [];
+            const noTrackPromises = [];
             allRedisTraffics.map((p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
                     entityToRemove.push(`${p.cid}`);
@@ -540,7 +541,7 @@ class VatsimData {
             const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
             const trafficPromise = updatedTraffic.map(async (pilot) => {
                 const noTrackEntity = noTrackRepo.save(`${pilot.cid}`, pilot);
-                trafficPromise.push(noTrackEntity);
+                noTrackPromises.push(noTrackEntity);
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")
@@ -556,7 +557,7 @@ class VatsimData {
                     return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
                 }
             });
-            trafficPromise.push(trafficToBeRemoved, noTrackTrafficToBeRemoved);
+            trafficPromise.push(trafficToBeRemoved, noTrackTrafficToBeRemoved, ...noTrackPromises);
             await this.batchProcess(trafficPromise, 30);
         } catch (e) {
             console.error("redis error:", e);
