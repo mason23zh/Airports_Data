@@ -539,7 +539,8 @@ class VatsimData {
             const trafficToBeRemoved = await trafficRepo.remove(entityToRemove);
             const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
             const trafficPromise = updatedTraffic.map(async (pilot) => {
-                noTrackRepo.save(`${pilot.cid}`, pilot);
+                const noTrackEntity = noTrackRepo.save(`${pilot.cid}`, pilot);
+                trafficPromise.push(noTrackEntity);
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")

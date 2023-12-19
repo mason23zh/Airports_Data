@@ -22,6 +22,13 @@ let vatsimRedisClientNoTrack;
     );
 })();
 
+async function batchProcess(promiseArray, batchSize) {
+    for (let i = 0; i < promiseArray.length; i += batchSize) {
+        const batch = promiseArray.slice(i, i + batchSize);
+        await Promise.all(batch);
+    }
+}
+
 async function importVatsimTrafficsToDb() {
     try {
         const vatsimData = new VatsimData();
@@ -85,23 +92,23 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
                 console.log("store normalized metar into redis");
                 await awcRepo.createIndex();
 
-                await Promise.all(
-                    JSON.parse(normalizedAwcMetar).map(async (metar) => {
-                        let updatedMetar = {
-                            ...metar,
-                            temp_c: Number(metar.temp_c),
-                            dewpoint_c: Number(metar.dewpoint_c),
-                            wind_dir_degrees: Number(metar.wind_dir_degrees),
-                            wind_speed_kt: Number(metar.wind_speed_kt),
-                            wind_gust_kt: Number(metar.wind_gust_kt),
-                            visibility_statute_mi: Number(metar.visibility_statute_mi),
-                            altim_in_hg: Number(metar.altim_in_hg),
-                            elevation_m: Number(metar.elevation_m),
-                            auto: metar.auto || "FALSE"
-                        };
-                        await awcRepo.save(updatedMetar);
-                    })
-                );
+                const awcPromises = JSON.parse(normalizedAwcMetar).map(async (metar) => {
+                    let updatedMetar = {
+                        ...metar,
+                        temp_c: Number(metar.temp_c),
+                        dewpoint_c: Number(metar.dewpoint_c),
+                        wind_dir_degrees: Number(metar.wind_dir_degrees),
+                        wind_speed_kt: Number(metar.wind_speed_kt),
+                        wind_gust_kt: Number(metar.wind_gust_kt),
+                        visibility_statute_mi: Number(metar.visibility_statute_mi),
+                        altim_in_hg: Number(metar.altim_in_hg),
+                        elevation_m: Number(metar.elevation_m),
+                        auto: metar.auto || "FALSE"
+                    };
+                    return await awcRepo.save(updatedMetar);
+                });
+                await batchProcess(awcPromises, 30);
+
                 console.log("Disconnect redis client");
                 const currentClient = redisClient.getCurrentClient();
                 currentClient.close();
