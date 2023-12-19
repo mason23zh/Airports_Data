@@ -515,33 +515,33 @@ class VatsimData {
      trackClient: the Redis client that contains all track for every traffic
      noTrackClient: the redis client that only contains the latest track
      * */
-    async updateVatsimTrafficRedis(trackClient, noTrackClient) {
+    async updateVatsimTrafficRedis(trackClient) {
         try {
             await this.requestVatsimData();
             const updatedTraffic = this.normalizeVatsimTraffic();
 
-            if (!trackClient || !noTrackClient) {
+            if (!trackClient) {
                 throw new Error("Redis Connect Failed");
             }
             const trafficRepo = trackClient.fetchRepository(vatsimTrafficsSchema);
-            const noTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
+            // const noTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
 
             const allRedisTraffics = await trafficRepo.search().all();
             const entityToRemove = [];
-            const noTrackEntityToRemove = [];
-            const noTrackPromises = [];
+            //const noTrackEntityToRemove = [];
+            // const noTrackPromises = [];
             allRedisTraffics.map((p) => {
                 if (!_.find(updatedTraffic, { cid: p.cid })) {
                     entityToRemove.push(`${p.cid}`);
-                    noTrackEntityToRemove.push(`${p.cid}`);
+                    //noTrackEntityToRemove.push(`${p.cid}`);
                 }
             });
 
             const trafficToBeRemoved = await trafficRepo.remove(entityToRemove);
-            const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
+            //const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
             const trafficPromise = updatedTraffic.map(async (pilot) => {
-                const noTrackEntity = noTrackRepo.save(`${pilot.cid}`, pilot);
-                noTrackPromises.push(noTrackEntity);
+                //const noTrackEntity = noTrackRepo.save(`${pilot.cid}`, pilot);
+                //noTrackPromises.push(noTrackEntity);
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")
@@ -557,7 +557,7 @@ class VatsimData {
                     return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
                 }
             });
-            trafficPromise.push(trafficToBeRemoved, noTrackTrafficToBeRemoved, ...noTrackPromises);
+            trafficPromise.push(trafficToBeRemoved);
             await this.batchProcess(trafficPromise, 30);
         } catch (e) {
             console.error("redis error:", e);

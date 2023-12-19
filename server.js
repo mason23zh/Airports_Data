@@ -14,12 +14,12 @@ const { CronJob } = require("cron");
 
 const redisClient = new RedisClient();
 let vatsimRedisClient;
-let vatsimRedisClientNoTrack;
+//let vatsimRedisClientNoTrack;
 (async () => {
     vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
-    vatsimRedisClientNoTrack = await new Client().open(
-        process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-    );
+    // vatsimRedisClientNoTrack = await new Client().open(
+    //     process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
+    // );
 })();
 
 async function batchProcess(promiseArray, batchSize) {
@@ -32,10 +32,7 @@ async function batchProcess(promiseArray, batchSize) {
 async function importVatsimTrafficsToDb() {
     try {
         const vatsimData = new VatsimData();
-        const result = await vatsimData.updateVatsimTrafficRedis(
-            vatsimRedisClient,
-            vatsimRedisClientNoTrack
-        );
+        const result = await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
         return result;
     } catch (e) {
         return null;
