@@ -9,6 +9,7 @@
     "scripts": {
         "start:dev": "SET NODE_ENV=development&&nodemon server.js",
         "start:prod": "SET NODE_ENV=production&&nodemon server.js",
+        "start:inspect": "SET NODE_ENV=development&&nodemon --inspect server.js",
         "test": "jest --watch"
     },
     "nodemonConfig": {
