@@ -198,7 +198,14 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
 
 module.exports.testDbImport = async (req, res) => {
     try {
-        await downloadAndProcessAWCData();
+        // const results = await downloadAndProcessAWCData(
+        //     "https://aviationweather.gov/data/cache/metars.cache.csv.gz"
+        // );
+        // setTimeout(() => {
+        //     console.log("time out");
+        // }, 1000);
+        // console.log(results);
+        res.status(200);
     } catch (e) {
         res.status(500);
     }

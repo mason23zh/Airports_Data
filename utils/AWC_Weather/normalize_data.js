@@ -2,8 +2,8 @@ const fs = require("fs");
 const awc_json_metar = "./utils/AWC_Weather/Data/awc_metars.json";
 const gns430_airports_with_location = "./utils/AWC_Weather/Data/GNS430_airports_with_location.json";
 
-module.exports.normalizeData = async () => {
-    const awcMetars = JSON.parse(fs.readFileSync("./utils/AWC_Weather/Data/metar.json", "utf-8"));
+module.exports.normalizeData = () => {
+    const awcMetars = JSON.parse(fs.readFileSync("./utils/AWC_Weather/Data/metars.json", "utf-8"));
     const gns430Airport = JSON.parse(fs.readFileSync(gns430_airports_with_location, "utf-8"));
     let normalizedAwcMetar = [];
 
