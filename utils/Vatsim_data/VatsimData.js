@@ -11,6 +11,7 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
+
 const { Client } = require("redis-om");
 
 class VatsimData {

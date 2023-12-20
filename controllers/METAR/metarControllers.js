@@ -8,7 +8,7 @@ const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
-const { downloadAndProcessAWCMetars } = require("../../utils/AWC_Weather/download_weather");
+const { downloadAndProcessAWCData } = require("../../utils/AWC_Weather/download_weather");
 
 let repo;
 (async () => {
@@ -193,5 +193,13 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
             results: 0,
             data: []
         });
+    }
+};
+
+module.exports.testDbImport = async (req, res) => {
+    try {
+        await downloadAndProcessAWCData();
+    } catch (e) {
+        res.status(500);
     }
 };

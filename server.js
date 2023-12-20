@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 const app = require("./app");
 const { AwcWeatherMetarSchema } = require("./models/weather/awcWeatherModel");
-const { downloadAndProcessAWCMetars } = require("./utils/AWC_Weather/download_weather");
+const {
+    downloadAndProcessAWCMetars,
+    downloadAndProcessAWCData
+} = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
@@ -11,6 +14,7 @@ const RedisClient = require("./redis/RedisClient");
 const VatsimData = require("./utils/Vatsim_data/VatsimData");
 const { Client } = require("redis-om");
 const { CronJob } = require("cron");
+const fs = require("fs");
 
 const redisClient = new RedisClient();
 let vatsimRedisClient;
@@ -53,14 +57,12 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
     try {
         let awcRepo;
         console.log("start downloading data from AWC...");
-        // const awcMetars = await downloadAndProcessAWCMetars(
-        //     "https://www.aviationweather.gov/adds/dataserver_current/current/metars.cache.csv"
-        // );
-        const awcMetars = await downloadAndProcessAWCMetars(
+
+        const awcMetars = await downloadAndProcessAWCData(
             "https://aviationweather.gov/data/cache/metars.cache.csv.gz"
         );
-        if (awcMetars.length && awcMetars.length > 0) {
-            console.log("Download Finished, data length:", awcMetars.length);
+        if (awcMetars === 1) {
+            //console.log("Download Finished, data length:", awcMetars.length);
 
             console.log("Starting normalizing awc metars...");
             const normalizedAwcMetar = await normalizeData();
@@ -120,6 +122,9 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
             console.log("Copy all data to AwcWeatherMetarModel...");
             await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
             console.log("Data merged successfully, Let's rock!");
+            await fs.unlink("./utils/AWC_Weather/Data/metar.json", () => {
+                console.log("metar.json deleted");
+            });
 
             return normalizedAwcMetar.length;
         } else {
@@ -149,9 +154,9 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             console.log("Error connecting to Redis", e);
         }
     })();
-    // schedule.scheduleJob("*/10 * * * *", async () => {
-    //     await importMetarsToDB(Latest_AwcWeatherModel);
-    // });
+    schedule.scheduleJob("*/10 * * * *", async () => {
+        await importMetarsToDB(Latest_AwcWeatherModel);
+    });
     // // every 12 hours
     schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
         await importVatsimEventsToDb();

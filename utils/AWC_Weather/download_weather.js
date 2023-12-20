@@ -3,90 +3,84 @@ const util = require("util");
 const stream = require("stream");
 const axios = require("axios");
 const fs = require("fs");
-const zlib = require("zlib");
-const CSVToJson = require("../Data_Convert/csvToJson");
 const pipeline = util.promisify(stream.pipeline);
-const awc_csv_metar = "./utils/AWC_Weather/Data/raw_awc_metars.csv";
-const awc_csv_modified_metar = "./utils/AWC_Weather/Data/awc_metars.csv";
-const awc_json_metar = "./utils/AWC_Weather/Data/awc_metars.json";
+const csv = require("csv-parser");
+const gunzip = require("gunzip-file");
 
-const processCSV = async () => {
-    let awcWeatherStatus = {
-        error: "",
-        warning: "",
-        sources: "",
-        time: "",
-        results: ""
-    };
-    // let csvContent = fs.readFile(awc_csv_metar, (err, data) => {
-    //     console.log(data);
-    // });
-
-    let csvContent = fs.readFileSync(awc_csv_metar);
-    csvContent = csvContent.toString().split("\n");
-    if (csvContent.length > 1) {
-        awcWeatherStatus.error = csvContent[0];
-        awcWeatherStatus.warning = csvContent[1];
-        awcWeatherStatus.time = csvContent[2];
-        awcWeatherStatus.sources = csvContent[3];
-        awcWeatherStatus.results = csvContent[4];
-
-        csvContent.splice(0, 5);
-        csvContent = csvContent.join("\n");
-        // console.log("CSV content:", csvContent);
-        fs.writeFileSync("./utils/AWC_Weather/Data/awc_metars.csv", csvContent);
-
-        const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
-        await awc_metars.csvToJson();
-        return JSON.parse(fs.readFileSync(awc_json_metar));
-    } else {
-        return [];
-    }
-};
-
-const downloadFile = async (url) => {
+module.exports.downloadAndProcessAWCData = async (url) => {
     try {
         const request = await axios.get(url, {
             responseType: "stream"
         });
         await pipeline(
             request.data,
-            fs.createWriteStream("./utils/AWC_Weather/Data/awcMetarZip.gz")
-        );
-        console.log("download AWC Zip file pipeline successful");
-        return new Promise((resolve) => {
-            resolve();
-        });
-    } catch (error) {
-        console.error("download AWC Zip file pipeline failed", error);
-        return new Promise((res, rej) => {
-            rej(error);
-        });
-    }
-};
+            fs.createWriteStream("./utils/AWC_Weather/Data/metars.cache.csv.gz")
+        )
+            .then(() => {
+                console.log("download awc gzip finished");
+                gunzip(
+                    "./utils/AWC_Weather/Data/metars.cache.csv.gz",
+                    "./utils/AWC_Weather/Data/metars.csv",
+                    () => {
+                        console.log("unzip gzip done");
 
-const unzipFile = async () => {
-    //unzip
-    const zipFile = fs.readFileSync("./utils/AWC_Weather/Data/awcMetarZip.gz");
-    const unzippedFile = zlib.unzipSync(zipFile);
-    fs.writeFileSync("./utils/AWC_Weather/Data/raw_awc_metars.csv", unzippedFile);
-};
+                        const rawDataArray = [];
+                        const readFile = fs.createReadStream(
+                            "./utils/AWC_Weather/Data/metars.csv",
+                            {
+                                encoding: "utf8"
+                            }
+                        );
 
-module.exports.downloadAndProcessAWCMetars = async (url) => {
-    try {
-        await downloadFile(url);
-        await unzipFile();
-        const result = await processCSV();
-        return JSON.stringify(result);
+                        readFile.on("error", (err) => {
+                            console.log("Error reading stream:", err);
+                            readFile.close();
+                        });
+                        readFile
+                            .pipe(
+                                csv({
+                                    skipLines: 5
+                                })
+                            )
+                            .on("data", (data) => {
+                                rawDataArray.push(data);
+                            })
+                            .on("end", () => {
+                                console.log("read file complete");
+                                readFile.close();
+                                const writeStream = fs.createWriteStream(
+                                    "./utils/AWC_Weather/Data/metar.json",
+                                    {
+                                        encoding: "utf8"
+                                    }
+                                );
+                                writeStream.on("error", (err) => {
+                                    console.log("error writing stream:", err);
+                                    writeStream.close();
+                                });
+                                writeStream.write(JSON.stringify(rawDataArray), () => {
+                                    console.log("write metar data to JSON complete");
+                                    //delete
+                                    fs.unlink(
+                                        "./utils/AWC_Weather/Data/metars.cache.csv.gz",
+                                        () => {
+                                            console.log("delete zip file");
+                                        }
+                                    );
+                                    fs.unlink("./utils/AWC_Weather/Data/metars.csv", () => {
+                                        console.log("delete csv file");
+                                    });
+                                });
+                                writeStream.close();
+                            });
+                    }
+                );
+            })
+            .finally(() => {
+                return Promise.resolve(1);
+            });
     } catch (e) {
-        console.error("error download and process AWC metar:", e);
-        return [];
+        console.error("error downloading:", e);
+        return Promise.reject(-1);
     }
-    // downloadFile(url)
-    //     .then(() => {
-    //         unzipFile().then(() => {
-    //             processCSV();
-    //         });
-    //     })
-    //     .catch();
 };
