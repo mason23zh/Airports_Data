@@ -1,30 +1,34 @@
 const fs = require("fs");
-const awc_json_metar = "./utils/AWC_Weather/Data/awc_metars.json";
+const { parser } = require("stream-json");
+const { streamArray } = require("stream-json/streamers/StreamArray");
+const util = require("util");
+const readFile = util.promisify(fs.readFile);
+
 const gns430_airports_with_location = "./utils/AWC_Weather/Data/GNS430_airports_with_location.json";
 
-module.exports.normalizeData = () => {
-    const awcMetars = JSON.parse(fs.readFileSync("./utils/AWC_Weather/Data/metars.json", "utf-8"));
-    const gns430Airport = JSON.parse(fs.readFileSync(gns430_airports_with_location, "utf-8"));
-    let normalizedAwcMetar = [];
+module.exports.normalizeData = async () => {
+    const gns430AirportData = await readFile(gns430_airports_with_location, "utf-8");
+    const gns430Airport = JSON.parse(gns430AirportData);
+    const airportMap = new Map(gns430Airport.map((airport) => [airport.ident, airport]));
 
-    const redisValidCoordinates = (lng, lat) => {
-        if (
-            Number(lng) < -180 ||
-            Number(lng) > 180 ||
-            Number(lat) < -85.05112878 ||
-            Number(lat) > 85.05112878
-        ) {
-            return false;
-        }
-        return true;
-    };
+    return processMetars(airportMap);
+};
 
-    for (let airport of gns430Airport) {
-        for (let metar of awcMetars) {
-            if (
-                metar.station_id === airport.ident &&
-                redisValidCoordinates(Number(metar.longitude), Number(metar.latitude))
-            ) {
+const processMetars = async (airports) => {
+    return new Promise((resolve, reject) => {
+        const metarsStream = fs
+            .createReadStream("./utils/AWC_Weather/Data/metars.json")
+            .on("error", (err) => {
+                console.error("metars.json not exist: ", err);
+                reject("metars.json not exist:", err);
+            })
+            .pipe(parser())
+            .pipe(streamArray());
+        const normalizedMetars = [];
+
+        metarsStream.on("data", ({ value: metar }) => {
+            const airport = airports.get(metar.station_id);
+            if (airport && redisValidCoordinates(Number(metar.longitude), Number(metar.latitude))) {
                 let tempVisibility = metar.visibility_statute_mi.includes("+")
                     ? Number(metar.visibility_statute_mi.replace("+", ""))
                     : Number(metar.visibility_statute_mi);
@@ -51,10 +55,28 @@ module.exports.normalizeData = () => {
                     location: tempObject,
                     location_redis: locationRedis
                 };
-                normalizedAwcMetar.push(updatedMetar);
+                normalizedMetars.push(updatedMetar);
             }
-        }
-    }
+        });
 
-    return JSON.stringify(normalizedAwcMetar);
+        metarsStream.on("end", () => {
+            resolve(normalizedMetars);
+        });
+
+        metarsStream.on("error", (e) => {
+            reject("error normalize/process metar:", e);
+        });
+    });
+};
+
+const redisValidCoordinates = (lng, lat) => {
+    if (
+        Number(lng) < -180 ||
+        Number(lng) > 180 ||
+        Number(lat) < -85.05112878 ||
+        Number(lat) > 85.05112878
+    ) {
+        return false;
+    }
+    return true;
 };

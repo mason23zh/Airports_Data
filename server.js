@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const { AwcWeatherMetarSchema } = require("./models/weather/awcWeatherModel");
 const {
-    downloadAndProcessAWCMetars,
-    downloadAndProcessAWCData,
-    downloadAndUnzip
+    downloadAndUnzip,
+    processDownloadAWCData
 } = require("./utils/AWC_Weather/download_weather");
 require("dotenv").config({ path: "./config.env" });
 const schedule = require("node-schedule");
@@ -15,7 +14,7 @@ const RedisClient = require("./redis/RedisClient");
 const VatsimData = require("./utils/Vatsim_data/VatsimData");
 const { Client } = require("redis-om");
 const { CronJob } = require("cron");
-const fs = require("fs");
+const fs = require("fs").promises;
 
 const redisClient = new RedisClient();
 let vatsimRedisClient;
@@ -59,25 +58,11 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
         let awcRepo;
         let normalizedAwcMetar;
         console.log("start downloading data from AWC...");
-        // await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
-        //
-        // await downloadAndProcessAWCData();
-        // console.log("Starting normalizing awc metars...");
-        // normalizedAwcMetar = await normalizeData();
-        downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz")
-            .then(async () => {
-                console.log("Gzip download & unzip finished");
-                await downloadAndProcessAWCData();
-                normalizedAwcMetar = normalizeData();
-            })
-            .catch((e) => console.error("error downloading", e));
-
-        //const normalizedAwcMetar = normalizeData();
-
-        //Delete old data.
-        console.log("Deleting old data...");
-        await Latest_AwcWeatherModel.deleteMany({});
-        console.log("Old data deleted");
+        await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
+        console.log("download complete. Start Processing downloaded AWC data...");
+        await processDownloadAWCData();
+        console.log("Process complete.");
+        normalizedAwcMetar = await normalizeData();
 
         const rNodeClient = await redisClient.createRedisNodeConnection(
             process.env.REDISCLOUD_PASSWORD,
@@ -87,55 +72,73 @@ async function importMetarsToDB(Latest_AwcWeatherModel) {
 
         //const rNodeClient = await redisClient.createRedisNodeConnectionWithURL(process.env.REDISCLOUD_URL);
         if (rNodeClient) {
-            await rNodeClient.flushDb("SYNC", () => {
-                console.log("REDIS FLUSH");
-            });
+            try {
+                await rNodeClient.flushDb("SYNC", () => {
+                    console.log("REDIS FLUSH");
+                });
 
-            console.log("Connecting to Redis...");
-            await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-            awcRepo = redisClient.createRedisOMRepository(awcMetarSchema);
+                console.log("Connecting to Redis...");
+                await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
+                awcRepo = redisClient.createRedisOMRepository(awcMetarSchema);
 
-            console.log("store normalized metar into redis");
-            await awcRepo.createIndex();
+                console.log("store normalized metar into redis");
+                await awcRepo.createIndex();
 
-            const awcPromises = JSON.parse(normalizedAwcMetar).map(async (metar) => {
-                let updatedMetar = {
-                    ...metar,
-                    temp_c: Number(metar.temp_c),
-                    dewpoint_c: Number(metar.dewpoint_c),
-                    wind_dir_degrees: Number(metar.wind_dir_degrees),
-                    wind_speed_kt: Number(metar.wind_speed_kt),
-                    wind_gust_kt: Number(metar.wind_gust_kt),
-                    visibility_statute_mi: Number(metar.visibility_statute_mi),
-                    altim_in_hg: Number(metar.altim_in_hg),
-                    elevation_m: Number(metar.elevation_m),
-                    auto: metar.auto || "FALSE"
-                };
-                return await awcRepo.save(updatedMetar);
-            });
-            await batchProcess(awcPromises, 30);
+                const awcPromises = normalizedAwcMetar.map(async (metar) => {
+                    let updatedMetar = {
+                        ...metar,
+                        temp_c: Number(metar.temp_c),
+                        dewpoint_c: Number(metar.dewpoint_c),
+                        wind_dir_degrees: Number(metar.wind_dir_degrees),
+                        wind_speed_kt: Number(metar.wind_speed_kt),
+                        wind_gust_kt: Number(metar.wind_gust_kt),
+                        visibility_statute_mi: Number(metar.visibility_statute_mi),
+                        altim_in_hg: Number(metar.altim_in_hg),
+                        elevation_m: Number(metar.elevation_m),
+                        auto: metar.auto || "FALSE"
+                    };
+                    return awcRepo.save(updatedMetar);
+                });
+                await batchProcess(awcPromises, 30);
 
-            console.log("Disconnect redis client");
-            const currentClient = redisClient.getCurrentClient();
-            currentClient.close();
-            await rNodeClient.quit();
+                console.log("Disconnect redis client");
+                const currentClient = redisClient.getCurrentClient();
+                currentClient.close();
+                //await rNodeClient.quit();
+            } catch (e) {
+                console.log("Data import to Redis failed:", e);
+            } finally {
+                await rNodeClient.quit();
+            }
         }
 
         //import new metar into the latest AWC Model
         console.log("Start importing data to Database...");
-        const docs = await Latest_AwcWeatherModel.create(JSON.parse(normalizedAwcMetar));
-        console.log("Data imported, total entries:", docs.length);
+        if (Array.isArray(normalizedAwcMetar)) {
+            try {
+                console.log("Deleting old data...");
+                await Latest_AwcWeatherModel.deleteMany({});
+                console.log("Old data deleted");
 
-        console.log("Copy all data to AwcWeatherMetarModel...");
-        await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
-        console.log("Data merged successfully, Let's rock!");
-        await fs.unlink("./utils/AWC_Weather/Data/metars.json", (err) => {
-            if (err) {
-                console.log("error delete metars.json", err);
-            } else {
-                console.log("metars.json deleted");
+                const docs = await Latest_AwcWeatherModel.insertMany(normalizedAwcMetar);
+                console.log("Data imported, total entries:", docs.length);
+
+                console.log("Copy all data to AwcWeatherMetarModel...");
+                await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
+                console.log("Data merged successfully, Let's rock!");
+            } catch (e) {
+                console.log("Data import to MongoDB failed:", e);
             }
-        });
+        } else {
+            console.error("Normalized Metar is not array. Unable to process");
+        }
+
+        try {
+            await fs.unlink("./utils/AWC_Weather/Data/metars.json");
+            console.log("metars.json deleted");
+        } catch (e) {
+            console.log("metars.json delete failed:", e);
+        }
 
         return normalizedAwcMetar.length;
     } catch (e) {

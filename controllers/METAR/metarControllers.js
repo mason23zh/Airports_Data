@@ -8,7 +8,11 @@ const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
-const { downloadAndProcessAWCData } = require("../../utils/AWC_Weather/download_weather");
+const {
+    downloadAndUnzip,
+    processDownloadAWCData
+} = require("../../utils/AWC_Weather/download_weather");
+const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 
 let repo;
 (async () => {
@@ -198,14 +202,14 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
 
 module.exports.testDbImport = async (req, res) => {
     try {
-        // const results = await downloadAndProcessAWCData(
-        //     "https://aviationweather.gov/data/cache/metars.cache.csv.gz"
-        // );
-        // setTimeout(() => {
-        //     console.log("time out");
-        // }, 1000);
-        // console.log(results);
-        res.status(200);
+        await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
+        await processDownloadAWCData();
+        const normalizedMetar = await normalizeData();
+        console.log(typeof normalizedMetar);
+        console.log(normalizedMetar.length);
+        res.status(200).json({
+            data: normalizedMetar
+        });
     } catch (e) {
         res.status(500);
     }

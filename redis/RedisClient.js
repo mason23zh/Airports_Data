@@ -1,11 +1,12 @@
 require("dotenv").config({ path: "./config.env" });
 const { createClient } = require("redis");
-const { Client } = require("redis-om");
+const { Client, Repository } = require("redis-om");
 
 class RedisClient {
     constructor() {
         this.repo = null;
         this.client = null;
+        this.nodeClient = null;
     }
 
     async openNewRedisOMClient(REDIS_URL) {
@@ -32,8 +33,29 @@ class RedisClient {
         }
     }
 
+    createRedisRepository(schema) {
+        if (this.nodeClient) {
+            this.repo = new Repository(schema, this.nodeClient);
+            return this.repo;
+        } else {
+            console.error("node client not existed, create new Repository failed");
+            this.repo = null;
+            return this.repo;
+        }
+    }
+
+    async closeConnection() {
+        try {
+            if (this.nodeClient) {
+                await this.nodeClient.quit();
+            }
+        } catch (e) {
+            console.error("Error closing Redis connection:", e);
+        }
+    }
+
     async createRedisNodeConnection(REDIS_PASSWORD, REDIS_HOST, REDIS_PORT) {
-        const connection = createClient({
+        this.nodeClient = createClient({
             password: REDIS_PASSWORD,
             socket: {
                 host: REDIS_HOST,
@@ -41,20 +63,12 @@ class RedisClient {
             }
         });
         try {
-            await connection.connect();
-            return connection;
+            await this.nodeClient.connect();
+            return this.nodeClient;
         } catch (e) {
-            return null;
-        }
-    }
-
-    async createRedisNodeConnectionWithURL(REDIS_URL) {
-        try {
-            const connection = createClient(REDIS_URL);
-            await connection.connect();
-            return connection;
-        } catch (e) {
-            return null;
+            console.error("Error connecting redis node client:", e);
+            this.nodeClient = null;
+            return this.nodeClient;
         }
     }
 }

@@ -12,15 +12,18 @@ module.exports.downloadAndUnzip = async (url) => {
     });
 
     const writer = fs.createWriteStream("./utils/AWC_Weather/Data/metars.csv");
+    const unzip = zlib.createGunzip();
 
-    response.data.pipe(zlib.createGunzip()).pipe(writer);
+    response.data.pipe(unzip).pipe(writer);
     return new Promise((resolve, reject) => {
         writer.on("finish", resolve);
         writer.on("error", reject);
+        unzip.on("error", reject);
+        response.data.on("error", reject);
     });
 };
 
-module.exports.downloadAndProcessAWCData = () => {
+module.exports.processDownloadAWCData = async () => {
     return new Promise((resolve, reject) => {
         const rawDataArray = [];
         const readFile = fs.createReadStream("./utils/AWC_Weather/Data/metars.csv", {
