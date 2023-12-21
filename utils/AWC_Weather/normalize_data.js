@@ -45,6 +45,13 @@ const processMetars = async (airports) => {
                 };
                 let updatedMetar = {
                     ...metar,
+                    temp_c: Number(metar.temp_c),
+                    dewpoint_c: Number(metar.dewpoint_c),
+                    wind_speed_kt: Number(metar.wind_speed_kt),
+                    wind_gust_kt: Number(metar.wind_gust_kt),
+                    altim_in_hg: Number(metar.altim_in_hg),
+                    elevation_m: Number(metar.elevation_m),
+                    auto: metar.auto || "FALSE",
                     visibility_statute_mi: Number(tempVisibility),
                     wind_dir_degrees: tempWindDir,
                     ios_country: airport.iso_country,
