@@ -10,9 +10,9 @@ const { promises: fs } = require("fs");
 module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
     try {
         const vatsimData = new VatsimData();
-        const result = await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
-        return result;
+        await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
     } catch (e) {
+        console.error("Error import Vatsim Traffic to DB:", e);
         return null;
     }
 };
@@ -20,9 +20,9 @@ module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
 module.exports.importVatsimEventsToDb = async () => {
     try {
         const vatsimData = (await new VatsimData()).requestVatsimEventsData();
-        const result = await (await vatsimData).storeVatsimEventsToDB();
-        return result;
+        await (await vatsimData).storeVatsimEventsToDB();
     } catch (e) {
+        console.error("Error import Vatsim events to DB", e);
         return null;
     }
 };
@@ -110,6 +110,11 @@ module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) =>
 const batchProcess = async (promiseArray, batchSize) => {
     for (let i = 0; i < promiseArray.length; i += batchSize) {
         const batch = promiseArray.slice(i, i + batchSize);
-        await Promise.all(batch);
+        try {
+            await Promise.all(batch);
+        } catch (e) {
+            console.error("Error process batch:", e);
+            return;
+        }
     }
 };

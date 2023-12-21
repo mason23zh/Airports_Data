@@ -37,17 +37,31 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         }
     })();
     schedule.scheduleJob("*/10 * * * *", async () => {
-        await importMetarsToDB(Latest_AwcWeatherModel, redisClient);
+        try {
+            await importMetarsToDB(Latest_AwcWeatherModel, redisClient);
+        } catch (e) {
+            console.error("Error occurred in scheduleJob:importMetarsToDB():", e);
+        }
     });
     // every 12 hours
     schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-        await importVatsimEventsToDb();
+        try {
+            await importVatsimEventsToDb();
+        } catch (e) {
+            console.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
+        }
     });
     // every 20 seconds
 
     CronJob.from({
         cronTime: "*/30 * * * * *",
-        onTick: async () => await importVatsimTrafficsToDb(vatsimRedisClient),
+        onTick: async () => {
+            try {
+                await importVatsimTrafficsToDb(vatsimRedisClient);
+            } catch (e) {
+                console.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
+            }
+        },
         start: true,
         timeZone: "America/Los_Angeles",
         runOnInit: true
