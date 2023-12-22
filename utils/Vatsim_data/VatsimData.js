@@ -538,10 +538,7 @@ class VatsimData {
             });
 
             const trafficToBeRemoved = await trafficRepo.remove(entityToRemove);
-            //const noTrackTrafficToBeRemoved = await noTrackRepo.remove(noTrackEntityToRemove);
             const trafficPromise = updatedTraffic.map(async (pilot) => {
-                //const noTrackEntity = noTrackRepo.save(`${pilot.cid}`, pilot);
-                //noTrackPromises.push(noTrackEntity);
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")
@@ -559,7 +556,6 @@ class VatsimData {
             });
             trafficPromise.push(trafficToBeRemoved);
             await this.batchProcess(trafficPromise, 30);
-            console.log("Traffic update");
         } catch (e) {
             console.error("redis error:", e);
         }
