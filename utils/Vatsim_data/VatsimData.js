@@ -521,11 +521,10 @@ class VatsimData {
             await this.requestVatsimData();
             const updatedTraffic = this.normalizeVatsimTraffic();
 
-            if (!trackClient) {
-                throw new Error("Redis Connect Failed");
+            const trafficRepo = trackClient.createRedisRepository(vatsimTrafficsSchema);
+            if (!trafficRepo) {
+                throw new Error("Failed to fetch Redis repo");
             }
-            const trafficRepo = trackClient.fetchRepository(vatsimTrafficsSchema);
-            // const noTrackRepo = noTrackClient.fetchRepository(vatsimTrafficsSchema);
 
             const allRedisTraffics = await trafficRepo.search().all();
             const entityToRemove = [];
@@ -560,6 +559,7 @@ class VatsimData {
             });
             trafficPromise.push(trafficToBeRemoved);
             await this.batchProcess(trafficPromise, 30);
+            console.log("Traffic update");
         } catch (e) {
             console.error("redis error:", e);
         }

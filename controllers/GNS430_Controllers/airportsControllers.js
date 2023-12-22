@@ -12,15 +12,13 @@ const { getDistanceFromLatLonInKm } = require("./converter");
 const axios = require("axios");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const OnlineFlightData = require("../../utils/Online_Flight_Data/OnlineFlightData");
-
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
 
 const rClient = new RedisClient();
-let repo;
+
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-    repo = rClient.createRedisOMRepository(awcMetarSchema);
+    await rClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
 })();
 
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
@@ -47,6 +45,7 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
             data: []
         });
     } else {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
@@ -88,6 +87,7 @@ module.exports.getAirportByICAO_GNS430_With_Widget = async (req, res) => {
             data: []
         });
     } else {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
@@ -146,6 +146,7 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
             data: []
         });
     } else {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         let responseObject = { airport: gns430Airport[0] };
         let icao = gns430Airport[0].ICAO;
         const ATIS = await generateGeneralATIS(icao);

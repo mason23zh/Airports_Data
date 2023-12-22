@@ -121,6 +121,9 @@ class MetarFeatures {
     async requestMetarWithinRadius_LngLat(lon, lat, distance, decode = false) {
         try {
             if (!lon || !lat || !distance) return [];
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const responseMetar = await this.repo
                 .search()
                 .where("location_redis")
@@ -177,6 +180,9 @@ class MetarFeatures {
 
     async requestMetarUsingGenericInput(data, decode = false) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 .where("name")
                 .matches(data)
@@ -226,6 +232,9 @@ class MetarFeatures {
 
     async requestMetarUsingAirportName(name, decode = false) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo.search().where("name").matches(name).returnAll();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
@@ -262,6 +271,9 @@ class MetarFeatures {
     async requestMetarCategory_global(category, sort = 1, limit = 10, decode = false) {
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where(category)
@@ -315,6 +327,9 @@ class MetarFeatures {
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
 
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where(scope)
@@ -362,6 +377,9 @@ class MetarFeatures {
 
     async requestMetarUsingICAO(icao) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where("station_id")
