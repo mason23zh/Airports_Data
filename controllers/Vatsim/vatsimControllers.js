@@ -6,7 +6,7 @@ const RedisClient = require("../../redis/RedisClient");
 const vatsimRedisClient = new RedisClient();
 (async () => {
     //process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-    await vatsimRedisClient.createRedisNodeConnection(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
+    await vatsimRedisClient.createRedisNodeConnection(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
 })();
 
 module.exports.getVatsimEvents = async (req, res) => {

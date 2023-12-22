@@ -2,7 +2,7 @@ require("dotenv").config({ path: "../../config.env" });
 const axios = require("axios");
 const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
 const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
-const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
+//const { VatsimHistoryTraffics } = require("../../models/vatsim/vatsimHistoryTrafficsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
 const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
