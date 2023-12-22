@@ -570,7 +570,7 @@ class VatsimData {
             if (!client) {
                 throw new Error("Redis Connect Failed");
             }
-            const repo = client.fetchRepository(vatsimTrafficsSchema);
+            const repo = client.createRedisRepository(vatsimTrafficsSchema);
 
             //remove traffics that are not in the latest fetched data
             const allRedisTraffics = await repo.search().all();

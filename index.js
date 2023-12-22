@@ -29,7 +29,6 @@ module.exports.importVatsimEventsToDb = async () => {
 
 module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) => {
     try {
-        let awcRepo;
         let normalizedAwcMetar;
         console.log("start downloading data from AWC...");
         await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
@@ -38,21 +37,11 @@ module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) =>
         console.log("Process complete.");
         normalizedAwcMetar = await normalizeData();
 
-        // const rNodeClient = await redisClient.createRedisNodeConnection(
-        //     process.env.REDISCLOUD_PASSWORD,
-        //     process.env.REDISCLOUD_HOST,
-        //     process.env.REDISCLOUD_PORT
-        // );
-
         if (redisClient) {
             try {
                 console.log("Connected to Redis");
                 await redisClient.flushDb();
                 const awcRepo = redisClient.createRedisRepository(awcMetarSchema);
-
-                // console.log("Connecting to Redis...");
-                // await redisClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-                // awcRepo = redisClient.createRedisOMRepository(awcMetarSchema);
 
                 console.log("store normalized metar into redis");
                 await awcRepo.createIndex();
@@ -61,12 +50,6 @@ module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) =>
                     return awcRepo.save(metar.station_id, metar);
                 });
                 await batchProcess(awcPromises, 30);
-
-                // console.log("Disconnect redis client");
-                // await redisClient.closeConnection();
-                // const currentClient = redisClient.getCurrentClient();
-                // currentClient.close();
-                //await rNodeClient.quit();
             } catch (e) {
                 console.log("Data import to Redis failed:", e);
             }
