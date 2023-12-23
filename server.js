@@ -9,6 +9,11 @@ const { CronJob } = require("cron");
 const { importVatsimEventsToDb, importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
 const logger = require("./logger/index");
 
+const REDIS_VATSIM_URL =
+    process.env.NODE_ENV === "production"
+        ? process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
+        : process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV;
+
 const trafficRedisClient = new RedisClient();
 const metarRedisClient = new RedisClient();
 
@@ -23,9 +28,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         try {
             await metarRedisClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
             logger.info("Metar redis connected.");
-            await trafficRedisClient.createRedisNodeConnection(
-                process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
-            );
+            await trafficRedisClient.createRedisNodeConnection(REDIS_VATSIM_URL);
             logger.info("Vatsim Traffic Redis connected");
         } catch (e) {
             logger.error("Error connecting to Redis", e);

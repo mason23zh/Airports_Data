@@ -1,13 +1,16 @@
-const { Client } = require("redis-om");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 const RedisClient = require("../../redis/RedisClient");
 const logger = require("../../logger/index");
 
 const vatsimRedisClient = new RedisClient();
+const REDIS_VATSIM_URL =
+    process.env.NODE_ENV === "production"
+        ? process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
+        : process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV;
 (async () => {
     //process.env.REDISCLOUD_VATSIM_TRAFFIC_NO_TRACK_URL
-    await vatsimRedisClient.createRedisNodeConnection(process.env.REDISCLOUD_VATSIM_TRAFFIC_URL);
+    await vatsimRedisClient.createRedisNodeConnection(REDIS_VATSIM_URL);
 })();
 
 module.exports.getVatsimEvents = async (req, res) => {
@@ -178,8 +181,8 @@ module.exports.getVatsimTraffics = async (req, res) => {
     }
 };
 
-//Import vatsim traffics to redis db
-//Internal use only, only run once if redis db is empty
+//!Import vatsim traffics to redis db
+//!Internal use only, only run once if redis db is empty
 module.exports.importVatsimToRedis = async (req, res) => {
     const vatsim = new VatsimData();
     try {
@@ -189,17 +192,18 @@ module.exports.importVatsimToRedis = async (req, res) => {
         }
         res.status(200).json({});
     } catch (e) {
+        logger.error("Import Vatsim traffic to Redis failed:", e);
         res.status(500).json({});
     }
 };
 
-module.exports.updateVatsimTrafficToRedis = async (req, res) => {
-    const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
-    const vatsim = new VatsimData();
-    try {
-        await vatsim.updateVatsimTrafficRedis(vatsimRedisClient);
-        res.status(200).json({});
-    } catch (e) {
-        res.status(500).json({});
-    }
-};
+// module.exports.updateVatsimTrafficToRedis = async (req, res) => {
+//     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
+//     const vatsim = new VatsimData();
+//     try {
+//         await vatsim.updateVatsimTrafficRedis(vatsimRedisClient);
+//         res.status(200).json({});
+//     } catch (e) {
+//         res.status(500).json({});
+//     }
+// };

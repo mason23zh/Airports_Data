@@ -13,7 +13,7 @@ const {
 const _ = require("lodash");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 
-const { Client } = require("redis-om");
+const RedisClient = require("../../redis/RedisClient");
 
 class VatsimData {
     constructor() {
@@ -479,16 +479,29 @@ class VatsimData {
         return this.normalizedVatsimTraffics;
     }
 
+    //! This function will FLUSH the redis. Made sure connectionUrl is correct
     async importVatsimTrafficToRedis(connectionUrl) {
+        // throw error if connectionUrl is production db url.
+        if (connectionUrl === process.env.REDISCLOUD_VATSIM_TRAFFIC_URL) {
+            logger.warn("importVatsimTrafficToRedis been called on production db.");
+            throw new Error("production db connected.");
+        }
+        const vatsimRedisClient = new RedisClient();
         try {
             const normalizedTraffics = this.normalizeVatsimTraffic();
-            const client = await new Client().open(connectionUrl);
-            const repo = client.fetchRepository(vatsimTrafficsSchema);
+            await vatsimRedisClient.createRedisNodeConnection(connectionUrl);
+            logger.info("redis client for vatsim traffic import connected.");
+            //flush old redis data.
+            await vatsimRedisClient.flushDb();
+            logger.info("redis db for vatsim traffic flushed.");
+            const repo = vatsimRedisClient.createRedisRepository(vatsimTrafficsSchema);
             await repo.createIndex();
-            normalizedTraffics.map(async (traffic) => {
+            const promiseArray = normalizedTraffics.map((traffic) => {
                 if (!traffic.cid) return;
-                await repo.save(`${traffic.cid}`, traffic);
+                return repo.save(`${traffic.cid}`, traffic);
             });
+            await this.batchProcess(promiseArray, 100);
+            logger.info("vatsim traffics imported to redis.");
         } catch (e) {
             logger.error("importVatsimTrafficToRedis error:", e);
         }
