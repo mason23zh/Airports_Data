@@ -1,6 +1,7 @@
 const fs = require("fs");
 const gns430_airport_data = "./dev-data/GNS430_Data/airports.json";
 const global_airport_data_with_location = "./dev-data/json_data/airport-codes_json.json";
+const logger = require("../../logger/index");
 
 module.exports.filterOutGlobalAirportsUsingGNS430_data = async () => {
     const globalAirportData = JSON.parse(
@@ -21,6 +22,6 @@ module.exports.filterOutGlobalAirportsUsingGNS430_data = async () => {
         "./dev-data/GNS430_data/GNS430_airports_with_location.json",
         filteredAirport_json
     );
-    console.log(gns430Airport.length);
-    console.log(globalAirportData.length);
+    logger.info(gns430Airport.length);
+    logger.info(globalAirportData.length);
 };

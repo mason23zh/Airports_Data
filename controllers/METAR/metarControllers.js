@@ -1,5 +1,5 @@
 // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
-
+const logger = require("../../logger/index");
 require("dotenv").config({ path: "../../config.env" });
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { awcMetarSchema } = require("../../redis/awcMetar");
@@ -214,8 +214,8 @@ module.exports.testDbImport = async (req, res) => {
         await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
         await processDownloadAWCData();
         const normalizedMetar = await normalizeData();
-        console.log(typeof normalizedMetar);
-        console.log(normalizedMetar.length);
+        logger.debug(typeof normalizedMetar);
+        logger.debug(normalizedMetar.length);
         res.status(200).json({
             data: normalizedMetar
         });

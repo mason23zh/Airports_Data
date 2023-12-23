@@ -2,10 +2,12 @@ const CustomError = require("../errors/custom-error");
 const BadRequestError = require("../errors/BadRequestError");
 const ValidationError = require("../errors/ValidationError");
 const UnAuthorizedError = require("../errors/UnAuthorizedError");
+const logger = require("../../logger/index");
 
 const handleCastErrorDB = (err) => new BadRequestError(`Invalid ${err.path}: ${err.value}`);
 
-const handleDuplicateFieldsDB = (err) => new BadRequestError(`Duplicate field value: ${Object.values(err.keyValue)}`);
+const handleDuplicateFieldsDB = (err) =>
+    new BadRequestError(`Duplicate field value: ${Object.values(err.keyValue)}`);
 
 const handleValidationErrorDB = (err) => {
     const errors = Object.values(err.errors).map((error) => error.message);
@@ -27,15 +29,15 @@ const handleCheckWxApiError = () => new BadRequestError("Check Wx API Error");
  * which include error detail such as stacktrace.
  */
 const sendErrorDev = (err, res) => {
-    console.log("dev error");
+    logger.info("dev error");
     if (err instanceof CustomError) {
         return res.status(err.statusCode).json({
             error: {
                 message: err.message,
                 statusCode: err.statusCode,
                 status: err.status,
-                stack: err.stack,
-            },
+                stack: err.stack
+            }
         });
     }
     res.status(400).json({
@@ -43,8 +45,8 @@ const sendErrorDev = (err, res) => {
             message: "General Error",
             statusCode: 400,
             status: "fail",
-            stack: err.stack,
-        },
+            stack: err.stack
+        }
     });
 };
 
@@ -60,14 +62,14 @@ const sendErrorDev = (err, res) => {
  */
 const sendErrorProd = (err, res) => {
     //Operational Error
-    console.log("prod error:", err);
+    logger.info("prod error:", err);
     if (err instanceof CustomError) {
         return res.status(err.statusCode).json({
             error: {
                 message: err.message,
                 statusCode: err.statusCode,
-                status: err.status,
-            },
+                status: err.status
+            }
         });
     }
     // Programming Error
@@ -75,19 +77,19 @@ const sendErrorProd = (err, res) => {
         err: {
             message: "500 Error. Something went very wrong",
             statusCode: 500,
-            status: "error",
-        },
+            status: "error"
+        }
     });
 };
 
 const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV === "development") {
-        console.log("ERROR from errorHandler development:", err);
+        logger.error("ERROR from errorHandler development:", err);
         sendErrorDev(err, res);
     } else if (process.env.NODE_ENV === "production") {
         let error = Object.create(err);
 
-        console.log("ERROR from errorhandler production:", error);
+        logger.error("ERROR from errorhandler production:", error);
 
         //Convert a CastError into an operational BadRequestError
         if (error.name === "CastError") {

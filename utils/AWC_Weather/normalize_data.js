@@ -1,4 +1,5 @@
 const fs = require("fs");
+const logger = require("../../logger/index");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
 const util = require("util");
@@ -19,7 +20,7 @@ const processMetars = async (airports) => {
         const metarsStream = fs
             .createReadStream("./utils/AWC_Weather/Data/metars.json")
             .on("error", (err) => {
-                console.error("metars.json not exist: ", err);
+                logger.error("metars.json not exist: ", err);
                 reject("metars.json not exist:", err);
             })
             .pipe(parser())

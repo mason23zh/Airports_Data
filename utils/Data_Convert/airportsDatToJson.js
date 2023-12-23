@@ -1,4 +1,5 @@
 const fs = require("fs");
+const logger = require("../../logger/index");
 const readline = require("readline");
 
 /**
@@ -13,7 +14,7 @@ const processLineByLine = async () => {
 
     const rl = await readline.createInterface({
         input: fileStream,
-        crlfDelay: Infinity,
+        crlfDelay: Infinity
     });
 
     const airportObj = {};
@@ -40,7 +41,7 @@ const processLineByLine = async () => {
         airportArrays.push(airportObj);
 
         fs.writeFileSync("../dev-data/json_data/airports.json", JSON.stringify(airportArrays));
-        console.log("writing...");
+        logger.info("writing...");
     });
 };
 

@@ -18,17 +18,17 @@ const Latest_AwcWeatherModel = SecondaryConnection.model(
 );
 mongoose.set("strictQuery", false); //to avoid 'strictQuery' deprecation warning
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
-    console.log("DB connected");
+    logger.info("DB connected");
     (async () => {
         try {
             await metarRedisClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
-            console.log("Metar redis connected.");
+            logger.info("Metar redis connected.");
             await trafficRedisClient.createRedisNodeConnection(
                 process.env.REDISCLOUD_VATSIM_TRAFFIC_URL
             );
-            console.log("Vatsim Traffic Redis connected");
+            logger.info("Vatsim Traffic Redis connected");
         } catch (e) {
-            console.log("Error connecting to Redis", e);
+            logger.error("Error connecting to Redis", e);
         }
     })();
 
@@ -36,7 +36,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     //     try {
     //         await importMetarsToDB(Latest_AwcWeatherModel, metarRedisClient);
     //     } catch (e) {
-    //         console.error("Error occurred in scheduleJob:importMetarsToDB():", e);
+    //         logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
     //     }
     // });
     // every 12 hours
@@ -44,7 +44,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     //     try {
     //         await importVatsimEventsToDb();
     //     } catch (e) {
-    //         console.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
+    //         logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
     //     }
     // });
     // every 20 seconds
@@ -55,7 +55,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     //         try {
     //             await importVatsimTrafficsToDb(trafficRedisClient);
     //         } catch (e) {
-    //             console.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
+    //             logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
     //         }
     //     },
     //     start: true,
@@ -65,5 +65,5 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
-    console.log(`Express starts on port ${port}`);
+    logger.info(`Express starts on port ${port}`);
 });

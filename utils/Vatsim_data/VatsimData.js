@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "../../config.env" });
+const logger = require("../../logger/index");
 const axios = require("axios");
 const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
 const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
@@ -77,16 +78,16 @@ class VatsimData {
             return null;
         }
         try {
-            console.log("starting import vatsim events to db...");
+            logger.info("starting import vatsim events to db...");
             // delete all previous events
             await VatsimEvents.deleteMany({});
             const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
             if (doc.length > 0) {
-                console.log("successfully import vatsim events to db ");
+                logger.info("successfully import vatsim events to db ");
             }
             return doc.length;
         } catch (e) {
-            console.error(e);
+            logger.error("storeVatsimEventsToDB error:", e);
             return null;
         }
     }
@@ -100,6 +101,7 @@ class VatsimData {
                 }
             }
         } catch (e) {
+            logger.error("requestVatsimEventsData error:", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
         return this;
@@ -116,6 +118,7 @@ class VatsimData {
                 return this.vatsimEvents;
             }
         } catch (e) {
+            logger.error("getAllVatsimEvents error:", e);
             return [];
         }
     }
@@ -138,6 +141,7 @@ class VatsimData {
                 return docs;
             }
         } catch (e) {
+            logger.error("sortVatsimEventsByTime error:", e);
             return [];
         }
     }
@@ -162,6 +166,7 @@ class VatsimData {
                 return [];
             }
         } catch (e) {
+            logger.error("getCurrentVatsimEvents error:", e);
             return [];
         }
     }
@@ -182,6 +187,7 @@ class VatsimData {
                 return response;
             }
         } catch (e) {
+            logger.error("requestVatsimData error:", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
     }
@@ -415,7 +421,7 @@ class VatsimData {
             (!flight.altitude && flight.altitude !== 0) ||
             (!flight.heading && flight.heading !== 0)
         ) {
-            console.log("invalid flights:", flight);
+            logger.info("invalid flights:", flight);
             return false;
         }
         return true;
@@ -484,7 +490,7 @@ class VatsimData {
                 await repo.save(`${traffic.cid}`, traffic);
             });
         } catch (e) {
-            console.error("redis error:", e);
+            logger.error("importVatsimTrafficToRedis error:", e);
         }
     }
 
@@ -557,7 +563,7 @@ class VatsimData {
             trafficPromise.push(trafficToBeRemoved);
             await this.batchProcess(trafficPromise, 30);
         } catch (e) {
-            console.error("redis error:", e);
+            logger.error("updateVatsimTrafficRedis error:", e);
         }
     }
 
@@ -576,7 +582,7 @@ class VatsimData {
                 return null;
             }
         } catch (e) {
-            console.error(e);
+            logger.error("getAllVatsimTraffics error:", e);
             return null;
         }
     }

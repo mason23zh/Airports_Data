@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "../config.env" });
+const logger = require("../../logger/index");
 const axios = require("axios");
 const fs = require("fs");
 const csv = require("csv-parser");
@@ -31,7 +32,7 @@ module.exports.processDownloadAWCData = async () => {
         });
 
         readFile.on("error", (err) => {
-            console.log("Error reading stream:", err);
+            logger.error("Error reading stream:", err);
             reject(err);
             readFile.close();
         });
@@ -46,17 +47,17 @@ module.exports.processDownloadAWCData = async () => {
                 rawDataArray.push(data);
             })
             .on("end", () => {
-                console.log("read file complete");
+                logger.info("read file complete");
                 const writeStream = fs.createWriteStream("./utils/AWC_Weather/Data/metars.json", {
                     encoding: "utf8"
                 });
                 writeStream.on("error", (err) => {
-                    console.log("error writing stream:", err);
+                    logger.error("error writing stream:", err);
                     reject(err);
                     writeStream.close();
                 });
                 writeStream.write(JSON.stringify(rawDataArray), () => {
-                    console.log("write metar data to JSON complete");
+                    logger.info("write metar data to JSON complete");
                     resolve();
                 });
                 writeStream.end();
@@ -65,9 +66,9 @@ module.exports.processDownloadAWCData = async () => {
                     if (fs.existsSync("./utils/AWC_Weather/Data/metars.csv")) {
                         fs.unlink("./utils/AWC_Weather/Data/metars.csv", (err) => {
                             if (err) {
-                                console.log("error delete csv file:", err);
+                                logger.error("error delete csv file:", err);
                             } else {
-                                console.log("delete csv file");
+                                logger.info("delete csv file");
                             }
                         });
                     }

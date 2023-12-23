@@ -1,3 +1,4 @@
+const logger = require("../logger/index");
 const fs = require("fs");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "../config.env" });
@@ -33,7 +34,7 @@ const airports = JSON.parse(fs.readFileSync(gns430AirportJsonPath));
 // const gns430Runway = JSON.parse(fs.readFileSync(gns430AirportJsonPath));
 // const awcWeatherMetars = JSON.parse(fs.readFileSync(awcJsonPath, "utf-8"));
 mongoose.connect(`${process.env.DATABASE}`).then(() => {
-    console.log("DB connected for import data");
+    logger.info("DB connected for import data");
 });
 
 class ImportData {
@@ -45,9 +46,9 @@ class ImportData {
     async import() {
         try {
             await this.model.create(this.data);
-            console.log("loaded ");
+            logger.info("loaded ");
         } catch (err) {
-            console.error(err);
+            logger.error(err);
         }
     }
 }
@@ -70,10 +71,10 @@ importAwcMetar.import();
 // const importData = async () => {
 //   try {
 //     await Airports.create(airports);
-//     console.log("Data succesfully loaded");
+//     logger.info("Data succesfully loaded");
 //     process.exit();
 //   } catch (err) {
-//     console.error(err);
+//     logger.error(err);
 //   }
 // };
 

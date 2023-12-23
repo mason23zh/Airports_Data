@@ -2,6 +2,7 @@ const { Client } = require("redis-om");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 const RedisClient = require("../../redis/RedisClient");
+const logger = require("../../logger/index");
 
 const vatsimRedisClient = new RedisClient();
 (async () => {
@@ -29,7 +30,7 @@ module.exports.sortVatsimEventsByTime = async (req, res) => {
     } else if (target.includes("start")) {
         target = "start_time";
     } else if (target.includes("end")) {
-        console.log("trigger");
+        logger.debug("trigger");
         target = "end_time";
     }
     if (!req.query.sort || (req.query.sort !== "-1" && req.query.sort !== "1")) {

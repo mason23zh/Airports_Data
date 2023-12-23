@@ -1,5 +1,6 @@
 // const axios = require("axios");
 require("dotenv").config({ path: "../../../config.env" });
+const logger = require("../../logger/index");
 const cheerio = require("cheerio");
 const { getRandomUserAgent } = require("./randomUserAgent");
 const tunnel = require("tunnel");
@@ -42,7 +43,7 @@ class OnlineFlightData {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                logger.error(error);
             });
     }
 

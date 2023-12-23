@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "./config.env" });
+const logger = require("../logger/index");
 const { createClient } = require("redis");
 const { Repository } = require("redis-om");
 
@@ -16,9 +17,9 @@ class RedisClient {
         if (this.nodeClient) {
             try {
                 await this.nodeClient.flushDb("SYNC");
-                console.log("REDIS FLUSHED");
+                logger.info("REDIS FLUSHED");
             } catch (e) {
-                console.error("Error flush Redis");
+                logger.error("Error flush Redis");
             }
         }
     }
@@ -28,7 +29,7 @@ class RedisClient {
             this.repo = new Repository(schema, this.nodeClient);
             return this.repo;
         } else {
-            console.error("node client not existed, create new Repository failed");
+            logger.error("node client not existed, create new Repository failed");
             this.repo = null;
             return this.repo;
         }
@@ -40,7 +41,7 @@ class RedisClient {
                 await this.nodeClient.quit();
             }
         } catch (e) {
-            console.error("Error closing Redis connection:", e);
+            logger.error("Error closing Redis connection:", e);
         }
     }
 
@@ -51,7 +52,7 @@ class RedisClient {
             await this.nodeClient.connect();
             return this.nodeClient;
         } catch (e) {
-            console.error("Error connecting redis node client:", e);
+            logger.error("Error connecting redis node client:", e);
             this.nodeClient = null;
             return this.nodeClient;
         }
