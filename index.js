@@ -6,7 +6,7 @@ const {
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
 const { awcMetarSchema } = require("./redis/awcMetar");
 const { promises: fs } = require("fs");
-const batchProcess = require("./utils/batchProcess");
+const { batchProcess } = require("./utils/batchProcess");
 const logger = require("./logger/index");
 
 module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
@@ -21,8 +21,10 @@ module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
 
 module.exports.importVatsimEventsToDb = async () => {
     try {
+        logger.info("Start importing vatsim events to DB...");
         const vatsimData = (await new VatsimData()).requestVatsimEventsData();
         await (await vatsimData).storeVatsimEventsToDB();
+        logger.info("Vatsim events import complete.");
     } catch (e) {
         logger.error("Error import Vatsim events to DB:%O", e);
         return null;

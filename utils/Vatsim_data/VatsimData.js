@@ -87,6 +87,7 @@ class VatsimData {
             if (doc.length > 0) {
                 logger.info("successfully import vatsim events to db ");
             }
+            this.vatsimEvents = null;
             return doc.length;
         } catch (e) {
             logger.error("storeVatsimEventsToDB error:%O", e);
