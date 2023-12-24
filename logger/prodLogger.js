@@ -7,7 +7,7 @@ const logFormat = format.printf(
 
 const prodLogger = () => {
     return createLogger({
-        level: "debug",
+        level: "info",
         format: format.combine(
             format.label({ label: path.basename(process.mainModule.filename) }),
             format.timestamp(),

@@ -480,7 +480,7 @@ class VatsimData {
         return this.normalizedVatsimTraffics;
     }
 
-    //! This function will FLUSH the redis. Made sure connectionUrl is correct
+    //! This function will FLUSH the redis. Make sure connectionUrl is correct
     async importVatsimTrafficToRedis(connectionUrl) {
         // throw error if connectionUrl is production db url.
         if (connectionUrl === process.env.REDISCLOUD_VATSIM_TRAFFIC_URL) {
@@ -520,12 +520,12 @@ class VatsimData {
         if (latestTrack.track.at(-1).groundSpeed === 0) {
             return latestTrack;
         } else if (latestTrack.track.at(-1).heading === dbTrack.track.at(-1).heading) {
-            const tempObject = { ...latestTrack, track: [...dbTrack.track] };
+            const tempObject = { ...latestTrack, track: dbTrack.track };
             tempObject.track.at(-1).compensation += 1;
             return tempObject;
         } else {
             dbTrack.track.push(latestTrack.track[0]);
-            return { ...latestTrack, track: [...dbTrack.track] };
+            return { ...latestTrack, track: dbTrack.track };
         }
     }
 
