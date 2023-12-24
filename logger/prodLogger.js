@@ -8,7 +8,6 @@ const logFormat = format.printf(
 const prodLogger = () => {
     return createLogger({
         level: "debug",
-        //format: combine(colorize(), timestamp({ format: "HH:mm:ss" }), prettyPrint()),
         format: format.combine(
             format.label({ label: path.basename(process.mainModule.filename) }),
             format.timestamp(),
