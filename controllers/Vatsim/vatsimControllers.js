@@ -192,7 +192,7 @@ module.exports.importVatsimToRedis = async (req, res) => {
         }
         res.status(200).json({});
     } catch (e) {
-        logger.error("Import Vatsim traffic to Redis failed:", e);
+        logger.error("Import Vatsim traffic to Redis failed:%O", e);
         res.status(500).json({});
     }
 };

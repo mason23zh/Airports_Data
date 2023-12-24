@@ -62,7 +62,7 @@ const sendErrorDev = (err, res) => {
  */
 const sendErrorProd = (err, res) => {
     //Operational Error
-    logger.info("prod error:", err);
+    logger.info("prod error:%O", err);
     if (err instanceof CustomError) {
         return res.status(err.statusCode).json({
             error: {
@@ -84,12 +84,12 @@ const sendErrorProd = (err, res) => {
 
 const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV === "development") {
-        logger.error("ERROR from errorHandler development:", err);
+        logger.error("ERROR from errorHandler development:%O", err);
         sendErrorDev(err, res);
     } else if (process.env.NODE_ENV === "production") {
         let error = Object.create(err);
 
-        logger.error("ERROR from errorhandler production:", error);
+        logger.error("ERROR from errorhandler production:%O", error);
 
         //Convert a CastError into an operational BadRequestError
         if (error.name === "CastError") {

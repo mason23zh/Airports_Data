@@ -32,7 +32,7 @@ module.exports.processDownloadAWCData = async () => {
         });
 
         readFile.on("error", (err) => {
-            logger.error("Error reading stream:", err);
+            logger.error("Error reading stream:%O", err);
             reject(err);
             readFile.close();
         });
@@ -52,7 +52,7 @@ module.exports.processDownloadAWCData = async () => {
                     encoding: "utf8"
                 });
                 writeStream.on("error", (err) => {
-                    logger.error("error writing stream:", err);
+                    logger.error("error writing stream:%O", err);
                     reject(err);
                     writeStream.close();
                 });
@@ -66,7 +66,7 @@ module.exports.processDownloadAWCData = async () => {
                     if (fs.existsSync("./utils/AWC_Weather/Data/metars.csv")) {
                         fs.unlink("./utils/AWC_Weather/Data/metars.csv", (err) => {
                             if (err) {
-                                logger.error("error delete csv file:", err);
+                                logger.error("error delete csv file:%O", err);
                             } else {
                                 logger.info("delete csv file");
                             }

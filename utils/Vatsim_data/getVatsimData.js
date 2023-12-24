@@ -7,7 +7,7 @@ module.exports.getVatsimData = async () => {
     try {
         return await axios.get(VATSIM_DATA_URL);
     } catch (err) {
-        logger.error("Vatsim data error:", err);
+        logger.error("Vatsim data error:%O", err);
         throw new BadRequestError("VATSIM data error");
     }
 };

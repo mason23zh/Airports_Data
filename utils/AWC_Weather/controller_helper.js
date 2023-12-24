@@ -15,7 +15,7 @@ const getAwcMetarUsingICAO = async (icao, decode, model, repo) => {
             return null;
         }
     } catch (e) {
-        logger.error("getAwcMetarUsingICAO error:", e);
+        logger.error("getAwcMetarUsingICAO error:%O", e);
         throw new CustomError("Something went wrong, please try again later", 500);
     }
 };
@@ -25,7 +25,7 @@ const getAwcMetarUsingGenericInput = async (data, decode, model, repo) => {
     try {
         return await metarFeatures.requestMetarUsingGenericInput(data, decode);
     } catch (e) {
-        logger.error("getAwcMetarUsingGenericInput error:", e);
+        logger.error("getAwcMetarUsingGenericInput error:%O", e);
         throw new CustomError("Something went wrong, please try again later", 500);
     }
 };
@@ -35,7 +35,7 @@ const getAwcMetarUsingAirportName = async (name, decode, model, repo) => {
     try {
         return await metarFeatures.requestMetarUsingAirportName(name, decode);
     } catch (e) {
-        logger.error("getAwcMetarUsingAirportName error:", e);
+        logger.error("getAwcMetarUsingAirportName error:%O", e);
         throw new CustomError("Something went wrong, please try again later", 500);
     }
 };

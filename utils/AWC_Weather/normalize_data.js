@@ -20,7 +20,7 @@ const processMetars = async (airports) => {
         const metarsStream = fs
             .createReadStream("./utils/AWC_Weather/Data/metars.json")
             .on("error", (err) => {
-                logger.error("metars.json not exist: ", err);
+                logger.error("metars.json not exist:%O ", err);
                 reject("metars.json not exist:", err);
             })
             .pipe(parser())

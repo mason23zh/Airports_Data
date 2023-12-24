@@ -19,7 +19,7 @@ class RedisClient {
                 await this.nodeClient.flushDb("SYNC");
                 logger.info("REDIS FLUSHED");
             } catch (e) {
-                logger.error("Error flush Redis");
+                logger.error("Error flush Redis:%O", e);
             }
         }
     }
@@ -41,7 +41,7 @@ class RedisClient {
                 await this.nodeClient.quit();
             }
         } catch (e) {
-            logger.error("Error closing Redis connection:", e);
+            logger.error("Error closing Redis connection:%O", e);
         }
     }
 
@@ -52,7 +52,7 @@ class RedisClient {
             await this.nodeClient.connect();
             return this.nodeClient;
         } catch (e) {
-            logger.error("Error connecting redis node client:", e);
+            logger.error("Error connecting redis node client:%O", e);
             this.nodeClient = null;
             return this.nodeClient;
         }

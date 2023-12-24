@@ -88,7 +88,7 @@ class VatsimData {
             }
             return doc.length;
         } catch (e) {
-            logger.error("storeVatsimEventsToDB error:", e);
+            logger.error("storeVatsimEventsToDB error:%O", e);
             return null;
         }
     }
@@ -102,7 +102,7 @@ class VatsimData {
                 }
             }
         } catch (e) {
-            logger.error("requestVatsimEventsData error:", e);
+            logger.error("requestVatsimEventsData error:%O", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
         return this;
@@ -119,7 +119,7 @@ class VatsimData {
                 return this.vatsimEvents;
             }
         } catch (e) {
-            logger.error("getAllVatsimEvents error:", e);
+            logger.error("getAllVatsimEvents error:%O", e);
             return [];
         }
     }
@@ -142,7 +142,7 @@ class VatsimData {
                 return docs;
             }
         } catch (e) {
-            logger.error("sortVatsimEventsByTime error:", e);
+            logger.error("sortVatsimEventsByTime error:%O", e);
             return [];
         }
     }
@@ -167,7 +167,7 @@ class VatsimData {
                 return [];
             }
         } catch (e) {
-            logger.error("getCurrentVatsimEvents error:", e);
+            logger.error("getCurrentVatsimEvents error:%O", e);
             return [];
         }
     }
@@ -188,7 +188,7 @@ class VatsimData {
                 return response;
             }
         } catch (e) {
-            logger.error("requestVatsimData error:", e);
+            logger.error("requestVatsimData error:%O", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
     }

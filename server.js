@@ -31,7 +31,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             await trafficRedisClient.createRedisNodeConnection(REDIS_VATSIM_URL);
             logger.info("Vatsim Traffic Redis connected");
         } catch (e) {
-            logger.error("Error connecting to Redis", e);
+            logger.error("Error connecting to Redis:%O", e);
         }
     })();
 
@@ -58,7 +58,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             try {
                 await importVatsimTrafficsToDb(trafficRedisClient);
             } catch (e) {
-                logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
+                logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():%O", e);
             }
         },
         start: true,

@@ -48,7 +48,7 @@ class ImportData {
             await this.model.create(this.data);
             logger.info("loaded ");
         } catch (err) {
-            logger.error(err);
+            logger.error("Error import data to DB:%O", err);
         }
     }
 }
