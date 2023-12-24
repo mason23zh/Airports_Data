@@ -6,6 +6,8 @@ const {
 const { normalizeData } = require("./utils/AWC_Weather/normalize_data");
 const { awcMetarSchema } = require("./redis/awcMetar");
 const { promises: fs } = require("fs");
+const batchProcess = require("./utils/batchProcess");
+const logger = require("./logger/index");
 
 module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
     try {
@@ -22,7 +24,7 @@ module.exports.importVatsimEventsToDb = async () => {
         const vatsimData = (await new VatsimData()).requestVatsimEventsData();
         await (await vatsimData).storeVatsimEventsToDB();
     } catch (e) {
-        console.error("Error import Vatsim events to DB", e);
+        logger.error("Error import Vatsim events to DB:%O", e);
         return null;
     }
 };
@@ -30,20 +32,20 @@ module.exports.importVatsimEventsToDb = async () => {
 module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) => {
     try {
         let normalizedAwcMetar;
-        console.log("start downloading data from AWC...");
+        logger.info("start downloading data from AWC...");
         await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
-        console.log("download complete. Start Processing downloaded AWC data...");
+        logger.info("download complete. Start Processing downloaded AWC data...");
         await processDownloadAWCData();
-        console.log("Process complete.");
+        logger.info("Process complete.");
         normalizedAwcMetar = await normalizeData();
 
         if (redisClient) {
             try {
-                console.log("Connected to Redis");
+                logger.info("Connected to Redis");
                 await redisClient.flushDb();
                 const awcRepo = redisClient.createRedisRepository(awcMetarSchema);
 
-                console.log("store normalized metar into redis");
+                logger.info("store normalized metar into redis");
                 await awcRepo.createIndex();
 
                 const awcPromises = normalizedAwcMetar.map((metar) => {
@@ -51,52 +53,40 @@ module.exports.importMetarsToDB = async (Latest_AwcWeatherModel, redisClient) =>
                 });
                 await batchProcess(awcPromises, 30);
             } catch (e) {
-                console.log("Data import to Redis failed:", e);
+                logger.error("Data import to Redis failed:%O", e);
             }
         }
 
         //import new metar into the latest AWC Model
-        console.log("Start importing data to Database...");
+        logger.info("Start importing data to Database...");
         if (Array.isArray(normalizedAwcMetar)) {
             try {
-                console.log("Deleting old data...");
+                logger.info("Deleting old data...");
                 await Latest_AwcWeatherModel.deleteMany({});
-                console.log("Old data deleted");
+                logger.info("Old data deleted");
 
                 const docs = await Latest_AwcWeatherModel.insertMany(normalizedAwcMetar);
-                console.log("Data imported, total entries:", docs.length);
+                logger.info("Data imported, total entries:", docs.length);
 
-                console.log("Copy all data to AwcWeatherMetarModel...");
+                logger.info("Copy all data to AwcWeatherMetarModel...");
                 await Latest_AwcWeatherModel.aggregate([{ $out: "awcweathermetarmodels" }]);
-                console.log("Data merged successfully, Let's rock!");
+                logger.info("Data merged successfully, Let's rock!");
             } catch (e) {
-                console.log("Data import to MongoDB failed:", e);
+                logger.info("Data import to MongoDB failed:", e);
             }
         } else {
-            console.error("Normalized Metar is not array. Unable to process");
+            logger.error("Normalized Metar is not array. Unable to process");
         }
 
         try {
             await fs.unlink("./utils/AWC_Weather/Data/metars.json");
-            console.log("metars.json deleted");
+            logger.info("metars.json deleted");
         } catch (e) {
-            console.log("metars.json delete failed:", e);
+            logger.error("metars.json delete failed:%O", e);
         }
 
         return normalizedAwcMetar.length;
     } catch (e) {
-        console.log("error import data", e);
-    }
-};
-
-const batchProcess = async (promiseArray, batchSize) => {
-    for (let i = 0; i < promiseArray.length; i += batchSize) {
-        const batch = promiseArray.slice(i, i + batchSize);
-        try {
-            await Promise.all(batch);
-        } catch (e) {
-            console.error("Error process batch:", e);
-            return;
-        }
+        logger.error("error import data:%O", e);
     }
 };

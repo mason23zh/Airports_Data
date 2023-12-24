@@ -13,6 +13,7 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 const _ = require("lodash");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
+const { batchProcess } = require("../../utils/batchProcess");
 
 const RedisClient = require("../../redis/RedisClient");
 
@@ -499,7 +500,7 @@ class VatsimData {
                 if (!traffic.cid) return;
                 return repo.save(`${traffic.cid}`, traffic);
             });
-            await this.batchProcess(promiseArray, 100);
+            await batchProcess(promiseArray, 100);
             try {
                 await vatsimRedisClient.closeConnection();
                 logger.info("vatsim traffics imported to redis.");
@@ -525,41 +526,6 @@ class VatsimData {
             dbTrack.track.push(latestTrack.track[0]);
             return { ...latestTrack, track: [...dbTrack.track] };
         }
-    }
-
-    // async batchProcess(promiseArray, batchSize) {
-    //     for (let i = 0; i < promiseArray.length; i += batchSize) {
-    //         const batch = promiseArray.slice(i, i + batchSize);
-    //         await Promise.all(batch);
-    //     }
-    // }
-
-    async batchProcess(promiseArray, batchSize) {
-        const results = []; // Array to hold the results
-        const errors = []; // Array to collect errors
-
-        for (let i = 0; i < promiseArray.length; i += batchSize) {
-            const batch = promiseArray.slice(i, i + batchSize);
-            const promises = batch.map(
-                (promise) =>
-                    promise && promise.then && promise.catch
-                        ? promise.catch((error) => {
-                            errors.push(error); // Catch and store the error
-                            return null;
-                        })
-                        : Promise.resolve(promise) // If not a promise, resolve it as is
-            );
-
-            const batchResults = await Promise.all(promises);
-            results.push(...batchResults); // Collect results
-        }
-
-        if (errors.length) {
-            logger.error("Errors encountered:%O", errors);
-            // Handle errors here, such as logging them or taking corrective action
-        }
-
-        return results; // Return the results, including any nulls for failed promises
     }
 
     /*
@@ -631,7 +597,7 @@ class VatsimData {
             this.normalizedVatsimTraffics = null;
 
             trafficPromise.push(trafficRepo.remove(Array.from(entityToRemove)));
-            await this.batchProcess(trafficPromise, 30);
+            await batchProcess(trafficPromise, 30);
             logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
         } catch (e) {
             logger.error("updateVatsimTrafficRedis error:%O", e);
