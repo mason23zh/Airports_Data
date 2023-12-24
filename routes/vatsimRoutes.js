@@ -11,7 +11,8 @@ const {
     getVatsimTrafficByCID_Track,
     getVatsimTrafficByCID,
     getVatsimTrafficByCallsign,
-    importVatsimToRedis
+    importVatsimToRedis,
+    findEmptyTrack
 } = require("../controllers/Vatsim/vatsimControllers");
 
 router.get("/getEvents", getVatsimEvents);
@@ -26,5 +27,6 @@ router.get("/getTrafficByCID/track/:cid", getVatsimTrafficByCID_Track);
 router.get("/getTrafficByCID/:cid", getVatsimTrafficByCID);
 
 router.get("/importToRedis", importVatsimToRedis);
+router.get("/checkTrack", findEmptyTrack);
 // router.get("/updateToRedis", updateVatsimTrafficToRedis);
 module.exports = router;

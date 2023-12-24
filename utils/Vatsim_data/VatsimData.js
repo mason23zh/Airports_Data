@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 require("dotenv").config({ path: "../../config.env" });
 const logger = require("../../logger/index");
 const axios = require("axios");
@@ -428,54 +429,52 @@ class VatsimData {
     }
 
     #buildTrafficObject(traffic, trackFlag) {
-        let tempObject = {
-            track: [],
-            aircraft: {}
+        const tempObject = {
+            cid: traffic.cid,
+            name: traffic.name,
+            callsign: traffic.callsign,
+            server: traffic.server,
+            transponder: traffic.transponder,
+            flightRules: traffic.flight_plan?.flight_rules ?? "N/A",
+            aircraft: {
+                full: traffic.flight_plan?.aircraft ?? "N/A",
+                faa: traffic.flight_plan?.aircraft_faa ?? "N/A",
+                short: traffic.flight_plan?.aircraft_short ?? "N/A"
+            },
+            arrival: traffic.flight_plan?.arrival ?? "N/A",
+            departure: traffic.flight_plan?.departure ?? "N/A",
+            alternate: traffic.flight_plan?.alternate ?? "N/A",
+            depTime: traffic.flight_plan?.deptime ?? "N/A",
+            enrouteTime: traffic.flight_plan?.enroute_time ?? "N/A",
+            fuelTime: traffic.flight_plan?.fuel_time ?? "N/A",
+            remarks: traffic.flight_plan?.remarks ?? "N/A",
+            route: traffic.flight_plan?.route ?? "N/A",
+            logonTime: traffic.logon_time,
+            lastUpdated: traffic.last_updated
         };
-        let tempObjectTrack = {};
-        tempObject.cid = traffic.cid;
-        tempObject.name = traffic.name;
-        tempObject.callsign = traffic.callsign;
-        tempObject.server = traffic.server;
-        tempObject.transponder = traffic.transponder;
-        tempObject.flightRules = !traffic.flight_plan?.flight_rules || "N/A";
-        tempObject.aircraft.full = traffic.flight_plan?.aircraft || "N/A";
-        tempObject.aircraft.faa = traffic.flight_plan?.aircraft_faa || "N/A";
-        tempObject.aircraft.short = traffic.flight_plan?.aircraft_short || "N/A";
-        tempObject.arrival = traffic.flight_plan?.arrival || "N/A";
-        tempObject.departure = traffic.flight_plan?.departure || "N/A";
-        tempObject.alternate = traffic.flight_plan?.alternate || "N/A";
-        tempObject.depTime = traffic.flight_plan?.deptime || "N/A";
-        tempObject.enrouteTime = traffic.flight_plan?.enroute_time || "N/A";
-        tempObject.fuelTime = traffic.flight_plan?.fuel_time || "N/A";
-        tempObject.remarks = traffic.flight_plan?.remarks || "N/A";
-        tempObject.route = traffic.flight_plan?.route || "N/A";
-        tempObject.logonTime = traffic.logon_time;
-        tempObject.lastUpdated = traffic.last_updated;
-        tempObjectTrack.latitude = traffic.latitude;
-        tempObjectTrack.longitude = traffic.longitude;
-        tempObjectTrack.altitude = traffic.altitude;
-        tempObjectTrack.groundSpeed = traffic.groundspeed;
-        tempObjectTrack.heading = traffic.heading;
-        tempObjectTrack.qnhIhg = traffic.qnh_i_hg;
-        tempObjectTrack.compensation = 0;
+
         if (trackFlag) {
-            tempObject.track.push(tempObjectTrack);
-            return tempObject;
-        } else {
-            delete tempObject.track;
-            return tempObject;
+            tempObject.track = [{
+                latitude: traffic.latitude ?? 0,
+                longitude: traffic.longitude ?? 0,
+                altitude: traffic.altitude ?? 0,
+                groundSpeed: traffic.groundspeed ?? 0,
+                heading: traffic.heading ?? 0,
+                qnhIhg: traffic.qnh_i_hg,
+                compensation: 0
+            }];
         }
+
+        return tempObject;
     }
 
     normalizeVatsimTraffic() {
-        if (this.vatsimPilots.length > 0) {
-            this.vatsimPilots.filter((p) => {
-                if (this.#validateVatsimTraffic(p)) {
-                    this.normalizedVatsimTraffics.push(this.#buildTrafficObject(p, true));
-                }
-            });
-        }
+        this.normalizedVatsimTraffics = this.vatsimPilots.reduce((acc, pilot) => {
+            if (this.#validateVatsimTraffic(pilot)) {
+                acc.push(this.#buildTrafficObject(pilot, true));
+            }
+            return acc;
+        }, []);
         return this.normalizedVatsimTraffics;
     }
 
@@ -501,7 +500,12 @@ class VatsimData {
                 return repo.save(`${traffic.cid}`, traffic);
             });
             await this.batchProcess(promiseArray, 100);
-            logger.info("vatsim traffics imported to redis.");
+            try {
+                await vatsimRedisClient.closeConnection();
+                logger.info("vatsim traffics imported to redis.");
+            } catch (e) {
+                logger.error("redis connection close failed:", e);
+            }
         } catch (e) {
             logger.error("importVatsimTrafficToRedis error:", e);
         }
@@ -514,20 +518,71 @@ class VatsimData {
         if (latestTrack.track.at(-1).groundSpeed === 0) {
             return latestTrack;
         } else if (latestTrack.track.at(-1).heading === dbTrack.track.at(-1).heading) {
-            const tempObject = { ...dbTrack };
-            tempObject.track.at(-1).compensation = dbTrack.track.at(-1).compensation + 1;
+            const tempObject = { ...latestTrack, track: [...dbTrack.track] };
+            tempObject.track.at(-1).compensation += 1;
             return tempObject;
         } else {
-            const tempObject = { ...dbTrack };
-            tempObject.track.push(latestTrack.track[0]);
-            return tempObject;
+            dbTrack.track.push(latestTrack.track[0]);
+            return { ...latestTrack, track: [...dbTrack.track] };
         }
     }
 
+    // async batchProcess(promiseArray, batchSize) {
+    //     for (let i = 0; i < promiseArray.length; i += batchSize) {
+    //         const batch = promiseArray.slice(i, i + batchSize);
+    //         await Promise.all(batch);
+    //     }
+    // }
+
     async batchProcess(promiseArray, batchSize) {
+        const results = []; // Array to hold the results
+        const errors = []; // Array to collect errors
+
         for (let i = 0; i < promiseArray.length; i += batchSize) {
             const batch = promiseArray.slice(i, i + batchSize);
-            await Promise.all(batch);
+            const promises = batch.map(
+                (promise) =>
+                    promise && promise.then && promise.catch
+                        ? promise.catch((error) => {
+                            errors.push(error); // Catch and store the error
+                            return null;
+                        })
+                        : Promise.resolve(promise) // If not a promise, resolve it as is
+            );
+
+            const batchResults = await Promise.all(promises);
+            results.push(...batchResults); // Collect results
+        }
+
+        if (errors.length) {
+            logger.error("Errors encountered:%O", errors);
+            // Handle errors here, such as logging them or taking corrective action
+        }
+
+        return results; // Return the results, including any nulls for failed promises
+    }
+
+    /*
+     A generator function to return the db array in batch.
+     * */
+    async* paginatedSearch(repository, pageSize = 100) {
+        let page = 0;
+        let results;
+        let keepGoing = true;
+
+        while (keepGoing) {
+            try {
+                results = await repository.search().page(page, pageSize);
+                if (results.length === 0 || results.length < pageSize) {
+                    keepGoing = false;
+                }
+
+                yield results;
+                page += 1;
+            } catch (error) {
+                logger.error(`Error fetching page ${page}:`, error);
+                keepGoing = false;
+            }
         }
     }
 
@@ -538,32 +593,32 @@ class VatsimData {
     async updateVatsimTrafficRedis(trackClient) {
         try {
             await this.requestVatsimData();
-            const updatedTraffic = this.normalizeVatsimTraffic();
+            this.normalizeVatsimTraffic();
 
             const trafficRepo = trackClient.createRedisRepository(vatsimTrafficsSchema);
             if (!trafficRepo) {
                 throw new Error("Failed to fetch Redis repo");
             }
 
-            const allRedisTraffics = await trafficRepo.search().all();
-            const entityToRemove = [];
-            //const noTrackEntityToRemove = [];
-            // const noTrackPromises = [];
-            allRedisTraffics.map((p) => {
-                if (!_.find(updatedTraffic, { cid: p.cid })) {
-                    entityToRemove.push(`${p.cid}`);
-                    //noTrackEntityToRemove.push(`${p.cid}`);
-                }
-            });
+            //const allRedisTraffics = await trafficRepo.search().all();
+            const entityToRemove = new Set();
 
-            const trafficToBeRemoved = await trafficRepo.remove(entityToRemove);
-            const trafficPromise = updatedTraffic.map(async (pilot) => {
+            for await (const page of this.paginatedSearch(trafficRepo)) {
+                page.forEach((p) => {
+                    if (!_.find(this.normalizedVatsimTraffics, { cid: p.cid })) {
+                        entityToRemove.add(`${p.cid}`);
+                    }
+                });
+            }
+            logger.debug("Entity to be removed:%O", entityToRemove);
+
+            // logger.debug("Traffic to be removed:%O", trafficToBeRemoved);
+            const trafficPromise = this.normalizedVatsimTraffics.map(async (pilot) => {
                 const trackEntity = await trafficRepo
                     .search()
                     .where("cid")
                     .eq(pilot.cid)
                     .returnFirst();
-
                 if (trackEntity) {
                     const compensationTrack = this.#trackCompensation(pilot, trackEntity);
                     if (compensationTrack) {
@@ -573,10 +628,13 @@ class VatsimData {
                     return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
                 }
             });
-            trafficPromise.push(trafficToBeRemoved);
+            this.normalizedVatsimTraffics = null;
+
+            trafficPromise.push(trafficRepo.remove(Array.from(entityToRemove)));
             await this.batchProcess(trafficPromise, 30);
+            logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
         } catch (e) {
-            logger.error("updateVatsimTrafficRedis error:", e);
+            logger.error("updateVatsimTrafficRedis error:%O", e);
         }
     }
 

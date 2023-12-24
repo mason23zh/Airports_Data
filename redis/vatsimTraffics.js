@@ -1,7 +1,5 @@
 const { Schema } = require("redis-om");
 
-//class VatsimTraffics extends Entity {}
-
 exports.vatsimTrafficsSchema = new Schema(
     "VatsimTraffics",
     {

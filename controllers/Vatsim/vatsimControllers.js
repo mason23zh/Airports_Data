@@ -197,6 +197,24 @@ module.exports.importVatsimToRedis = async (req, res) => {
     }
 };
 
+module.exports.findEmptyTrack = async (req, res) => {
+    const vatsim = new VatsimData();
+    try {
+        const vatsimTraffics = await vatsim.getAllVatsimTraffics(vatsimRedisClient);
+        let tempRes = [];
+        if (vatsimTraffics) {
+            tempRes = vatsimTraffics.filter((t) => {
+                return Object.keys(t.track[0]).length === 1;
+            });
+        }
+        res.status(200).json({
+            miss: tempRes
+        });
+    } catch (e) {
+        res.status(500);
+    }
+};
+
 // module.exports.updateVatsimTrafficToRedis = async (req, res) => {
 //     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
 //     const vatsim = new VatsimData();

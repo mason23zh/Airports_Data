@@ -1,14 +1,26 @@
 const { createLogger, format, transports } = require("winston");
-const { combine, timestamp, printf } = format;
+const path = require("path");
 
-const myFormat = printf(({ level, message, timestamp }) => {
-    return `${timestamp}  [${level}]: ${message}`;
-});
+const logFormat = format.printf(
+    (info) => `${info.timestamp} [${info.level}] [${info.label}]: ${info.message}`
+);
+
 const prodLogger = () => {
     return createLogger({
-        level: "info",
-        format: combine(timestamp(), myFormat),
-        transports: [new transports.Console()]
+        level: "debug",
+        //format: combine(colorize(), timestamp({ format: "HH:mm:ss" }), prettyPrint()),
+        format: format.combine(
+            format.label({ label: path.basename(process.mainModule.filename) }),
+            format.timestamp(),
+            // Format the metadata object
+            format.metadata({ fillExcept: ["message", "level", "timestamp", "label"] }),
+            format.splat()
+        ),
+        transports: [
+            new transports.Console({
+                format: format.combine(logFormat)
+            })
+        ]
     });
 };
 

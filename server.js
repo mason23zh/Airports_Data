@@ -52,19 +52,19 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     // });
     // every 20 seconds
 
-    // CronJob.from({
-    //     cronTime: "*/30 * * * * *",
-    //     onTick: async () => {
-    //         try {
-    //             await importVatsimTrafficsToDb(trafficRedisClient);
-    //         } catch (e) {
-    //             logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
-    //         }
-    //     },
-    //     start: true,
-    //     timeZone: "America/Los_Angeles",
-    //     runOnInit: true
-    // });
+    CronJob.from({
+        cronTime: "*/30 * * * * *",
+        onTick: async () => {
+            try {
+                await importVatsimTrafficsToDb(trafficRedisClient);
+            } catch (e) {
+                logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():", e);
+            }
+        },
+        start: true,
+        timeZone: "America/Los_Angeles",
+        runOnInit: true
+    });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
