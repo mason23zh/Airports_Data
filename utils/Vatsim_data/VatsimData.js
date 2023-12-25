@@ -533,21 +533,20 @@ class VatsimData {
      A generator function to return the db array in batch.
      * */
     async* paginatedSearch(repository, pageSize = 100) {
-        let page = 0;
+        let offset = 0;
         let results;
         let keepGoing = true;
 
         while (keepGoing) {
             try {
-                results = await repository.search().page(page, pageSize);
+                results = await repository.search().page(offset, pageSize);
                 if (results.length === 0 || results.length < pageSize) {
                     keepGoing = false;
                 }
-
                 yield results;
-                page += 1;
+                offset += pageSize; // Increment the offset for the next page
             } catch (error) {
-                logger.error(`Error fetching page ${page}:`, error);
+                logger.error(`Error fetching page at offset ${offset}:`, error);
                 keepGoing = false;
             }
         }
@@ -567,7 +566,6 @@ class VatsimData {
                 throw new Error("Failed to fetch Redis repo");
             }
 
-            //const allRedisTraffics = await trafficRepo.search().all();
             const entityToRemove = new Set();
 
             for await (const page of this.paginatedSearch(trafficRepo)) {
@@ -588,9 +586,7 @@ class VatsimData {
                     .returnFirst();
                 if (trackEntity) {
                     const compensationTrack = this.#trackCompensation(pilot, trackEntity);
-                    if (compensationTrack) {
-                        return trafficRepo.save(`${pilot.cid}`, compensationTrack);
-                    }
+                    return trafficRepo.save(`${pilot.cid}`, compensationTrack);
                 } else {
                     return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
                 }
