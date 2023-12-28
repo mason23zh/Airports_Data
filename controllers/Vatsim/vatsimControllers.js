@@ -215,6 +215,17 @@ module.exports.findEmptyTrack = async (req, res) => {
     }
 };
 
+module.exports.updatePrefileTrafficsToDb = async (req, res) => {
+    try {
+        const vatsim = new VatsimData();
+        await vatsim.requestVatsimData();
+        await vatsim.updateVatsimHistoryTraffic();
+        res.status(200).json({ results: "DONE" });
+    } catch (e) {
+        res.status(200).json({ error: e });
+    }
+};
+
 // module.exports.updateVatsimTrafficToRedis = async (req, res) => {
 //     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
 //     const vatsim = new VatsimData();
