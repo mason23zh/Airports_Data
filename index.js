@@ -13,6 +13,7 @@ module.exports.importVatsimTrafficsToDb = async (vatsimRedisClient) => {
     try {
         const vatsimData = new VatsimData();
         await vatsimData.updateVatsimTrafficRedis(vatsimRedisClient);
+        await vatsimData.updateVatsimHistoryTraffic();
     } catch (e) {
         console.error("Error import Vatsim Traffic to DB:", e);
         return null;

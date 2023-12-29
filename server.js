@@ -8,6 +8,7 @@ const RedisClient = require("./redis/RedisClient");
 const { CronJob } = require("cron");
 const { importVatsimEventsToDb, importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
 const logger = require("./logger/index");
+const VatsimData = require("./utils/Vatsim_data/VatsimData");
 
 const REDIS_VATSIM_URL =
     process.env.NODE_ENV === "production"
@@ -35,21 +36,21 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         }
     })();
 
-    // schedule.scheduleJob("*/10 * * * *", async () => {
-    //     try {
-    //         await importMetarsToDB(Latest_AwcWeatherModel, metarRedisClient);
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
-    //     }
-    // });
+    schedule.scheduleJob("*/10 * * * *", async () => {
+        try {
+            await importMetarsToDB(Latest_AwcWeatherModel, metarRedisClient);
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
+        }
+    });
     // every 12 hours
-    // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-    //     try {
-    //         await importVatsimEventsToDb();
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
-    //     }
-    // });
+    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+        try {
+            await importVatsimEventsToDb();
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
+        }
+    });
     // every 20 seconds
 
     CronJob.from({

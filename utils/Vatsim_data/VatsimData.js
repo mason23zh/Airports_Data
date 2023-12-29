@@ -661,8 +661,8 @@ class VatsimData {
                     }
                 )
             })
-            logger.debug("update queries length: %O", updateQuires[1])
             await VatsimHistoryTraffics.bulkWrite(updateQuires)
+            this.normalizedVatsimPrifiles = [];
         } catch (e) {
             logger.error("Error update vatsim history traffic: %O", e)
         }
