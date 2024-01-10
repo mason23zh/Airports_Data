@@ -4,12 +4,9 @@ const logger = require("../../logger/index");
 const StreamArray = require("stream-json/streamers/StreamArray");
 const StreamValues = require("stream-json/streamers/StreamValues");
 
-const fir = path.resolve(__dirname, "../../dev-data/vatsim_data/fir_2.json");
-const airport = path.resolve(
-    __dirname,
-    "../../dev-data/GNS430_Data/GNS430_airports_with_location.json"
-);
-const uris = path.resolve(__dirname, "../../dev-data/vatsim_data/uris.json");
+const fir = path.resolve(__dirname, "./fir_2.json");
+const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
+const uris = path.resolve(__dirname, "./uris.json");
 
 module.exports.generateFSS = async (vatsimControllers) => {
     logger.info("Generating fss");
