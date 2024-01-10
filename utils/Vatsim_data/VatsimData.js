@@ -16,7 +16,8 @@ const {vatsimTrafficsSchema} = require("../../redis/vatsimTraffics");
 const {batchProcess} = require("../../utils/batchProcess");
 
 const RedisClient = require("../../redis/RedisClient");
-const {generateFir, generateOtherControllers} = require("./generateFir");
+const {generateFir, generateControllersAndAtis, generateFSS} = require("./generateFir");
+
 
 class VatsimData {
     constructor() {
@@ -25,6 +26,7 @@ class VatsimData {
         this.vatsimPilots = [];
         this.vatsimPrefiles = [];
         this.vatsimControllers = [];
+        this.vatsimFSS = [];
         this.vatsimAtis = [];
         this.vatsimEvents = [];
         this.vatsimFir = [];
@@ -688,11 +690,22 @@ class VatsimData {
             if (!this.vatsimControllers) {
                 throw new Error("No Vatsim Controllers Available")
             }
-            this.vatsimOtherControllers = await generateOtherControllers(this.vatsimControllers)
-            logger.info(this.vatsimOtherControllers)
+            this.vatsimOtherControllers = await generateControllersAndAtis(this.vatsimControllers, this.vatsimAtis)
         } catch (e) {
             logger.error("Error get vatsim other controllers:%O", e)
             this.vatsimControllers = []
+        }
+    }
+
+    async getVatsimFss() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimFSS = await generateFSS(this.vatsimControllers)
+        } catch (e) {
+            logger.error("Error get vatsim FSS:%O", e)
+            this.vatsimFSS = []
         }
     }
 

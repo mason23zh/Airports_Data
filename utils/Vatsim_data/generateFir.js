@@ -2,16 +2,54 @@ const fs = require("fs");
 const path = require("path");
 const logger = require("../../logger/index");
 const StreamArray = require("stream-json/streamers/StreamArray");
+const StreamValues = require("stream-json/streamers/StreamValues");
 
 const fir = path.resolve(__dirname, "../../dev-data/vatsim_data/fir_2.json");
 const airport = path.resolve(
     __dirname,
     "../../dev-data/GNS430_Data/GNS430_airports_with_location.json"
 );
+const uris = path.resolve(__dirname, "../../dev-data/vatsim_data/uris.json");
 
-module.exports.generateOtherControllers = async (vatsimControllers) => {
+module.exports.generateFSS = async (vatsimControllers) => {
+    logger.info("Generating fss");
+    return new Promise((resolve, reject) => {
+        let fss = [];
+        const fssStream = fs
+            .createReadStream(uris)
+            .on("error", (err) => {
+                logger.error("uris.json not exist: %O", err);
+                reject("uris.json not exist: %O", err);
+            })
+            .on("error", (err) => {
+                logger.error("Error processing uris.json: %O", err);
+                reject("Error processing uris.json: %O", err);
+            })
+            .pipe(StreamValues.withParser());
+
+        fssStream.on("data", (data) => {
+            vatsimControllers.forEach((c) => {
+                if (c.facility === 1) {
+                    let { callsign } = c;
+                    fss.push({
+                        ...c,
+                        firInfo: {
+                            ...data.value[callsign]
+                        }
+                    });
+                }
+            });
+        });
+
+        fssStream.on("end", () => {
+            resolve(fss);
+        });
+    });
+};
+module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis) => {
     return new Promise((resolve, reject) => {
         let controllers = [];
+        let atis = [];
         const airportStream = fs
             .createReadStream(airport)
             .on("error", (err) => {
@@ -25,13 +63,41 @@ module.exports.generateOtherControllers = async (vatsimControllers) => {
             .pipe(StreamArray.withParser());
 
         airportStream.on("data", (data) => {
+            vatsimAtis.forEach((a) => {
+                let atisCallsign = a.callsign.split("_")[0];
+                if (
+                    data.value?.gps_code === atisCallsign ||
+                    data.value?.iata_code === atisCallsign ||
+                    data.value?.ident === atisCallsign ||
+                    data.value?.local_code === atisCallsign
+                ) {
+                    atis.push({
+                        ...a,
+                        airport: {
+                            name: data.value?.name,
+                            icao:
+                                data.value?.ident ||
+                                data.value?.icao ||
+                                data.value?.gps_code ||
+                                data.value?.local_code
+                        },
+                        coordinates: [
+                            data.value.coordinates.split(",")[0],
+                            data.value.coordinates.split(",")[1]
+                        ]
+                    });
+                }
+            });
             vatsimControllers.forEach((c) => {
                 let callsign = c.callsign.split("_")[0];
                 if (
-                    data.value?.gps_code === callsign ||
-                    data.value?.iata_code === callsign ||
-                    data.value?.ident === callsign ||
-                    data.value?.local_code === callsign
+                    (data.value?.gps_code === callsign ||
+                        data.value?.iata_code === callsign ||
+                        data.value?.ident === callsign ||
+                        data.value?.local_code === callsign) &&
+                    c.facility !== 6 &&
+                    c.facility !== 1 &&
+                    c.facility !== 0
                 ) {
                     controllers.push({
                         ...c,
@@ -53,7 +119,7 @@ module.exports.generateOtherControllers = async (vatsimControllers) => {
         });
 
         airportStream.on("end", () => {
-            resolve(controllers);
+            resolve({ controllers: controllers, atis: atis });
         });
     });
 };

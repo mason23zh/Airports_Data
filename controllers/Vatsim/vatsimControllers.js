@@ -226,6 +226,21 @@ module.exports.updatePrefileTrafficsToDb = async (req, res) => {
     }
 };
 
+module.exports.getVatsimControllers = async (req, res) => {
+    try {
+        const vatsim = new VatsimData();
+        await vatsim.requestVatsimData();
+        await vatsim.getVatsimFir();
+        await vatsim.getOtherControllers();
+        res.status(200).json({
+            fir: vatsim.vatsimFir,
+            other: vatsim.vatsimOtherControllers
+        });
+    } catch (e) {
+        res.status(200).json({});
+    }
+};
+
 module.exports.getVatsimFir = async (req, res) => {
     try {
         const vatsim = new VatsimData();
@@ -248,6 +263,16 @@ module.exports.getVatsimOtherControllers = async (req, res) => {
     }
 };
 
+module.exports.getVatsimFSS = async (req, res) => {
+    try {
+        const vatsim = new VatsimData();
+        await vatsim.requestVatsimData();
+        await vatsim.getVatsimFss();
+        res.status(200).json({ results: vatsim.vatsimFSS });
+    } catch (e) {
+        res.status(200).json({ results: [] });
+    }
+};
 // module.exports.updateVatsimTrafficToRedis = async (req, res) => {
 //     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
 //     const vatsim = new VatsimData();
