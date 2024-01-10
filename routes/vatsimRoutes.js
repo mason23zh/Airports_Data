@@ -10,7 +10,9 @@ const {
     getVatsimTraffics_Track,
     getVatsimTrafficByCID_Track,
     getVatsimTrafficByCID,
-    getVatsimTrafficByCallsign
+    getVatsimTrafficByCallsign,
+    getVatsimFir,
+    getVatsimOtherControllers
     // importVatsimToRedis,
     // findEmptyTrack
     // updatePrefileTrafficsToDb
@@ -27,6 +29,8 @@ router.get("/getTrafficByCallsign/:callsign", getVatsimTrafficByCallsign);
 router.get("/getTrafficByCID/track/:cid", getVatsimTrafficByCID_Track);
 router.get("/getTrafficByCID/:cid", getVatsimTrafficByCID);
 
+router.get("/getVatsimFir", getVatsimFir);
+router.get("/getVatsimOtherControllers", getVatsimOtherControllers);
 // router.get("/importToRedis", importVatsimToRedis);
 //router.get("/checkTrack", findEmptyTrack);
 // router.get("/importHistory", updatePrefileTrafficsToDb);

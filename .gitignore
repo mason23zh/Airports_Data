@@ -2,7 +2,7 @@ node_modules
 /config.env
 /dev-data
 dev-data/GNS430_Data
-dev-data/Vamsys_data
+dev-data/vatsim_data
 utils/Vamsys
 routes/devRoutes.js
 controllers/Dev

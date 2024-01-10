@@ -16,6 +16,7 @@ const {vatsimTrafficsSchema} = require("../../redis/vatsimTraffics");
 const {batchProcess} = require("../../utils/batchProcess");
 
 const RedisClient = require("../../redis/RedisClient");
+const {generateFir, generateOtherControllers} = require("./generateFir");
 
 class VatsimData {
     constructor() {
@@ -26,6 +27,8 @@ class VatsimData {
         this.vatsimControllers = [];
         this.vatsimAtis = [];
         this.vatsimEvents = [];
+        this.vatsimFir = [];
+        this.vatsimOtherControllers = [];
         this.L1 = 0;
         this.L2 = 0;
         this.L3 = 0;
@@ -600,7 +603,7 @@ class VatsimData {
 
             trafficPromise.push(trafficRepo.remove(Array.from(entityToRemove)));
             await batchProcess(trafficPromise, 30);
-            logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
+            // logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
         } catch (e) {
             logger.error("updateVatsimTrafficRedis error:%O", e);
         }
@@ -665,6 +668,31 @@ class VatsimData {
             this.normalizedVatsimPrifiles = [];
         } catch (e) {
             logger.error("Error update vatsim history traffic: %O", e)
+        }
+    }
+
+    async getVatsimFir() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimFir = await generateFir(this.vatsimControllers)
+        } catch (e) {
+            logger.error("Error get vatsim FIR:%O", e)
+            this.vatsimFir = [];
+        }
+    }
+
+    async getOtherControllers() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimOtherControllers = await generateOtherControllers(this.vatsimControllers)
+            logger.info(this.vatsimOtherControllers)
+        } catch (e) {
+            logger.error("Error get vatsim other controllers:%O", e)
+            this.vatsimControllers = []
         }
     }
 
