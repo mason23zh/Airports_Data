@@ -233,9 +233,11 @@ module.exports.getVatsimControllers = async (req, res) => {
         await vatsim.requestVatsimData();
         await vatsim.getVatsimFir();
         await vatsim.getOtherControllers();
+        await vatsim.getVatsimFss();
         res.status(200).json({
             fir: vatsim.vatsimFir,
-            other: vatsim.vatsimOtherControllers
+            other: vatsim.vatsimOtherControllers,
+            fss: vatsim.vatsimFSS
         });
     } catch (e) {
         res.status(200).json({});
@@ -274,7 +276,7 @@ module.exports.getVatsimFSS = async (req, res) => {
         res.status(200).json({ results: [] });
     }
 };
-const firFile = require("../../Data/Vatsim/vatsim-firs.json");
+
 //server fir json files
 module.exports.getVatsimFirFile = async (req, res) => {
     const filePath = path.join(__dirname, "../../Data/Vatsim/vatsim-firs.json");
