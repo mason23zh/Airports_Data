@@ -14,7 +14,10 @@ const {
     getVatsimFir,
     getVatsimOtherControllers,
     getVatsimControllers,
-    getVatsimFSS
+    getVatsimFSS,
+    getVatsimFirFile,
+    getVatsimFirBoundariesFile,
+    getVatsimUirsFile
     // importVatsimToRedis,
     // findEmptyTrack
     // updatePrefileTrafficsToDb
@@ -35,6 +38,10 @@ router.get("/getVatsimFir", getVatsimFir);
 router.get("/getVatsimOtherControllers", getVatsimOtherControllers);
 router.get("/getVatsimFSS", getVatsimFSS);
 router.get("/getVatsimControllers", getVatsimControllers);
+
+router.get("/data/vatsim-firs.json", getVatsimFirFile);
+router.get("/data/vatsim-firboundaries.json", getVatsimFirBoundariesFile);
+router.get("/data/vatsim-uirs.json", getVatsimUirsFile);
 // router.get("/importToRedis", importVatsimToRedis);
 //router.get("/checkTrack", findEmptyTrack);
 // router.get("/importHistory", updatePrefileTrafficsToDb);

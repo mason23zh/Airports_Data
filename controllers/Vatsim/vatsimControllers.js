@@ -2,6 +2,7 @@ const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const { vatsimTrafficsSchema } = require("../../redis/vatsimTraffics");
 const RedisClient = require("../../redis/RedisClient");
 const logger = require("../../logger/index");
+const path = require("path");
 
 const vatsimRedisClient = new RedisClient();
 const REDIS_VATSIM_URL =
@@ -273,6 +274,48 @@ module.exports.getVatsimFSS = async (req, res) => {
         res.status(200).json({ results: [] });
     }
 };
+const firFile = require("../../Data/Vatsim/vatsim-firs.json");
+//server fir json files
+module.exports.getVatsimFirFile = async (req, res) => {
+    const filePath = path.join(__dirname, "../../Data/Vatsim/vatsim-firs.json");
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            if (err.code === "ENOENT") {
+                res.status(404).send("File Not Found.");
+            } else {
+                res.status(500).send("Server Error.");
+            }
+        }
+    });
+};
+
+// const filepath = require("../../Data/Vatsim/vatsim-firboundaries.json")
+module.exports.getVatsimFirBoundariesFile = async (req, res) => {
+    const filePath = path.join(__dirname, "../../Data/Vatsim/vatsim-firboundaries.json");
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            if (err.code === "ENOENT") {
+                res.status(404).send("File Not Found.");
+            } else {
+                res.status(500).send("Server Error.");
+            }
+        }
+    });
+};
+
+module.exports.getVatsimUirsFile = async (req, res) => {
+    const filePath = path.join(__dirname, "../../Data/Vatsim/vatsim-uirs.json");
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            if (err.code === "ENOENT") {
+                res.status(404).send("File Not Found.");
+            } else {
+                res.status(500).send("Server Error.");
+            }
+        }
+    });
+};
+
 // module.exports.updateVatsimTrafficToRedis = async (req, res) => {
 //     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
 //     const vatsim = new VatsimData();
