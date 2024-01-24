@@ -318,6 +318,20 @@ module.exports.getVatsimUirsFile = async (req, res) => {
     });
 };
 
+module.exports.getVatsimTraconFile = async (req, res) => {
+    const filePath = path.join(__dirname, "../../Data/Vatsim/vatsim-traconboundaries.json");
+
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            if (err.code === "ENOENT") {
+                res.status(404).send("File Not Found.");
+            } else {
+                res.status(500).send("Server Error.");
+            }
+        }
+    });
+};
+
 // module.exports.updateVatsimTrafficToRedis = async (req, res) => {
 //     const vatsimRedisClient = await new Client().open(process.env.REDISCLOUD_VATSIM_TRAFFIC_DEV);
 //     const vatsim = new VatsimData();
