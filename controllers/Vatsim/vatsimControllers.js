@@ -90,6 +90,7 @@ module.exports.getVatsimTrafficByCID = async (req, res) => {
     try {
         const repo = vatsimRedisClient.createRedisRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("cid").eq(Number(req.params.cid)).returnFirst();
+        delete results.track;
         res.status(200).json({
             data: results
         });
@@ -118,6 +119,7 @@ module.exports.getVatsimTrafficByCallsign = async (req, res) => {
     try {
         const repo = vatsimRedisClient.createRedisRepository(vatsimTrafficsSchema);
         const results = await repo.search().where("callsign").eq(req.params.callsign).returnFirst();
+        delete results.track;
         res.status(200).json({
             data: results
         });
