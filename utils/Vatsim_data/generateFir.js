@@ -6,12 +6,35 @@ const StreamValues = require("stream-json/streamers/StreamValues");
 
 const fir = path.resolve(__dirname, "./fir_2.json");
 const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
+// const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
+// const vatsimControllersData_Test = path.resolve(
+//     __dirname,
+//     "./vatsim-data-ctp-controllers-only.json"
+// );
+// const vatsimControllersData_Test = path.resolve(
+//     __dirname,
+//     "./vatsim-data-ctp-controllers-only.json"
+// );
+
+// const vatsimControllersData_Test = require("../../Data/Vatsim/vatsim-data-ctp-controllers-only.json");
 
 module.exports.generateFSS = async (vatsimControllers) => {
-    logger.info("Generating fss");
+    // logger.info("Generating fss");
     return new Promise((resolve, reject) => {
         let fss = [];
+        // LOCAL FILE TEST
+        // let vatsimControllers;
+        // if (useTestData) {
+        //     try {
+        //         const data = fs.readFileSync(vatsimControllersData_Test);
+        //         vatsimControllers = JSON.parse(data);
+        //     } catch (err) {
+        //         logger.error("Failed to read or parse test data: %O", err);
+        //         return reject("Failed to load test data");
+        //     }
+        // }
+        // LOCAL FILE TEST
         const fssStream = fs
             .createReadStream(uris)
             .on("error", (err) => {
@@ -124,6 +147,22 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
 module.exports.generateFir = async (vatsimControllers) => {
     return new Promise((resolve, reject) => {
         let formatFir = [];
+        //LOCAL TEST FILE
+        // let vatsimControllers;
+        // if (useTestData) {
+        //     try {
+        //         const data = fs.readFileSync(vatsimControllersData_Test);
+        //         vatsimControllers = JSON.parse(data);
+        //     } catch (err) {
+        //         logger.error("Failed to read or parse test data: %O", err);
+        //         return reject("Failed to load test data");
+        //     }
+        // }
+        const firOnlyControllers = vatsimControllers.filter(
+            (controller) => controller.facility === 6
+        );
+
+        //LOCAL TEST FILE
         const processedControllers = new Set();
         const firStream = fs
             .createReadStream(fir)
@@ -136,10 +175,6 @@ module.exports.generateFir = async (vatsimControllers) => {
                 reject(err);
             })
             .pipe(StreamArray.withParser());
-
-        const firOnlyControllers = vatsimControllers.filter((controller) => {
-            return controller.facility === 6;
-        });
 
         firStream.on("data", (data) => {
             firOnlyControllers.forEach((controller) => {

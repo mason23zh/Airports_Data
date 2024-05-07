@@ -51,7 +51,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         }
     });
     // every 20 seconds
-
+    //
     CronJob.from({
         cronTime: "*/30 * * * * *",
         onTick: async () => {
