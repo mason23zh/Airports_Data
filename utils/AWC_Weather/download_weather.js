@@ -1,91 +1,78 @@
 require("dotenv").config({ path: "../config.env" });
-const util = require("util");
-const stream = require("stream");
+const logger = require("../../logger/index");
 const axios = require("axios");
 const fs = require("fs");
+const csv = require("csv-parser");
 const zlib = require("zlib");
-const CSVToJson = require("../Data_Convert/csvToJson");
-const pipeline = util.promisify(stream.pipeline);
-const awc_csv_metar = "./utils/AWC_Weather/Data/raw_awc_metars.csv";
-const awc_csv_modified_metar = "./utils/AWC_Weather/Data/awc_metars.csv";
-const awc_json_metar = "./utils/AWC_Weather/Data/awc_metars.json";
 
-const processCSV = async () => {
-    let awcWeatherStatus = {
-        error: "",
-        warning: "",
-        sources: "",
-        time: "",
-        results: ""
-    };
-    // let csvContent = fs.readFile(awc_csv_metar, (err, data) => {
-    //     console.log(data);
-    // });
+module.exports.downloadAndUnzip = async (url) => {
+    const response = await axios({
+        method: "get",
+        url: url,
+        responseType: "stream"
+    });
 
-    let csvContent = fs.readFileSync(awc_csv_metar);
-    csvContent = csvContent.toString().split("\n");
-    if (csvContent.length > 1) {
-        awcWeatherStatus.error = csvContent[0];
-        awcWeatherStatus.warning = csvContent[1];
-        awcWeatherStatus.time = csvContent[2];
-        awcWeatherStatus.sources = csvContent[3];
-        awcWeatherStatus.results = csvContent[4];
+    const writer = fs.createWriteStream("./utils/AWC_Weather/Data/metars.csv");
+    const unzip = zlib.createGunzip();
 
-        csvContent.splice(0, 5);
-        csvContent = csvContent.join("\n");
-        // console.log("CSV content:", csvContent);
-        fs.writeFileSync("./utils/AWC_Weather/Data/awc_metars.csv", csvContent);
-
-        const awc_metars = new CSVToJson(awc_csv_modified_metar, awc_json_metar);
-        await awc_metars.csvToJson();
-        return JSON.parse(fs.readFileSync(awc_json_metar));
-    } else {
-        return [];
-    }
+    response.data.pipe(unzip).pipe(writer);
+    return new Promise((resolve, reject) => {
+        writer.on("finish", resolve);
+        writer.on("error", reject);
+        unzip.on("error", reject);
+        response.data.on("error", reject);
+    });
 };
 
-const downloadFile = async (url) => {
-    try {
-        const request = await axios.get(url, {
-            responseType: "stream"
+module.exports.processDownloadAWCData = async () => {
+    return new Promise((resolve, reject) => {
+        const rawDataArray = [];
+        const readFile = fs.createReadStream("./utils/AWC_Weather/Data/metars.csv", {
+            encoding: "utf8"
         });
-        await pipeline(
-            request.data,
-            fs.createWriteStream("./utils/AWC_Weather/Data/awcMetarZip.gz")
-        );
-        console.log("download AWC Zip file pipeline successful");
-        return new Promise((resolve) => {
-            resolve();
-        });
-    } catch (error) {
-        console.error("download AWC Zip file pipeline failed", error);
-        return new Promise((res, rej) => {
-            rej(error);
-        });
-    }
-};
 
-const unzipFile = async () => {
-    //unzip
-    const zipFile = fs.readFileSync("./utils/AWC_Weather/Data/awcMetarZip.gz");
-    const unzippedFile = zlib.unzipSync(zipFile);
-    fs.writeFileSync("./utils/AWC_Weather/Data/raw_awc_metars.csv", unzippedFile);
-};
+        readFile.on("error", (err) => {
+            logger.error("Error reading stream:%O", err);
+            reject(err);
+            readFile.close();
+        });
 
-module.exports.downloadAndProcessAWCMetars = async (url) => {
-    try {
-        await downloadFile(url);
-        await unzipFile();
-        const result = await processCSV();
-        return JSON.stringify(result);
-    } catch (e) {
-        return [];
-    }
-    // downloadFile(url)
-    //     .then(() => {
-    //         unzipFile().then(() => {
-    //             processCSV();
-    //         });
-    //     })
-    //     .catch();
+        readFile
+            .pipe(
+                csv({
+                    skipLines: 5
+                })
+            )
+            .on("data", (data) => {
+                rawDataArray.push(data);
+            })
+            .on("end", () => {
+                logger.info("read file complete");
+                const writeStream = fs.createWriteStream("./utils/AWC_Weather/Data/metars.json", {
+                    encoding: "utf8"
+                });
+                writeStream.on("error", (err) => {
+                    logger.error("error writing stream:%O", err);
+                    reject(err);
+                    writeStream.close();
+                });
+                writeStream.write(JSON.stringify(rawDataArray), () => {
+                    logger.info("write metar data to JSON complete");
+                    resolve();
+                });
+                writeStream.end();
+                writeStream.on("finish", () => {
+                    // Handle cleanup and file deletion after writing is complete
+                    if (fs.existsSync("./utils/AWC_Weather/Data/metars.csv")) {
+                        fs.unlink("./utils/AWC_Weather/Data/metars.csv", (err) => {
+                            if (err) {
+                                logger.error("error delete csv file:%O", err);
+                            } else {
+                                logger.info("delete csv file");
+                            }
+                        });
+                    }
+                });
+            });
+    });
 };

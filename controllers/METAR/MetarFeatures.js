@@ -1,5 +1,6 @@
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { metarCloudCode, metarWeatherCode } = require("./constants");
+const { EntityId } = require("redis-om");
 const {
     ktsToMps,
     ktsTokph,
@@ -57,10 +58,10 @@ class MetarFeatures {
             return;
         }
         /* eslint-disable no-unused-vars */
-        if (Object.hasOwn(this.metar, "entityId")) {
+        if (Object.hasOwn(this.metar, EntityId)) {
             const { longitude, latitude } = this.metar.location_redis;
             const location = [longitude, latitude];
-            const { entityId, location_redis, auto, ...rest } = this.metar;
+            const { EntityId, location_redis, auto, ...rest } = this.metar;
             rest.location = location;
             this.normalizedMetar = rest;
         } else {
@@ -120,6 +121,9 @@ class MetarFeatures {
     async requestMetarWithinRadius_LngLat(lon, lat, distance, decode = false) {
         try {
             if (!lon || !lat || !distance) return [];
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const responseMetar = await this.repo
                 .search()
                 .where("location_redis")
@@ -131,7 +135,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -176,6 +180,9 @@ class MetarFeatures {
 
     async requestMetarUsingGenericInput(data, decode = false) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 .where("name")
                 .matches(data)
@@ -187,7 +194,7 @@ class MetarFeatures {
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
                 redisMetar.map((metar) => {
-                    this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                    this.metarArray.push(this.convertGeneralResponseMetar(metar));
                 });
                 return this.metarArray;
             } else {
@@ -225,6 +232,9 @@ class MetarFeatures {
 
     async requestMetarUsingAirportName(name, decode = false) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo.search().where("name").matches(name).returnAll();
             if (redisMetar && redisMetar.length !== 0) {
                 this.metarArray = [];
@@ -232,7 +242,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -261,6 +271,9 @@ class MetarFeatures {
     async requestMetarCategory_global(category, sort = 1, limit = 10, decode = false) {
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where(category)
@@ -273,7 +286,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -314,6 +327,9 @@ class MetarFeatures {
         const sortQuery = Number(sort) === 1 ? "ASC" : "DESC";
 
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where(scope)
@@ -329,7 +345,7 @@ class MetarFeatures {
                     if (!decode) {
                         this.metarArray.push(metar.raw_text);
                     } else {
-                        this.metarArray.push(this.convertGeneralResponseMetar(metar.toJSON()));
+                        this.metarArray.push(this.convertGeneralResponseMetar(metar));
                     }
                 });
                 return this.metarArray;
@@ -361,13 +377,16 @@ class MetarFeatures {
 
     async requestMetarUsingICAO(icao) {
         try {
+            if (!this.repo) {
+                throw new Error("Redis repo not available");
+            }
             const redisMetar = await this.repo
                 ?.search()
                 .where("station_id")
                 .equals(icao.toUpperCase())
                 .returnFirst();
-            if (redisMetar && redisMetar.length !== 0) {
-                this.metar = redisMetar.toJSON();
+            if (redisMetar) {
+                this.metar = redisMetar;
                 this.#normalizeMetar();
                 this.#generateDecodedMetar();
                 return this;

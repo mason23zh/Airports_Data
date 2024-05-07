@@ -1,73 +1,71 @@
-const { Entity, Schema } = require("redis-om");
+const { Schema } = require("redis-om");
 
-class AwcMetar extends Entity {}
-
-exports.awcMetarSchema = new Schema(AwcMetar, {
+exports.awcMetarSchema = new Schema("AwcMetar", {
     raw_text: {
-        type: "string",
+        type: "string"
     },
     station_id: {
-        type: "string",
+        type: "string"
     },
     observation_time: {
-        type: "date",
+        type: "date"
     },
     location_redis: {
-        type: "point",
+        type: "point"
     },
     temp_c: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     dewpoint_c: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     wind_dir_degrees: {
-        type: "number",
+        type: "number"
     },
     wind_speed_kt: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     wind_gust_kt: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     visibility_statute_mi: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     altim_in_hg: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     auto: {
-        type: "string",
+        type: "string"
     },
     flight_category: {
-        type: "string",
+        type: "string"
     },
     metar_type: {
-        type: "string",
+        type: "string"
     },
     elevation_m: {
         type: "number",
-        sortable: true,
+        sortable: true
     },
     ios_country: {
-        type: "string",
+        type: "string"
     },
     ios_region: {
-        type: "string",
+        type: "string"
     },
     continent: {
-        type: "string",
+        type: "string"
     },
     municipality: {
-        type: "text",
+        type: "text"
     },
     name: {
-        type: "text",
-    },
+        type: "text"
+    }
 });

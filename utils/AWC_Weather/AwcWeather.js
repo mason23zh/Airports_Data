@@ -11,6 +11,7 @@ const { oceaniaCountries } = require("./oceaniaCountries");
 const { europeCountries } = require("./europeCountries");
 const { southAmericaCountries } = require("./southAmericaCountires");
 const { continentCode } = require("./continentCode");
+const logger = require("../../logger/index");
 
 class AwcWeather {
     constructor() {
@@ -34,7 +35,10 @@ class AwcWeather {
             if (globalICAO.includes(metar.station_id[0])) {
                 return metar;
             }
-        }).filter((value, index, self) => index === self.findIndex((t) => t.station_id[0] === value.station_id[0]));
+        }).filter(
+            (value, index, self) =>
+                index === self.findIndex((t) => t.station_id[0] === value.station_id[0])
+        );
 
         return this.filteredMetar;
     }
@@ -136,7 +140,7 @@ class AwcWeather {
             ...oceaniaCountries,
             ...europeCountries,
             ...northAmericaCountries,
-            ...southAmericaCountries,
+            ...southAmericaCountries
         ];
 
         let globalMetars = [];
@@ -167,7 +171,7 @@ class AwcWeather {
                 this.METAR.push(globalMetars[i][t]);
             }
         }
-        //console.log("Total number of global METARs: ", this.METAR.length);
+        logger.debug("Total number of global METARs: ", this.METAR.length);
 
         return this.#airportsFilter();
     }
@@ -284,7 +288,7 @@ class AwcWeather {
     // 1: temp from lowest to highest
     sortTheMetarByTemp(sortOrder) {
         const metarSortedByTemp = this.#dynamicSort("temp_c", sortOrder);
-        //console.log(metarSortedByTemp);
+
         if (sortOrder === 1) {
             this.lowestTempMetar = [];
             metarSortedByTemp.forEach((metar) => {

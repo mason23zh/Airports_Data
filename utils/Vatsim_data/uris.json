@@ -1,0 +1,515 @@
+{
+    "ADR_U": {
+        "prefix": "ADR_U",
+        "name": "Adria Radar Upper",
+        "firs": [
+            "LJLA",
+            "LDZO",
+            "LQSB",
+            "LYBA",
+            "LWSS",
+            "LAAA"
+        ]
+    },
+    "AFRN": {
+        "prefix": "AFRN",
+        "name": "North Africa Control",
+        "firs": [
+            "DAAA",
+            "DRRR",
+            "DTTC",
+            "FTTT",
+            "GMMM",
+            "HLLL"
+        ]
+    },
+    "AFRC": {
+        "prefix": "AFRC",
+        "name": "Africa Central Control",
+        "firs": [
+            "FLFI",
+            "FNAN",
+            "FSSS",
+            "FWLL",
+            "FZZA",
+            "HKNA",
+            "HTDC",
+            "HUEC"
+        ]
+    },
+    "AFRE": {
+        "prefix": "AFRE",
+        "name": "East Africa Control",
+        "firs": [
+            "HAAA",
+            "HCSM",
+            "HHAA",
+            "HSSS"
+        ]
+    },
+    "AFRS": {
+        "prefix": "AFRS",
+        "name": "Africa South Control",
+        "firs": [
+            "FACA",
+            "FAJA",
+            "FBGR",
+            "FIMM",
+            "FMMM",
+            "FQBE",
+            "FVHF",
+            "FYWH"
+        ]
+    },
+    "AFRW": {
+        "prefix": "AFRW",
+        "name": "Africa West Control",
+        "firs": [
+            "DGAC",
+            "DGAO",
+            "DIII",
+            "DNKK",
+            "FCCC",
+            "GLRB",
+            "GOOO",
+            "GOOC",
+            "GVSC"
+        ]
+    },
+    "ASEA_N": {
+        "prefix": "ASEA_N",
+        "name": "South East Asia Control",
+        "firs": [
+            "VHHK",
+            "RPHI",
+            "VVHM",
+            "VTBB",
+            "VVHN",
+            "VLVT",
+            "VDPF"
+        ]
+    },
+    "ASEA_S": {
+        "prefix": "ASEA_S",
+        "name": "South East Asia Control",
+        "firs": [
+            "WSJC",
+            "WMFC",
+            "WBFC",
+            "WIIF",
+            "WAAF"
+        ]
+    },
+    "ASEA": {
+        "prefix": "ASEA",
+        "name": "South East Asia Control",
+        "firs": [
+            "VHHK",
+            "WSJC",
+            "WMFC",
+            "WBFC",
+            "WIIF",
+            "WAAF",
+            "RPHI",
+            "VVHM",
+            "VDPF",
+            "VTBB",
+            "VVHN",
+            "VLVT",
+            "VYYF"
+        ]
+    },
+    "ASIA": {
+        "prefix": "ASIA",
+        "name": "West Asia Control",
+        "firs": [
+            "VABF",
+            "VIDF",
+            "VECF",
+            "VOMF",
+            "VEGF",
+            "OPKR",
+            "OPLR",
+            "OAKX",
+            "VCCF",
+            "VRMF",
+            "VGFR",
+            "VNSM"
+        ]
+    },
+    "BALT": {
+        "prefix": "BALT",
+        "name": "Baltic Control",
+        "firs": [
+            "EYVL",
+            "EVRR",
+            "EETT"
+        ]
+    },
+    "BICC": {
+        "prefix": "BICC",
+        "name": "Iceland Radio",
+        "firs": [
+            "BIRD-E",
+            "BIRD-N",
+            "BIRD-S",
+            "BIRD-W"
+        ]
+    },
+    "CARI": {
+        "prefix": "CARI",
+        "name": "Caribbean Control",
+        "firs": [
+            "MUFH",
+            "MKJK",
+            "MTEG",
+            "MDCS",
+            "TNCF",
+            "TJZS",
+            "TTZP",
+            "TTZO"
+        ]
+    },
+    "CARE": {
+        "prefix": "CARE",
+        "name": "Caribbean Control East",
+        "firs": [
+            "MDCS",
+            "TJZS",
+            "TTZP",
+            "TTZO"
+        ]
+    },
+    "CARW": {
+        "prefix": "CARW",
+        "name": "Caribbean Control West",
+        "firs": [
+            "MUFH",
+            "MKJK",
+            "MTEG",
+            "TNCF"
+        ]
+    },
+    "ANT": {
+        "prefix": "ANT",
+        "name": "Antilles Center",
+        "firs": [
+            "MDCS",
+            "TNCF",
+            "MTEG"
+        ]
+    },
+    "EURN": {
+        "prefix": "EURN",
+        "name": "EuroNorth",
+        "firs": [
+            "EKDK",
+            "EETT",
+            "EFIN",
+            "EVRR",
+            "EYVL",
+            "ENBD",
+            "ENOS",
+            "ENSV",
+            "ESOS"
+        ]
+    },
+    "EUC-EN": {
+        "prefix": "EUC-EN",
+        "name": "Eurocontrol",
+        "firs": [
+            "EPWW",
+            "LKAA",
+            "LZBB",
+            "LHCC"
+        ]
+    },
+    "EUC-ES": {
+        "prefix": "EUC-ES",
+        "name": "Eurocontrol",
+        "firs": [
+            "LIPP",
+            "LJLA",
+            "LDZO",
+            "LQSB",
+            "LIBB",
+            "LIRR",
+            "LMMM"
+        ]
+    },
+    "EUC-ME": {
+        "prefix": "EUC-ME",
+        "name": "Maastricht",
+        "firs": [
+            "EDWW-B",
+            "EDMM",
+            "EDGG-BAD",
+            "EDGG-DKB",
+            "EDGG-GIN",
+            "EDGG-RUD",
+            "LOVV"
+        ]
+    },
+    "EUC-MW": {
+        "prefix": "EUC-MW",
+        "name": "Maastricht",
+        "firs": [
+            "EDGG-PAH",
+            "EDWW-A",
+            "EHAA",
+            "EBBU"
+        ]
+    },
+    "EUC-SE": {
+        "prefix": "EUC-SE",
+        "name": "Eurocontrol",
+        "firs": [
+            "LTAA",
+            "LTBB",
+            "LCCC"
+        ]
+    },
+    "EUC-SW": {
+        "prefix": "EUC-SW",
+        "name": "Eurocontrol",
+        "firs": [
+            "LRBB",
+            "LUUU",
+            "LBSR",
+            "LYBA",
+            "LGGG",
+            "LAAA",
+            "LWSS"
+        ]
+    },
+    "EUC-WN": {
+        "prefix": "EUC-WN",
+        "name": "Eurocontrol",
+        "firs": [
+            "LFBB",
+            "LFEE",
+            "LFMM",
+            "LFRR",
+            "LIMM",
+            "LSAS"
+        ]
+    },
+    "EUC-WS": {
+        "prefix": "EUC-WS",
+        "name": "Eurocontrol",
+        "firs": [
+            "LPPC",
+            "LECM",
+            "LECB",
+            "LECS"
+        ]
+    },
+    "GULF": {
+        "prefix": "GULF",
+        "name": "Gulf Control",
+        "firs": [
+            "OIIX",
+            "ORBB",
+            "OSTT",
+            "OEJD",
+            "OKAC",
+            "OBBB",
+            "OMAE",
+            "OYSC",
+            "OOMM",
+            "OJAC",
+            "OLBB",
+            "HECC"
+        ]
+    },
+    "GULF_E": {
+        "prefix": "GULF_E",
+        "name": "Gulf Control",
+        "firs": [
+            "OBBB",
+            "OIIX",
+            "OKAC",
+            "OMAE",
+            "OOMM",
+            "ORBB"
+        ]
+    },
+    "GULF_W": {
+        "prefix": "GULF_W",
+        "name": "Gulf Control",
+        "firs": [
+            "HECC",
+            "OEJD",
+            "OJAC",
+            "OLBB",
+            "OSTT",
+            "OYSC"
+        ]
+    },
+    "LFUP": {
+        "prefix": "LFUP",
+        "name": "France Control",
+        "firs": [
+            "LFMM",
+            "LFFF",
+            "LFEE",
+            "LFBB",
+            "LFRR"
+        ]
+    },
+    "LIUP": {
+        "prefix": "LIUP",
+        "name": "Italy Radar",
+        "firs": [
+            "LIMM",
+            "LIBB",
+            "LIRR",
+            "LIPP"
+        ]
+    },
+    "LRUB": {
+        "prefix": "LRUB",
+        "name": "Black Sea West Control",
+        "firs": [
+            "LBSR",
+            "LRBB",
+            "LUUU"
+        ]
+    },
+    "PRC": {
+        "prefix": "PRC",
+        "name": "Beijing Control",
+        "firs": [
+            "ZBPE",
+            "ZGZU",
+            "ZJSA",
+            "ZLHW",
+            "ZPKM",
+            "ZSHA",
+            "ZWUQ",
+            "ZYSH"
+        ]
+    },
+    "RU-ERC": {
+        "prefix": "RU-ERC",
+        "name": "Eastern Russia Control",
+        "firs": [
+            "UEEE",
+            "UHHH",
+            "UHMM"
+        ]
+    },
+    "RU-WRC": {
+        "prefix": "RU-WRC",
+        "name": "Western Russia Control",
+        "firs": [
+            "UMMV",
+            "UUWV",
+            "UWWW"
+        ]
+    },
+    "RU-ESC": {
+        "prefix": "RU-ESC",
+        "name": "Siberia Control",
+        "firs": [
+            "UNKL",
+            "UNNT",
+            "UIII"
+        ]
+    },
+    "RU-WSC": {
+        "prefix": "RU-WSC",
+        "name": "Western Siberia Control",
+        "firs": [
+            "USTV",
+            "USSV"
+        ]
+    },
+    "RU-CEN": {
+        "prefix": "RU-CEN",
+        "name": "Asia-Center",
+        "firs": [
+            "UATT",
+            "UACN",
+            "UAAA",
+            "UTAK",
+            "UTAA",
+            "UTAT",
+            "UTAV",
+            "UTSD",
+            "UTTR",
+            "UAII",
+            "UCFO",
+            "UTDD",
+            "UCFM"
+        ]
+    },
+    "RU-NWC": {
+        "prefix": "RU-NWC",
+        "name": "North Western Russia Control",
+        "firs": [
+            "ULLL",
+            "UMKK"
+        ]
+    },
+    "RU-SC": {
+        "prefix": "RU-SC",
+        "name": "Caucasus-Radar",
+        "firs": [
+            "URRV",
+            "UGGG",
+            "UDDD",
+            "UBBA"
+        ]
+    },
+    "SAM-N": {
+        "prefix": "SAM-N",
+        "name": "South America Control North",
+        "firs": [
+            "SEFG",
+            "SKED",
+            "SKEC",
+            "MPZL",
+            "MHCC",
+            "SVZM",
+            "SYGC",
+            "SMPM",
+            "SOOO"
+        ]
+    },
+    "SAM-E": {
+        "prefix": "SAM-E",
+        "name": "South America Control East",
+        "firs": [
+            "SBCW",
+            "SBAZ",
+            "SBRE",
+            "SBBS"
+        ]
+    },
+    "SAM-S": {
+        "prefix": "SAM-S",
+        "name": "South America Control South",
+        "firs": [
+            "SUEO",
+            "SGFA",
+            "SAEF",
+            "SARR",
+            "SACF",
+            "SAMF",
+            "SAVF"
+        ]
+    },
+    "SAM-W": {
+        "prefix": "SAM-W",
+        "name": "South America Control West",
+        "firs": [
+            "SCEZ",
+            "SCTZ",
+            "SCCZ",
+            "SCFZ",
+            "SLLF",
+            "SPIM"
+        ]
+    }
+}

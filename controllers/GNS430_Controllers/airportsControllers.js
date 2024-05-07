@@ -12,15 +12,13 @@ const { getDistanceFromLatLonInKm } = require("./converter");
 const axios = require("axios");
 const VatsimData = require("../../utils/Vatsim_data/VatsimData");
 const OnlineFlightData = require("../../utils/Online_Flight_Data/OnlineFlightData");
-
 const earthRadiusInNauticalMile = 3443.92;
 const earthRadiusInKM = 6378.1;
 
 const rClient = new RedisClient();
-let repo;
+
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-    repo = rClient.createRedisOMRepository(awcMetarSchema);
+    await rClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
 })();
 
 module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
@@ -37,26 +35,18 @@ module.exports.getAirportByICAO_GNS430_Basic = async (req, res) => {
 module.exports.getAirportByICAO_GNS430 = async (req, res) => {
     let decode = req.query.decode === "true";
 
-    const airportFeatures = new APIFeatures(
-        GNS430Airport_Update.findOne({
-            ICAO: `${req.params.icao.toUpperCase()}`
-        }),
-        req.query
-    )
-        .filter()
-        .limitFields();
+    const gns430Airport = await GNS430Airport_Update.findOne({
+        ICAO: `${req.params.icao.toUpperCase()}`
+    });
 
-    airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
-
-    const gns430Airport = await airportFeatures.query;
-
-    if (!gns430Airport || gns430Airport.length === 0) {
+    if (!gns430Airport) {
         return res.status(200).json({
             results: 0,
             data: []
         });
     } else {
-        let responseObject = { airport: gns430Airport[0] };
+        const repo = rClient.createRedisRepository(awcMetarSchema);
+        let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
             decode,
@@ -87,23 +77,18 @@ module.exports.getAirportByICAO_GNS430 = async (req, res) => {
 module.exports.getAirportByICAO_GNS430_With_Widget = async (req, res) => {
     let decode = req.query.decode === "true";
 
-    const airportFeatures = new APIFeatures(
-        GNS430Airport_Update.findOne({ ICAO: `${req.params.icao.toUpperCase()}` }),
-        req.query
-    )
-        .filter()
-        .limitFields();
+    const gns430Airport = await GNS430Airport_Update.findOne({
+        ICAO: `${req.params.icao.toUpperCase()}`
+    });
 
-    airportFeatures.query = airportFeatures.query.populate({ path: "comments" });
-    const gns430Airport = await airportFeatures.query;
-
-    if (!gns430Airport || gns430Airport.length === 0) {
+    if (!gns430Airport) {
         return res.status(200).json({
             results: 0,
             data: []
         });
     } else {
-        let responseObject = { airport: gns430Airport[0] };
+        const repo = rClient.createRedisRepository(awcMetarSchema);
+        let responseObject = { airport: gns430Airport };
         const responseMetar = await getAwcMetarUsingICAO(
             req.params.icao.toUpperCase(),
             decode,
@@ -161,6 +146,7 @@ module.exports.getAirportByIATA_GNS430 = async (req, res) => {
             data: []
         });
     } else {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         let responseObject = { airport: gns430Airport[0] };
         let icao = gns430Airport[0].ICAO;
         const ATIS = await generateGeneralATIS(icao);

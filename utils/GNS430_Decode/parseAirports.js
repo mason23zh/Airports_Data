@@ -1,5 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
+const logger = require("../../logger/index");
 
 function processLineByLine1() {
     let airportsCount = 0;
@@ -12,7 +13,7 @@ function processLineByLine1() {
     //const fileStream = fs.createReadStream("H:/node-js-project/Flight-Data/dev-data/GNS430_Data/Airports_test.txt");
 
     const rl = readline.createInterface({
-        input: fileStream,
+        input: fileStream
         /**removeHistoryDuplicates: true,**/
     });
 
@@ -27,7 +28,7 @@ function processLineByLine1() {
 
                 const tempObject = {
                     type: "Point",
-                    coordinates: [airportLongitude, airportLatitude],
+                    coordinates: [airportLongitude, airportLatitude]
                 };
                 airportObj = { ...airportObj, location: tempObject };
 
@@ -47,7 +48,7 @@ function processLineByLine1() {
                 //runwayObj.coordinates = [runwayThrLongitude, runwayThrLatitude];
                 const tempRunwayLocation = {
                     type: "Point",
-                    coordinates: [runwayThrLongitude, runwayThrLatitude],
+                    coordinates: [runwayThrLongitude, runwayThrLatitude]
                 };
                 runwayObj = { ...runwayObj, runwayLocation: tempRunwayLocation };
                 //runwayObj.thresholdLatitude = Number(line.split(",")[8]);
@@ -66,8 +67,11 @@ function processLineByLine1() {
             airports.push(airportObj);
             airportObj = {};
             // eslint-disable-next-line no-plusplus
-            console.log(`added ${airportsCount++}`);
-            fs.writeFileSync("../../dev-data/GNS430_Data/Airports_2303.json", JSON.stringify(airports));
+            logger.info(`added ${airportsCount++}`);
+            fs.writeFileSync(
+                "../../dev-data/GNS430_Data/Airports_2303.json",
+                JSON.stringify(airports)
+            );
         }
     });
 }

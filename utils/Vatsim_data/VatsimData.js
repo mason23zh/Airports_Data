@@ -1,19 +1,39 @@
+/* eslint-disable prettier/prettier */
+require("dotenv").config({path: "../../config.env"});
+const logger = require("../../logger/index");
 const axios = require("axios");
-const { VATSIM_DATA_URL, VATSIM_EVENTS_URL } = require("../../config");
-const { VatsimEvents } = require("../../models/vatsim/vatsimEventsModel");
+const {VATSIM_DATA_URL, VATSIM_EVENTS_URL} = require("../../config");
+const {VatsimEvents} = require("../../models/vatsim/vatsimEventsModel");
+const {VatsimHistoryTraffics} = require("../../models/vatsim/vatsimHistoryTrafficsModel");
 const BadRequestError = require("../../common/errors/BadRequestError");
 const NotFoundError = require("../../common/errors/NotFoundError");
-const { GNS430Airport } = require("../../models/airports/GNS430_model/gns430AirportsModel");
+const {GNS430Airport} = require("../../models/airports/GNS430_model/gns430AirportsModel");
 const {
     GNS430Airport_Update
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
+const _ = require("lodash");
+const {vatsimTrafficsSchema} = require("../../redis/vatsimTraffics");
+const {batchProcess} = require("../../utils/batchProcess");
+
+const RedisClient = require("../../redis/RedisClient");
+const {generateFir, generateControllersAndAtis, generateFSS} = require("./generateFir");
+
 
 class VatsimData {
     constructor() {
+        this.normalizedVatsimTraffics = [];
+        this.normalizedVatsimPrifiles = []
         this.vatsimPilots = [];
+        this.vatsimPrefiles = [];
         this.vatsimControllers = [];
+        this.vatsimFSS = [];
         this.vatsimAtis = [];
         this.vatsimEvents = [];
+        this.vatsimFir = [];
+        this.vatsimOtherControllers = [];
+        this.L1 = 0;
+        this.L2 = 0;
+        this.L3 = 0;
         this.facilities = [
             {
                 id: 0,
@@ -55,7 +75,7 @@ class VatsimData {
 
     static async getAirportITAT(icao) {
         try {
-            const airport = await GNS430Airport_Update.findOne({ ICAO: `${icao.toUpperCase()}` });
+            const airport = await GNS430Airport_Update.findOne({ICAO: `${icao.toUpperCase()}`});
             return airport.iata;
         } catch (e) {
             throw new NotFoundError("Airport Not Found.");
@@ -67,16 +87,17 @@ class VatsimData {
             return null;
         }
         try {
-            console.log("starting import vatsim events to db...");
+            logger.info("starting import vatsim events to db...");
             // delete all previous events
             await VatsimEvents.deleteMany({});
             const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
             if (doc.length > 0) {
-                console.log("successfully import vatsim events to db ");
+                logger.info("successfully import vatsim events to db ");
             }
+            this.vatsimEvents = null;
             return doc.length;
         } catch (e) {
-            console.error(e);
+            logger.error("storeVatsimEventsToDB error:%O", e);
             return null;
         }
     }
@@ -90,6 +111,7 @@ class VatsimData {
                 }
             }
         } catch (e) {
+            logger.error("requestVatsimEventsData error:%O", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
         return this;
@@ -99,13 +121,14 @@ class VatsimData {
         try {
             const currentTime = new Date(new Date()).toISOString();
             // filter out the events that already ended
-            const docs = await VatsimEvents.find({ end_time: { $gte: currentTime } });
+            const docs = await VatsimEvents.find({end_time: {$gte: currentTime}});
             if (docs && docs.length > 0) {
                 return docs;
             } else {
                 return this.vatsimEvents;
             }
         } catch (e) {
+            logger.error("getAllVatsimEvents error:%O", e);
             return [];
         }
     }
@@ -116,11 +139,11 @@ class VatsimData {
             const currentTime = new Date(new Date()).toISOString();
 
             if (timeFlag === "start_time") {
-                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                docs = await VatsimEvents.find({end_time: {$gte: currentTime}}).sort({
                     start_time: order
                 });
             } else if (timeFlag === "end_time") {
-                docs = await VatsimEvents.find({ end_time: { $gte: currentTime } }).sort({
+                docs = await VatsimEvents.find({end_time: {$gte: currentTime}}).sort({
                     end_time: order
                 });
             }
@@ -128,6 +151,7 @@ class VatsimData {
                 return docs;
             }
         } catch (e) {
+            logger.error("sortVatsimEventsByTime error:%O", e);
             return [];
         }
     }
@@ -136,8 +160,8 @@ class VatsimData {
         try {
             const currentTime = new Date().getTime();
             const docs = await VatsimEvents.find({
-                end_time: { $gte: new Date(new Date()).toISOString() }
-            }).sort({ start_time: 1 });
+                end_time: {$gte: new Date(new Date()).toISOString()}
+            }).sort({start_time: 1});
             if (docs && docs.length > 0) {
                 return docs.filter((t) => {
                     if (t.start_time && t.end_time) {
@@ -152,6 +176,7 @@ class VatsimData {
                 return [];
             }
         } catch (e) {
+            logger.error("getCurrentVatsimEvents error:%O", e);
             return [];
         }
     }
@@ -169,9 +194,13 @@ class VatsimData {
                 if (response.data.atis.length > 0) {
                     this.vatsimAtis = response.data.atis;
                 }
+                if (response.data.prefiles.length > 0) {
+                    this.vatsimPrefiles = response.data.prefiles
+                }
                 return response;
             }
         } catch (e) {
+            logger.error("requestVatsimData error:%O", e);
             throw new BadRequestError("Vatsim API ERROR");
         }
     }
@@ -198,7 +227,7 @@ class VatsimData {
 
     async getPopularAirports(limit) {
         if (!limit) limit = 10;
-        const { vatsimPilots } = this;
+        const {vatsimPilots} = this;
         const sortAirports = (airportsArray) => {
             return Object.values(
                 airportsArray.reduce((p, v) => {
@@ -225,8 +254,8 @@ class VatsimData {
                     pilot.flight_plan?.arrival?.length > 0 &&
                     pilot.flight_plan?.departure?.length > 0
                 ) {
-                    depAirports.push({ ICAO: pilot.flight_plan.departure });
-                    arrAirports.push({ ICAO: pilot.flight_plan.arrival });
+                    depAirports.push({ICAO: pilot.flight_plan.departure});
+                    arrAirports.push({ICAO: pilot.flight_plan.arrival});
                 }
             }
         }
@@ -316,7 +345,7 @@ class VatsimData {
         if (vatsimAtisList) {
             for (const atis of vatsimAtisList) {
                 if (atis.callsign.includes(icao.toUpperCase())) {
-                    let vatsimAtis = { data: {} };
+                    let vatsimAtis = {data: {}};
                     vatsimAtis.data.code = atis.atis_code ? atis.atis_code : "-";
                     vatsimAtis.data.datis = atis.text_atis.join(" ");
                     return vatsimAtis;
@@ -326,7 +355,7 @@ class VatsimData {
                 data: `No Vatsim ATIS found in ${icao.toUpperCase()}`
             };
         }
-        return { data: "Vatsim API not available" };
+        return {data: "Vatsim API not available"};
     }
 
     async onlineControllersInAirport(icao) {
@@ -381,7 +410,7 @@ class VatsimData {
 
     async displayControllerRange(icao) {
         const controllerList = await this.onlineControllersInAirport(icao);
-        const controllerObject = { controllerList: [] };
+        const controllerObject = {controllerList: []};
         if (controllerList.length > 0) {
             controllerList.forEach((controller) => {
                 const controllerObj = {};
@@ -390,10 +419,216 @@ class VatsimData {
                 controllerObject.controllerList.push(controllerObj);
             });
         }
-        const airport = await GNS430Airport.findOne({ ICAO: `${icao.toUpperCase()}` });
+        const airport = await GNS430Airport.findOne({ICAO: `${icao.toUpperCase()}`});
         controllerObject.airportLocation = airport.location;
 
         return controllerObject;
+    }
+
+    #validateVatsimTraffic(flight) {
+        if (
+            !flight.cid ||
+            !flight.callsign ||
+            !flight.latitude ||
+            !flight.longitude ||
+            (!flight.altitude && flight.altitude !== 0) ||
+            (!flight.heading && flight.heading !== 0)
+        ) {
+            logger.info("invalid flights:", flight);
+            return false;
+        }
+        return true;
+    }
+
+    #buildTrafficObject(traffic, trackFlag) {
+        const tempObject = {
+            cid: traffic.cid,
+            name: traffic.name,
+            callsign: traffic.callsign,
+            server: traffic.server,
+            transponder: traffic.transponder,
+            flightRules: traffic.flight_plan?.flight_rules ?? "N/A",
+            aircraft: {
+                full: traffic.flight_plan?.aircraft ?? "N/A",
+                faa: traffic.flight_plan?.aircraft_faa ?? "N/A",
+                short: traffic.flight_plan?.aircraft_short ?? "N/A"
+            },
+            arrival: traffic.flight_plan?.arrival ?? "N/A",
+            departure: traffic.flight_plan?.departure ?? "N/A",
+            alternate: traffic.flight_plan?.alternate ?? "N/A",
+            depTime: traffic.flight_plan?.deptime ?? "N/A",
+            enrouteTime: traffic.flight_plan?.enroute_time ?? "N/A",
+            fuelTime: traffic.flight_plan?.fuel_time ?? "N/A",
+            remarks: traffic.flight_plan?.remarks ?? "N/A",
+            route: traffic.flight_plan?.route ?? "N/A",
+            logonTime: traffic.logon_time,
+            lastUpdated: traffic.last_updated
+        };
+
+        if (trackFlag) {
+            tempObject.track = [{
+                latitude: traffic.latitude ?? 0,
+                longitude: traffic.longitude ?? 0,
+                altitude: traffic.altitude ?? 0,
+                groundSpeed: traffic.groundspeed ?? 0,
+                heading: traffic.heading ?? 0,
+                qnhIhg: traffic.qnh_i_hg,
+                compensation: 0
+            }];
+        }
+
+        return tempObject;
+    }
+
+    normalizeVatsimTraffic() {
+        this.normalizedVatsimTraffics = this.vatsimPilots.reduce((acc, pilot) => {
+            if (this.#validateVatsimTraffic(pilot)) {
+                acc.push(this.#buildTrafficObject(pilot, true));
+            }
+            return acc;
+        }, []);
+        return this.normalizedVatsimTraffics;
+    }
+
+    //! This function will FLUSH the redis. Make sure connectionUrl is correct
+    async importVatsimTrafficToRedis(connectionUrl) {
+        // throw error if connectionUrl is production db url.
+        if (connectionUrl === process.env.REDISCLOUD_VATSIM_TRAFFIC_URL) {
+            logger.warn("importVatsimTrafficToRedis been called on production db.");
+            throw new Error("production db connected.");
+        }
+        const vatsimRedisClient = new RedisClient();
+        try {
+            const normalizedTraffics = this.normalizeVatsimTraffic();
+            await vatsimRedisClient.createRedisNodeConnection(connectionUrl);
+            logger.info("redis client for vatsim traffic import connected.");
+            //flush old redis data.
+            await vatsimRedisClient.flushDb();
+            logger.info("redis db for vatsim traffic flushed.");
+            const repo = vatsimRedisClient.createRedisRepository(vatsimTrafficsSchema);
+            await repo.createIndex();
+            const promiseArray = normalizedTraffics.map((traffic) => {
+                if (!traffic.cid) return;
+                return repo.save(`${traffic.cid}`, traffic);
+            });
+            await batchProcess(promiseArray, 100);
+            try {
+                await vatsimRedisClient.closeConnection();
+                logger.info("vatsim traffics imported to redis.");
+            } catch (e) {
+                logger.error("redis connection close failed:", e);
+            }
+        } catch (e) {
+            logger.error("importVatsimTrafficToRedis error:", e);
+        }
+    }
+
+    #trackCompensation(latestTrack, dbTrack) {
+        // If latestTrack return groundSpeed as 0, don't push new track, only update the flight info
+        // If latestTrack has the same heading with dbTrack, don't update track, only increment compensation number
+        // Otherwise push the coordinates to new track
+        if (latestTrack.track.at(-1).groundSpeed === 0) {
+            return latestTrack;
+        } else if (latestTrack.track.at(-1).heading === dbTrack.track.at(-1).heading) {
+            const tempObject = {...latestTrack, track: dbTrack.track};
+            tempObject.track.at(-1).compensation += 1;
+            return tempObject;
+        } else {
+            dbTrack.track.push(latestTrack.track[0]);
+            return {...latestTrack, track: dbTrack.track};
+        }
+    }
+
+    /*
+     A generator function to return the db array in batch.
+     * */
+    async* paginatedSearch(repository, pageSize = 100) {
+        let offset = 0;
+        let results;
+        let keepGoing = true;
+
+        while (keepGoing) {
+            try {
+                results = await repository.search().page(offset, pageSize);
+                if (results.length === 0 || results.length < pageSize) {
+                    keepGoing = false;
+                }
+                yield results;
+                offset += pageSize; // Increment the offset for the next page
+            } catch (error) {
+                logger.error(`Error fetching page at offset ${offset}:`, error);
+                keepGoing = false;
+            }
+        }
+    }
+
+    /* *
+     trackClient: the Redis client that contains all track for every traffic
+     noTrackClient: the redis client that only contains the latest track
+     * */
+    async updateVatsimTrafficRedis(trackClient) {
+        try {
+            await this.requestVatsimData();
+            this.normalizeVatsimTraffic();
+
+            const trafficRepo = trackClient.createRedisRepository(vatsimTrafficsSchema);
+            if (!trafficRepo) {
+                throw new Error("Failed to fetch Redis repo");
+            }
+
+            const entityToRemove = new Set();
+
+            for await (const page of this.paginatedSearch(trafficRepo)) {
+                page.forEach((p) => {
+                    if (!_.find(this.normalizedVatsimTraffics, {cid: p.cid})) {
+                        entityToRemove.add(`${p.cid}`);
+                    }
+                });
+            }
+            logger.debug("Entity to be removed:%O", entityToRemove);
+
+            // logger.debug("Traffic to be removed:%O", trafficToBeRemoved);
+            const trafficPromise = this.normalizedVatsimTraffics.map(async (pilot) => {
+                const trackEntity = await trafficRepo
+                    .search()
+                    .where("cid")
+                    .eq(pilot.cid)
+                    .returnFirst();
+                if (trackEntity) {
+                    const compensationTrack = this.#trackCompensation(pilot, trackEntity);
+                    return trafficRepo.save(`${pilot.cid}`, compensationTrack);
+                } else {
+                    return trafficRepo.save(`${pilot.cid}`, this.#buildTrafficObject(pilot, true));
+                }
+            });
+            this.normalizedVatsimTraffics = null;
+
+            trafficPromise.push(trafficRepo.remove(Array.from(entityToRemove)));
+            await batchProcess(trafficPromise, 30);
+            // logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
+        } catch (e) {
+            logger.error("updateVatsimTrafficRedis error:%O", e);
+        }
+    }
+
+    async getAllVatsimTraffics(client) {
+        try {
+            if (!client) {
+                throw new Error("Redis Connect Failed");
+            }
+            const repo = client.createRedisRepository(vatsimTrafficsSchema);
+
+            //remove traffics that are not in the latest fetched data
+            const allRedisTraffics = await repo.search().all();
+            if (allRedisTraffics) {
+                return allRedisTraffics;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            logger.error("getAllVatsimTraffics error:", e);
+            return null;
+        }
     }
 
     getVatsimPilots() {
@@ -402,6 +637,79 @@ class VatsimData {
         }
         return [];
     }
+
+    normalizeVatsimPrefiles() {
+        this.normalizedVatsimPrifiles = this.vatsimPrefiles.reduce((acc, pilot) => {
+            if (pilot.cid && pilot.cid !== 0) {
+                acc.push(this.#buildTrafficObject(pilot, false));
+            }
+            return acc;
+        }, []);
+        this.vatsimPrefiles = [];
+        return this.normalizedVatsimPrifiles;
+    }
+
+    async updateVatsimHistoryTraffic() {
+        try {
+            this.normalizeVatsimPrefiles();
+            const updateQuires = []
+            this.normalizedVatsimPrifiles.forEach((traffic) => {
+                updateQuires.push(
+                    {
+                        updateOne: {
+                            filter: {
+                                cid: traffic.cid
+                            },
+                            update: traffic,
+                            upsert: true
+                        }
+                    }
+                )
+            })
+            await VatsimHistoryTraffics.bulkWrite(updateQuires)
+            this.normalizedVatsimPrifiles = [];
+        } catch (e) {
+            logger.error("Error update vatsim history traffic: %O", e)
+        }
+    }
+
+    async getVatsimFir() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimFir = await generateFir(this.vatsimControllers)
+        } catch (e) {
+            logger.error("Error get vatsim FIR:%O", e)
+            this.vatsimFir = [];
+        }
+    }
+
+    async getOtherControllers() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimOtherControllers = await generateControllersAndAtis(this.vatsimControllers, this.vatsimAtis)
+        } catch (e) {
+            logger.error("Error get vatsim other controllers:%O", e)
+            this.vatsimControllers = []
+        }
+    }
+
+    async getVatsimFss() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available")
+            }
+            this.vatsimFSS = await generateFSS(this.vatsimControllers)
+        } catch (e) {
+            logger.error("Error get vatsim FSS:%O", e)
+            this.vatsimFSS = []
+        }
+    }
+
+
 }
 
 module.exports = VatsimData;

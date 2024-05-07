@@ -17,10 +17,8 @@ const {
 } = require("../../models/airports/GNS430_model/updateGns430AirportModel");
 
 const rClient = new RedisClient();
-let repo;
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-    repo = rClient.createRedisOMRepository(awcMetarSchema);
+    await rClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
 })();
 
 const getMetarsWithin = async (req, res, next) => {
@@ -31,6 +29,7 @@ const getMetarsWithin = async (req, res, next) => {
     const newDistance = distanceConverter(unit, distance);
 
     if (checkICAO(icao.toUpperCase())) {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
         const responseMetars = await metarFeatures.requestMetarWithinRadius_icao(
             icao,
@@ -59,6 +58,7 @@ const getMetarUsingGenericInput = async (req, res, next) => {
     let decode = req.query.decode === "true";
 
     if (checkICAO(data)) {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         const responseMetar = await getAwcMetarUsingICAO(data, decode, AwcWeatherMetarModel, repo);
         if (responseMetar) {
             return res.status(200).json({
@@ -72,6 +72,7 @@ const getMetarUsingGenericInput = async (req, res, next) => {
             });
         }
     } else {
+        const repo = rClient.createRedisRepository(awcMetarSchema);
         const responseMetar = await getAwcMetarUsingGenericInput(
             data,
             decode,
@@ -95,6 +96,7 @@ const getMetarUsingGenericInput = async (req, res, next) => {
 const getMetarUsingAirportName = async (req, res, next) => {
     const { name } = req.params;
     let decode = req.query.decode === "true";
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const responseMetar = await getAwcMetarUsingAirportName(
         name,
         decode,
@@ -161,6 +163,7 @@ const getWindGustForCountry = async (req, res) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
+    const repo = rClient.createRedisRepository(awcMetarSchema);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
@@ -187,8 +190,9 @@ const getWindGustForCountry = async (req, res) => {
 const getWindMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { limit = 10 } = req.query;
-
     let decode = req.query.decode === "true";
+
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "ios_country",
@@ -215,8 +219,10 @@ const getWindMetarForCountry = async (req, res, next) => {
 const getBaroMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; // 1 would sort low baro to high
-
     let decode = req.query.decode === "true";
+
+    const repo = rClient.createRedisRepository(awcMetarSchema);
+
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "ios_country",
@@ -244,6 +250,8 @@ const getVisibilityMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort bad/low visibility from good
     let decode = req.query.decode === "true";
+
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "ios_country",
@@ -270,8 +278,9 @@ const getVisibilityMetarForCountry = async (req, res, next) => {
 const getTempMetarForCountry = async (req, res, next) => {
     const { country } = req.params;
     const { sort = 1, limit = 10 } = req.query; //1 would sort temp from low to high
-
     let decode = req.query.decode === "true";
+
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "ios_country",
@@ -300,6 +309,7 @@ const getWindGustForContinent = async (req, res, next) => {
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "continent",
@@ -328,6 +338,8 @@ const getWindMetarForContinent = async (req, res, next) => {
     const { limit = 10 } = req.query;
 
     let decode = req.query.decode === "true";
+
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "continent",
@@ -356,6 +368,7 @@ const getBaroMetarForContinent = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query; //1 would sort baro from low to high
     const decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "continent",
@@ -385,6 +398,7 @@ const getVisibilityMetarForContinent = async (req, res, next) => {
 
     const decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "continent",
@@ -414,6 +428,7 @@ const getTempMetarForContinent = async (req, res, next) => {
 
     const decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_local(
         "continent",
@@ -443,6 +458,7 @@ const getWindGustForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global(
         "wind_gust_kt",
@@ -467,6 +483,7 @@ const getWindMetarForGlobal = async (req, res, next) => {
     const { limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global(
         "wind_speed_kt",
@@ -492,6 +509,7 @@ const getBaroMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global(
         "altim_in_hg",
@@ -517,6 +535,7 @@ const getVisibilityMetarForGlobal = async (req, res, next) => {
     const { sort = 1, limit = 10 } = req.query;
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global(
         "visibility_statute_mi",
@@ -543,6 +562,7 @@ const getTempMetarForGlobal = async (req, res, next) => {
 
     let decode = req.query.decode === "true";
 
+    const repo = rClient.createRedisRepository(awcMetarSchema);
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarCategory_global("temp_c", sort, limit, decode);
 

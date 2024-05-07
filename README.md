@@ -9,12 +9,12 @@
 - [Flight Data](#flight-data)
     - [METAR](#metar)
         - [Get METAR using ICAO code](#get-metar-using-icao-code)
-        - [Get metar within radius by ICAO](#get-metar-within-radius-by-icao)
-        - [Get metar within radius by longitude and latitude](#get-metar-within-radius-by-longtitude-and-latitude)
+        - [Get METAR within radius by ICAO](#get-metar-within-radius-by-icao)
+        - [Get METAR within radius by longitude and latitude](#get-metar-within-radius-by-longtitude-and-latitude)
         - [Get nearest METAR by ICAO](#get-nearest-metar-by-icao)
         - [Get nearest METAR by longitude and latitude](#get-nearest-metar-by-longtitude-and-latitude)
-        - [Get metar by airport name](#get-metar-by-airport-name)
-        - [Get metar by generic input](#get-metar-by-geneirc-input)
+        - [Get METAR by airport name](#get-metar-by-airport-name)
+        - [Get METAR by generic input](#get-metar-by-geneirc-input)
     - [Weather Category](#weather)
         - **_Country Scope_**
             - [Get METARs for country sorted by temperature](#get-metars-for-country-sorted-by-temperature)
@@ -41,13 +41,19 @@
         - [Search METAR for airport's name](#search-metar-for-airports-name)
         - [Search METAR based on the geneirc input](#search-metar-based-on-the-geneirc-input)
     - [Airports](#airports)
-        - [Get Airport data using ICAO](#get-airport-data-using-icao)
-        - [Get Airport data using iata](#get-airport-data-using-iata)
-        - [Get Airport data using city or region name](#Get-Airport-data-using-region-name)
-        - [Get Airport data using generic info](#get-airport-data-using-geneirc-info)
-        - [Get Airport data within radius of ICAO](#get-airport-data-within-radius-of-icao)
+        - [Get airport data using ICAO](#get-airport-data-using-icao)
+        - [Get airport data using iata](#get-airport-data-using-iata)
+        - [Get airport data using city or region name](#Get-Airport-data-using-region-name)
+        - [Get airport data using generic info](#get-airport-data-using-geneirc-info)
+        - [Get airport data within radius of ICAO](#get-airport-data-within-radius-of-icao)
         - [Get distance from origin airport to destination airport](#get-distance-from-origin-airport-to-destination-airport)
-        - [References:](#references)
+    - [Vatsim](#vatsim)
+        - [Get current Vatsim traffics with tracks](#get-current-vatsim-traffics-track-included)
+        - [Get current vatsim pilots](#get-current-vatsim-pilots)
+        - [Get current vatsim events](#get-current-vatsim-events)
+        - [Get sorted vatsim events](#get-sorted-vatsim-events)
+    - [Reference & Credits](#references)
+        - [References](#references)
         - [Credits](#credits)
 
 ---
@@ -508,7 +514,6 @@ $ curl https://api.airportweather.org/v1/taf/get-taf/cyyz
 # Get decoded TAF for ZSSS
 $ curl https://api.airportweather.org/v1/taf/get-taf/zsss?decoded=true
 ```
-
 
 ---
 
@@ -1252,6 +1257,48 @@ $ curl https://api.airportweather.org/v1/airports/geneirc/paginate/new york?limi
     GET /airports-distance/origin/:originICAO/destination/:destinationICAO/unit/:unit
 
 ---
+
+## Vatsim
+
+---
+
+### Get current vatsim traffics (track included)
+
+    GET /vatsim/getTraffics
+
+---
+
+### Get Current vatsim pilots
+
+    GET /vatsim/getPilots
+
+---
+
+### Get current vatsim events
+
+#### Only current in progress events will be returned
+
+    GET /vatsim/getCurrentEvents
+
+---
+
+### Get sorted vatsim events
+
+| URL Queries | Description                                       | Default    |
+|-------------|---------------------------------------------------|------------|
+| target      | Sort events time by either start time or end time | start_time |
+|sort| sorting order, either descending or ascending | 1|
+
+    GET /vatsim/getSortedEventsByDate
+
+```bat
+# Get sorted vatsim events by start time in descending order (most recent events first)
+$ curl https://api.airportweather.org/v1/vatsim/getSortedEventsByDate?target=start_time&sort=1
+
+```
+
+---
+
 
 ---
 

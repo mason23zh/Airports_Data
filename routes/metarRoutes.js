@@ -17,5 +17,5 @@ router.route("/get-metar/nearest/:icao").get(getNearestMetar_icao);
 router.route("/get-metar/nearest/coordinates/:coordinates").get(getNearestMetar_LngLat);
 router.route("/get-metar/name/:name").get(getMetarUsingAirportName);
 router.route("/get-metar/generic/:data").get(getMetarUsingGenericInput);
-
+//router.route("/testImport").get(testDbImport);
 module.exports = router;

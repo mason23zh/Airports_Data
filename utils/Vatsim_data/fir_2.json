@@ -1,0 +1,7770 @@
+[
+    {
+        "CALLSIGN PREFIX": {
+            "icao": ";ICAO",
+            "name": "NAME",
+            "prefix": "CALLSIGN PREFIX",
+            "fir": "FIR BOUNDARY"
+        }
+    },
+    {
+        "CALLSIGN PREFIX": {
+            "icao": ";ICAO",
+            "name": "NAME",
+            "prefix": "CALLSIGN PREFIX",
+            "fir": "FIR BOUNDARY"
+        }
+    },
+    {
+        "ADR": {
+            "icao": "ADR",
+            "name": "Adria Radar",
+            "prefix": "",
+            "fir": "ADR"
+        }
+    },
+    {
+        "ADR_W": {
+            "icao": "ADR-W",
+            "name": "Adria Radar (West)",
+            "prefix": "ADR_W",
+            "fir": "ADR-W"
+        }
+    },
+    {
+        "ADR_W": {
+            "icao": "ADR-W",
+            "name": "Adria Radar (West)",
+            "prefix": "ADR_W",
+            "fir": "ADR-W"
+        }
+    },
+    {
+        "ADR_E": {
+            "icao": "ADR-E",
+            "name": "Adria Radar (East)",
+            "prefix": "ADR_E",
+            "fir": "ADR-E"
+        }
+    },
+    {
+        "ADR_E": {
+            "icao": "ADR-E",
+            "name": "Adria Radar (East)",
+            "prefix": "ADR_E",
+            "fir": "ADR-E"
+        }
+    },
+    {
+        "AGGG": {
+            "icao": "AGGG",
+            "name": "Honiara",
+            "prefix": "",
+            "fir": "AGGG"
+        }
+    },
+    {
+        "ANAU": {
+            "icao": "ANAU",
+            "name": "Nauru",
+            "prefix": "",
+            "fir": "ANAU"
+        }
+    },
+    {
+        "AYPM": {
+            "icao": "AYPM",
+            "name": "Port Moresby",
+            "prefix": "",
+            "fir": "AYPM"
+        }
+    },
+    {
+        "BGGL": {
+            "icao": "BGGL",
+            "name": "Nuuk",
+            "prefix": "",
+            "fir": "BGGL"
+        }
+    },
+    {
+        "BIRD": {
+            "icao": "BIRD",
+            "name": "Reykjavik",
+            "prefix": "",
+            "fir": "BIRD"
+        }
+    },
+    {
+        "BIRD_E": {
+            "icao": "BIRD-E",
+            "name": "Reykjavik ACC (East) - Reykjavik",
+            "prefix": "BIRD_E",
+            "fir": "BIRD-E"
+        }
+    },
+    {
+        "BIRD_E": {
+            "icao": "BIRD-E",
+            "name": "Reykjavik ACC (East) - Reykjavik",
+            "prefix": "BIRD_E",
+            "fir": "BIRD-E"
+        }
+    },
+    {
+        "BIRD_E1": {
+            "icao": "BIRD-E",
+            "name": "Reykjavik ACC (East) - Reykjavik",
+            "prefix": "BIRD_E1",
+            "fir": "BIRD-E"
+        }
+    },
+    {
+        "BIRD_E2": {
+            "icao": "BIRD-E",
+            "name": "Reykjavik ACC (East) - Reykjavik",
+            "prefix": "BIRD_E2",
+            "fir": "BIRD-E"
+        }
+    },
+    {
+        "BIRD_E3": {
+            "icao": "BIRD-E",
+            "name": "Reykjavik ACC (East) - Reykjavik",
+            "prefix": "BIRD_E3",
+            "fir": "BIRD-E"
+        }
+    },
+    {
+        "BIRD_N": {
+            "icao": "BIRD-N",
+            "name": "Reykjavik ACC (North) - Reykjavik",
+            "prefix": "BIRD_N",
+            "fir": "BIRD-N"
+        }
+    },
+    {
+        "BIRD_N": {
+            "icao": "BIRD-N",
+            "name": "Reykjavik ACC (North) - Reykjavik",
+            "prefix": "BIRD_N",
+            "fir": "BIRD-N"
+        }
+    },
+    {
+        "BIRD_S": {
+            "icao": "BIRD-S",
+            "name": "Reykjavik ACC (South) - Reykjavik",
+            "prefix": "BIRD_S",
+            "fir": "BIRD-S"
+        }
+    },
+    {
+        "BIRD_S": {
+            "icao": "BIRD-S",
+            "name": "Reykjavik ACC (South) - Reykjavik",
+            "prefix": "BIRD_S",
+            "fir": "BIRD-S"
+        }
+    },
+    {
+        "BIRD_W": {
+            "icao": "BIRD-W",
+            "name": "Reykjavik ACC (West) - Reykjavik",
+            "prefix": "BIRD_W",
+            "fir": "BIRD-W"
+        }
+    },
+    {
+        "BIRD_W": {
+            "icao": "BIRD-W",
+            "name": "Reykjavik ACC (West) - Reykjavik",
+            "prefix": "BIRD_W",
+            "fir": "BIRD-W"
+        }
+    },
+    {
+        "BIRD_W1": {
+            "icao": "BIRD-W",
+            "name": "Reykjavik ACC (West) - Reykjavik",
+            "prefix": "BIRD_W1",
+            "fir": "BIRD-W"
+        }
+    },
+    {
+        "BIRD_W2": {
+            "icao": "BIRD-W",
+            "name": "Reykjavik ACC (West) - Reykjavik",
+            "prefix": "BIRD_W2",
+            "fir": "BIRD-W"
+        }
+    },
+    {
+        "BIRD_W3": {
+            "icao": "BIRD-W",
+            "name": "Reykjavik ACC (West) - Reykjavik",
+            "prefix": "BIRD_W3",
+            "fir": "BIRD-W"
+        }
+    },
+    {
+        "BSW": {
+            "icao": "BSW",
+            "name": "Black Sea West Radar",
+            "prefix": "",
+            "fir": "BSW"
+        }
+    },
+    {
+        "EDM": {
+            "icao": "CZEG",
+            "name": "Edmonton",
+            "prefix": "EDM",
+            "fir": "CZEG"
+        }
+    },
+    {
+        "EDM": {
+            "icao": "CZEG",
+            "name": "Edmonton",
+            "prefix": "EDM",
+            "fir": "CZEG"
+        }
+    },
+    {
+        "ZEG": {
+            "icao": "CZEG",
+            "name": "Edmonton",
+            "prefix": "ZEG",
+            "fir": "CZEG"
+        }
+    },
+    {
+        "MCN": {
+            "icao": "CZQM",
+            "name": "Moncton",
+            "prefix": "MCN",
+            "fir": "CZQM"
+        }
+    },
+    {
+        "CZQM": {
+            "icao": "CZQM",
+            "name": "Moncton",
+            "prefix": "MCN",
+            "fir": "CZQM"
+        }
+    },
+    {
+        "CZZV": {
+            "icao": "CZZV",
+            "name": "Sept-Iles (CZUL SFC-280 / CZQM 290-ABV)",
+            "prefix": "",
+            "fir": "CZZV"
+        }
+    },
+    {
+        "GAND": {
+            "icao": "CZQX",
+            "name": "Gander",
+            "prefix": "GAND",
+            "fir": "CZQX"
+        }
+    },
+    {
+        "GAND": {
+            "icao": "CZQX",
+            "name": "Gander",
+            "prefix": "GAND",
+            "fir": "CZQX"
+        }
+    },
+    {
+        "YQX": {
+            "icao": "CZQX",
+            "name": "Gander",
+            "prefix": "YQX",
+            "fir": "CZQX"
+        }
+    },
+    {
+        "GAN": {
+            "icao": "CZQO",
+            "name": "Gander Oceanic",
+            "prefix": "GAN",
+            "fir": "CZQO"
+        }
+    },
+    {
+        "GAN": {
+            "icao": "CZQO",
+            "name": "Gander Oceanic",
+            "prefix": "GAN",
+            "fir": "CZQO"
+        }
+    },
+    {
+        "CZQO-GOTA": {
+            "icao": "CZQO-GOTA",
+            "name": "Gander Oceanic Transition Area (CZQO SFC-280 / CZQX 290-ABV)",
+            "prefix": "",
+            "fir": "CZQO-GOTA"
+        }
+    },
+    {
+        "MTL": {
+            "icao": "CZUL",
+            "name": "Montreal",
+            "prefix": "MTL",
+            "fir": "CZUL"
+        }
+    },
+    {
+        "MTL": {
+            "icao": "CZUL",
+            "name": "Montreal",
+            "prefix": "MTL",
+            "fir": "CZUL"
+        }
+    },
+    {
+        "VAN": {
+            "icao": "CZVR",
+            "name": "Vancouver",
+            "prefix": "VAN",
+            "fir": "CZVR"
+        }
+    },
+    {
+        "CZVR": {
+            "icao": "CZVR",
+            "name": "Vancouver",
+            "prefix": "VAN",
+            "fir": "CZVR"
+        }
+    },
+    {
+        "VAN": {
+            "icao": "CZVR",
+            "name": "Vancouver",
+            "prefix": "VAN",
+            "fir": "CZVR"
+        }
+    },
+    {
+        "CYVR": {
+            "icao": "CZVR",
+            "name": "Vancouver",
+            "prefix": "CYVR",
+            "fir": "CZVR"
+        }
+    },
+    {
+        "ZVR": {
+            "icao": "CZVR",
+            "name": "Vancouver",
+            "prefix": "ZVR",
+            "fir": "CZVR"
+        }
+    },
+    {
+        "WPG": {
+            "icao": "CZWG",
+            "name": "Winnipeg",
+            "prefix": "WPG",
+            "fir": "CZWG"
+        }
+    },
+    {
+        "WPG": {
+            "icao": "CZWG",
+            "name": "Winnipeg",
+            "prefix": "WPG",
+            "fir": "CZWG"
+        }
+    },
+    {
+        "ZWG": {
+            "icao": "CZWG",
+            "name": "Winnipeg",
+            "prefix": "ZWG",
+            "fir": "CZWG"
+        }
+    },
+    {
+        "TOR": {
+            "icao": "CZYZ",
+            "name": "Toronto",
+            "prefix": "TOR",
+            "fir": "CZYZ"
+        }
+    },
+    {
+        "TOR": {
+            "icao": "CZYZ",
+            "name": "Toronto",
+            "prefix": "TOR",
+            "fir": "CZYZ"
+        }
+    },
+    {
+        "DAAA": {
+            "icao": "DAAA",
+            "name": "Algiers",
+            "prefix": "",
+            "fir": "DAAA"
+        }
+    },
+    {
+        "DGAC": {
+            "icao": "DGAC",
+            "name": "Accra",
+            "prefix": "",
+            "fir": "DGAC"
+        }
+    },
+    {
+        "DGAO": {
+            "icao": "DGAO",
+            "name": "Accra Oceanic",
+            "prefix": "",
+            "fir": "DGAO"
+        }
+    },
+    {
+        "DIII": {
+            "icao": "DIII",
+            "name": "Abidjan",
+            "prefix": "",
+            "fir": "DIII"
+        }
+    },
+    {
+        "DNKK": {
+            "icao": "DNKK",
+            "name": "Kano",
+            "prefix": "",
+            "fir": "DNKK"
+        }
+    },
+    {
+        "DRRR": {
+            "icao": "DRRR",
+            "name": "Niamey",
+            "prefix": "",
+            "fir": "DRRR"
+        }
+    },
+    {
+        "DTTC": {
+            "icao": "DTTC",
+            "name": "Tunis",
+            "prefix": "",
+            "fir": "DTTC"
+        }
+    },
+    {
+        "EBBU": {
+            "icao": "EBBU",
+            "name": "Brussels",
+            "prefix": "",
+            "fir": "EBBU"
+        }
+    },
+    {
+        "EBUR": {
+            "icao": "EBUR",
+            "name": "Brussels Upper",
+            "prefix": "",
+            "fir": "EBBU"
+        }
+    },
+    {
+        "EDGG_BAD": {
+            "icao": "EDGG-BAD",
+            "name": "Langen Radar (Baden) - Langen",
+            "prefix": "EDGG_BAD",
+            "fir": "EDGG-BAD"
+        }
+    },
+    {
+        "EDGG_BAD": {
+            "icao": "EDGG-BAD",
+            "name": "Langen Radar (Baden) - Langen",
+            "prefix": "EDGG_BAD",
+            "fir": "EDGG-BAD"
+        }
+    },
+    {
+        "EDGG_GIN": {
+            "icao": "EDGG-GIN",
+            "name": "Langen Radar (Giessen) - Langen",
+            "prefix": "EDGG_GIN",
+            "fir": "EDGG-GIN"
+        }
+    },
+    {
+        "EDGG_GIN": {
+            "icao": "EDGG-GIN",
+            "name": "Langen Radar (Giessen) - Langen",
+            "prefix": "EDGG_GIN",
+            "fir": "EDGG-GIN"
+        }
+    },
+    {
+        "EDGG_DKB": {
+            "icao": "EDGG-DKB",
+            "name": "Langen Radar (Dinkelsbuehl) - Langen",
+            "prefix": "EDGG_DKB",
+            "fir": "EDGG-DKB"
+        }
+    },
+    {
+        "EDGG_DKB": {
+            "icao": "EDGG-DKB",
+            "name": "Langen Radar (Dinkelsbuehl) - Langen",
+            "prefix": "EDGG_DKB",
+            "fir": "EDGG-DKB"
+        }
+    },
+    {
+        "EDGG_RUD": {
+            "icao": "EDGG-RUD",
+            "name": "Langen Radar (Ruedesheim) - Langen",
+            "prefix": "EDGG_RUD",
+            "fir": "EDGG-RUD"
+        }
+    },
+    {
+        "EDGG_RUD": {
+            "icao": "EDGG-RUD",
+            "name": "Langen Radar (Ruedesheim) - Langen",
+            "prefix": "EDGG_RUD",
+            "fir": "EDGG-RUD"
+        }
+    },
+    {
+        "EDGG_KTG": {
+            "icao": "EDGG-KTG",
+            "name": "Langen Radar (Kitzingen) - Langen",
+            "prefix": "EDGG_KTG",
+            "fir": "EDGG-KTG"
+        }
+    },
+    {
+        "EDGG_KTG": {
+            "icao": "EDGG-KTG",
+            "name": "Langen Radar (Kitzingen) - Langen",
+            "prefix": "EDGG_KTG",
+            "fir": "EDGG-KTG"
+        }
+    },
+    {
+        "EDGG_HMM": {
+            "icao": "EDGG-HMM",
+            "name": "Langen Radar (Hamm) - Langen",
+            "prefix": "EDGG_HMM",
+            "fir": "EDGG-HMM"
+        }
+    },
+    {
+        "EDGG_HMM": {
+            "icao": "EDGG-HMM",
+            "name": "Langen Radar (Hamm) - Langen",
+            "prefix": "EDGG_HMM",
+            "fir": "EDGG-HMM"
+        }
+    },
+    {
+        "EDGG_PAH": {
+            "icao": "EDGG-PAH",
+            "name": "Langen Radar (Pad High) - Langen",
+            "prefix": "EDGG_PAH",
+            "fir": "EDGG-PAH"
+        }
+    },
+    {
+        "EDGG_PAH": {
+            "icao": "EDGG-PAH",
+            "name": "Langen Radar (Pad High) - Langen",
+            "prefix": "EDGG_PAH",
+            "fir": "EDGG-PAH"
+        }
+    },
+    {
+        "EDGG": {
+            "icao": "EDGG",
+            "name": "Langen",
+            "prefix": "",
+            "fir": "EDGG"
+        }
+    },
+    {
+        "EDMM": {
+            "icao": "EDMM",
+            "name": "Muenchen",
+            "prefix": "",
+            "fir": "EDMM"
+        }
+    },
+    {
+        "EDMM_ZUG": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_ZUG",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_ZUG": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_ZUG",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_ALB": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_ALB",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_EGG": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_EGG",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_FUE": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_FUE",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_NDG": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_NDG",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_STA": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_STA",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_TEG": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_TEG",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_TRU": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_TRU",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_WLD": {
+            "icao": "EDMM-ZUG",
+            "name": "Muenchen ACC (Zugspitze) - Muenchen",
+            "prefix": "EDMM_WLD",
+            "fir": "EDMM-ZUG"
+        }
+    },
+    {
+        "EDMM_RDG": {
+            "icao": "EDMM-RDG",
+            "name": "Muenchen ACC (Roding) - Muenchen",
+            "prefix": "EDMM_RDG",
+            "fir": "EDMM-RDG"
+        }
+    },
+    {
+        "EDMM_RDG": {
+            "icao": "EDMM-RDG",
+            "name": "Muenchen ACC (Roding) - Muenchen",
+            "prefix": "EDMM_RDG",
+            "fir": "EDMM-RDG"
+        }
+    },
+    {
+        "EDMM_O": {
+            "icao": "EDMM-O",
+            "name": "Muenchen ACC (Hof) - Muenchen",
+            "prefix": "EDMM_O",
+            "fir": "EDMM-O"
+        }
+    },
+    {
+        "EDMM_O": {
+            "icao": "EDMM-O",
+            "name": "Muenchen ACC (Hof) - Muenchen",
+            "prefix": "EDMM_O",
+            "fir": "EDMM-O"
+        }
+    },
+    {
+        "EDMM_B": {
+            "icao": "EDMM-O",
+            "name": "Muenchen ACC (Hof) - Muenchen",
+            "prefix": "EDMM_B",
+            "fir": "EDMM-O"
+        }
+    },
+    {
+        "EDMM_G": {
+            "icao": "EDMM-G",
+            "name": "Muenchen ACC (Gera) - Muenchen",
+            "prefix": "EDMM_G",
+            "fir": "EDMM-G"
+        }
+    },
+    {
+        "EDMM_G": {
+            "icao": "EDMM-G",
+            "name": "Muenchen ACC (Gera) - Muenchen",
+            "prefix": "EDMM_G",
+            "fir": "EDMM-G"
+        }
+    },
+    {
+        "EDMM_M": {
+            "icao": "EDMM-G",
+            "name": "Muenchen ACC (Gera) - Muenchen",
+            "prefix": "EDMM_M",
+            "fir": "EDMM-G"
+        }
+    },
+    {
+        "EDWW": {
+            "icao": "EDWW",
+            "name": "Bremen",
+            "prefix": "",
+            "fir": "EDWW"
+        }
+    },
+    {
+        "EDWW_F": {
+            "icao": "EDWW-B",
+            "name": "Bremen ACC (Boerde) - Bremen",
+            "prefix": "EDWW_F",
+            "fir": "EDWW-B"
+        }
+    },
+    {
+        "EDWW_F": {
+            "icao": "EDWW-B",
+            "name": "Bremen ACC (Boerde) - Bremen",
+            "prefix": "EDWW_F",
+            "fir": "EDWW-B"
+        }
+    },
+    {
+        "EDWW_B": {
+            "icao": "EDWW-B",
+            "name": "Bremen ACC (Boerde) - Bremen",
+            "prefix": "EDWW_B",
+            "fir": "EDWW-B"
+        }
+    },
+    {
+        "EDWW_K": {
+            "icao": "EDWW-B",
+            "name": "Bremen ACC (Boerde) - Bremen",
+            "prefix": "EDWW_K",
+            "fir": "EDWW-B"
+        }
+    },
+    {
+        "EDWW_M": {
+            "icao": "EDWW-B",
+            "name": "Bremen ACC (Boerde) - Bremen",
+            "prefix": "EDWW_M",
+            "fir": "EDWW-B"
+        }
+    },
+    {
+        "EDWW_A": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_A",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_A": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_A",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_H": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_H",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_D": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_D",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_R": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_R",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_S": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_S",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_E": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_E",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDWW_W": {
+            "icao": "EDWW-A",
+            "name": "Bremen ACC (Aller) - Bremen",
+            "prefix": "EDWW_W",
+            "fir": "EDWW-A"
+        }
+    },
+    {
+        "EDXX_FIS": {
+            "icao": "EDXX",
+            "name": "Langen Information - FIS only",
+            "prefix": "EDXX_FIS",
+            "fir": "EDXX"
+        }
+    },
+    {
+        "EDXX_FIS": {
+            "icao": "EDXX",
+            "name": "Langen Information - FIS only",
+            "prefix": "EDXX_FIS",
+            "fir": "EDXX"
+        }
+    },
+    {
+        "EETT": {
+            "icao": "EETT",
+            "name": "Tallinn",
+            "prefix": "",
+            "fir": "EETT"
+        }
+    },
+    {
+        "EFIN": {
+            "icao": "EFIN",
+            "name": "Helsinki",
+            "prefix": "",
+            "fir": "EFIN"
+        }
+    },
+    {
+        "EGGX": {
+            "icao": "EGGX",
+            "name": "Shanwick Oceanic",
+            "prefix": "EGGX",
+            "fir": "EGGX"
+        }
+    },
+    {
+        "SCO": {
+            "icao": "EGPX",
+            "name": "Scottish",
+            "prefix": "SCO",
+            "fir": "EGPX"
+        }
+    },
+    {
+        "SCO": {
+            "icao": "EGPX",
+            "name": "Scottish",
+            "prefix": "SCO",
+            "fir": "EGPX"
+        }
+    },
+    {
+        "SCO_D": {
+            "icao": "EGPX-D",
+            "name": "Scottish ACC (Deancross) - Scottish",
+            "prefix": "SCO_D",
+            "fir": "EGPX-D"
+        }
+    },
+    {
+        "SCO_D": {
+            "icao": "EGPX-D",
+            "name": "Scottish ACC (Deancross) - Scottish",
+            "prefix": "SCO_D",
+            "fir": "EGPX-D"
+        }
+    },
+    {
+        "STC": {
+            "icao": "EGPX-D",
+            "name": "Scottish TMA (Up to FL255) - Scottish",
+            "prefix": "STC",
+            "fir": "EGPX-D"
+        }
+    },
+    {
+        "STC_W": {
+            "icao": "EGPX-D",
+            "name": "Scottish TMA (Up to FL255) - Scottish",
+            "prefix": "STC_W",
+            "fir": "EGPX-D"
+        }
+    },
+    {
+        "STC_E": {
+            "icao": "EGPX-D",
+            "name": "Scottish TMA (Up to FL255) - Scottish",
+            "prefix": "STC_E",
+            "fir": "EGPX-D"
+        }
+    },
+    {
+        "SCO_E": {
+            "icao": "EGPX-E",
+            "name": "Scottish ACC (East) - Scottish",
+            "prefix": "SCO_E",
+            "fir": "EGPX-E"
+        }
+    },
+    {
+        "SCO_E": {
+            "icao": "EGPX-E",
+            "name": "Scottish ACC (East) - Scottish",
+            "prefix": "SCO_E",
+            "fir": "EGPX-E"
+        }
+    },
+    {
+        "SCO_N": {
+            "icao": "EGPX-N",
+            "name": "Scottish ACC (North) - Scottish",
+            "prefix": "SCO_N",
+            "fir": "EGPX-N"
+        }
+    },
+    {
+        "SCO_N": {
+            "icao": "EGPX-N",
+            "name": "Scottish ACC (North) - Scottish",
+            "prefix": "SCO_N",
+            "fir": "EGPX-N"
+        }
+    },
+    {
+        "SCO_S": {
+            "icao": "EGPX-S",
+            "name": "Scottish ACC (South) - Scottish",
+            "prefix": "SCO_S",
+            "fir": "EGPX-S"
+        }
+    },
+    {
+        "SCO_S": {
+            "icao": "EGPX-S",
+            "name": "Scottish ACC (South) - Scottish",
+            "prefix": "SCO_S",
+            "fir": "EGPX-S"
+        }
+    },
+    {
+        "SCO_WD": {
+            "icao": "EGPX-WD",
+            "name": "Scottish ACC (West/Deancross) - Scottish",
+            "prefix": "SCO_WD",
+            "fir": "EGPX-WD"
+        }
+    },
+    {
+        "SCO_WD": {
+            "icao": "EGPX-WD",
+            "name": "Scottish ACC (West/Deancross) - Scottish",
+            "prefix": "SCO_WD",
+            "fir": "EGPX-WD"
+        }
+    },
+    {
+        "SCO_W": {
+            "icao": "EGPX-W",
+            "name": "Scottish ACC (West) - Scottish",
+            "prefix": "SCO_W",
+            "fir": "EGPX-W"
+        }
+    },
+    {
+        "SCO_W": {
+            "icao": "EGPX-W",
+            "name": "Scottish ACC (West) - Scottish",
+            "prefix": "SCO_W",
+            "fir": "EGPX-W"
+        }
+    },
+    {
+        "SCO_R": {
+            "icao": "EGPX-W",
+            "name": "Scottish ACC (Rathlin) - Scottish",
+            "prefix": "SCO_R",
+            "fir": "EGPX-W"
+        }
+    },
+    {
+        "STC_A": {
+            "icao": "EGPX-A",
+            "name": "Scottish TMA Antrim (Up to FL255) - Scottish",
+            "prefix": "STC_A",
+            "fir": "EGPX-A"
+        }
+    },
+    {
+        "STC_A": {
+            "icao": "EGPX-A",
+            "name": "Scottish TMA Antrim (Up to FL255) - Scottish",
+            "prefix": "STC_A",
+            "fir": "EGPX-A"
+        }
+    },
+    {
+        "LTC": {
+            "icao": "EGTL",
+            "name": "London TMA (Up to FL195) - London",
+            "prefix": "LTC",
+            "fir": "EGTL"
+        }
+    },
+    {
+        "LTC": {
+            "icao": "EGTL",
+            "name": "London TMA (Up to FL195) - London",
+            "prefix": "LTC",
+            "fir": "EGTL"
+        }
+    },
+    {
+        "LTC_N": {
+            "icao": "EGTL-N",
+            "name": "London TMA North (Up to FL155) - London",
+            "prefix": "LTC_N",
+            "fir": "EGTL-N"
+        }
+    },
+    {
+        "LTC_N": {
+            "icao": "EGTL-N",
+            "name": "London TMA North (Up to FL155) - London",
+            "prefix": "LTC_N",
+            "fir": "EGTL-N"
+        }
+    },
+    {
+        "LTC_S": {
+            "icao": "EGTL-S",
+            "name": "London TMA South (Up to FL195) - London",
+            "prefix": "LTC_S",
+            "fir": "EGTL-S"
+        }
+    },
+    {
+        "LTC_S": {
+            "icao": "EGTL-S",
+            "name": "London TMA South (Up to FL195) - London",
+            "prefix": "LTC_S",
+            "fir": "EGTL-S"
+        }
+    },
+    {
+        "MAN": {
+            "icao": "EGTM",
+            "name": "Manchester TMA (Up to FL285) - London",
+            "prefix": "MAN",
+            "fir": "EGTM"
+        }
+    },
+    {
+        "MAN": {
+            "icao": "EGTM",
+            "name": "Manchester TMA (Up to FL285) - London",
+            "prefix": "MAN",
+            "fir": "EGTM"
+        }
+    },
+    {
+        "MAN_W": {
+            "icao": "EGTM-W",
+            "name": "Manchester TMA West (Up to FL285) - London",
+            "prefix": "MAN_W",
+            "fir": "EGTM-W"
+        }
+    },
+    {
+        "MAN_W": {
+            "icao": "EGTM-W",
+            "name": "Manchester TMA West (Up to FL285) - London",
+            "prefix": "MAN_W",
+            "fir": "EGTM-W"
+        }
+    },
+    {
+        "MAN_NE": {
+            "icao": "EGTM-NE",
+            "name": "Manchester TMA North East (Up to FL285) - London",
+            "prefix": "MAN_NE",
+            "fir": "EGTM-NE"
+        }
+    },
+    {
+        "MAN_NE": {
+            "icao": "EGTM-NE",
+            "name": "Manchester TMA North East (Up to FL285) - London",
+            "prefix": "MAN_NE",
+            "fir": "EGTM-NE"
+        }
+    },
+    {
+        "MAN_SE": {
+            "icao": "EGTM-W",
+            "name": "Manchester TMA South East (Up to FL195) - London",
+            "prefix": "MAN_SE",
+            "fir": "EGTM-W"
+        }
+    },
+    {
+        "LON": {
+            "icao": "EGTT",
+            "name": "London",
+            "prefix": "LON",
+            "fir": "EGTT"
+        }
+    },
+    {
+        "LON": {
+            "icao": "EGTT",
+            "name": "London",
+            "prefix": "LON",
+            "fir": "EGTT"
+        }
+    },
+    {
+        "LON_C": {
+            "icao": "EGTT-C",
+            "name": "London ACC (Central) - London",
+            "prefix": "LON_C",
+            "fir": "EGTT-C"
+        }
+    },
+    {
+        "LON_C": {
+            "icao": "EGTT-C",
+            "name": "London ACC (Central) - London",
+            "prefix": "LON_C",
+            "fir": "EGTT-C"
+        }
+    },
+    {
+        "LON_M": {
+            "icao": "EGTT-M",
+            "name": "London ACC (Daventry) - London",
+            "prefix": "LON_M",
+            "fir": "EGTT-M"
+        }
+    },
+    {
+        "LON_M": {
+            "icao": "EGTT-M",
+            "name": "London ACC (Daventry) - London",
+            "prefix": "LON_M",
+            "fir": "EGTT-M"
+        }
+    },
+    {
+        "LTC_M": {
+            "icao": "EGTT-M",
+            "name": "London TMA Midlands (Up to FL225) - London",
+            "prefix": "LTC_M",
+            "fir": "EGTT-M"
+        }
+    },
+    {
+        "LON_E": {
+            "icao": "EGTT-E",
+            "name": "London ACC (Clacton) - London",
+            "prefix": "LON_E",
+            "fir": "EGTT-E"
+        }
+    },
+    {
+        "LON_E": {
+            "icao": "EGTT-E",
+            "name": "London ACC (Clacton) - London",
+            "prefix": "LON_E",
+            "fir": "EGTT-E"
+        }
+    },
+    {
+        "LTC_E": {
+            "icao": "EGTT-E",
+            "name": "London TMA East (Up to FL245) - London",
+            "prefix": "LTC_E",
+            "fir": "EGTT-E"
+        }
+    },
+    {
+        "LON_N": {
+            "icao": "EGTT-N",
+            "name": "London ACC (North) - London",
+            "prefix": "LON_N",
+            "fir": "EGTT-N"
+        }
+    },
+    {
+        "LON_N": {
+            "icao": "EGTT-N",
+            "name": "London ACC (North) - London",
+            "prefix": "LON_N",
+            "fir": "EGTT-N"
+        }
+    },
+    {
+        "LON_NE": {
+            "icao": "EGTT-NE",
+            "name": "London ACC (North Sea) - London",
+            "prefix": "LON_NE",
+            "fir": "EGTT-NE"
+        }
+    },
+    {
+        "LON_NE": {
+            "icao": "EGTT-NE",
+            "name": "London ACC (North Sea) - London",
+            "prefix": "LON_NE",
+            "fir": "EGTT-NE"
+        }
+    },
+    {
+        "LON_NW": {
+            "icao": "EGTT-NW",
+            "name": "London ACC (Lakes) - London",
+            "prefix": "LON_NW",
+            "fir": "EGTT-NW"
+        }
+    },
+    {
+        "LON_NW": {
+            "icao": "EGTT-NW",
+            "name": "London ACC (Lakes) - London",
+            "prefix": "LON_NW",
+            "fir": "EGTT-NW"
+        }
+    },
+    {
+        "LON_S": {
+            "icao": "EGTT-S",
+            "name": "London ACC (South) - London",
+            "prefix": "LON_S",
+            "fir": "EGTT-S"
+        }
+    },
+    {
+        "LON_S": {
+            "icao": "EGTT-S",
+            "name": "London ACC (South) - London",
+            "prefix": "LON_S",
+            "fir": "EGTT-S"
+        }
+    },
+    {
+        "LON_D": {
+            "icao": "EGTT-D",
+            "name": "London ACC (Dover) - London",
+            "prefix": "LON_D",
+            "fir": "EGTT-D"
+        }
+    },
+    {
+        "LON_D": {
+            "icao": "EGTT-D",
+            "name": "London ACC (Dover) - London",
+            "prefix": "LON_D",
+            "fir": "EGTT-D"
+        }
+    },
+    {
+        "LON_SC": {
+            "icao": "EGTT-SC",
+            "name": "London ACC (South-Central) - London",
+            "prefix": "LON_SC",
+            "fir": "EGTT-SC"
+        }
+    },
+    {
+        "LON_SC": {
+            "icao": "EGTT-SC",
+            "name": "London ACC (South-Central) - London",
+            "prefix": "LON_SC",
+            "fir": "EGTT-SC"
+        }
+    },
+    {
+        "LON_W": {
+            "icao": "EGTT-W",
+            "name": "London ACC (West) - London",
+            "prefix": "LON_W",
+            "fir": "EGTT-W"
+        }
+    },
+    {
+        "LON_W": {
+            "icao": "EGTT-W",
+            "name": "London ACC (West) - London",
+            "prefix": "LON_W",
+            "fir": "EGTT-W"
+        }
+    },
+    {
+        "EGVV": {
+            "icao": "EGVV",
+            "name": "Swanwick Military",
+            "prefix": "EGVV",
+            "fir": "EGVV"
+        }
+    },
+    {
+        "ISLAND": {
+            "icao": "EGYP",
+            "name": "Mount Pleasant (Monte Agradable)",
+            "prefix": "ISLAND",
+            "fir": "EGYP"
+        }
+    },
+    {
+        "ISLAND": {
+            "icao": "EGYP",
+            "name": "Mount Pleasant (Monte Agradable)",
+            "prefix": "ISLAND",
+            "fir": "EGYP"
+        }
+    },
+    {
+        "EHAA": {
+            "icao": "EHAA",
+            "name": "Amsterdam",
+            "prefix": "",
+            "fir": "EHAA"
+        }
+    },
+    {
+        "EHMC": {
+            "icao": "EHMC",
+            "name": "Dutch Mil (Up to FL245)",
+            "prefix": "",
+            "fir": "EHAA"
+        }
+    },
+    {
+        "EHML": {
+            "icao": "EHML",
+            "name": "Bandbox CRC (Military)",
+            "prefix": "",
+            "fir": "EHAA"
+        }
+    },
+    {
+        "EIDW": {
+            "icao": "EIDW",
+            "name": "Dublin ACC (Up to FL245) - Shannon",
+            "prefix": "",
+            "fir": "EIDW"
+        }
+    },
+    {
+        "EISN": {
+            "icao": "EISN",
+            "name": "Shannon ACC - Shannon",
+            "prefix": "",
+            "fir": "EISN"
+        }
+    },
+    {
+        "EISN_LS": {
+            "icao": "EISN-L",
+            "name": "Shannon ACC (Up to FL245) - Shannon",
+            "prefix": "EISN_LS",
+            "fir": "EISN-L"
+        }
+    },
+    {
+        "EISN_LS": {
+            "icao": "EISN-L",
+            "name": "Shannon ACC (Up to FL245) - Shannon",
+            "prefix": "EISN_LS",
+            "fir": "EISN-L"
+        }
+    },
+    {
+        "EKDK": {
+            "icao": "EKDK",
+            "name": "Kobenhavn",
+            "prefix": "",
+            "fir": "EKDK"
+        }
+    },
+    {
+        "EKDK_E": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_E",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_E": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_E",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_D": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_D",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_I": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_I",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_B": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_B",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_C": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_C",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_A": {
+            "icao": "EKDK-E",
+            "name": "Kobenhavn (East)",
+            "prefix": "EKDK_A",
+            "fir": "EKDK-E"
+        }
+    },
+    {
+        "EKDK_V": {
+            "icao": "EKDK-W",
+            "name": "Kobenhavn (West)",
+            "prefix": "EKDK_V",
+            "fir": "EKDK-W"
+        }
+    },
+    {
+        "EKDK_V": {
+            "icao": "EKDK-W",
+            "name": "Kobenhavn (West)",
+            "prefix": "EKDK_V",
+            "fir": "EKDK-W"
+        }
+    },
+    {
+        "EKDK_N": {
+            "icao": "EKDK-W",
+            "name": "Kobenhavn (West)",
+            "prefix": "EKDK_N",
+            "fir": "EKDK-W"
+        }
+    },
+    {
+        "EKDK_L": {
+            "icao": "EKDK-W",
+            "name": "Kobenhavn (West)",
+            "prefix": "EKDK_L",
+            "fir": "EKDK-W"
+        }
+    },
+    {
+        "EKDK_S": {
+            "icao": "EKDK-W",
+            "name": "Kobenhavn (West)",
+            "prefix": "EKDK_S",
+            "fir": "EKDK-W"
+        }
+    },
+    {
+        "ENBD": {
+            "icao": "ENBD",
+            "name": "Bodo ACC - Polaris",
+            "prefix": "",
+            "fir": "ENBD"
+        }
+    },
+    {
+        "ENBD_E": {
+            "icao": "ENBD-E",
+            "name": "Bod\u00f8 ACC (East) - Polaris",
+            "prefix": "ENBD_E",
+            "fir": "ENBD-E"
+        }
+    },
+    {
+        "ENBD_E": {
+            "icao": "ENBD-E",
+            "name": "Bod\u00f8 ACC (East) - Polaris",
+            "prefix": "ENBD_E",
+            "fir": "ENBD-E"
+        }
+    },
+    {
+        "ENBD_C": {
+            "icao": "ENBD-C",
+            "name": "Bod\u00f8 ACC (Central) - Polaris",
+            "prefix": "ENBD_C",
+            "fir": "ENBD-C"
+        }
+    },
+    {
+        "ENBD_C": {
+            "icao": "ENBD-C",
+            "name": "Bod\u00f8 ACC (Central) - Polaris",
+            "prefix": "ENBD_C",
+            "fir": "ENBD-C"
+        }
+    },
+    {
+        "ENBD_S": {
+            "icao": "ENBD-S",
+            "name": "Bod\u00f8 ACC (South) - Polaris",
+            "prefix": "ENBD_S",
+            "fir": "ENBD-S"
+        }
+    },
+    {
+        "ENBD_S": {
+            "icao": "ENBD-S",
+            "name": "Bod\u00f8 ACC (South) - Polaris",
+            "prefix": "ENBD_S",
+            "fir": "ENBD-S"
+        }
+    },
+    {
+        "ENBD_19": {
+            "icao": "ENBD-19",
+            "name": "Bod\u00f8 ACC - Polaris",
+            "prefix": "ENBD_19",
+            "fir": "ENBD-19"
+        }
+    },
+    {
+        "ENBD_19": {
+            "icao": "ENBD-19",
+            "name": "Bod\u00f8 ACC - Polaris",
+            "prefix": "ENBD_19",
+            "fir": "ENBD-19"
+        }
+    },
+    {
+        "ENOB": {
+            "icao": "ENOB",
+            "name": "Bodo Oceanic",
+            "prefix": "",
+            "fir": "ENOB"
+        }
+    },
+    {
+        "ENOR": {
+            "icao": "ENOR",
+            "name": "Polaris",
+            "prefix": "",
+            "fir": "ENOR"
+        }
+    },
+    {
+        "ENOR_S": {
+            "icao": "ENOR-S",
+            "name": "Polaris South",
+            "prefix": "ENOR_S",
+            "fir": "ENOR-S"
+        }
+    },
+    {
+        "ENOR_S": {
+            "icao": "ENOR-S",
+            "name": "Polaris South",
+            "prefix": "ENOR_S",
+            "fir": "ENOR-S"
+        }
+    },
+    {
+        "ENOS": {
+            "icao": "ENOS",
+            "name": "Oslo ACC - Polaris",
+            "prefix": "",
+            "fir": "ENOS"
+        }
+    },
+    {
+        "ENRC_N": {
+            "icao": "ENRC-N",
+            "name": "Bodo RTC North - Polaris",
+            "prefix": "ENRC_N",
+            "fir": "ENBD"
+        }
+    },
+    {
+        "ENRC_N": {
+            "icao": "ENRC-N",
+            "name": "Bodo RTC North - Polaris",
+            "prefix": "ENRC_N",
+            "fir": "ENBD"
+        }
+    },
+    {
+        "ENRC_S": {
+            "icao": "ENRC-S",
+            "name": "Bodo RTC South - Polaris",
+            "prefix": "ENRC_S",
+            "fir": "ENOR-S"
+        }
+    },
+    {
+        "ENRC_S": {
+            "icao": "ENRC-S",
+            "name": "Bodo RTC South - Polaris",
+            "prefix": "ENRC_S",
+            "fir": "ENOR-S"
+        }
+    },
+    {
+        "ENSV": {
+            "icao": "ENSV",
+            "name": "Stavanger ACC - Polaris",
+            "prefix": "",
+            "fir": "ENSV"
+        }
+    },
+    {
+        "EPWA": {
+            "icao": "EPWW",
+            "name": "Warszawa",
+            "prefix": "EPWA",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWA": {
+            "icao": "EPWW",
+            "name": "Warszawa",
+            "prefix": "EPWA",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWW-N": {
+            "icao": "EPWW-N",
+            "name": "Warszawa",
+            "prefix": "EPWW-N",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWW-S": {
+            "icao": "EPWW-S",
+            "name": "Warszawa",
+            "prefix": "EPWW-S",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWW-W": {
+            "icao": "EPWW-W",
+            "name": "Warszawa",
+            "prefix": "EPWW-W",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWW-SW": {
+            "icao": "EPWW-SW",
+            "name": "Warszawa (if West offline)",
+            "prefix": "EPWW-SW",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "EPWW-NW": {
+            "icao": "EPWW-NW",
+            "name": "Warszawa (if West offline)",
+            "prefix": "EPWW-NW",
+            "fir": "EPWW"
+        }
+    },
+    {
+        "ESMM": {
+            "icao": "ESMM",
+            "name": "Malmo ACC - Sweden",
+            "prefix": "",
+            "fir": "ESMM"
+        }
+    },
+    {
+        "ESOS": {
+            "icao": "ESOS",
+            "name": "Stockholm ACC - Sweden",
+            "prefix": "",
+            "fir": "ESOS"
+        }
+    },
+    {
+        "ESSR": {
+            "icao": "ESSR",
+            "name": "Stockholm RTC - Sweden",
+            "prefix": "",
+            "fir": "ESOS"
+        }
+    },
+    {
+        "EVRR": {
+            "icao": "EVRR",
+            "name": "Riga",
+            "prefix": "",
+            "fir": "EVRR"
+        }
+    },
+    {
+        "EYVL": {
+            "icao": "EYVL",
+            "name": "Vilnius",
+            "prefix": "",
+            "fir": "EYVL"
+        }
+    },
+    {
+        "FACA": {
+            "icao": "FACA",
+            "name": "Cape Town",
+            "prefix": "",
+            "fir": "FACA"
+        }
+    },
+    {
+        "FACA_E": {
+            "icao": "FACA-E",
+            "name": "Cape Town ACC (East) - Cape Town",
+            "prefix": "FACA_E",
+            "fir": "FACA-E"
+        }
+    },
+    {
+        "FACA_E": {
+            "icao": "FACA-E",
+            "name": "Cape Town ACC (East) - Cape Town",
+            "prefix": "FACA_E",
+            "fir": "FACA-E"
+        }
+    },
+    {
+        "FACA_W": {
+            "icao": "FACA-W",
+            "name": "Cape Town ACC (West) - Cape Town",
+            "prefix": "FACA_W",
+            "fir": "FACA-W"
+        }
+    },
+    {
+        "FACA_W": {
+            "icao": "FACA-W",
+            "name": "Cape Town ACC (West) - Cape Town",
+            "prefix": "FACA_W",
+            "fir": "FACA-W"
+        }
+    },
+    {
+        "FAJO": {
+            "icao": "FAJO",
+            "name": "Johannesburg Oceanic",
+            "prefix": "",
+            "fir": "FAJO"
+        }
+    },
+    {
+        "FAJA": {
+            "icao": "FAJA",
+            "name": "Johannesburg",
+            "prefix": "",
+            "fir": "FAJA"
+        }
+    },
+    {
+        "FASA": {
+            "icao": "FASA",
+            "name": "South Africa",
+            "prefix": "",
+            "fir": "FASA"
+        }
+    },
+    {
+        "FBGR": {
+            "icao": "FBGR",
+            "name": "Gaborone",
+            "prefix": "",
+            "fir": "FBGR"
+        }
+    },
+    {
+        "FCCC": {
+            "icao": "FCCC",
+            "name": "Brazzaville",
+            "prefix": "",
+            "fir": "FCCC"
+        }
+    },
+    {
+        "FIMM": {
+            "icao": "FIMM",
+            "name": "Mauritius",
+            "prefix": "",
+            "fir": "FIMM"
+        }
+    },
+    {
+        "FLFI": {
+            "icao": "FLFI",
+            "name": "Lusaka",
+            "prefix": "",
+            "fir": "FLFI"
+        }
+    },
+    {
+        "FMMM": {
+            "icao": "FMMM",
+            "name": "Antananarivo",
+            "prefix": "",
+            "fir": "FMMM"
+        }
+    },
+    {
+        "FNAN": {
+            "icao": "FNAN",
+            "name": "Luanda",
+            "prefix": "",
+            "fir": "FNAN"
+        }
+    },
+    {
+        "FQBE": {
+            "icao": "FQBE",
+            "name": "Beira",
+            "prefix": "",
+            "fir": "FQBE"
+        }
+    },
+    {
+        "FSSS": {
+            "icao": "FSSS",
+            "name": "Seychelles",
+            "prefix": "",
+            "fir": "FSSS"
+        }
+    },
+    {
+        "FTTT": {
+            "icao": "FTTT",
+            "name": "N'Djamena",
+            "prefix": "",
+            "fir": "FTTT"
+        }
+    },
+    {
+        "FVHF": {
+            "icao": "FVHF",
+            "name": "Harare",
+            "prefix": "",
+            "fir": "FVHF"
+        }
+    },
+    {
+        "FWLL": {
+            "icao": "FWLL",
+            "name": "Lilongwe",
+            "prefix": "",
+            "fir": "FWLL"
+        }
+    },
+    {
+        "FYWH": {
+            "icao": "FYWH",
+            "name": "Windhoek",
+            "prefix": "",
+            "fir": "FYWH"
+        }
+    },
+    {
+        "FZZA": {
+            "icao": "FZZA",
+            "name": "Kinshasa",
+            "prefix": "",
+            "fir": "FZZA"
+        }
+    },
+    {
+        "GCCC": {
+            "icao": "GCCC",
+            "name": "Canarias",
+            "prefix": "",
+            "fir": "GCCC"
+        }
+    },
+    {
+        "GCCC_R6": {
+            "icao": "GCCC-R6",
+            "name": "Canarias",
+            "prefix": "GCCC_R6",
+            "fir": "GCCC-R6"
+        }
+    },
+    {
+        "GCCC_R6": {
+            "icao": "GCCC-R6",
+            "name": "Canarias",
+            "prefix": "GCCC_R6",
+            "fir": "GCCC-R6"
+        }
+    },
+    {
+        "GCCO": {
+            "icao": "GCCO",
+            "name": "Canarias Oceanic",
+            "prefix": "",
+            "fir": "GCCO"
+        }
+    },
+    {
+        "GLRB": {
+            "icao": "GLRB",
+            "name": "Roberts",
+            "prefix": "",
+            "fir": "GLRB"
+        }
+    },
+    {
+        "GMMM": {
+            "icao": "GMMM",
+            "name": "Casablanca",
+            "prefix": "",
+            "fir": "GMMM"
+        }
+    },
+    {
+        "GMAC": {
+            "icao": "GMAC",
+            "name": "Agadir",
+            "prefix": "",
+            "fir": "GMAC"
+        }
+    },
+    {
+        "GOOO": {
+            "icao": "GOOO",
+            "name": "Dakar",
+            "prefix": "",
+            "fir": "GOOO"
+        }
+    },
+    {
+        "GOOC": {
+            "icao": "GOOC",
+            "name": "Dakar Oceanic",
+            "prefix": "",
+            "fir": "GOOC"
+        }
+    },
+    {
+        "GVSC": {
+            "icao": "GVSC",
+            "name": "Sal Oceanic",
+            "prefix": "",
+            "fir": "GVSC"
+        }
+    },
+    {
+        "HAAA": {
+            "icao": "HAAA",
+            "name": "Addis Ababa",
+            "prefix": "",
+            "fir": "HAAA"
+        }
+    },
+    {
+        "HBBA": {
+            "icao": "HBBA",
+            "name": "Bujumbura",
+            "prefix": "",
+            "fir": "HBBA"
+        }
+    },
+    {
+        "HCSM": {
+            "icao": "HCSM",
+            "name": "Mogadishu",
+            "prefix": "",
+            "fir": "HCSM"
+        }
+    },
+    {
+        "HECC": {
+            "icao": "HECC",
+            "name": "Cairo",
+            "prefix": "",
+            "fir": "HECC"
+        }
+    },
+    {
+        "HHAA": {
+            "icao": "HHAA",
+            "name": "Asmara",
+            "prefix": "",
+            "fir": "HHAA"
+        }
+    },
+    {
+        "HKNA": {
+            "icao": "HKNA",
+            "name": "Nairobi",
+            "prefix": "",
+            "fir": "HKNA"
+        }
+    },
+    {
+        "HJJJ": {
+            "icao": "HJJJ",
+            "name": "Juba (Up to FL245)",
+            "prefix": "",
+            "fir": "HJJJ"
+        }
+    },
+    {
+        "TIP": {
+            "icao": "HLLL",
+            "name": "Tripoli",
+            "prefix": "TIP",
+            "fir": "HLLL"
+        }
+    },
+    {
+        "TIP": {
+            "icao": "HLLL",
+            "name": "Tripoli",
+            "prefix": "TIP",
+            "fir": "HLLL"
+        }
+    },
+    {
+        "HLLT": {
+            "icao": "HLLL",
+            "name": "Tripoli",
+            "prefix": "HLLT",
+            "fir": "HLLL"
+        }
+    },
+    {
+        "BEN": {
+            "icao": "HLLB",
+            "name": "Benina",
+            "prefix": "BEN",
+            "fir": "HLLL"
+        }
+    },
+    {
+        "BEN": {
+            "icao": "HLLB",
+            "name": "Benina",
+            "prefix": "BEN",
+            "fir": "HLLL"
+        }
+    },
+    {
+        "HRYR": {
+            "icao": "HRYR",
+            "name": "Kigali",
+            "prefix": "",
+            "fir": "HRYR"
+        }
+    },
+    {
+        "HSSS": {
+            "icao": "HSSS",
+            "name": "Khartoum",
+            "prefix": "",
+            "fir": "HSSS"
+        }
+    },
+    {
+        "HTDC": {
+            "icao": "HTDC",
+            "name": "Dar-Es-Salaam",
+            "prefix": "",
+            "fir": "HTDC"
+        }
+    },
+    {
+        "HUEC": {
+            "icao": "HUEC",
+            "name": "Entebbe",
+            "prefix": "",
+            "fir": "HUEC"
+        }
+    },
+    {
+        "ABQ": {
+            "icao": "KZAB",
+            "name": "Albuquerque",
+            "prefix": "ABQ",
+            "fir": "KZAB"
+        }
+    },
+    {
+        "ABQ": {
+            "icao": "KZAB",
+            "name": "Albuquerque",
+            "prefix": "ABQ",
+            "fir": "KZAB"
+        }
+    },
+    {
+        "CHI": {
+            "icao": "KZAU",
+            "name": "Chicago",
+            "prefix": "CHI",
+            "fir": "KZAU"
+        }
+    },
+    {
+        "CHI": {
+            "icao": "KZAU",
+            "name": "Chicago",
+            "prefix": "CHI",
+            "fir": "KZAU"
+        }
+    },
+    {
+        "ORD": {
+            "icao": "KZAU",
+            "name": "Chicago",
+            "prefix": "ORD",
+            "fir": "KZAU"
+        }
+    },
+    {
+        "BOS": {
+            "icao": "KZBW",
+            "name": "Boston",
+            "prefix": "BOS",
+            "fir": "KZBW"
+        }
+    },
+    {
+        "BOS": {
+            "icao": "KZBW",
+            "name": "Boston",
+            "prefix": "BOS",
+            "fir": "KZBW"
+        }
+    },
+    {
+        "DC": {
+            "icao": "KZDC",
+            "name": "Washington",
+            "prefix": "DC",
+            "fir": "KZDC"
+        }
+    },
+    {
+        "DC": {
+            "icao": "KZDC",
+            "name": "Washington",
+            "prefix": "DC",
+            "fir": "KZDC"
+        }
+    },
+    {
+        "WAS": {
+            "icao": "KZDC",
+            "name": "Washington",
+            "prefix": "WAS",
+            "fir": "KZDC"
+        }
+    },
+    {
+        "DEN": {
+            "icao": "KZDV",
+            "name": "Denver",
+            "prefix": "DEN",
+            "fir": "KZDV"
+        }
+    },
+    {
+        "DEN": {
+            "icao": "KZDV",
+            "name": "Denver",
+            "prefix": "DEN",
+            "fir": "KZDV"
+        }
+    },
+    {
+        "FTW": {
+            "icao": "KZFW",
+            "name": "Fort Worth",
+            "prefix": "FTW",
+            "fir": "KZFW"
+        }
+    },
+    {
+        "FTW": {
+            "icao": "KZFW",
+            "name": "Fort Worth",
+            "prefix": "FTW",
+            "fir": "KZFW"
+        }
+    },
+    {
+        "HOU": {
+            "icao": "KZHU",
+            "name": "Houston",
+            "prefix": "HOU",
+            "fir": "KZHU"
+        }
+    },
+    {
+        "HOU": {
+            "icao": "KZHU",
+            "name": "Houston",
+            "prefix": "HOU",
+            "fir": "KZHU"
+        }
+    },
+    {
+        "IND": {
+            "icao": "KZID",
+            "name": "Indianapolis",
+            "prefix": "IND",
+            "fir": "KZID"
+        }
+    },
+    {
+        "IND": {
+            "icao": "KZID",
+            "name": "Indianapolis",
+            "prefix": "IND",
+            "fir": "KZID"
+        }
+    },
+    {
+        "JAX": {
+            "icao": "KZJX",
+            "name": "Jacksonville",
+            "prefix": "JAX",
+            "fir": "KZJX"
+        }
+    },
+    {
+        "JAX": {
+            "icao": "KZJX",
+            "name": "Jacksonville",
+            "prefix": "JAX",
+            "fir": "KZJX"
+        }
+    },
+    {
+        "MCI": {
+            "icao": "KZKC",
+            "name": "Kansas City",
+            "prefix": "MCI",
+            "fir": "KZKC"
+        }
+    },
+    {
+        "MCI": {
+            "icao": "KZKC",
+            "name": "Kansas City",
+            "prefix": "MCI",
+            "fir": "KZKC"
+        }
+    },
+    {
+        "KC": {
+            "icao": "KZKC",
+            "name": "Kansas City",
+            "prefix": "KC",
+            "fir": "KZKC"
+        }
+    },
+    {
+        "LAX": {
+            "icao": "KZLA",
+            "name": "Los Angeles",
+            "prefix": "LAX",
+            "fir": "KZLA"
+        }
+    },
+    {
+        "LAX": {
+            "icao": "KZLA",
+            "name": "Los Angeles",
+            "prefix": "LAX",
+            "fir": "KZLA"
+        }
+    },
+    {
+        "LA": {
+            "icao": "KZLA",
+            "name": "Los Angeles",
+            "prefix": "LA",
+            "fir": "KZLA"
+        }
+    },
+    {
+        "SLC": {
+            "icao": "KZLC",
+            "name": "Salt Lake City",
+            "prefix": "SLC",
+            "fir": "KZLC"
+        }
+    },
+    {
+        "SLC": {
+            "icao": "KZLC",
+            "name": "Salt Lake City",
+            "prefix": "SLC",
+            "fir": "KZLC"
+        }
+    },
+    {
+        "MIA": {
+            "icao": "KZMA",
+            "name": "Miami",
+            "prefix": "MIA",
+            "fir": "KZMA"
+        }
+    },
+    {
+        "MIA": {
+            "icao": "KZMA",
+            "name": "Miami",
+            "prefix": "MIA",
+            "fir": "KZMA"
+        }
+    },
+    {
+        "ZMO": {
+            "icao": "KZMO",
+            "name": "Miami",
+            "prefix": "ZMO",
+            "fir": "KZMO"
+        }
+    },
+    {
+        "ZMO": {
+            "icao": "KZMO",
+            "name": "Miami",
+            "prefix": "ZMO",
+            "fir": "KZMO"
+        }
+    },
+    {
+        "MEM": {
+            "icao": "KZME",
+            "name": "Memphis",
+            "prefix": "MEM",
+            "fir": "KZME"
+        }
+    },
+    {
+        "MEM": {
+            "icao": "KZME",
+            "name": "Memphis",
+            "prefix": "MEM",
+            "fir": "KZME"
+        }
+    },
+    {
+        "MSP": {
+            "icao": "KZMP",
+            "name": "Minneapolis",
+            "prefix": "MSP",
+            "fir": "KZMP"
+        }
+    },
+    {
+        "MSP": {
+            "icao": "KZMP",
+            "name": "Minneapolis",
+            "prefix": "MSP",
+            "fir": "KZMP"
+        }
+    },
+    {
+        "NY_W": {
+            "icao": "KZNY-W",
+            "name": "New York (West)",
+            "prefix": "NY_W",
+            "fir": "KZNY-W"
+        }
+    },
+    {
+        "NY_W": {
+            "icao": "KZNY-W",
+            "name": "New York (West)",
+            "prefix": "NY_W",
+            "fir": "KZNY-W"
+        }
+    },
+    {
+        "NY": {
+            "icao": "KZNY",
+            "name": "New York",
+            "prefix": "NY",
+            "fir": "KZNY"
+        }
+    },
+    {
+        "NY": {
+            "icao": "KZNY",
+            "name": "New York",
+            "prefix": "NY",
+            "fir": "KZNY"
+        }
+    },
+    {
+        "BDA": {
+            "icao": "KZNY-BDA",
+            "name": "New York - Bermuda TMA",
+            "prefix": "BDA",
+            "fir": "KZNY-BDA"
+        }
+    },
+    {
+        "BDA": {
+            "icao": "KZNY-BDA",
+            "name": "New York - Bermuda TMA",
+            "prefix": "BDA",
+            "fir": "KZNY-BDA"
+        }
+    },
+    {
+        "OAK": {
+            "icao": "KZOA",
+            "name": "Oakland",
+            "prefix": "OAK",
+            "fir": "KZOA"
+        }
+    },
+    {
+        "OAK": {
+            "icao": "KZOA",
+            "name": "Oakland",
+            "prefix": "OAK",
+            "fir": "KZOA"
+        }
+    },
+    {
+        "ZAK": {
+            "icao": "KZAK",
+            "name": "Oakland Oceanic",
+            "prefix": "ZAK",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "ZAK": {
+            "icao": "KZAK",
+            "name": "Oakland Oceanic",
+            "prefix": "ZAK",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "OO": {
+            "icao": "KZAK",
+            "name": "Oakland Oceanic",
+            "prefix": "OO",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "OOR": {
+            "icao": "KZAK",
+            "name": "Oakland Oceanic",
+            "prefix": "OOR",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "OORO": {
+            "icao": "KZAK",
+            "name": "Oakland Oceanic",
+            "prefix": "OORO",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "SF": {
+            "icao": "KZA1",
+            "name": "San Francisco Oceanic",
+            "prefix": "SF",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "SF": {
+            "icao": "KZA1",
+            "name": "San Francisco Oceanic",
+            "prefix": "SF",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "SFR": {
+            "icao": "KZA1",
+            "name": "San Francisco Oceanic",
+            "prefix": "SFR",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "SFRO": {
+            "icao": "KZA1",
+            "name": "San Francisco Oceanic",
+            "prefix": "SFRO",
+            "fir": "KZAK"
+        }
+    },
+    {
+        "CLE": {
+            "icao": "KZOB",
+            "name": "Cleveland",
+            "prefix": "CLE",
+            "fir": "KZOB"
+        }
+    },
+    {
+        "CLE": {
+            "icao": "KZOB",
+            "name": "Cleveland",
+            "prefix": "CLE",
+            "fir": "KZOB"
+        }
+    },
+    {
+        "SEA": {
+            "icao": "KZSE",
+            "name": "Seattle",
+            "prefix": "SEA",
+            "fir": "KZSE"
+        }
+    },
+    {
+        "SEA": {
+            "icao": "KZSE",
+            "name": "Seattle",
+            "prefix": "SEA",
+            "fir": "KZSE"
+        }
+    },
+    {
+        "ATL": {
+            "icao": "KZTL",
+            "name": "Atlanta",
+            "prefix": "ATL",
+            "fir": "KZTL"
+        }
+    },
+    {
+        "ATL": {
+            "icao": "KZTL",
+            "name": "Atlanta",
+            "prefix": "ATL",
+            "fir": "KZTL"
+        }
+    },
+    {
+        "LAAA": {
+            "icao": "LAAA",
+            "name": "Tirana",
+            "prefix": "",
+            "fir": "LAAA"
+        }
+    },
+    {
+        "LBSR": {
+            "icao": "LBSR",
+            "name": "Sofia",
+            "prefix": "",
+            "fir": "LBSR"
+        }
+    },
+    {
+        "LCCC": {
+            "icao": "LCCC",
+            "name": "Nicosia",
+            "prefix": "",
+            "fir": "LCCC"
+        }
+    },
+    {
+        "LCCC-E": {
+            "icao": "LCCC-E",
+            "name": "Nicosia",
+            "prefix": "LCCC-E",
+            "fir": "LCCC-E"
+        }
+    },
+    {
+        "LCCC-H": {
+            "icao": "LCCC-H",
+            "name": "Nicosia-(South2 Sector)",
+            "prefix": "LCCC-H",
+            "fir": "LCCC-H"
+        }
+    },
+    {
+        "LCCC-S": {
+            "icao": "LCCC-S",
+            "name": "Nicosia",
+            "prefix": "LCCC-S",
+            "fir": "LCCC-S"
+        }
+    },
+    {
+        "LCCC-W": {
+            "icao": "LCCC-W",
+            "name": "Nicosia",
+            "prefix": "LCCC-W",
+            "fir": "LCCC-W"
+        }
+    },
+    {
+        "LDZO": {
+            "icao": "LDZO",
+            "name": "Zagreb",
+            "prefix": "",
+            "fir": "LDZO"
+        }
+    },
+    {
+        "LEBL": {
+            "icao": "LECB",
+            "name": "Barcelona",
+            "prefix": "LEBL",
+            "fir": "LECB"
+        }
+    },
+    {
+        "LEBL": {
+            "icao": "LECB",
+            "name": "Barcelona",
+            "prefix": "LEBL",
+            "fir": "LECB"
+        }
+    },
+    {
+        "LECB_RW": {
+            "icao": "LECB-W",
+            "name": "Barcelona West",
+            "prefix": "LECB_RW",
+            "fir": "LECB-W"
+        }
+    },
+    {
+        "LECB_RW": {
+            "icao": "LECB-W",
+            "name": "Barcelona West",
+            "prefix": "LECB_RW",
+            "fir": "LECB-W"
+        }
+    },
+    {
+        "LECB_RE": {
+            "icao": "LECB-E",
+            "name": "Barcelona East",
+            "prefix": "LECB_RE",
+            "fir": "LECB-E"
+        }
+    },
+    {
+        "LECB_RE": {
+            "icao": "LECB-E",
+            "name": "Barcelona East",
+            "prefix": "LECB_RE",
+            "fir": "LECB-E"
+        }
+    },
+    {
+        "LECB_RS": {
+            "icao": "LECB-S",
+            "name": "Barcelona South",
+            "prefix": "LECB_RS",
+            "fir": "LECB-S"
+        }
+    },
+    {
+        "LECB_RS": {
+            "icao": "LECB-S",
+            "name": "Barcelona South",
+            "prefix": "LECB_RS",
+            "fir": "LECB-S"
+        }
+    },
+    {
+        "LECB_RN": {
+            "icao": "LECB-N",
+            "name": "Barcelona North",
+            "prefix": "LECB_RN",
+            "fir": "LECB-N"
+        }
+    },
+    {
+        "LECB_RN": {
+            "icao": "LECB-N",
+            "name": "Barcelona North",
+            "prefix": "LECB_RN",
+            "fir": "LECB-N"
+        }
+    },
+    {
+        "LECL": {
+            "icao": "LECL",
+            "name": "Valencia (FL245-)",
+            "prefix": "",
+            "fir": "LECL"
+        }
+    },
+    {
+        "LEMD": {
+            "icao": "LECM",
+            "name": "Madrid",
+            "prefix": "LEMD",
+            "fir": "LECM"
+        }
+    },
+    {
+        "LEMD": {
+            "icao": "LECM",
+            "name": "Madrid",
+            "prefix": "LEMD",
+            "fir": "LECM"
+        }
+    },
+    {
+        "LECM_ALL": {
+            "icao": "LECM-ALL",
+            "name": "Madrid",
+            "prefix": "LECM_ALL",
+            "fir": "LECM-ALL"
+        }
+    },
+    {
+        "LECM_ALL": {
+            "icao": "LECM-ALL",
+            "name": "Madrid",
+            "prefix": "LECM_ALL",
+            "fir": "LECM-ALL"
+        }
+    },
+    {
+        "LECM_R1": {
+            "icao": "LECM-R1",
+            "name": "Madrid",
+            "prefix": "LECM_R1",
+            "fir": "LECM-R1"
+        }
+    },
+    {
+        "LECM_R1": {
+            "icao": "LECM-R1",
+            "name": "Madrid",
+            "prefix": "LECM_R1",
+            "fir": "LECM-R1"
+        }
+    },
+    {
+        "LECM_R2": {
+            "icao": "LECM-R2",
+            "name": "Madrid",
+            "prefix": "LECM_R2",
+            "fir": "LECM-R2"
+        }
+    },
+    {
+        "LECM_R2": {
+            "icao": "LECM-R2",
+            "name": "Madrid",
+            "prefix": "LECM_R2",
+            "fir": "LECM-R2"
+        }
+    },
+    {
+        "LEPA": {
+            "icao": "LECP",
+            "name": "Palma (FL245-)",
+            "prefix": "LEPA",
+            "fir": "LECP"
+        }
+    },
+    {
+        "LEPA": {
+            "icao": "LECP",
+            "name": "Palma (FL245-)",
+            "prefix": "LEPA",
+            "fir": "LECP"
+        }
+    },
+    {
+        "LECS": {
+            "icao": "LECS",
+            "name": "Sevilla",
+            "prefix": "",
+            "fir": "LECS"
+        }
+    },
+    {
+        "LFBB": {
+            "icao": "LFBB",
+            "name": "Bordeaux",
+            "prefix": "",
+            "fir": "LFBB"
+        }
+    },
+    {
+        "LFEE": {
+            "icao": "LFEE",
+            "name": "Reims (Covers North-East LFFF FL295+)",
+            "prefix": "",
+            "fir": "LFEE"
+        }
+    },
+    {
+        "LFEE-N": {
+            "icao": "LFEE-N",
+            "name": "Reims North (Covers North-East LFFF FL295+)",
+            "prefix": "",
+            "fir": "LFEE-N"
+        }
+    },
+    {
+        "LFEE-S": {
+            "icao": "LFEE-S",
+            "name": "Reims South",
+            "prefix": "",
+            "fir": "LFEE-S"
+        }
+    },
+    {
+        "LFPG": {
+            "icao": "LFFF",
+            "name": "Paris",
+            "prefix": "LFPG",
+            "fir": "LFFF"
+        }
+    },
+    {
+        "LFPG": {
+            "icao": "LFFF",
+            "name": "Paris",
+            "prefix": "LFPG",
+            "fir": "LFFF"
+        }
+    },
+    {
+        "LFMM": {
+            "icao": "LFMM",
+            "name": "Marseille",
+            "prefix": "",
+            "fir": "LFMM"
+        }
+    },
+    {
+        "LFRR": {
+            "icao": "LFRR",
+            "name": "Brest",
+            "prefix": "",
+            "fir": "LFRR"
+        }
+    },
+    {
+        "LFRR-N": {
+            "icao": "LFRR-N",
+            "name": "Brest North",
+            "prefix": "",
+            "fir": "LFRR-N"
+        }
+    },
+    {
+        "LFRR-E": {
+            "icao": "LFRR-E",
+            "name": "Brest East (Covers West LFFF FL295+)",
+            "prefix": "",
+            "fir": "LFRR-E"
+        }
+    },
+    {
+        "LFUM": {
+            "icao": "LFUM",
+            "name": "Marseille Upper",
+            "prefix": "",
+            "fir": "LFMM"
+        }
+    },
+    {
+        "LGGG": {
+            "icao": "LGGG",
+            "name": "Athina",
+            "prefix": "",
+            "fir": "LGGG"
+        }
+    },
+    {
+        "LGGG-U": {
+            "icao": "LGGG",
+            "name": "Athina-(Above FL325)",
+            "prefix": "LGGG-U",
+            "fir": "LGGG"
+        }
+    },
+    {
+        "LGGG-E": {
+            "icao": "LGGG-E",
+            "name": "Athina-(RDS sector)",
+            "prefix": "LGGG-E",
+            "fir": "LGGG-E"
+        }
+    },
+    {
+        "LGGG-W": {
+            "icao": "LGGG-W",
+            "name": "Athina-(KRK sector)",
+            "prefix": "LGGG-W",
+            "fir": "LGGG-W"
+        }
+    },
+    {
+        "LGGG-S": {
+            "icao": "LGGG-S",
+            "name": "Athina-(MIL sector)",
+            "prefix": "LGGG-S",
+            "fir": "LGGG-S"
+        }
+    },
+    {
+        "LGGG-K": {
+            "icao": "LGGG-K",
+            "name": "Athina-(KFN sector)",
+            "prefix": "LGGG-K",
+            "fir": "LGGG-K"
+        }
+    },
+    {
+        "LGGG-P": {
+            "icao": "LGGG-P",
+            "name": "Athina-(PLH sector",
+            "prefix": "LGGG-P",
+            "fir": "LGGG-P"
+        }
+    },
+    {
+        "LGGG-H": {
+            "icao": "LGGG-H",
+            "name": "Athina-(KAV sector)",
+            "prefix": "LGGG-H",
+            "fir": "LGGG-H"
+        }
+    },
+    {
+        "LGMD": {
+            "icao": "LGMD",
+            "name": "Makedonia-(SKP sector)",
+            "prefix": "",
+            "fir": "LGMD"
+        }
+    },
+    {
+        "LGMD-U": {
+            "icao": "LGMD",
+            "name": "Makedonia-(Above FL325)",
+            "prefix": "LGMD-U",
+            "fir": "LGMD"
+        }
+    },
+    {
+        "LGMD-E": {
+            "icao": "LGMD-E",
+            "name": "Makedonia-(LMO sector)",
+            "prefix": "LGMD-E",
+            "fir": "LGMD-E"
+        }
+    },
+    {
+        "LGMD-K": {
+            "icao": "LGMD-K",
+            "name": "Makedonia-(KVL sector)",
+            "prefix": "LGMD-K",
+            "fir": "LGMD-K"
+        }
+    },
+    {
+        "LGMD-T": {
+            "icao": "LGMD-T",
+            "name": "Makedonia-(TSL sector)",
+            "prefix": "LGMD-T",
+            "fir": "LGMD-T"
+        }
+    },
+    {
+        "LHCC": {
+            "icao": "LHCC",
+            "name": "Budapest",
+            "prefix": "",
+            "fir": "LHCC"
+        }
+    },
+    {
+        "LIBB": {
+            "icao": "LIBB",
+            "name": "Brindisi",
+            "prefix": "",
+            "fir": "LIBB"
+        }
+    },
+    {
+        "LIMM": {
+            "icao": "LIPP",
+            "name": "Padova",
+            "prefix": "LIMM",
+            "fir": "LIPP"
+        }
+    },
+    {
+        "LIMM": {
+            "icao": "LIPP",
+            "name": "Padova",
+            "prefix": "LIMM",
+            "fir": "LIPP"
+        }
+    },
+    {
+        "LIRR": {
+            "icao": "LIRR",
+            "name": "Roma",
+            "prefix": "",
+            "fir": "LIRR"
+        }
+    },
+    {
+        "LJLA": {
+            "icao": "LJLA",
+            "name": "Ljubljana",
+            "prefix": "",
+            "fir": "LJLA"
+        }
+    },
+    {
+        "LKAA": {
+            "icao": "LKAA",
+            "name": "Praha",
+            "prefix": "",
+            "fir": "LKAA"
+        }
+    },
+    {
+        "LLTA": {
+            "icao": "LLLL",
+            "name": "Tel Aviv",
+            "prefix": "LLTA",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "LLTA": {
+            "icao": "LLLL",
+            "name": "Tel Aviv",
+            "prefix": "LLTA",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "SHOLET": {
+            "icao": "LLLL",
+            "name": "Tel Aviv",
+            "prefix": "SHOLET",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "LLSC": {
+            "icao": "LLSC",
+            "name": "Tel Aviv South",
+            "prefix": "",
+            "fir": "LLSC"
+        }
+    },
+    {
+        "PLUTO": {
+            "icao": "LLPL",
+            "name": "Pluto",
+            "prefix": "PLUTO",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "PLUTO": {
+            "icao": "LLPT",
+            "name": "Tel Aviv North",
+            "prefix": "PLUTO",
+            "fir": "LLPT"
+        }
+    },
+    {
+        "PLUTO": {
+            "icao": "LLPL",
+            "name": "Pluto",
+            "prefix": "PLUTO",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "HAGAV": {
+            "icao": "LLGV",
+            "name": "Hagav",
+            "prefix": "HAGAV",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "HAGAV": {
+            "icao": "LLGV",
+            "name": "Hagav",
+            "prefix": "HAGAV",
+            "fir": "LLLL"
+        }
+    },
+    {
+        "LMMM": {
+            "icao": "LMMM",
+            "name": "Malta",
+            "prefix": "",
+            "fir": "LMMM"
+        }
+    },
+    {
+        "LOVV_C": {
+            "icao": "LOVV-C",
+            "name": "Wien",
+            "prefix": "LOVV_C",
+            "fir": "LOVV-C"
+        }
+    },
+    {
+        "LOVV_C": {
+            "icao": "LOVV-C",
+            "name": "Wien",
+            "prefix": "LOVV_C",
+            "fir": "LOVV-C"
+        }
+    },
+    {
+        "LOVV_B": {
+            "icao": "LOVV-B",
+            "name": "Wien",
+            "prefix": "LOVV_B",
+            "fir": "LOVV-B"
+        }
+    },
+    {
+        "LOVV_B": {
+            "icao": "LOVV-B",
+            "name": "Wien",
+            "prefix": "LOVV_B",
+            "fir": "LOVV-B"
+        }
+    },
+    {
+        "LOVV_N": {
+            "icao": "LOVV-N",
+            "name": "Wien",
+            "prefix": "LOVV_N",
+            "fir": "LOVV-N"
+        }
+    },
+    {
+        "LOVV_N": {
+            "icao": "LOVV-N",
+            "name": "Wien",
+            "prefix": "LOVV_N",
+            "fir": "LOVV-N"
+        }
+    },
+    {
+        "LOVV_F": {
+            "icao": "LOVV-N",
+            "name": "Wien",
+            "prefix": "LOVV_F",
+            "fir": "LOVV-N"
+        }
+    },
+    {
+        "LOVV_E": {
+            "icao": "LOVV-E",
+            "name": "Wien",
+            "prefix": "LOVV_E",
+            "fir": "LOVV-E"
+        }
+    },
+    {
+        "LOVV_E": {
+            "icao": "LOVV-E",
+            "name": "Wien",
+            "prefix": "LOVV_E",
+            "fir": "LOVV-E"
+        }
+    },
+    {
+        "LOVV_W": {
+            "icao": "LOVV-W",
+            "name": "Wien",
+            "prefix": "LOVV_W",
+            "fir": "LOVV-W"
+        }
+    },
+    {
+        "LOVV_W": {
+            "icao": "LOVV-W",
+            "name": "Wien",
+            "prefix": "LOVV_W",
+            "fir": "LOVV-W"
+        }
+    },
+    {
+        "LOVV": {
+            "icao": "LOVV",
+            "name": "Wien",
+            "prefix": "",
+            "fir": "LOVV"
+        }
+    },
+    {
+        "LPPC": {
+            "icao": "LPPC",
+            "name": "Lisboa",
+            "prefix": "",
+            "fir": "LPPC"
+        }
+    },
+    {
+        "LPPC_D": {
+            "icao": "LPPC-D",
+            "name": "Lisboa - DEMOS Sector",
+            "prefix": "LPPC_D",
+            "fir": "LPPC-D"
+        }
+    },
+    {
+        "LPPC_D": {
+            "icao": "LPPC-D",
+            "name": "Lisboa - DEMOS Sector",
+            "prefix": "LPPC_D",
+            "fir": "LPPC-D"
+        }
+    },
+    {
+        "LPPC_V": {
+            "icao": "LPPC-V",
+            "name": "Lisboa - VERAM Sector",
+            "prefix": "LPPC_V",
+            "fir": "LPPC-V"
+        }
+    },
+    {
+        "LPPC_V": {
+            "icao": "LPPC-V",
+            "name": "Lisboa - VERAM Sector",
+            "prefix": "LPPC_V",
+            "fir": "LPPC-V"
+        }
+    },
+    {
+        "LPPC_I": {
+            "icao": "LPPC-I",
+            "name": "Lisboa - MADEIRA Sector",
+            "prefix": "LPPC_I",
+            "fir": "LPPC-I"
+        }
+    },
+    {
+        "LPPC_I": {
+            "icao": "LPPC-I",
+            "name": "Lisboa - MADEIRA Sector",
+            "prefix": "LPPC_I",
+            "fir": "LPPC-I"
+        }
+    },
+    {
+        "LPPC_N": {
+            "icao": "LPPC-N",
+            "name": "Lisboa - NORTH Sector",
+            "prefix": "LPPC_N",
+            "fir": "LPPC-N"
+        }
+    },
+    {
+        "LPPC_N": {
+            "icao": "LPPC-N",
+            "name": "Lisboa - NORTH Sector",
+            "prefix": "LPPC_N",
+            "fir": "LPPC-N"
+        }
+    },
+    {
+        "LPPC_C": {
+            "icao": "LPPC-C",
+            "name": "Lisboa - CENTRE Sector",
+            "prefix": "LPPC_C",
+            "fir": "LPPC-C"
+        }
+    },
+    {
+        "LPPC_C": {
+            "icao": "LPPC-C",
+            "name": "Lisboa - CENTRE Sector",
+            "prefix": "LPPC_C",
+            "fir": "LPPC-C"
+        }
+    },
+    {
+        "LPPC_S": {
+            "icao": "LPPC-S",
+            "name": "Lisboa - SOUTH Sector",
+            "prefix": "LPPC_S",
+            "fir": "LPPC-S"
+        }
+    },
+    {
+        "LPPC_S": {
+            "icao": "LPPC-S",
+            "name": "Lisboa - SOUTH Sector",
+            "prefix": "LPPC_S",
+            "fir": "LPPC-S"
+        }
+    },
+    {
+        "LPAZ": {
+            "icao": "LPPO",
+            "name": "Santa Maria",
+            "prefix": "LPAZ",
+            "fir": "LPPO"
+        }
+    },
+    {
+        "LPPO": {
+            "icao": "LPPO-TMA",
+            "name": "Santa Maria Radar",
+            "prefix": "LPPO",
+            "fir": "LPPO-TMA"
+        }
+    },
+    {
+        "LPPO": {
+            "icao": "LPPO-TMA",
+            "name": "Santa Maria Radar",
+            "prefix": "LPPO",
+            "fir": "LPPO-TMA"
+        }
+    },
+    {
+        "LPAM": {
+            "icao": "LPAM",
+            "name": "Lisboa Military",
+            "prefix": "",
+            "fir": "LPPC"
+        }
+    },
+    {
+        "LQSA": {
+            "icao": "LQSB",
+            "name": "Sarajevo",
+            "prefix": "LQSA",
+            "fir": "LQSB"
+        }
+    },
+    {
+        "LQSA": {
+            "icao": "LQSB",
+            "name": "Sarajevo",
+            "prefix": "LQSA",
+            "fir": "LQSB"
+        }
+    },
+    {
+        "LRBB": {
+            "icao": "LRBB",
+            "name": "Bucharest",
+            "prefix": "",
+            "fir": "LRBB"
+        }
+    },
+    {
+        "LSAS": {
+            "icao": "LSAS",
+            "name": "Swiss Radar - Switzerland",
+            "prefix": "",
+            "fir": "LSAS"
+        }
+    },
+    {
+        "LSAG": {
+            "icao": "LSAG",
+            "name": "Swiss Radar (Geneva ACC) - Switzerland",
+            "prefix": "",
+            "fir": "LSAG"
+        }
+    },
+    {
+        "LSAZ": {
+            "icao": "LSAZ",
+            "name": "Swiss Radar (Zurich ACC) - Switzerland",
+            "prefix": "",
+            "fir": "LSAZ"
+        }
+    },
+    {
+        "ANK": {
+            "icao": "LTAA",
+            "name": "Ankara Control - Ankara",
+            "prefix": "ANK",
+            "fir": "LTAA"
+        }
+    },
+    {
+        "ANK": {
+            "icao": "LTAA",
+            "name": "Ankara Control - Ankara",
+            "prefix": "ANK",
+            "fir": "LTAA"
+        }
+    },
+    {
+        "ANK_A": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara Central & East",
+            "prefix": "ANK_A",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_A": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara Central & East",
+            "prefix": "ANK_A",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_C": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara Central",
+            "prefix": "ANK_C",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_E": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara East",
+            "prefix": "ANK_E",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_N": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara North",
+            "prefix": "ANK_N",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_S": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara South",
+            "prefix": "ANK_S",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_EN": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara East North",
+            "prefix": "ANK_EN",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_ES": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara East South",
+            "prefix": "ANK_ES",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_7": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 7 Sector",
+            "prefix": "ANK_7",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_8": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 8 Sector",
+            "prefix": "ANK_8",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_9": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 9 Sector",
+            "prefix": "ANK_9",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_10": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 10 Sector",
+            "prefix": "ANK_10",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_11": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 11 Sector",
+            "prefix": "ANK_11",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_12": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 12 Sector",
+            "prefix": "ANK_12",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_13": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 13 Sector",
+            "prefix": "ANK_13",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_14": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 14 Sector",
+            "prefix": "ANK_14",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_15": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 15 Sector",
+            "prefix": "ANK_15",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_16": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 16 Sector",
+            "prefix": "ANK_16",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_17": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 17 Sector",
+            "prefix": "ANK_17",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_18": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 18 Sector",
+            "prefix": "ANK_18",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_19": {
+            "icao": "LTAA-A",
+            "name": "Ankara Control - Ankara 19 Sector",
+            "prefix": "ANK_19",
+            "fir": "LTAA-A"
+        }
+    },
+    {
+        "ANK_W": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Istanbul",
+            "prefix": "ANK_W",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_W": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Istanbul",
+            "prefix": "ANK_W",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_WN": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Istanbul West North",
+            "prefix": "ANK_WN",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_WS": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Istanbul West South",
+            "prefix": "ANK_WS",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_1": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 1 Sector",
+            "prefix": "ANK_1",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_2": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 2 Sector",
+            "prefix": "ANK_2",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_3": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 3 Sector",
+            "prefix": "ANK_3",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_4": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 4 Sector",
+            "prefix": "ANK_4",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_5": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 5 Sector",
+            "prefix": "ANK_5",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "ANK_6": {
+            "icao": "LTBB",
+            "name": "Ankara Control - Ankara 6 Sector",
+            "prefix": "ANK_6",
+            "fir": "LTBB"
+        }
+    },
+    {
+        "LUKK": {
+            "icao": "LUUU",
+            "name": "Chisinau",
+            "prefix": "LUKK",
+            "fir": "LUUU"
+        }
+    },
+    {
+        "LUKK": {
+            "icao": "LUUU",
+            "name": "Chisinau",
+            "prefix": "LUKK",
+            "fir": "LUUU"
+        }
+    },
+    {
+        "LWSS": {
+            "icao": "LWSS",
+            "name": "Skopje",
+            "prefix": "",
+            "fir": "LWSS"
+        }
+    },
+    {
+        "LYBA": {
+            "icao": "LYBA",
+            "name": "Beograd",
+            "prefix": "",
+            "fir": "LYBA"
+        }
+    },
+    {
+        "LZBB": {
+            "icao": "LZBB",
+            "name": "Bratislava",
+            "prefix": "",
+            "fir": "LZBB"
+        }
+    },
+    {
+        "MDCS": {
+            "icao": "MDCS",
+            "name": "Santo Domingo",
+            "prefix": "",
+            "fir": "MDCS"
+        }
+    },
+    {
+        "MHCC": {
+            "icao": "MHCC",
+            "name": "Cenamer",
+            "prefix": "",
+            "fir": "MHCC"
+        }
+    },
+    {
+        "MKJK": {
+            "icao": "MKJK",
+            "name": "Kingston",
+            "prefix": "",
+            "fir": "MKJK"
+        }
+    },
+    {
+        "MMEX": {
+            "icao": "MMEX",
+            "name": "Mexico",
+            "prefix": "",
+            "fir": "MMEX"
+        }
+    },
+    {
+        "MMFR": {
+            "icao": "MMFR",
+            "name": "Mexico",
+            "prefix": "",
+            "fir": "MMFR"
+        }
+    },
+    {
+        "MID": {
+            "icao": "MMID",
+            "name": "Merida",
+            "prefix": "MID",
+            "fir": "MMID"
+        }
+    },
+    {
+        "MID": {
+            "icao": "MMID",
+            "name": "Merida",
+            "prefix": "MID",
+            "fir": "MMID"
+        }
+    },
+    {
+        "MTY": {
+            "icao": "MMTY",
+            "name": "Monterrey",
+            "prefix": "MTY",
+            "fir": "MMTY"
+        }
+    },
+    {
+        "MTY": {
+            "icao": "MMTY",
+            "name": "Monterrey",
+            "prefix": "MTY",
+            "fir": "MMTY"
+        }
+    },
+    {
+        "MZT": {
+            "icao": "MMFO",
+            "name": "Mazatlan",
+            "prefix": "MZT",
+            "fir": "MMZT"
+        }
+    },
+    {
+        "MZT": {
+            "icao": "MMZT",
+            "name": "Mazatlan",
+            "prefix": "MZT",
+            "fir": "MMZT"
+        }
+    },
+    {
+        "MZT": {
+            "icao": "MMFO",
+            "name": "Mazatlan",
+            "prefix": "MZT",
+            "fir": "MMZT"
+        }
+    },
+    {
+        "MPZL": {
+            "icao": "MPZL",
+            "name": "Panama",
+            "prefix": "",
+            "fir": "MPZL"
+        }
+    },
+    {
+        "MTEG": {
+            "icao": "MTEG",
+            "name": "Port-Au-Prince",
+            "prefix": "",
+            "fir": "MTEG"
+        }
+    },
+    {
+        "HAV": {
+            "icao": "MUFH",
+            "name": "Havana",
+            "prefix": "HAV",
+            "fir": "MUFH"
+        }
+    },
+    {
+        "HAV": {
+            "icao": "MUFH",
+            "name": "Havana",
+            "prefix": "HAV",
+            "fir": "MUFH"
+        }
+    },
+    {
+        "NAT": {
+            "icao": "NAT",
+            "name": "Shanwick & Gander",
+            "prefix": "NAT",
+            "fir": "NAT"
+        }
+    },
+    {
+        "NCRG": {
+            "icao": "NCRG",
+            "name": "Rarotonga",
+            "prefix": "",
+            "fir": "NCRG"
+        }
+    },
+    {
+        "NFFF": {
+            "icao": "NFFF",
+            "name": "Nadi Oceanic",
+            "prefix": "",
+            "fir": "NFFF"
+        }
+    },
+    {
+        "NFFN": {
+            "icao": "NFFN",
+            "name": "Nadi",
+            "prefix": "",
+            "fir": "NFFN"
+        }
+    },
+    {
+        "NVVV": {
+            "icao": "NVVV",
+            "name": "Port Vila",
+            "prefix": "",
+            "fir": "NVVV"
+        }
+    },
+    {
+        "NSTU": {
+            "icao": "NSTU",
+            "name": "Pago Pago",
+            "prefix": "",
+            "fir": "NZZO"
+        }
+    },
+    {
+        "NTTT": {
+            "icao": "NTTT",
+            "name": "Tahiti Radio",
+            "prefix": "",
+            "fir": "NTTT"
+        }
+    },
+    {
+        "NTTC": {
+            "icao": "NTTC",
+            "name": "Tahiti",
+            "prefix": "",
+            "fir": "NTTC"
+        }
+    },
+    {
+        "NWWW": {
+            "icao": "NWWW",
+            "name": "Noumea",
+            "prefix": "",
+            "fir": "NWWW"
+        }
+    },
+    {
+        "NZZO": {
+            "icao": "NZZO",
+            "name": "Auckland Radio",
+            "prefix": "",
+            "fir": "NZZO"
+        }
+    },
+    {
+        "NZZO-E": {
+            "icao": "NZZO",
+            "name": "Auckland Radio East",
+            "prefix": "NZZO-E",
+            "fir": "NZZO"
+        }
+    },
+    {
+        "NZZO-TSN": {
+            "icao": "NZZO",
+            "name": "Auckland Radio (Tasman)",
+            "prefix": "NZZO-TSN",
+            "fir": "NZZO"
+        }
+    },
+    {
+        "NZAA": {
+            "icao": "NZAA",
+            "name": "Auckland",
+            "prefix": "",
+            "fir": "NZAA"
+        }
+    },
+    {
+        "NZAA-R": {
+            "icao": "NZAA",
+            "name": "Auckland (Raglan)",
+            "prefix": "NZAA-R",
+            "fir": "NZAA"
+        }
+    },
+    {
+        "NZCH-B": {
+            "icao": "NZCB",
+            "name": "Christchurch (Bay)",
+            "prefix": "NZCH-B",
+            "fir": "NZCB"
+        }
+    },
+    {
+        "NZCH-B": {
+            "icao": "NZCB",
+            "name": "Christchurch (Bay)",
+            "prefix": "NZCH-B",
+            "fir": "NZCB"
+        }
+    },
+    {
+        "NZCH-T": {
+            "icao": "NZCT",
+            "name": "Christchurch (Taranaki)",
+            "prefix": "NZCH-T",
+            "fir": "NZCT"
+        }
+    },
+    {
+        "NZCH-T": {
+            "icao": "NZCT",
+            "name": "Christchurch (Taranaki)",
+            "prefix": "NZCH-T",
+            "fir": "NZCT"
+        }
+    },
+    {
+        "NZCH-K": {
+            "icao": "NZCK",
+            "name": "Christchurch (Kaikoura)",
+            "prefix": "NZCH-K",
+            "fir": "NZCK"
+        }
+    },
+    {
+        "NZCH-K": {
+            "icao": "NZCK",
+            "name": "Christchurch (Kaikoura)",
+            "prefix": "NZCH-K",
+            "fir": "NZCK"
+        }
+    },
+    {
+        "NZCH-S": {
+            "icao": "NZCS",
+            "name": "Christchurch (South)",
+            "prefix": "NZCH-S",
+            "fir": "NZCS"
+        }
+    },
+    {
+        "NZCH-S": {
+            "icao": "NZCS",
+            "name": "Christchurch (South)",
+            "prefix": "NZCH-S",
+            "fir": "NZCS"
+        }
+    },
+    {
+        "NZOH": {
+            "icao": "NZOH",
+            "name": "Ohakea",
+            "prefix": "",
+            "fir": "NZOH"
+        }
+    },
+    {
+        "NZCM": {
+            "icao": "NZCM",
+            "name": "McMurdo (Mac)",
+            "prefix": "",
+            "fir": "NZCM"
+        }
+    },
+    {
+        "NSFA": {
+            "icao": "NSFA",
+            "name": "Faleolo",
+            "prefix": "",
+            "fir": "NSFA"
+        }
+    },
+    {
+        "OAKX": {
+            "icao": "OAKX",
+            "name": "Kabul",
+            "prefix": "",
+            "fir": "OAKX"
+        }
+    },
+    {
+        "OBBB": {
+            "icao": "OBBB",
+            "name": "Bahrain",
+            "prefix": "",
+            "fir": "OBBB"
+        }
+    },
+    {
+        "OBBB_E": {
+            "icao": "OBBB-E",
+            "name": "Bahrain East",
+            "prefix": "OBBB_E",
+            "fir": "OBBB-E"
+        }
+    },
+    {
+        "OBBB_E": {
+            "icao": "OBBB-E",
+            "name": "Bahrain East",
+            "prefix": "OBBB_E",
+            "fir": "OBBB-E"
+        }
+    },
+    {
+        "OBBB_N": {
+            "icao": "OBBB-N",
+            "name": "Bahrain North",
+            "prefix": "OBBB_N",
+            "fir": "OBBB-N"
+        }
+    },
+    {
+        "OBBB_N": {
+            "icao": "OBBB-N",
+            "name": "Bahrain North",
+            "prefix": "OBBB_N",
+            "fir": "OBBB-N"
+        }
+    },
+    {
+        "OBBB_S": {
+            "icao": "OBBB-S",
+            "name": "Bahrain South",
+            "prefix": "OBBB_S",
+            "fir": "OBBB-S"
+        }
+    },
+    {
+        "OBBB_S": {
+            "icao": "OBBB-S",
+            "name": "Bahrain South",
+            "prefix": "OBBB_S",
+            "fir": "OBBB-S"
+        }
+    },
+    {
+        "OBBB_C": {
+            "icao": "OBBB-C",
+            "name": "Bahrain Central",
+            "prefix": "OBBB_C",
+            "fir": "OBBB-C"
+        }
+    },
+    {
+        "OBBB_C": {
+            "icao": "OBBB-C",
+            "name": "Bahrain Central",
+            "prefix": "OBBB_C",
+            "fir": "OBBB-C"
+        }
+    },
+    {
+        "OEJD": {
+            "icao": "OEJD",
+            "name": "Jeddah",
+            "prefix": "",
+            "fir": "OEJD"
+        }
+    },
+    {
+        "OERD": {
+            "icao": "OERD",
+            "name": "Riyadh",
+            "prefix": "",
+            "fir": "OERD"
+        }
+    },
+    {
+        "TEH": {
+            "icao": "OIIX",
+            "name": "Tehran",
+            "prefix": "TEH",
+            "fir": "OIIX"
+        }
+    },
+    {
+        "TEH": {
+            "icao": "OIIX",
+            "name": "Tehran",
+            "prefix": "TEH",
+            "fir": "OIIX"
+        }
+    },
+    {
+        "OTDF": {
+            "icao": "OTDF",
+            "name": "Doha FIR (Up to FL245)",
+            "prefix": "",
+            "fir": "OTDF"
+        }
+    },
+    {
+        "TEH_1W": {
+            "icao": "TEH-1W",
+            "name": "Tehran 1 West",
+            "prefix": "TEH_1W",
+            "fir": "TEH-1W"
+        }
+    },
+    {
+        "TEH_1W": {
+            "icao": "TEH-1W",
+            "name": "Tehran 1 West",
+            "prefix": "TEH_1W",
+            "fir": "TEH-1W"
+        }
+    },
+    {
+        "TEH_1N": {
+            "icao": "TEH-1N",
+            "name": "Tehran 1 North",
+            "prefix": "TEH_1N",
+            "fir": "TEH-1N"
+        }
+    },
+    {
+        "TEH_1N": {
+            "icao": "TEH-1N",
+            "name": "Tehran 1 North",
+            "prefix": "TEH_1N",
+            "fir": "TEH-1N"
+        }
+    },
+    {
+        "TEH_1E": {
+            "icao": "TEH-1E",
+            "name": "Tehran 1 East",
+            "prefix": "TEH_1E",
+            "fir": "TEH-1E"
+        }
+    },
+    {
+        "TEH_1E": {
+            "icao": "TEH-1E",
+            "name": "Tehran 1 East",
+            "prefix": "TEH_1E",
+            "fir": "TEH-1E"
+        }
+    },
+    {
+        "TEH_2W": {
+            "icao": "TEH-2W",
+            "name": "Tehran 2 West",
+            "prefix": "TEH_2W",
+            "fir": "TEH-2W"
+        }
+    },
+    {
+        "TEH_2W": {
+            "icao": "TEH-2W",
+            "name": "Tehran 2 West",
+            "prefix": "TEH_2W",
+            "fir": "TEH-2W"
+        }
+    },
+    {
+        "TEH_2E": {
+            "icao": "TEH-2E",
+            "name": "Tehran 2 East",
+            "prefix": "TEH_2E",
+            "fir": "TEH-2E"
+        }
+    },
+    {
+        "TEH_2E": {
+            "icao": "TEH-2E",
+            "name": "Tehran 2 East",
+            "prefix": "TEH_2E",
+            "fir": "TEH-2E"
+        }
+    },
+    {
+        "TEH_3N": {
+            "icao": "TEH-3N",
+            "name": "Tehran 3 North",
+            "prefix": "TEH_3N",
+            "fir": "TEH-3N"
+        }
+    },
+    {
+        "TEH_3N": {
+            "icao": "TEH-3N",
+            "name": "Tehran 3 North",
+            "prefix": "TEH_3N",
+            "fir": "TEH-3N"
+        }
+    },
+    {
+        "TEH_3S": {
+            "icao": "TEH-3S",
+            "name": "Tehran 3 South",
+            "prefix": "TEH_3S",
+            "fir": "TEH-3S"
+        }
+    },
+    {
+        "TEH_3S": {
+            "icao": "TEH-3S",
+            "name": "Tehran 3 South",
+            "prefix": "TEH_3S",
+            "fir": "TEH-3S"
+        }
+    },
+    {
+        "TEH_4W": {
+            "icao": "TEH-4W",
+            "name": "Tehran 4 West",
+            "prefix": "TEH_4W",
+            "fir": "TEH-4W"
+        }
+    },
+    {
+        "TEH_4W": {
+            "icao": "TEH-4W",
+            "name": "Tehran 4 West",
+            "prefix": "TEH_4W",
+            "fir": "TEH-4W"
+        }
+    },
+    {
+        "TEH_4S": {
+            "icao": "TEH-4S",
+            "name": "Tehran 4 South",
+            "prefix": "TEH_4S",
+            "fir": "TEH-4S"
+        }
+    },
+    {
+        "TEH_4S": {
+            "icao": "TEH-4S",
+            "name": "Tehran 4 South",
+            "prefix": "TEH_4S",
+            "fir": "TEH-4S"
+        }
+    },
+    {
+        "TEH_4E": {
+            "icao": "TEH-4E",
+            "name": "Tehran 4 East",
+            "prefix": "TEH_4E",
+            "fir": "TEH-4E"
+        }
+    },
+    {
+        "TEH_4E": {
+            "icao": "TEH-4E",
+            "name": "Tehran 4 East",
+            "prefix": "TEH_4E",
+            "fir": "TEH-4E"
+        }
+    },
+    {
+        "TEH_5W": {
+            "icao": "TEH-5W",
+            "name": "Tehran 5 West",
+            "prefix": "TEH_5W",
+            "fir": "TEH-5W"
+        }
+    },
+    {
+        "TEH_5W": {
+            "icao": "TEH-5W",
+            "name": "Tehran 5 West",
+            "prefix": "TEH_5W",
+            "fir": "TEH-5W"
+        }
+    },
+    {
+        "TEH_5E": {
+            "icao": "TEH-5E",
+            "name": "Tehran 5 East",
+            "prefix": "TEH_5E",
+            "fir": "TEH-5E"
+        }
+    },
+    {
+        "TEH_5E": {
+            "icao": "TEH-5E",
+            "name": "Tehran 5 East",
+            "prefix": "TEH_5E",
+            "fir": "TEH-5E"
+        }
+    },
+    {
+        "TEH_6E": {
+            "icao": "TEH-6E",
+            "name": "Tehran 6 East",
+            "prefix": "TEH_6E",
+            "fir": "TEH-6E"
+        }
+    },
+    {
+        "TEH_6E": {
+            "icao": "TEH-6E",
+            "name": "Tehran 6 East",
+            "prefix": "TEH_6E",
+            "fir": "TEH-6E"
+        }
+    },
+    {
+        "TEH_6W": {
+            "icao": "TEH-6W",
+            "name": "Tehran 6 West",
+            "prefix": "TEH_6W",
+            "fir": "TEH-6W"
+        }
+    },
+    {
+        "TEH_6W": {
+            "icao": "TEH-6W",
+            "name": "Tehran 6 West",
+            "prefix": "TEH_6W",
+            "fir": "TEH-6W"
+        }
+    },
+    {
+        "TEH_7": {
+            "icao": "TEH-7",
+            "name": "Tehran 7",
+            "prefix": "TEH_7",
+            "fir": "TEH-7"
+        }
+    },
+    {
+        "TEH_7": {
+            "icao": "TEH-7",
+            "name": "Tehran 7",
+            "prefix": "TEH_7",
+            "fir": "TEH-7"
+        }
+    },
+    {
+        "OJAC": {
+            "icao": "OJAC",
+            "name": "Amman",
+            "prefix": "",
+            "fir": "OJAC"
+        }
+    },
+    {
+        "OKAC": {
+            "icao": "OKAC",
+            "name": "Kuwait",
+            "prefix": "",
+            "fir": "OKAC"
+        }
+    },
+    {
+        "OLBA": {
+            "icao": "OLBB",
+            "name": "Beirut",
+            "prefix": "OLBA",
+            "fir": "OLBB"
+        }
+    },
+    {
+        "OLBA": {
+            "icao": "OLBB",
+            "name": "Beirut",
+            "prefix": "OLBA",
+            "fir": "OLBB"
+        }
+    },
+    {
+        "UAE": {
+            "icao": "OMAE",
+            "name": "U.A.E",
+            "prefix": "UAE",
+            "fir": "OMAE"
+        }
+    },
+    {
+        "UAE": {
+            "icao": "OMAE",
+            "name": "U.A.E",
+            "prefix": "UAE",
+            "fir": "OMAE"
+        }
+    },
+    {
+        "OOMM": {
+            "icao": "OOMM",
+            "name": "Muscat",
+            "prefix": "",
+            "fir": "OOMM"
+        }
+    },
+    {
+        "OPKR": {
+            "icao": "OPKR",
+            "name": "Karachi",
+            "prefix": "OPKR",
+            "fir": "OPKR"
+        }
+    },
+    {
+        "OPKR-C": {
+            "icao": "OPKR",
+            "name": "Karachi",
+            "prefix": "OPKR-C",
+            "fir": "OPKR"
+        }
+    },
+    {
+        "OPKR-E": {
+            "icao": "OPKR",
+            "name": "Karachi",
+            "prefix": "OPKR-E",
+            "fir": "OPKR"
+        }
+    },
+    {
+        "OPKR-S": {
+            "icao": "OPKR",
+            "name": "Karachi",
+            "prefix": "OPKR-S",
+            "fir": "OPKR"
+        }
+    },
+    {
+        "OPKR-W": {
+            "icao": "OPKR",
+            "name": "Karachi",
+            "prefix": "OPKR-W",
+            "fir": "OPKR"
+        }
+    },
+    {
+        "OPLR": {
+            "icao": "OPLR",
+            "name": "Lahore",
+            "prefix": "OPLR",
+            "fir": "OPLR"
+        }
+    },
+    {
+        "OPLR-E": {
+            "icao": "OPLR",
+            "name": "Lahore",
+            "prefix": "OPLR-E",
+            "fir": "OPLR"
+        }
+    },
+    {
+        "ISB": {
+            "icao": "OPLR",
+            "name": "Lahore (Islamabad)",
+            "prefix": "ISB",
+            "fir": "OPLR"
+        }
+    },
+    {
+        "OPLR-S": {
+            "icao": "OPLR",
+            "name": "Lahore",
+            "prefix": "OPLR-S",
+            "fir": "OPLR"
+        }
+    },
+    {
+        "OPLR-W": {
+            "icao": "OPLR",
+            "name": "Lahore",
+            "prefix": "OPLR-W",
+            "fir": "OPLR"
+        }
+    },
+    {
+        "ORBB": {
+            "icao": "ORBB",
+            "name": "Baghdad",
+            "prefix": "",
+            "fir": "ORBB"
+        }
+    },
+    {
+        "ORBB-N": {
+            "icao": "ORBB-N",
+            "name": "Baghdad North",
+            "prefix": "",
+            "fir": "ORBB-N"
+        }
+    },
+    {
+        "ORBB-S": {
+            "icao": "ORBB-S",
+            "name": "Baghdad South",
+            "prefix": "",
+            "fir": "ORBB-N"
+        }
+    },
+    {
+        "OSDI": {
+            "icao": "OSTT",
+            "name": "Damascus",
+            "prefix": "OSDI",
+            "fir": "OSTT"
+        }
+    },
+    {
+        "OSDI": {
+            "icao": "OSTT",
+            "name": "Damascus",
+            "prefix": "OSDI",
+            "fir": "OSTT"
+        }
+    },
+    {
+        "OYSC": {
+            "icao": "OYSC",
+            "name": "Sanaa",
+            "prefix": "",
+            "fir": "OYSC"
+        }
+    },
+    {
+        "ANC": {
+            "icao": "PAZA",
+            "name": "Anchorage",
+            "prefix": "ANC",
+            "fir": "PAZA"
+        }
+    },
+    {
+        "ANC": {
+            "icao": "PAZA",
+            "name": "Anchorage",
+            "prefix": "ANC",
+            "fir": "PAZA"
+        }
+    },
+    {
+        "GU": {
+            "icao": "PGZU",
+            "name": "Guam",
+            "prefix": "GU",
+            "fir": "PGZU"
+        }
+    },
+    {
+        "GU": {
+            "icao": "PGZU",
+            "name": "Guam",
+            "prefix": "GU",
+            "fir": "PGZU"
+        }
+    },
+    {
+        "GUM": {
+            "icao": "PGZU",
+            "name": "Guam",
+            "prefix": "GUM",
+            "fir": "PGZU"
+        }
+    },
+    {
+        "GUAM": {
+            "icao": "PGZU",
+            "name": "Guam",
+            "prefix": "GUAM",
+            "fir": "PGZU"
+        }
+    },
+    {
+        "UAM": {
+            "icao": "PGZU",
+            "name": "Guam",
+            "prefix": "UAM",
+            "fir": "PGZU"
+        }
+    },
+    {
+        "HNL": {
+            "icao": "PHZH",
+            "name": "Honolulu",
+            "prefix": "HNL",
+            "fir": "PHZH"
+        }
+    },
+    {
+        "HNL": {
+            "icao": "PHZH",
+            "name": "Honolulu",
+            "prefix": "HNL",
+            "fir": "PHZH"
+        }
+    },
+    {
+        "HCF": {
+            "icao": "PHZH",
+            "name": "Honolulu",
+            "prefix": "HCF",
+            "fir": "PHZH"
+        }
+    },
+    {
+        "TPE": {
+            "icao": "RCAA",
+            "name": "Taipei",
+            "prefix": "TPE",
+            "fir": "RCAA"
+        }
+    },
+    {
+        "TPE": {
+            "icao": "RCAA",
+            "name": "Taipei",
+            "prefix": "TPE",
+            "fir": "RCAA"
+        }
+    },
+    {
+        "SPO": {
+            "icao": "RJCG",
+            "name": "Sapporo ACC - Fukuoka",
+            "prefix": "SPO",
+            "fir": "RJCG"
+        }
+    },
+    {
+        "SPO": {
+            "icao": "RJCG",
+            "name": "Sapporo ACC - Fukuoka",
+            "prefix": "SPO",
+            "fir": "RJCG"
+        }
+    },
+    {
+        "RJCO": {
+            "icao": "RJCG",
+            "name": "Sapporo ACC - Fukuoka",
+            "prefix": "RJCO",
+            "fir": "RJCG"
+        }
+    },
+    {
+        "FKO": {
+            "icao": "RJDG",
+            "name": "Fukuoka ACC - Fukuoka",
+            "prefix": "FKO",
+            "fir": "RJDG"
+        }
+    },
+    {
+        "FKO": {
+            "icao": "RJDG",
+            "name": "Fukuoka ACC - Fukuoka",
+            "prefix": "FKO",
+            "fir": "RJDG"
+        }
+    },
+    {
+        "RJTG": {
+            "icao": "RJTG",
+            "name": "Tokyo ACC - Fukuoka",
+            "prefix": "",
+            "fir": "RJTG"
+        }
+    },
+    {
+        "RKRR": {
+            "icao": "RKRR",
+            "name": "Incheon ACC - Incheon",
+            "prefix": "",
+            "fir": "RKRR"
+        }
+    },
+    {
+        "RKRR-N": {
+            "icao": "RKRR-N",
+            "name": "Incheon ACC (North) - Incheon",
+            "prefix": "",
+            "fir": "RKRR-N"
+        }
+    },
+    {
+        "RKRR-S": {
+            "icao": "RKRR-S",
+            "name": "Incheon ACC (South) - Incheon",
+            "prefix": "",
+            "fir": "RKRR-S"
+        }
+    },
+    {
+        "RKDA": {
+            "icao": "RKDA",
+            "name": "Daegu ACC - Incheon",
+            "prefix": "",
+            "fir": "RKDA"
+        }
+    },
+    {
+        "RKDA-W": {
+            "icao": "RKDA-W",
+            "name": "Daegu ACC (West) - Incheon",
+            "prefix": "",
+            "fir": "RKDA"
+        }
+    },
+    {
+        "RKDA-E": {
+            "icao": "RKDA-E",
+            "name": "Daegu ACC (East) - Incheon",
+            "prefix": "",
+            "fir": "RKDA"
+        }
+    },
+    {
+        "RKDA-C": {
+            "icao": "RKDA-C",
+            "name": "Daegu ACC (Central) - Incheon",
+            "prefix": "",
+            "fir": "RKDA"
+        }
+    },
+    {
+        "RJBG": {
+            "icao": "RJBG",
+            "name": "Kobe ACC - Fukuoka",
+            "prefix": "",
+            "fir": "RJBG"
+        }
+    },
+    {
+        "MNL": {
+            "icao": "RPHI",
+            "name": "Manila",
+            "prefix": "MNL",
+            "fir": "RPHI"
+        }
+    },
+    {
+        "MNL": {
+            "icao": "RPHI",
+            "name": "Manila",
+            "prefix": "MNL",
+            "fir": "RPHI"
+        }
+    },
+    {
+        "SACF": {
+            "icao": "SACF",
+            "name": "Cordoba",
+            "prefix": "",
+            "fir": "SACF"
+        }
+    },
+    {
+        "SACO": {
+            "icao": "SACO",
+            "name": "Cordoba TMA - Cordoba",
+            "prefix": "",
+            "fir": "SACO"
+        }
+    },
+    {
+        "SAEF": {
+            "icao": "SAEF",
+            "name": "Ezeiza",
+            "prefix": "",
+            "fir": "SAEF"
+        }
+    },
+    {
+        "SAEF_N": {
+            "icao": "SAEF-N",
+            "name": "Ezeiza ACC (North) - Ezeiza",
+            "prefix": "SAEF_N",
+            "fir": "SAEF-N"
+        }
+    },
+    {
+        "SAEF_N": {
+            "icao": "SAEF-N",
+            "name": "Ezeiza ACC (North) - Ezeiza",
+            "prefix": "SAEF_N",
+            "fir": "SAEF-N"
+        }
+    },
+    {
+        "SAEF_S": {
+            "icao": "SAEF-S",
+            "name": "Ezeiza ACC (South) - Ezeiza",
+            "prefix": "SAEF_S",
+            "fir": "SAEF-S"
+        }
+    },
+    {
+        "SAEF_S": {
+            "icao": "SAEF-S",
+            "name": "Ezeiza ACC (South) - Ezeiza",
+            "prefix": "SAEF_S",
+            "fir": "SAEF-S"
+        }
+    },
+    {
+        "BAIRES": {
+            "icao": "BAIRES",
+            "name": "Baires TMA - Ezeiza",
+            "prefix": "",
+            "fir": "BAIRES"
+        }
+    },
+    {
+        "SAMF": {
+            "icao": "SAMF",
+            "name": "Mendoza",
+            "prefix": "",
+            "fir": "SAMF"
+        }
+    },
+    {
+        "SAME": {
+            "icao": "SAME",
+            "name": "Mendoza TMA - Mendoza",
+            "prefix": "",
+            "fir": "SAME"
+        }
+    },
+    {
+        "SARR": {
+            "icao": "SARR",
+            "name": "Resistencia",
+            "prefix": "",
+            "fir": "SARR"
+        }
+    },
+    {
+        "SARE": {
+            "icao": "SARE",
+            "name": "Resistencia TMA - Resistencia",
+            "prefix": "",
+            "fir": "SARE"
+        }
+    },
+    {
+        "SAVF": {
+            "icao": "SAVF",
+            "name": "Comodoro Rivadavia",
+            "prefix": "",
+            "fir": "SAVF"
+        }
+    },
+    {
+        "SAVC": {
+            "icao": "SAVC",
+            "name": "Comodoro Rivadavia TMA - Comodoro Rivadavia",
+            "prefix": "",
+            "fir": "SAVC"
+        }
+    },
+    {
+        "SBAZ": {
+            "icao": "SBAZ",
+            "name": "Amazonica",
+            "prefix": "",
+            "fir": "SBAZ"
+        }
+    },
+    {
+        "SBBR": {
+            "icao": "SBBS",
+            "name": "Brasilia",
+            "prefix": "SBBR",
+            "fir": "SBBS"
+        }
+    },
+    {
+        "SBBR": {
+            "icao": "SBBS",
+            "name": "Brasilia",
+            "prefix": "SBBR",
+            "fir": "SBBS"
+        }
+    },
+    {
+        "SBCW": {
+            "icao": "SBCW",
+            "name": "Curitiba",
+            "prefix": "",
+            "fir": "SBCW"
+        }
+    },
+    {
+        "SBAO": {
+            "icao": "SBAO",
+            "name": "Atlantico Oceanic",
+            "prefix": "",
+            "fir": "SBAO"
+        }
+    },
+    {
+        "SBRE": {
+            "icao": "SBRE",
+            "name": "Recife",
+            "prefix": "",
+            "fir": "SBRE"
+        }
+    },
+    {
+        "SCCZ": {
+            "icao": "SCCZ",
+            "name": "Punta Arenas",
+            "prefix": "",
+            "fir": "SCCZ"
+        }
+    },
+    {
+        "SCEZ": {
+            "icao": "SCEZ",
+            "name": "Santiago",
+            "prefix": "",
+            "fir": "SCEZ"
+        }
+    },
+    {
+        "SCFZ": {
+            "icao": "SCFZ",
+            "name": "Antofagasta",
+            "prefix": "",
+            "fir": "SCFZ"
+        }
+    },
+    {
+        "SCIZ": {
+            "icao": "SCIZ",
+            "name": "Pascua",
+            "prefix": "",
+            "fir": "SCIZ"
+        }
+    },
+    {
+        "SCTZ": {
+            "icao": "SCTZ",
+            "name": "Puerto Montt",
+            "prefix": "",
+            "fir": "SCTZ"
+        }
+    },
+    {
+        "SEFG": {
+            "icao": "SEFG",
+            "name": "Guayaquil",
+            "prefix": "",
+            "fir": "SEFG"
+        }
+    },
+    {
+        "SGFA": {
+            "icao": "SGFA",
+            "name": "Asuncion",
+            "prefix": "",
+            "fir": "SGFA"
+        }
+    },
+    {
+        "SKEC": {
+            "icao": "SKEC",
+            "name": "Barranquilla",
+            "prefix": "",
+            "fir": "SKEC"
+        }
+    },
+    {
+        "SKED": {
+            "icao": "SKED",
+            "name": "Bogota",
+            "prefix": "",
+            "fir": "SKED"
+        }
+    },
+    {
+        "SLLF": {
+            "icao": "SLLF",
+            "name": "La Paz",
+            "prefix": "",
+            "fir": "SLLF"
+        }
+    },
+    {
+        "SMPM": {
+            "icao": "SMPM",
+            "name": "Paramaribo",
+            "prefix": "",
+            "fir": "SMPM"
+        }
+    },
+    {
+        "SOOO": {
+            "icao": "SOOO",
+            "name": "Cayenne",
+            "prefix": "",
+            "fir": "SOOO"
+        }
+    },
+    {
+        "LIM": {
+            "icao": "SPIM",
+            "name": "Lima",
+            "prefix": "LIM",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "LIM": {
+            "icao": "SPIM",
+            "name": "Lima",
+            "prefix": "LIM",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-N": {
+            "icao": "SPI1",
+            "name": "Lima North",
+            "prefix": "SP-N",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-N": {
+            "icao": "SPI1",
+            "name": "Lima North",
+            "prefix": "SP-N",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-S": {
+            "icao": "SPI2",
+            "name": "Lima South",
+            "prefix": "SP-S",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-S": {
+            "icao": "SPI2",
+            "name": "Lima South",
+            "prefix": "SP-S",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-E": {
+            "icao": "SPI3",
+            "name": "Lima North East",
+            "prefix": "SP-E",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-E": {
+            "icao": "SPI3",
+            "name": "Lima North East",
+            "prefix": "SP-E",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SP-NE": {
+            "icao": "SPI3",
+            "name": "Lima North East",
+            "prefix": "SP-NE",
+            "fir": "SPIM"
+        }
+    },
+    {
+        "SUEO": {
+            "icao": "SUEO",
+            "name": "Montevideo",
+            "prefix": "",
+            "fir": "SUEO"
+        }
+    },
+    {
+        "SVZM": {
+            "icao": "SVZM",
+            "name": "Maiquetia",
+            "prefix": "",
+            "fir": "SVZM"
+        }
+    },
+    {
+        "SYGC": {
+            "icao": "SYGC",
+            "name": "Georgetown",
+            "prefix": "",
+            "fir": "SYGC"
+        }
+    },
+    {
+        "SJU": {
+            "icao": "TJZS",
+            "name": "San Juan",
+            "prefix": "SJU",
+            "fir": "TJZS"
+        }
+    },
+    {
+        "SJU": {
+            "icao": "TJZS",
+            "name": "San Juan",
+            "prefix": "SJU",
+            "fir": "TJZS"
+        }
+    },
+    {
+        "TNCF": {
+            "icao": "TNCF",
+            "name": "Cura\u00e7ao",
+            "prefix": "",
+            "fir": "TNCF"
+        }
+    },
+    {
+        "TTZP": {
+            "icao": "TTZP",
+            "name": "Piarco",
+            "prefix": "",
+            "fir": "TTZP"
+        }
+    },
+    {
+        "TTZO": {
+            "icao": "TTZO",
+            "name": "Piarco Oceanic",
+            "prefix": "",
+            "fir": "TTZO"
+        }
+    },
+    {
+        "UAAA": {
+            "icao": "UAAA",
+            "name": "Almaty",
+            "prefix": "",
+            "fir": "UAAA"
+        }
+    },
+    {
+        "UACN": {
+            "icao": "UACN",
+            "name": "Astana",
+            "prefix": "",
+            "fir": "UACN"
+        }
+    },
+    {
+        "UAII": {
+            "icao": "UAII",
+            "name": "Shymkent",
+            "prefix": "",
+            "fir": "UAII"
+        }
+    },
+    {
+        "UATT": {
+            "icao": "UATT",
+            "name": "Aktyubinsk",
+            "prefix": "",
+            "fir": "UATT"
+        }
+    },
+    {
+        "UBBB": {
+            "icao": "UBBA",
+            "name": "Baku",
+            "prefix": "UBBB",
+            "fir": "UBBA"
+        }
+    },
+    {
+        "UBBB": {
+            "icao": "UBBA",
+            "name": "Baku",
+            "prefix": "UBBB",
+            "fir": "UBBA"
+        }
+    },
+    {
+        "UBBA-S": {
+            "icao": "UBBA-S",
+            "name": "Baku South",
+            "prefix": "UBBA-S",
+            "fir": "UBBA-S"
+        }
+    },
+    {
+        "UCFM": {
+            "icao": "UCFM",
+            "name": "Bishkek",
+            "prefix": "",
+            "fir": "UCFM"
+        }
+    },
+    {
+        "UCFO": {
+            "icao": "UCFO",
+            "name": "Osh",
+            "prefix": "",
+            "fir": "UCFO"
+        }
+    },
+    {
+        "UGEE": {
+            "icao": "UDDD",
+            "name": "Yerevan",
+            "prefix": "UGEE",
+            "fir": "UDDD"
+        }
+    },
+    {
+        "UGEE": {
+            "icao": "UDDD",
+            "name": "Yerevan",
+            "prefix": "UGEE",
+            "fir": "UDDD"
+        }
+    },
+    {
+        "UEEE": {
+            "icao": "UEEE",
+            "name": "Yakutsk",
+            "prefix": "",
+            "fir": "UEEE"
+        }
+    },
+    {
+        "UGGG": {
+            "icao": "UGGG",
+            "name": "Tbilisi",
+            "prefix": "",
+            "fir": "UGGG"
+        }
+    },
+    {
+        "UHHH": {
+            "icao": "UHHH",
+            "name": "Khabarovsk",
+            "prefix": "",
+            "fir": "UHHH"
+        }
+    },
+    {
+        "UHMM": {
+            "icao": "UHMM",
+            "name": "Magadan",
+            "prefix": "",
+            "fir": "UHMM"
+        }
+    },
+    {
+        "UIII": {
+            "icao": "UIII",
+            "name": "Irkutsk",
+            "prefix": "",
+            "fir": "UIII"
+        }
+    },
+    {
+        "UKBB": {
+            "icao": "UKBV",
+            "name": "Kyiv",
+            "prefix": "UKBB",
+            "fir": "UKBV"
+        }
+    },
+    {
+        "UKBB": {
+            "icao": "UKBV",
+            "name": "Kyiv",
+            "prefix": "UKBB",
+            "fir": "UKBV"
+        }
+    },
+    {
+        "UKFF": {
+            "icao": "UKFV",
+            "name": "Simferopol",
+            "prefix": "UKFF",
+            "fir": "UKFV"
+        }
+    },
+    {
+        "UKFF": {
+            "icao": "UKFV",
+            "name": "Simferopol",
+            "prefix": "UKFF",
+            "fir": "UKFV"
+        }
+    },
+    {
+        "UKDV": {
+            "icao": "UKDV",
+            "name": "Dnipro",
+            "prefix": "",
+            "fir": "UKDV"
+        }
+    },
+    {
+        "UKLL": {
+            "icao": "UKLV",
+            "name": "Lviv",
+            "prefix": "UKLL",
+            "fir": "UKLV"
+        }
+    },
+    {
+        "UKLL": {
+            "icao": "UKLV",
+            "name": "Lviv",
+            "prefix": "UKLL",
+            "fir": "UKLV"
+        }
+    },
+    {
+        "UKOO": {
+            "icao": "UKOV",
+            "name": "Odesa",
+            "prefix": "UKOO",
+            "fir": "UKOV"
+        }
+    },
+    {
+        "UKOO": {
+            "icao": "UKOV",
+            "name": "Odesa",
+            "prefix": "UKOO",
+            "fir": "UKOV"
+        }
+    },
+    {
+        "UKR": {
+            "icao": "UKR",
+            "name": "Ukraine",
+            "prefix": "",
+            "fir": "UKR"
+        }
+    },
+    {
+        "ULLL": {
+            "icao": "ULLL",
+            "name": "Sankt-Peterburg ACC Sankt-Peterburg FIR - Peterburg",
+            "prefix": "ULLL",
+            "fir": "ULLL"
+        }
+    },
+    {
+        "ULLL_AM": {
+            "icao": "ULLL-AM",
+            "name": "Sankt-Peterburg ACC sectors Arkhangelsk, Murmansk, Naryan-Mar, Oceanic - Peterburg",
+            "prefix": "ULLL_AM",
+            "fir": "ULLL-AM"
+        }
+    },
+    {
+        "ULLL_AM": {
+            "icao": "ULLL-AM",
+            "name": "Sankt-Peterburg ACC sectors Arkhangelsk, Murmansk, Naryan-Mar, Oceanic - Peterburg",
+            "prefix": "ULLL_AM",
+            "fir": "ULLL-AM"
+        }
+    },
+    {
+        "ULLL_AR": {
+            "icao": "ULLL-AR",
+            "name": "Sankt-Peterburg ACC sector Arkhangelsk - Peterburg",
+            "prefix": "ULLL_AR",
+            "fir": "ULLL-AR"
+        }
+    },
+    {
+        "ULLL_AR": {
+            "icao": "ULLL-AR",
+            "name": "Sankt-Peterburg ACC sector Arkhangelsk - Peterburg",
+            "prefix": "ULLL_AR",
+            "fir": "ULLL-AR"
+        }
+    },
+    {
+        "ULLL_MO": {
+            "icao": "ULLL-MO",
+            "name": "Sankt-Peterburg ACC sector Oceanic - Peterburg",
+            "prefix": "ULLL_MO",
+            "fir": "ULLL-MO"
+        }
+    },
+    {
+        "ULLL_MO": {
+            "icao": "ULLL-MO",
+            "name": "Sankt-Peterburg ACC sector Oceanic - Peterburg",
+            "prefix": "ULLL_MO",
+            "fir": "ULLL-MO"
+        }
+    },
+    {
+        "ULLL_MR": {
+            "icao": "ULLL-MR",
+            "name": "Sankt-Peterburg ACC sector Murmansk - Peterburg",
+            "prefix": "ULLL_MR",
+            "fir": "ULLL-MR"
+        }
+    },
+    {
+        "ULLL_MR": {
+            "icao": "ULLL-MR",
+            "name": "Sankt-Peterburg ACC sector Murmansk - Peterburg",
+            "prefix": "ULLL_MR",
+            "fir": "ULLL-MR"
+        }
+    },
+    {
+        "ULLL_NM": {
+            "icao": "ULLL-NM",
+            "name": "Sankt-Peterburg ACC sector Naryan-Mar - Peterburg",
+            "prefix": "ULLL_NM",
+            "fir": "ULLL-NM"
+        }
+    },
+    {
+        "ULLL_NM": {
+            "icao": "ULLL-NM",
+            "name": "Sankt-Peterburg ACC sector Naryan-Mar - Peterburg",
+            "prefix": "ULLL_NM",
+            "fir": "ULLL-NM"
+        }
+    },
+    {
+        "ULLL_R": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_SW": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_SW",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R1": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R1",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R2": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R2",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R3": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R3",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R4": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R4",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R5": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R5",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_R6": {
+            "icao": "ULLL-R",
+            "name": "Sankt-Peterburg ACC sector Peterburg - Peterburg",
+            "prefix": "ULLL_R6",
+            "fir": "ULLL-R"
+        }
+    },
+    {
+        "ULLL_S": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_SC": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_SC",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S1": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S1",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S2": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S2",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S3": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S3",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S4": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S4",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_S5": {
+            "icao": "ULLL-S",
+            "name": "Sankt-Peterburg ACC sector Syktyvkar - Peterburg",
+            "prefix": "ULLL_S5",
+            "fir": "ULLL-S"
+        }
+    },
+    {
+        "ULLL_W": {
+            "icao": "ULLL-W",
+            "name": "Sankt-Peterburg ACC sector Vologda - Peterburg",
+            "prefix": "ULLL_W",
+            "fir": "ULLL-W"
+        }
+    },
+    {
+        "ULLL_W": {
+            "icao": "ULLL-W",
+            "name": "Sankt-Peterburg ACC sector Vologda - Peterburg",
+            "prefix": "ULLL_W",
+            "fir": "ULLL-W"
+        }
+    },
+    {
+        "ULLL_W1": {
+            "icao": "ULLL-W",
+            "name": "Sankt-Peterburg ACC sector Vologda - Peterburg",
+            "prefix": "ULLL_W1",
+            "fir": "ULLL-W"
+        }
+    },
+    {
+        "ULLL_W2": {
+            "icao": "ULLL-W",
+            "name": "Sankt-Peterburg ACC sector Vologda - Peterburg",
+            "prefix": "ULLL_W2",
+            "fir": "ULLL-W"
+        }
+    },
+    {
+        "ULLL_KT": {
+            "icao": "ULLL-KT",
+            "name": "Sankt-Peterburg ACC sector Kotlas - Peterburg",
+            "prefix": "ULLL_KT",
+            "fir": "ULLL-KT"
+        }
+    },
+    {
+        "ULLL_KT": {
+            "icao": "ULLL-KT",
+            "name": "Sankt-Peterburg ACC sector Kotlas - Peterburg",
+            "prefix": "ULLL_KT",
+            "fir": "ULLL-KT"
+        }
+    },
+    {
+        "ULLL_WK": {
+            "icao": "ULLL-WK",
+            "name": "Sankt-Peterburg ACC sectors Kotlas, Vologda - Peterburg",
+            "prefix": "ULLL_WK",
+            "fir": "ULLL-WK"
+        }
+    },
+    {
+        "ULLL_WK": {
+            "icao": "ULLL-WK",
+            "name": "Sankt-Peterburg ACC sectors Kotlas, Vologda - Peterburg",
+            "prefix": "ULLL_WK",
+            "fir": "ULLL-WK"
+        }
+    },
+    {
+        "UMKK": {
+            "icao": "UMKK",
+            "name": "Kaliningrad",
+            "prefix": "",
+            "fir": "UMKK"
+        }
+    },
+    {
+        "UMMM": {
+            "icao": "UMMV",
+            "name": "Minsk",
+            "prefix": "UMMM",
+            "fir": "UMMV"
+        }
+    },
+    {
+        "UMMM": {
+            "icao": "UMMV",
+            "name": "Minsk",
+            "prefix": "UMMM",
+            "fir": "UMMV"
+        }
+    },
+    {
+        "UNKL": {
+            "icao": "UNKL",
+            "name": "Krasnoyarsk",
+            "prefix": "",
+            "fir": "UNKL"
+        }
+    },
+    {
+        "UNNT": {
+            "icao": "UNNT",
+            "name": "Novosibirsk",
+            "prefix": "",
+            "fir": "UNNT"
+        }
+    },
+    {
+        "URRV": {
+            "icao": "URRV",
+            "name": "Rostov",
+            "prefix": "",
+            "fir": "URRV"
+        }
+    },
+    {
+        "USSV": {
+            "icao": "USSV",
+            "name": "Yekaterinburg ACC - Ural",
+            "prefix": "",
+            "fir": "USSV"
+        }
+    },
+    {
+        "USTV": {
+            "icao": "USTV",
+            "name": "Tyumen",
+            "prefix": "",
+            "fir": "USTV"
+        }
+    },
+    {
+        "UTAA": {
+            "icao": "UTAA",
+            "name": "Ashkhabad",
+            "prefix": "",
+            "fir": "UTAA"
+        }
+    },
+    {
+        "UTAK": {
+            "icao": "UTAK",
+            "name": "Turkmenbashy",
+            "prefix": "",
+            "fir": "UTAK"
+        }
+    },
+    {
+        "UTAT": {
+            "icao": "UTAT",
+            "name": "Dashkhovuz",
+            "prefix": "",
+            "fir": "UTAT"
+        }
+    },
+    {
+        "UTAV": {
+            "icao": "UTAV",
+            "name": "Turkmenabat",
+            "prefix": "",
+            "fir": "UTAV"
+        }
+    },
+    {
+        "UTDD": {
+            "icao": "UTDD",
+            "name": "Dushanbe",
+            "prefix": "",
+            "fir": "UTDD"
+        }
+    },
+    {
+        "UTSD": {
+            "icao": "UTSD",
+            "name": "Samarkand",
+            "prefix": "",
+            "fir": "UTSD"
+        }
+    },
+    {
+        "UTTR": {
+            "icao": "UTTR",
+            "name": "Tashkent",
+            "prefix": "",
+            "fir": "UTTR"
+        }
+    },
+    {
+        "UUWV": {
+            "icao": "UUWV",
+            "name": "Moscow",
+            "prefix": "",
+            "fir": "UUWV"
+        }
+    },
+    {
+        "UWWW": {
+            "icao": "UWWW",
+            "name": "Samara",
+            "prefix": "",
+            "fir": "UWWW"
+        }
+    },
+    {
+        "VAAH": {
+            "icao": "VAAH",
+            "name": "Ahmedabad",
+            "prefix": "",
+            "fir": "VAAH"
+        }
+    },
+    {
+        "VABB": {
+            "icao": "VABB",
+            "name": "Mumbai ACC - Mumbai",
+            "prefix": "",
+            "fir": "VABB"
+        }
+    },
+    {
+        "VABF": {
+            "icao": "VABF",
+            "name": "Mumbai",
+            "prefix": "",
+            "fir": "VABF"
+        }
+    },
+    {
+        "VABX": {
+            "icao": "VABX",
+            "name": "Mumbai Oceanic",
+            "prefix": "",
+            "fir": "VABX"
+        }
+    },
+    {
+        "VANP": {
+            "icao": "VANP",
+            "name": "Nagpur",
+            "prefix": "",
+            "fir": "VANP"
+        }
+    },
+    {
+        "VCCF": {
+            "icao": "VCCF",
+            "name": "Colombo",
+            "prefix": "",
+            "fir": "VCCF"
+        }
+    },
+    {
+        "VDPF": {
+            "icao": "VDPF",
+            "name": "Phnom Penh",
+            "prefix": "",
+            "fir": "VDPF"
+        }
+    },
+    {
+        "VEBN": {
+            "icao": "VEBN",
+            "name": "Varanasi",
+            "prefix": "",
+            "fir": "VEBN"
+        }
+    },
+    {
+        "VECC": {
+            "icao": "VECC",
+            "name": "Kolkata ACC - Kolkata",
+            "prefix": "",
+            "fir": "VECC"
+        }
+    },
+    {
+        "VECC-B": {
+            "icao": "VECC-B",
+            "name": "Kolkata (Bhubneshwar) ACC - Kolkata",
+            "prefix": "",
+            "fir": "VECC-B"
+        }
+    },
+    {
+        "VECC-R": {
+            "icao": "VECC-R",
+            "name": "Kolkata (Raipur) ACC - Kolkata",
+            "prefix": "",
+            "fir": "VECC-R"
+        }
+    },
+    {
+        "VECF": {
+            "icao": "VECF",
+            "name": "Kolkata",
+            "prefix": "",
+            "fir": "VECF"
+        }
+    },
+    {
+        "VECX": {
+            "icao": "VECX",
+            "name": "Kolkata Oceanic",
+            "prefix": "",
+            "fir": "VECX"
+        }
+    },
+    {
+        "VEGF": {
+            "icao": "VEGF",
+            "name": "Guwahati",
+            "prefix": "",
+            "fir": "VEGF"
+        }
+    },
+    {
+        "VGFR": {
+            "icao": "VGFR",
+            "name": "Dhaka",
+            "prefix": "",
+            "fir": "VGFR"
+        }
+    },
+    {
+        "HKG": {
+            "icao": "VHHK",
+            "name": "Hong Kong",
+            "prefix": "HKG",
+            "fir": "VHHK"
+        }
+    },
+    {
+        "HKG": {
+            "icao": "VHHK",
+            "name": "Hong Kong",
+            "prefix": "HKG",
+            "fir": "VHHK"
+        }
+    },
+    {
+        "VIDF": {
+            "icao": "VIDF",
+            "name": "Delhi",
+            "prefix": "",
+            "fir": "VIDF"
+        }
+    },
+    {
+        "VIDP": {
+            "icao": "VIDP",
+            "name": "Delhi ACC - Delhi",
+            "prefix": "",
+            "fir": "VIDP"
+        }
+    },
+    {
+        "VLVT": {
+            "icao": "VLVT",
+            "name": "Vientiane",
+            "prefix": "",
+            "fir": "VLVT"
+        }
+    },
+    {
+        "VNSM": {
+            "icao": "VNSM",
+            "name": "Kathmandu",
+            "prefix": "",
+            "fir": "VNSM"
+        }
+    },
+    {
+        "VOBL": {
+            "icao": "VOBL",
+            "name": "Bengaluru",
+            "prefix": "",
+            "fir": "VOBL"
+        }
+    },
+    {
+        "VOCI": {
+            "icao": "VOCI",
+            "name": "Cochin",
+            "prefix": "",
+            "fir": "VOCI"
+        }
+    },
+    {
+        "VOHS": {
+            "icao": "VOHS",
+            "name": "Shamshabad (Hyderabad)",
+            "prefix": "",
+            "fir": "VOHS"
+        }
+    },
+    {
+        "VOMF": {
+            "icao": "VOMF",
+            "name": "Chennai",
+            "prefix": "",
+            "fir": "VOMF"
+        }
+    },
+    {
+        "VOML": {
+            "icao": "VOML",
+            "name": "Mangalore",
+            "prefix": "",
+            "fir": "VOML"
+        }
+    },
+    {
+        "VOMM": {
+            "icao": "VOMM",
+            "name": "Chennai ACC - Chennai",
+            "prefix": "",
+            "fir": "VOMM"
+        }
+    },
+    {
+        "VOMX": {
+            "icao": "VOMX",
+            "name": "Chennai Oceanic",
+            "prefix": "",
+            "fir": "VOMX"
+        }
+    },
+    {
+        "VOTV": {
+            "icao": "VOTV",
+            "name": "Trivandrum",
+            "prefix": "",
+            "fir": "VOTV"
+        }
+    },
+    {
+        "VRMF": {
+            "icao": "VRMF",
+            "name": "Male",
+            "prefix": "",
+            "fir": "VRMF"
+        }
+    },
+    {
+        "VTBB": {
+            "icao": "VTBB",
+            "name": "Bangkok",
+            "prefix": "",
+            "fir": "VTBB"
+        }
+    },
+    {
+        "VCL": {
+            "icao": "VVCL",
+            "name": "Mekong",
+            "prefix": "VCL",
+            "fir": "VVCL"
+        }
+    },
+    {
+        "VCL": {
+            "icao": "VVCL",
+            "name": "Mekong",
+            "prefix": "VCL",
+            "fir": "VVCL"
+        }
+    },
+    {
+        "VVHN": {
+            "icao": "VVHN",
+            "name": "Hanoi",
+            "prefix": "",
+            "fir": "VVHN"
+        }
+    },
+    {
+        "VVHM": {
+            "icao": "VVHM",
+            "name": "Ho Chi Minh",
+            "prefix": "",
+            "fir": "VVHM"
+        }
+    },
+    {
+        "VYYF": {
+            "icao": "VYYF",
+            "name": "Yangon",
+            "prefix": "",
+            "fir": "VYYF"
+        }
+    },
+    {
+        "WAAF": {
+            "icao": "WAAF",
+            "name": "Ujung Pandang",
+            "prefix": "",
+            "fir": "WAAF"
+        }
+    },
+    {
+        "WAAF_B": {
+            "icao": "WAAF-B",
+            "name": "Ujung Pandang (Bali)",
+            "prefix": "WAAF_B",
+            "fir": "WAAF-B"
+        }
+    },
+    {
+        "WAAF_B": {
+            "icao": "WAAF-B",
+            "name": "Ujung Pandang (Bali)",
+            "prefix": "WAAF_B",
+            "fir": "WAAF-B"
+        }
+    },
+    {
+        "WAAF_W": {
+            "icao": "WAAF-W",
+            "name": "Ujung Pandang (West)",
+            "prefix": "WAAF_W",
+            "fir": "WAAF-W"
+        }
+    },
+    {
+        "WAAF_W": {
+            "icao": "WAAF-W",
+            "name": "Ujung Pandang (West)",
+            "prefix": "WAAF_W",
+            "fir": "WAAF-W"
+        }
+    },
+    {
+        "WAAF_E": {
+            "icao": "WAAF-E",
+            "name": "Ujung Pandang (East)",
+            "prefix": "WAAF_E",
+            "fir": "WAAF-E"
+        }
+    },
+    {
+        "WAAF_E": {
+            "icao": "WAAF-E",
+            "name": "Ujung Pandang (East)",
+            "prefix": "WAAF_E",
+            "fir": "WAAF-E"
+        }
+    },
+    {
+        "WBFC": {
+            "icao": "WBFC",
+            "name": "Kota Kinabalu",
+            "prefix": "",
+            "fir": "WBFC"
+        }
+    },
+    {
+        "WBGG": {
+            "icao": "WBGG",
+            "name": "Kuching",
+            "prefix": "",
+            "fir": "WBGG"
+        }
+    },
+    {
+        "WIIF": {
+            "icao": "WIIF",
+            "name": "Jakarta",
+            "prefix": "",
+            "fir": "WIIF"
+        }
+    },
+    {
+        "WIIF_N": {
+            "icao": "WIIF-N",
+            "name": "Jakarta (North)",
+            "prefix": "WIIF_N",
+            "fir": "WIIF-N"
+        }
+    },
+    {
+        "WIIF_N": {
+            "icao": "WIIF-N",
+            "name": "Jakarta (North)",
+            "prefix": "WIIF_N",
+            "fir": "WIIF-N"
+        }
+    },
+    {
+        "WIIF_W": {
+            "icao": "WIIF-W",
+            "name": "Jakarta (West)",
+            "prefix": "WIIF_W",
+            "fir": "WIIF-W"
+        }
+    },
+    {
+        "WIIF_W": {
+            "icao": "WIIF-W",
+            "name": "Jakarta (West)",
+            "prefix": "WIIF_W",
+            "fir": "WIIF-W"
+        }
+    },
+    {
+        "WIIF_E": {
+            "icao": "WIIF-E",
+            "name": "Jakarta (East)",
+            "prefix": "WIIF_E",
+            "fir": "WIIF-E"
+        }
+    },
+    {
+        "WIIF_E": {
+            "icao": "WIIF-E",
+            "name": "Jakarta (East)",
+            "prefix": "WIIF_E",
+            "fir": "WIIF-E"
+        }
+    },
+    {
+        "WMFC": {
+            "icao": "WMFC",
+            "name": "Kuala Lumpur",
+            "prefix": "",
+            "fir": "WMFC"
+        }
+    },
+    {
+        "WSJC": {
+            "icao": "WSJC",
+            "name": "Singapore",
+            "prefix": "",
+            "fir": "WSJC"
+        }
+    },
+    {
+        "BN-ARA": {
+            "icao": "YARA",
+            "name": "Brisbane (Arafura) 133.7* (125.2)",
+            "prefix": "BN-ARA",
+            "fir": "YARA"
+        }
+    },
+    {
+        "BN-ARA": {
+            "icao": "YARA",
+            "name": "Brisbane (Arafura) 133.7* (125.2)",
+            "prefix": "BN-ARA",
+            "fir": "YARA"
+        }
+    },
+    {
+        "BN-ARL": {
+            "icao": "YARL",
+            "name": "Brisbane (Armidale) 130.9",
+            "prefix": "BN-ARL",
+            "fir": "YARL"
+        }
+    },
+    {
+        "BN-ARL": {
+            "icao": "YARL",
+            "name": "Brisbane (Armidale) 130.9",
+            "prefix": "BN-ARL",
+            "fir": "YARL"
+        }
+    },
+    {
+        "ML-ASP": {
+            "icao": "YASP",
+            "name": "Melbourne (Alice Springs) 128.85",
+            "prefix": "ML-ASP",
+            "fir": "YASP"
+        }
+    },
+    {
+        "ML-ASP": {
+            "icao": "YASP",
+            "name": "Melbourne (Alice Springs) 128.85",
+            "prefix": "ML-ASP",
+            "fir": "YASP"
+        }
+    },
+    {
+        "ML-ASW": {
+            "icao": "YASW",
+            "name": "Melbourne (Alice Springs West) 131.8* (128.85)",
+            "prefix": "ML-ASW",
+            "fir": "YASW"
+        }
+    },
+    {
+        "ML-ASW": {
+            "icao": "YASW",
+            "name": "Melbourne (Alice Springs West) 131.8* (128.85)",
+            "prefix": "ML-ASW",
+            "fir": "YASW"
+        }
+    },
+    {
+        "ML-AUG": {
+            "icao": "YAUG",
+            "name": "Melbourne (Augusta) 127.05* (123.05)",
+            "prefix": "ML-AUG",
+            "fir": "YAUG"
+        }
+    },
+    {
+        "ML-AUG": {
+            "icao": "YAUG",
+            "name": "Melbourne (Augusta) 127.05* (123.05)",
+            "prefix": "ML-AUG",
+            "fir": "YAUG"
+        }
+    },
+    {
+        "BN-BAR": {
+            "icao": "YBAR",
+            "name": "Brisbane (Barra) 123.8* (120.15)",
+            "prefix": "BN-BAR",
+            "fir": "YBAR"
+        }
+    },
+    {
+        "BN-BAR": {
+            "icao": "YBAR",
+            "name": "Brisbane (Barra) 123.8* (120.15)",
+            "prefix": "BN-BAR",
+            "fir": "YBAR"
+        }
+    },
+    {
+        "ML-BIK": {
+            "icao": "YBIK",
+            "name": "Melbourne (Bindook) 129.8",
+            "prefix": "ML-BIK",
+            "fir": "YBIK"
+        }
+    },
+    {
+        "ML-BIK": {
+            "icao": "YBIK",
+            "name": "Melbourne (Bindook) 129.8",
+            "prefix": "ML-BIK",
+            "fir": "YBIK"
+        }
+    },
+    {
+        "ML-BKE": {
+            "icao": "YBKE",
+            "name": "Melbourne (Bourke) 128.2* (128.85)",
+            "prefix": "ML-BKE",
+            "fir": "YBKE"
+        }
+    },
+    {
+        "ML-BKE": {
+            "icao": "YBKE",
+            "name": "Melbourne (Bourke) 128.2* (128.85)",
+            "prefix": "ML-BKE",
+            "fir": "YBKE"
+        }
+    },
+    {
+        "ML-BLA": {
+            "icao": "YBLA",
+            "name": "Melbourne (Benalla) 132.2* (123.75)",
+            "prefix": "ML-BLA",
+            "fir": "YBLA"
+        }
+    },
+    {
+        "ML-BLA": {
+            "icao": "YBLA",
+            "name": "Melbourne (Benalla) 132.2* (123.75)",
+            "prefix": "ML-BLA",
+            "fir": "YBLA"
+        }
+    },
+    {
+        "BN-BUR": {
+            "icao": "YBUR",
+            "name": "Brisbane (Burnett) 123.0* (134.2)",
+            "prefix": "BN-BUR",
+            "fir": "YBUR"
+        }
+    },
+    {
+        "BN-BUR": {
+            "icao": "YBUR",
+            "name": "Brisbane (Burnett) 123.0* (134.2)",
+            "prefix": "BN-BUR",
+            "fir": "YBUR"
+        }
+    },
+    {
+        "BN-CNK": {
+            "icao": "YCNK",
+            "name": "Brisbane (Cessnock) 123.4* (130.9)",
+            "prefix": "BN-CNK",
+            "fir": "YCNK"
+        }
+    },
+    {
+        "BN-CNK": {
+            "icao": "YCNK",
+            "name": "Brisbane (Cessnock) 123.4* (130.9)",
+            "prefix": "BN-CNK",
+            "fir": "YCNK"
+        }
+    },
+    {
+        "BN-COL": {
+            "icao": "YCOL",
+            "name": "Brisbane Radio (Coral) 133.15* (124.65)",
+            "prefix": "BN-COL",
+            "fir": "YCOL"
+        }
+    },
+    {
+        "BN-COL": {
+            "icao": "YCOL",
+            "name": "Brisbane Radio (Coral) 133.15* (124.65)",
+            "prefix": "BN-COL",
+            "fir": "YCOL"
+        }
+    },
+    {
+        "ML-CRS": {
+            "icao": "YCRS",
+            "name": "Melbourne (Cross) 135.8* (133.9)",
+            "prefix": "ML-CRS",
+            "fir": "YCRS"
+        }
+    },
+    {
+        "ML-CRS": {
+            "icao": "YCRS",
+            "name": "Melbourne (Cross) 135.8* (133.9)",
+            "prefix": "ML-CRS",
+            "fir": "YCRS"
+        }
+    },
+    {
+        "BN-CVN": {
+            "icao": "YCVN",
+            "name": "Brisbane (Carnarvon) 133.8* (125.2)",
+            "prefix": "BN-CVN",
+            "fir": "YCVN"
+        }
+    },
+    {
+        "BN-CVN": {
+            "icao": "YCVN",
+            "name": "Brisbane (Carnarvon) 133.8* (125.2)",
+            "prefix": "BN-CVN",
+            "fir": "YCVN"
+        }
+    },
+    {
+        "BN-DOS": {
+            "icao": "YDOS",
+            "name": "Brisbane (Downs) 135.6* (134.2)",
+            "prefix": "BN-DOS",
+            "fir": "YDOS"
+        }
+    },
+    {
+        "BN-DOS": {
+            "icao": "YDOS",
+            "name": "Brisbane (Downs) 135.6* (134.2)",
+            "prefix": "BN-DOS",
+            "fir": "YDOS"
+        }
+    },
+    {
+        "ML-ELW": {
+            "icao": "YELW",
+            "name": "Melbourne (Eildon Weir) 123.75",
+            "prefix": "ML-ELW",
+            "fir": "YELW"
+        }
+    },
+    {
+        "ML-ELW": {
+            "icao": "YELW",
+            "name": "Melbourne (Eildon Weir) 123.75",
+            "prefix": "ML-ELW",
+            "fir": "YELW"
+        }
+    },
+    {
+        "ML-ESP": {
+            "icao": "YESP",
+            "name": "Melbourne (Esperance) 123.95* (128.85)",
+            "prefix": "ML-ESP",
+            "fir": "YESP"
+        }
+    },
+    {
+        "ML-ESP": {
+            "icao": "YESP",
+            "name": "Melbourne (Esperance) 123.95* (128.85)",
+            "prefix": "ML-ESP",
+            "fir": "YESP"
+        }
+    },
+    {
+        "BN-FLD": {
+            "icao": "YFLD",
+            "name": "Brisbane Radio (Flinders) 132.85* (124.65)",
+            "prefix": "BN-FLD",
+            "fir": "YFLD"
+        }
+    },
+    {
+        "BN-FLD": {
+            "icao": "YFLD",
+            "name": "Brisbane Radio (Flinders) 132.85* (124.65)",
+            "prefix": "BN-FLD",
+            "fir": "YFLD"
+        }
+    },
+    {
+        "ML-FOR": {
+            "icao": "YFOR",
+            "name": "Melbourne (Forest) 132.7* (128.85)",
+            "prefix": "ML-FOR",
+            "fir": "YFOR"
+        }
+    },
+    {
+        "ML-FOR": {
+            "icao": "YFOR",
+            "name": "Melbourne (Forest) 132.7* (128.85)",
+            "prefix": "ML-FOR",
+            "fir": "YFOR"
+        }
+    },
+    {
+        "ML-GEL": {
+            "icao": "YGEL",
+            "name": "Melbourne (Geraldton) 134.2* (133.9)",
+            "prefix": "ML-GEL",
+            "fir": "YGEL"
+        }
+    },
+    {
+        "ML-GEL": {
+            "icao": "YGEL",
+            "name": "Melbourne (Geraldton) 134.2* (133.9)",
+            "prefix": "ML-GEL",
+            "fir": "YGEL"
+        }
+    },
+    {
+        "BN-GOL": {
+            "icao": "YGOL",
+            "name": "Brisbane (Gold Coast) 130.4* (134.2)",
+            "prefix": "BN-GOL",
+            "fir": "YGOL"
+        }
+    },
+    {
+        "BN-GOL": {
+            "icao": "YGOL",
+            "name": "Brisbane (Gold Coast) 130.4* (134.2)",
+            "prefix": "BN-GOL",
+            "fir": "YGOL"
+        }
+    },
+    {
+        "ML-GTH": {
+            "icao": "YGTH",
+            "name": "Melbourne (Griffith) 122.75* (134.325)",
+            "prefix": "ML-GTH",
+            "fir": "YGTH"
+        }
+    },
+    {
+        "ML-GTH": {
+            "icao": "YGTH",
+            "name": "Melbourne (Griffith) 122.75* (134.325)",
+            "prefix": "ML-GTH",
+            "fir": "YGTH"
+        }
+    },
+    {
+        "ML-GUN": {
+            "icao": "YGUN",
+            "name": "Melbourne (Gundagai) 128.4* (129.8)",
+            "prefix": "ML-GUN",
+            "fir": "YGUN"
+        }
+    },
+    {
+        "ML-GUN": {
+            "icao": "YGUN",
+            "name": "Melbourne (Gundagai) 128.4* (129.8)",
+            "prefix": "ML-GUN",
+            "fir": "YGUN"
+        }
+    },
+    {
+        "ML-GVE": {
+            "icao": "YGVE",
+            "name": "Melbourne (Grove) 133.8* (133.9)",
+            "prefix": "ML-GVE",
+            "fir": "YGVE"
+        }
+    },
+    {
+        "ML-GVE": {
+            "icao": "YGVE",
+            "name": "Melbourne (Grove) 133.8* (133.9)",
+            "prefix": "ML-GVE",
+            "fir": "YGVE"
+        }
+    },
+    {
+        "ML-HUO": {
+            "icao": "YHUO",
+            "name": "Melbourne (Huon) 122.6",
+            "prefix": "ML-HUO",
+            "fir": "YHUO"
+        }
+    },
+    {
+        "ML-HUO": {
+            "icao": "YHUO",
+            "name": "Melbourne (Huon) 122.6",
+            "prefix": "ML-HUO",
+            "fir": "YHUO"
+        }
+    },
+    {
+        "BN-HWE": {
+            "icao": "YHWE",
+            "name": "Brisbane Radio (Howe) 124.95* (124.65)",
+            "prefix": "BN-HWE",
+            "fir": "YHWE"
+        }
+    },
+    {
+        "BN-HWE": {
+            "icao": "YHWE",
+            "name": "Brisbane Radio (Howe) 124.95* (124.65)",
+            "prefix": "BN-HWE",
+            "fir": "YHWE"
+        }
+    },
+    {
+        "ML-HYD": {
+            "icao": "YHYD",
+            "name": "Melbourne (Hyden) 118.2* (133.9)",
+            "prefix": "ML-HYD",
+            "fir": "YHYD"
+        }
+    },
+    {
+        "ML-HYD": {
+            "icao": "YHYD",
+            "name": "Melbourne (Hyden) 118.2* (133.9)",
+            "prefix": "ML-HYD",
+            "fir": "YHYD"
+        }
+    },
+    {
+        "ML-IND": {
+            "icao": "YIND",
+            "name": "Brisbane Radio (Indian) 129.25",
+            "prefix": "ML-IND",
+            "fir": "YIND"
+        }
+    },
+    {
+        "ML-IND": {
+            "icao": "YIND",
+            "name": "Brisbane Radio (Indian) 129.25",
+            "prefix": "ML-IND",
+            "fir": "YIND"
+        }
+    },
+    {
+        "ML-INE": {
+            "icao": "YINE",
+            "name": "Brisbane Radio (Indian East) 123.65* (129.25)",
+            "prefix": "ML-INE",
+            "fir": "YINE"
+        }
+    },
+    {
+        "ML-INE": {
+            "icao": "YINE",
+            "name": "Brisbane Radio (Indian East) 123.65* (129.25)",
+            "prefix": "ML-INE",
+            "fir": "YINE"
+        }
+    },
+    {
+        "BN-INL": {
+            "icao": "YINL",
+            "name": "Brisbane (Inverell) 134.2",
+            "prefix": "BN-INL",
+            "fir": "YINL"
+        }
+    },
+    {
+        "BN-INL": {
+            "icao": "YINL",
+            "name": "Brisbane (Inverell) 134.2",
+            "prefix": "BN-INL",
+            "fir": "YINL"
+        }
+    },
+    {
+        "ML-INS": {
+            "icao": "YINS",
+            "name": "Brisbane Radio (Indian South) 123.2* (129.25)",
+            "prefix": "ML-INS",
+            "fir": "YINS"
+        }
+    },
+    {
+        "ML-INS": {
+            "icao": "YINS",
+            "name": "Brisbane Radio (Indian South) 123.2* (129.25)",
+            "prefix": "ML-INS",
+            "fir": "YINS"
+        }
+    },
+    {
+        "BN-ISA": {
+            "icao": "YISA",
+            "name": "Brisbane (Isa) 125.2",
+            "prefix": "BN-ISA",
+            "fir": "YISA"
+        }
+    },
+    {
+        "BN-ISA": {
+            "icao": "YISA",
+            "name": "Brisbane (Isa) 125.2",
+            "prefix": "BN-ISA",
+            "fir": "YISA"
+        }
+    },
+    {
+        "ML-JAR": {
+            "icao": "YJAR",
+            "name": "Melbourne (Jarrah) 120.3* (133.9)",
+            "prefix": "ML-JAR",
+            "fir": "YJAR"
+        }
+    },
+    {
+        "ML-JAR": {
+            "icao": "YJAR",
+            "name": "Melbourne (Jarrah) 120.3* (133.9)",
+            "prefix": "ML-JAR",
+            "fir": "YJAR"
+        }
+    },
+    {
+        "ML-KAT": {
+            "icao": "YKAT",
+            "name": "Melbourne (Katomba) 133.5* (134.325)",
+            "prefix": "ML-KAT",
+            "fir": "YKAT"
+        }
+    },
+    {
+        "ML-KAT": {
+            "icao": "YKAT",
+            "name": "Melbourne (Katomba) 133.5* (134.325)",
+            "prefix": "ML-KAT",
+            "fir": "YKAT"
+        }
+    },
+    {
+        "BN-KEN": {
+            "icao": "YKEN",
+            "name": "Brisbane (Kennedy) 120.15",
+            "prefix": "BN-KEN",
+            "fir": "YKEN"
+        }
+    },
+    {
+        "BN-KEN": {
+            "icao": "YKEN",
+            "name": "Brisbane (Kennedy) 120.15",
+            "prefix": "BN-KEN",
+            "fir": "YKEN"
+        }
+    },
+    {
+        "BN-KIY": {
+            "icao": "YKIY",
+            "name": "Brisbane (Kimberley) 133.4* (133.2)",
+            "prefix": "BN-KIY",
+            "fir": "YKIY"
+        }
+    },
+    {
+        "BN-KIY": {
+            "icao": "YKIY",
+            "name": "Brisbane (Kimberley) 133.4* (133.2)",
+            "prefix": "BN-KIY",
+            "fir": "YKIY"
+        }
+    },
+    {
+        "BN-KPL": {
+            "icao": "YKPL",
+            "name": "Brisbane (Keppel) 125.9* (134.2)",
+            "prefix": "BN-KPL",
+            "fir": "YKPL"
+        }
+    },
+    {
+        "BN-KPL": {
+            "icao": "YKPL",
+            "name": "Brisbane (Keppel) 125.9* (134.2)",
+            "prefix": "BN-KPL",
+            "fir": "YKPL"
+        }
+    },
+    {
+        "ML-LEA": {
+            "icao": "YLEA",
+            "name": "Melbourne (Leeman) 122.4* (133.9)",
+            "prefix": "ML-LEA",
+            "fir": "YLEA"
+        }
+    },
+    {
+        "ML-LEA": {
+            "icao": "YLEA",
+            "name": "Melbourne (Leeman) 122.4* (133.9)",
+            "prefix": "ML-LEA",
+            "fir": "YLEA"
+        }
+    },
+    {
+        "BN-MDE": {
+            "icao": "YMDE",
+            "name": "Brisbane (Mudgee) 133.0* (130.9)",
+            "prefix": "BN-MDE",
+            "fir": "YMDE"
+        }
+    },
+    {
+        "BN-MDE": {
+            "icao": "YMDE",
+            "name": "Brisbane (Mudgee) 133.0* (130.9)",
+            "prefix": "BN-MDE",
+            "fir": "YMDE"
+        }
+    },
+    {
+        "ML-MEK": {
+            "icao": "YMEK",
+            "name": "Melbourne (Meekatharra) 132.0* (134.0)",
+            "prefix": "ML-MEK",
+            "fir": "YMEK"
+        }
+    },
+    {
+        "ML-MEK": {
+            "icao": "YMEK",
+            "name": "Melbourne (Meekatharra) 132.0* (134.0)",
+            "prefix": "ML-MEK",
+            "fir": "YMEK"
+        }
+    },
+    {
+        "BN-MLD": {
+            "icao": "YMLD",
+            "name": "Brisbane (Maitland) 132.35* (130.9)",
+            "prefix": "BN-MLD",
+            "fir": "YMLD"
+        }
+    },
+    {
+        "BN-MLD": {
+            "icao": "YMLD",
+            "name": "Brisbane (Maitland) 132.35* (130.9)",
+            "prefix": "BN-MLD",
+            "fir": "YMLD"
+        }
+    },
+    {
+        "BN-MNN": {
+            "icao": "YMNN",
+            "name": "Brisbane (Manning) 130.1* (130.9)",
+            "prefix": "BN-MNN",
+            "fir": "YMNN"
+        }
+    },
+    {
+        "BN-MNN": {
+            "icao": "YMNN",
+            "name": "Brisbane (Manning) 130.1* (130.9)",
+            "prefix": "BN-MNN",
+            "fir": "YMNN"
+        }
+    },
+    {
+        "ML-MTK": {
+            "icao": "YMTK",
+            "name": "Melbourne (Mount) 133.7* (134.0)",
+            "prefix": "ML-MTK",
+            "fir": "YMTK"
+        }
+    },
+    {
+        "ML-MTK": {
+            "icao": "YMTK",
+            "name": "Melbourne (Mount) 133.7* (134.0)",
+            "prefix": "ML-MTK",
+            "fir": "YMTK"
+        }
+    },
+    {
+        "ML-MUN": {
+            "icao": "YMUN",
+            "name": "Melbourne (Mungo) 132.6* (134.325)",
+            "prefix": "ML-MUN",
+            "fir": "YMUN"
+        }
+    },
+    {
+        "ML-MUN": {
+            "icao": "YMUN",
+            "name": "Melbourne (Mungo) 132.6* (134.325)",
+            "prefix": "ML-MUN",
+            "fir": "YMUN"
+        }
+    },
+    {
+        "ML-MZI": {
+            "icao": "YMZI",
+            "name": "Melbourne (Menzies) 134.3* (134.0)",
+            "prefix": "ML-MZI",
+            "fir": "YMZI"
+        }
+    },
+    {
+        "ML-MZI": {
+            "icao": "YMZI",
+            "name": "Melbourne (Menzies) 134.3* (134.0)",
+            "prefix": "ML-MZI",
+            "fir": "YMZI"
+        }
+    },
+    {
+        "ML-NEW": {
+            "icao": "YNEW",
+            "name": "Melbourne (Newman) 125.4* (134.0)",
+            "prefix": "ML-NEW",
+            "fir": "YNEW"
+        }
+    },
+    {
+        "ML-NEW": {
+            "icao": "YNEW",
+            "name": "Melbourne (Newman) 125.4* (134.0)",
+            "prefix": "ML-NEW",
+            "fir": "YNEW"
+        }
+    },
+    {
+        "BN-NSA": {
+            "icao": "YNSA",
+            "name": "Brisbane (Noosa) 124.1* (134.2)",
+            "prefix": "BN-NSA",
+            "fir": "YNSA"
+        }
+    },
+    {
+        "BN-NSA": {
+            "icao": "YNSA",
+            "name": "Brisbane (Noosa) 124.1* (134.2)",
+            "prefix": "BN-NSA",
+            "fir": "YNSA"
+        }
+    },
+    {
+        "BN-OCN": {
+            "icao": "YOCN",
+            "name": "Brisbane (Ocean) 128.6* (130.9)",
+            "prefix": "BN-OCN",
+            "fir": "YOCN"
+        }
+    },
+    {
+        "BN-OCN": {
+            "icao": "YOCN",
+            "name": "Brisbane (Ocean) 128.6* (130.9)",
+            "prefix": "BN-OCN",
+            "fir": "YOCN"
+        }
+    },
+    {
+        "ML-OLW": {
+            "icao": "YOLW",
+            "name": "Melbourne (Onslow) 134.0",
+            "prefix": "ML-OLW",
+            "fir": "YOLW"
+        }
+    },
+    {
+        "ML-OLW": {
+            "icao": "YOLW",
+            "name": "Melbourne (Onslow) 134.0",
+            "prefix": "ML-OLW",
+            "fir": "YOLW"
+        }
+    },
+    {
+        "ML-OXL": {
+            "icao": "YOXL",
+            "name": "Melbourne (Oxley) 128.5* (134.325)",
+            "prefix": "ML-OXL",
+            "fir": "YOXL"
+        }
+    },
+    {
+        "ML-OXL": {
+            "icao": "YOXL",
+            "name": "Melbourne (Oxley) 128.5* (134.325)",
+            "prefix": "ML-OXL",
+            "fir": "YOXL"
+        }
+    },
+    {
+        "ML-PAR": {
+            "icao": "YPAR",
+            "name": "Melbourne (Paraburdoo) 133.5* (134.0)",
+            "prefix": "ML-PAR",
+            "fir": "YPAR"
+        }
+    },
+    {
+        "ML-PAR": {
+            "icao": "YPAR",
+            "name": "Melbourne (Paraburdoo) 133.5* (134.0)",
+            "prefix": "ML-PAR",
+            "fir": "YPAR"
+        }
+    },
+    {
+        "ML-PIY": {
+            "icao": "YPIY",
+            "name": "Melbourne (Pingelly) 133.9",
+            "prefix": "ML-PIY",
+            "fir": "YPIY"
+        }
+    },
+    {
+        "ML-PIY": {
+            "icao": "YPIY",
+            "name": "Melbourne (Pingelly) 133.9",
+            "prefix": "ML-PIY",
+            "fir": "YPIY"
+        }
+    },
+    {
+        "ML-POT": {
+            "icao": "YPOT",
+            "name": "Melbourne (Port) 127.0* (134.0)",
+            "prefix": "ML-POT",
+            "fir": "YPOT"
+        }
+    },
+    {
+        "ML-POT": {
+            "icao": "YPOT",
+            "name": "Melbourne (Port) 127.0* (134.0)",
+            "prefix": "ML-POT",
+            "fir": "YPOT"
+        }
+    },
+    {
+        "BN-SDY": {
+            "icao": "YSDY",
+            "name": "Brisbane (Straddy) 134.3* (134.2)",
+            "prefix": "BN-SDY",
+            "fir": "YSDY"
+        }
+    },
+    {
+        "BN-SDY": {
+            "icao": "YSDY",
+            "name": "Brisbane (Straddy) 134.3* (134.2)",
+            "prefix": "BN-SDY",
+            "fir": "YSDY"
+        }
+    },
+    {
+        "ML-SNO": {
+            "icao": "YSNO",
+            "name": "Melbourne (Snowy) 124.0* (123.75)",
+            "prefix": "ML-SNO",
+            "fir": "YSNO"
+        }
+    },
+    {
+        "ML-SNO": {
+            "icao": "YSNO",
+            "name": "Melbourne (Snowy) 124.0* (123.75)",
+            "prefix": "ML-SNO",
+            "fir": "YSNO"
+        }
+    },
+    {
+        "BN-STR": {
+            "icao": "YSTR",
+            "name": "Brisbane (Sturt) 134.4* (133.2)",
+            "prefix": "BN-STR",
+            "fir": "YSTR"
+        }
+    },
+    {
+        "BN-STR": {
+            "icao": "YSTR",
+            "name": "Brisbane (Sturt) 134.4* (133.2)",
+            "prefix": "BN-STR",
+            "fir": "YSTR"
+        }
+    },
+    {
+        "BN-SWY": {
+            "icao": "YSWY",
+            "name": "Brisbane (Swampy) 133.2* (120.15)",
+            "prefix": "BN-SWY",
+            "fir": "YSWY"
+        }
+    },
+    {
+        "BN-SWY": {
+            "icao": "YSWY",
+            "name": "Brisbane (Swampy) 133.2* (120.15)",
+            "prefix": "BN-SWY",
+            "fir": "YSWY"
+        }
+    },
+    {
+        "ML-TBD": {
+            "icao": "YTBD",
+            "name": "Melbourne (Tailem Bend) 123.05",
+            "prefix": "ML-TBD",
+            "fir": "YTBD"
+        }
+    },
+    {
+        "ML-TBD": {
+            "icao": "YTBD",
+            "name": "Melbourne (Tailem Bend) 123.05",
+            "prefix": "ML-TBD",
+            "fir": "YTBD"
+        }
+    },
+    {
+        "BN-TBP": {
+            "icao": "YTBP",
+            "name": "Brisbane (Tabletop) 120.55* (120.15)",
+            "prefix": "BN-TBP",
+            "fir": "YTBP"
+        }
+    },
+    {
+        "BN-TBP": {
+            "icao": "YTBP",
+            "name": "Brisbane (Tabletop) 120.55* (120.15)",
+            "prefix": "BN-TBP",
+            "fir": "YTBP"
+        }
+    },
+    {
+        "BN-TRT": {
+            "icao": "YTRT",
+            "name": "Brisbane (Territory) 133.2",
+            "prefix": "BN-TRT",
+            "fir": "YTRT"
+        }
+    },
+    {
+        "BN-TRT": {
+            "icao": "YTRT",
+            "name": "Brisbane (Territory) 133.2",
+            "prefix": "BN-TRT",
+            "fir": "YTRT"
+        }
+    },
+    {
+        "BN-TSN": {
+            "icao": "YTSN",
+            "name": "Brisbane Radio (Tasman) 124.65",
+            "prefix": "BN-TSN",
+            "fir": "YTSN"
+        }
+    },
+    {
+        "BN-TSN": {
+            "icao": "YTSN",
+            "name": "Brisbane Radio (Tasman) 124.65",
+            "prefix": "BN-TSN",
+            "fir": "YTSN"
+        }
+    },
+    {
+        "ML-WAR": {
+            "icao": "YWAR",
+            "name": "Melbourne (Warburton) 124.9* (128.85)",
+            "prefix": "ML-WAR",
+            "fir": "YWAR"
+        }
+    },
+    {
+        "ML-WAR": {
+            "icao": "YWAR",
+            "name": "Melbourne (Warburton) 124.9* (128.85)",
+            "prefix": "ML-WAR",
+            "fir": "YWAR"
+        }
+    },
+    {
+        "BN-WEG": {
+            "icao": "YWEG",
+            "name": "Brisbane (Warrego) 132.45* (125.2)",
+            "prefix": "BN-WEG",
+            "fir": "YWEG"
+        }
+    },
+    {
+        "BN-WEG": {
+            "icao": "YWEG",
+            "name": "Brisbane (Warrego) 132.45* (125.2)",
+            "prefix": "BN-WEG",
+            "fir": "YWEG"
+        }
+    },
+    {
+        "ML-WOL": {
+            "icao": "YWOL",
+            "name": "Melbourne (Wollongong) 125.0* (129.8)",
+            "prefix": "ML-WOL",
+            "fir": "YWOL"
+        }
+    },
+    {
+        "ML-WOL": {
+            "icao": "YWOL",
+            "name": "Melbourne (Wollongong) 125.0* (129.8)",
+            "prefix": "ML-WOL",
+            "fir": "YWOL"
+        }
+    },
+    {
+        "ML-WON": {
+            "icao": "YWON",
+            "name": "Melbourne (Wonthaggi) 135.3* (134.325)",
+            "prefix": "ML-WON",
+            "fir": "YWON"
+        }
+    },
+    {
+        "ML-WON": {
+            "icao": "YWON",
+            "name": "Melbourne (Wonthaggi) 135.3* (134.325)",
+            "prefix": "ML-WON",
+            "fir": "YWON"
+        }
+    },
+    {
+        "ML-WRA": {
+            "icao": "YWRA",
+            "name": "Melbourne (Woomera) 132.9* (128.85)",
+            "prefix": "ML-WRA",
+            "fir": "YWRA"
+        }
+    },
+    {
+        "ML-WRA": {
+            "icao": "YWRA",
+            "name": "Melbourne (Woomera) 132.9* (128.85)",
+            "prefix": "ML-WRA",
+            "fir": "YWRA"
+        }
+    },
+    {
+        "ML-YWE": {
+            "icao": "YYWE",
+            "name": "Melbourne (Yarrowee) 134.325",
+            "prefix": "ML-YWE",
+            "fir": "YYWE"
+        }
+    },
+    {
+        "ML-YWE": {
+            "icao": "YYWE",
+            "name": "Melbourne (Yarrowee) 134.325",
+            "prefix": "ML-YWE",
+            "fir": "YYWE"
+        }
+    },
+    {
+        "ZBPE": {
+            "icao": "ZBPE",
+            "name": "Beijing",
+            "prefix": "ZBPE",
+            "fir": ""
+        }
+    },
+    {
+        "ZBAA": {
+            "icao": "ZBAA",
+            "name": "Beijing ACC - Beijing",
+            "prefix": "ZBAA",
+            "fir": ""
+        }
+    },
+    {
+        "ZBAA_N": {
+            "icao": "ZBAA-N",
+            "name": "Beijing ACC North High Sector - Beijing",
+            "prefix": "ZBAA_N",
+            "fir": "ZBAA-N"
+        }
+    },
+    {
+        "ZBAA_S": {
+            "icao": "ZBAA-S",
+            "name": "Beijing ACC South High Sector - Beijing",
+            "prefix": "ZBAA_S",
+            "fir": "ZBAA-S"
+        }
+    },
+    {
+        "ZBAA_W": {
+            "icao": "ZBAA-W",
+            "name": "Beijing ACC West High Sector - Beijing",
+            "prefix": "ZBAA_W",
+            "fir": "ZBAA-W"
+        }
+    },
+    {
+        "ZBAA_C": {
+            "icao": "ZBAA-C",
+            "name": "Beijing ACC Central Sector - Beijing",
+            "prefix": "ZBAA_C",
+            "fir": "ZBAA-C"
+        }
+    },
+    {
+        "ZBHH": {
+            "icao": "ZBHH",
+            "name": "Hohhot ACC - Beijing",
+            "prefix": "ZBHH",
+            "fir": ""
+        }
+    },
+    {
+        "ZHCC": {
+            "icao": "ZHCC",
+            "name": "Zhengzhou ACC - Wuhan",
+            "prefix": "ZHCC",
+            "fir": ""
+        }
+    },
+    {
+        "ZHHH": {
+            "icao": "ZHHH",
+            "name": "Wuhan ACC - Wuhan",
+            "prefix": "ZHHH",
+            "fir": ""
+        }
+    },
+    {
+        "ZHWH": {
+            "icao": "ZHWH",
+            "name": "Wuhan",
+            "prefix": "ZHWH",
+            "fir": ""
+        }
+    },
+    {
+        "ZGHA": {
+            "icao": "ZGHA",
+            "name": "Changsha ACC - Guangzhou",
+            "prefix": "ZGHA",
+            "fir": ""
+        }
+    },
+    {
+        "ZGNN": {
+            "icao": "ZGNN",
+            "name": "Nanning ACC - Guangzhou",
+            "prefix": "ZGNN",
+            "fir": ""
+        }
+    },
+    {
+        "ZGGG": {
+            "icao": "ZGGG",
+            "name": "Guangzhou ACC - Guangzhou",
+            "prefix": "ZGGG",
+            "fir": ""
+        }
+    },
+    {
+        "ZGZU": {
+            "icao": "ZGZU",
+            "name": "Guangzhou",
+            "prefix": "ZGZU",
+            "fir": ""
+        }
+    },
+    {
+        "ZJSA": {
+            "icao": "ZJSA",
+            "name": "Sanya",
+            "prefix": "ZJSA",
+            "fir": ""
+        }
+    },
+    {
+        "ZJSY_L": {
+            "icao": "ZJSY-L",
+            "name": "Sanya ACC Land Sector - Sanya",
+            "prefix": "ZJSY_L",
+            "fir": "ZJSY-L"
+        }
+    },
+    {
+        "ZJSY_O": {
+            "icao": "ZJSY-O",
+            "name": "Sanya ACC Oceanic Sector - Sanya",
+            "prefix": "ZJSY_O",
+            "fir": "ZJSY-O"
+        }
+    },
+    {
+        "ZKKP": {
+            "icao": "ZKKP",
+            "name": "Pyongyang",
+            "prefix": "ZKKP",
+            "fir": ""
+        }
+    },
+    {
+        "ZLHW": {
+            "icao": "ZLHW",
+            "name": "Lanzhou",
+            "prefix": "ZLHW",
+            "fir": ""
+        }
+    },
+    {
+        "ZLLL": {
+            "icao": "ZLLL",
+            "name": "Lanzhou ACC - Lanzhou",
+            "prefix": "ZLLL",
+            "fir": ""
+        }
+    },
+    {
+        "ZLXY": {
+            "icao": "ZLXY",
+            "name": "Xi'an ACC - Lanzhou",
+            "prefix": "ZLXY",
+            "fir": ""
+        }
+    },
+    {
+        "ZULS": {
+            "icao": "ZULS",
+            "name": "Lhasa ACC - Kunming",
+            "prefix": "ZULS",
+            "fir": ""
+        }
+    },
+    {
+        "ZPKM": {
+            "icao": "ZPKM",
+            "name": "Kunming",
+            "prefix": "ZPKM",
+            "fir": ""
+        }
+    },
+    {
+        "ZSHA": {
+            "icao": "ZSHA",
+            "name": "Shanghai",
+            "prefix": "ZSHA",
+            "fir": ""
+        }
+    },
+    {
+        "ZSSS": {
+            "icao": "ZSSS",
+            "name": "Shanghai ACC - Shanghai",
+            "prefix": "ZSSS",
+            "fir": ""
+        }
+    },
+    {
+        "ZSSS_N": {
+            "icao": "ZSSS-N",
+            "name": "Shanghai ACC North High Sector - Shanghai",
+            "prefix": "ZSSS_N",
+            "fir": "ZSSS-N"
+        }
+    },
+    {
+        "ZSSS_S": {
+            "icao": "ZSSS-S",
+            "name": "Shanghai ACC South High Sector - Shanghai",
+            "prefix": "ZSSS_S",
+            "fir": "ZSSS-S"
+        }
+    },
+    {
+        "ZSSS_W": {
+            "icao": "ZSSS-W",
+            "name": "Shanghai ACC West High Sector - Shanghai",
+            "prefix": "ZSSS_W",
+            "fir": "ZSSS-W"
+        }
+    },
+    {
+        "ZSSS_C": {
+            "icao": "ZSSS-C",
+            "name": "Shanghai ACC Central High Sector - Shanghai",
+            "prefix": "ZSSS_C",
+            "fir": "ZSSS-C"
+        }
+    },
+    {
+        "ZSQD": {
+            "icao": "ZSQD",
+            "name": "Qingdao ACC - Shanghai",
+            "prefix": "ZSQD",
+            "fir": ""
+        }
+    },
+    {
+        "ZSJN": {
+            "icao": "ZSJN",
+            "name": "Jinan ACC - Shanghai",
+            "prefix": "ZSJN",
+            "fir": ""
+        }
+    },
+    {
+        "ZSOF": {
+            "icao": "ZSOF",
+            "name": "Hefei ACC - Shanghai",
+            "prefix": "ZSOF",
+            "fir": ""
+        }
+    },
+    {
+        "ZSCN": {
+            "icao": "ZSCN",
+            "name": "Nanchang ACC - Shanghai",
+            "prefix": "ZSCN",
+            "fir": ""
+        }
+    },
+    {
+        "ZSAM": {
+            "icao": "ZSAM",
+            "name": "Xiamen ACC - Shanghai",
+            "prefix": "ZSAM",
+            "fir": ""
+        }
+    },
+    {
+        "ZUUU": {
+            "icao": "ZUUU",
+            "name": "Chengdu ACC - Kunming",
+            "prefix": "ZUUU",
+            "fir": ""
+        }
+    },
+    {
+        "ZUGY": {
+            "icao": "ZUGY",
+            "name": "Guiyang ACC - Kunming",
+            "prefix": "ZUGY",
+            "fir": ""
+        }
+    },
+    {
+        "ZPPP": {
+            "icao": "ZPPP",
+            "name": "Kunming ACC - Kunming",
+            "prefix": "ZPPP",
+            "fir": ""
+        }
+    },
+    {
+        "ZWUQ": {
+            "icao": "ZWUQ",
+            "name": "Urumqi",
+            "prefix": "ZWUQ",
+            "fir": ""
+        }
+    },
+    {
+        "ZWWW": {
+            "icao": "ZWWW",
+            "name": "Urumqi ACC - Urumqi",
+            "prefix": "ZWWW",
+            "fir": ""
+        }
+    },
+    {
+        "ZYSH": {
+            "icao": "ZYSH",
+            "name": "Shenyang",
+            "prefix": "ZYSH",
+            "fir": ""
+        }
+    },
+    {
+        "ZYTX": {
+            "icao": "ZYTX",
+            "name": "Shenyang ACC - Shenyang",
+            "prefix": "ZYTX",
+            "fir": ""
+        }
+    },
+    {
+        "ZYHB": {
+            "icao": "ZYHB",
+            "name": "Harbin ACC - Shenyang",
+            "prefix": "ZYHB",
+            "fir": ""
+        }
+    },
+    {
+        "ZYTL": {
+            "icao": "ZYTL",
+            "name": "Dalian ACC - Shenyang",
+            "prefix": "ZYTL",
+            "fir": ""
+        }
+    },
+    {
+        "ZMUB": {
+            "icao": "ZMUB",
+            "name": "Ulaan Baatar",
+            "prefix": "ZMUB",
+            "fir": ""
+        }
+    }
+]

@@ -1,5 +1,5 @@
 // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
-
+const logger = require("../../logger/index");
 require("dotenv").config({ path: "../../config.env" });
 const { AwcWeatherMetarModel } = require("../../models/weather/awcWeatherModel");
 const { awcMetarSchema } = require("../../redis/awcMetar");
@@ -8,12 +8,14 @@ const RedisClient = require("../../redis/RedisClient");
 const CustomError = require("../../common/errors/custom-error");
 const { distanceConverter } = require("../../utils/METAR/convert");
 const rClient = new RedisClient();
-const { downloadAndProcessAWCMetars } = require("../../utils/AWC_Weather/download_weather");
+const {
+    downloadAndUnzip,
+    processDownloadAWCData
+} = require("../../utils/AWC_Weather/download_weather");
+const { normalizeData } = require("../../utils/AWC_Weather/normalize_data");
 
-let repo;
 (async () => {
-    await rClient.openNewRedisOMClient(process.env.REDISCLOUD_URL);
-    repo = rClient.createRedisOMRepository(awcMetarSchema);
+    await rClient.createRedisNodeConnection(process.env.REDISCLOUD_METAR_URL);
 })();
 
 module.exports.getMetar = async (req, res) => {
@@ -27,6 +29,7 @@ module.exports.getMetar = async (req, res) => {
         throw new CustomError("Maximum number of icao reached. Limited to 30.", 429);
     }
 
+    let repo = rClient.createRedisRepository(awcMetarSchema);
     await Promise.all(
         uniqIcaoArray.map(async (icao) => {
             const metarFeature = new MetarFeatures(AwcWeatherMetarModel, repo);
@@ -64,6 +67,7 @@ module.exports.getRadiusMetar = async (req, res) => {
     const { distance = 50, unit = "mile" } = req.query;
     let decode = req.query.decode === "true";
     const newDistance = distanceConverter(unit, distance);
+    const repo = rClient.createRedisRepository(awcMetarSchema);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarWithinRadius_icao(icao, newDistance, decode);
@@ -88,6 +92,7 @@ module.exports.getRadiusMetarWithLngLat = async (req, res) => {
     const lng = Number(coordinates[0]) || null;
     const lat = Number(coordinates[1]) || null;
     const newDistance = distanceConverter(unit, distance);
+    const repo = rClient.createRedisRepository(awcMetarSchema);
 
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestMetarWithinRadius_LngLat(
@@ -113,6 +118,8 @@ module.exports.getRadiusMetarWithLngLat = async (req, res) => {
 module.exports.getNearestMetar_icao = async (req, res) => {
     const { icao } = req.params;
     let decode = req.query.decode === "true";
+    const repo = rClient.createRedisRepository(awcMetarSchema);
+
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestNearestMetar_icao(icao, decode);
     if (response.length !== 0) {
@@ -132,6 +139,8 @@ module.exports.getNearestMetar_LngLat = async (req, res) => {
     const { coordinates } = req.params;
     let decode = req.query.decode === "true";
     const [lon, lat] = coordinates.split(",");
+    const repo = rClient.createRedisRepository(awcMetarSchema);
+
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     const response = await metarFeatures.requestNearestMetar_LngLat(lon, lat, decode);
 
@@ -151,6 +160,8 @@ module.exports.getNearestMetar_LngLat = async (req, res) => {
 module.exports.getMetarUsingAirportName = async (req, res) => {
     const { name = "" } = req.params;
     let decode = req.query.decode === "true";
+    const repo = rClient.createRedisRepository(awcMetarSchema);
+
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     if (name.length === 0) {
         return res.status(404).json({
@@ -175,6 +186,8 @@ module.exports.getMetarUsingAirportName = async (req, res) => {
 module.exports.getMetarUsingGenericInput = async (req, res) => {
     const { data = "" } = req.params;
     let decode = req.query.decode === "true";
+    const repo = rClient.createRedisRepository(awcMetarSchema);
+
     const metarFeatures = new MetarFeatures(AwcWeatherMetarModel, repo);
     if (data.length === 0) {
         return res.status(200).json({
@@ -193,5 +206,20 @@ module.exports.getMetarUsingGenericInput = async (req, res) => {
             results: 0,
             data: []
         });
+    }
+};
+
+module.exports.testDbImport = async (req, res) => {
+    try {
+        await downloadAndUnzip("https://aviationweather.gov/data/cache/metars.cache.csv.gz");
+        await processDownloadAWCData();
+        const normalizedMetar = await normalizeData();
+        logger.debug(typeof normalizedMetar);
+        logger.debug(normalizedMetar.length);
+        res.status(200).json({
+            data: normalizedMetar
+        });
+    } catch (e) {
+        res.status(500);
     }
 };
