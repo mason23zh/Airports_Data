@@ -357,6 +357,13 @@
             "LTAA"
         ]
     },
+    "NAT": {
+        "prefix": "NAT",
+        "name": "Shanwick & Gander",
+        "firs": [
+            "NAT"
+        ]
+    },
     "PRC": {
         "prefix": "PRC",
         "name": "Beijing Control",
