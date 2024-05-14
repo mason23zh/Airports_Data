@@ -170,13 +170,6 @@
             "TTZO"
         ]
     },
-    "CZEG": {
-        "prefix": "CZEG",
-        "name": "Edmonton Center",
-        "firs": [
-            "CZEG"
-        ]
-    },
     "EDUU": {
         "prefix": "EDUU",
         "name": "Rhein Radar",
@@ -355,13 +348,6 @@
         "name": "Turkey Control",
         "firs": [
             "LTAA"
-        ]
-    },
-    "NAT": {
-        "prefix": "NAT",
-        "name": "Shanwick & Gander",
-        "firs": [
-            "NAT"
         ]
     },
     "PRC": {
