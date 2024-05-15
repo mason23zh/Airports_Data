@@ -17,6 +17,8 @@ const uris = path.resolve(__dirname, "./uris.json");
 //     "./vatsim-data-ctp-controllers-only.json"
 // );
 
+const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
+
 // const vatsimControllersData_Test = require("../../Data/Vatsim/vatsim-data-ctp-controllers-only.json");
 
 module.exports.generateFSS = async (vatsimControllers) => {
@@ -146,6 +148,19 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
 };
 
 module.exports.generateTracon = async (vatsimControllers) => {
+    // LOCAL FILE TEST
+    // let vatsimControllers;
+    // if (useTestData) {
+    //     try {
+    //         const data = fs.readFileSync(vatsimControllersData_Test);
+    //         vatsimControllers = JSON.parse(data);
+    //     } catch (err) {
+    //         logger.error("Failed to read or parse test data: %O", err);
+    //         return [];
+    //     }
+    // }
+    // LOCAL FILE TEST
+
     // Only need to do a simple filter here
     // The matching logic will be done in the client side.
     const traconOnlyControllers = vatsimControllers.filter(
