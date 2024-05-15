@@ -8,18 +8,7 @@ const fir = path.resolve(__dirname, "./fir_2.json");
 const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
 // const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
-// const vatsimControllersData_Test = path.resolve(
-//     __dirname,
-//     "./vatsim-data-ctp-controllers-only.json"
-// );
-// const vatsimControllersData_Test = path.resolve(
-//     __dirname,
-//     "./vatsim-data-ctp-controllers-only.json"
-// );
-
-const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
-
-// const vatsimControllersData_Test = require("../../Data/Vatsim/vatsim-data-ctp-controllers-only.json");
+// const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
 
 module.exports.generateFSS = async (vatsimControllers) => {
     // logger.info("Generating fss");
@@ -160,13 +149,68 @@ module.exports.generateTracon = async (vatsimControllers) => {
     //     }
     // }
     // LOCAL FILE TEST
+    return new Promise((resolve, reject) => {
+        let controllers = [];
+        const controllerSet = new Set();
+        const airportStream = fs
+            .createReadStream(airport)
+            .on("error", (err) => {
+                logger.error("Error with airport JSON file: %O", err);
+                reject("Error with airport JSON file");
+            })
+            .pipe(StreamArray.withParser());
 
-    // Only need to do a simple filter here
-    // The matching logic will be done in the client side.
-    const traconOnlyControllers = vatsimControllers.filter(
-        (controller) => controller.facility === 5
-    );
-    return traconOnlyControllers;
+        // Iterate through each airport and match it with controllers
+        airportStream.on("data", (data) => {
+            vatsimControllers.forEach((c) => {
+                if (c.facility === 5 && !controllerSet.has(c.callsign)) {
+                    let callsign = c.callsign.split("_")[0];
+
+                    if (
+                        data.value.gps_code === callsign ||
+                        data.value.iata_code === callsign ||
+                        data.value.ident === callsign ||
+                        data.value.local_code === callsign
+                    ) {
+                        console.log(`Match found for callsign: ${callsign}`);
+                        controllerSet.add(c.callsign);
+                        controllers.push({
+                            ...c,
+                            airport: {
+                                name: data.value.name,
+                                icao:
+                                    data.value.ident ||
+                                    data.value.icao ||
+                                    data.value.gps_code ||
+                                    data.value.local_code
+                            },
+                            coordinates: [
+                                data.value.coordinates.split(",")[0],
+                                data.value.coordinates.split(",")[1]
+                            ]
+                        });
+                    }
+                }
+            });
+        });
+
+        airportStream.on("end", () => {
+            // Handle controllers that were not matched with any airport
+            // If not match found, return the controller with empty airport object and coordinates
+            vatsimControllers.forEach((c) => {
+                if (c.facility === 5 && !controllerSet.has(c.callsign)) {
+                    controllerSet.add(c.callsign);
+                    controllers.push({
+                        ...c,
+                        airport: {},
+                        coordinates: []
+                    });
+                }
+            });
+
+            resolve(controllers);
+        });
+    });
 };
 
 module.exports.generateFir = async (vatsimControllers) => {

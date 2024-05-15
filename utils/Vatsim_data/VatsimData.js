@@ -710,12 +710,13 @@ class VatsimData {
         }
     }
 
-    async getVatsimTracon() {
+    async getVatsimTracons() {
         try {
             if (!this.vatsimControllers) {
                 throw new Error("No Vatsim Controllers Available");
             }
-            this.vatsimTracon = await generateTracon(this.vatsimControllers);
+            this.vatsimTracon = await generateTracon(this.vatsimControllers)
+            return this.vatsimTracon;
         } catch (e) {
             logger.error("Error get vatsim Tracon: %O", e);
             this.vatsimTracon = []
