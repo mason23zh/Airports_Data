@@ -236,10 +236,12 @@ module.exports.getVatsimControllers = async (req, res) => {
         await vatsim.getVatsimFir();
         await vatsim.getOtherControllers();
         await vatsim.getVatsimFss();
+        await vatsim.getVatsimTracon();
         res.status(200).json({
             fir: vatsim.vatsimFir,
             other: vatsim.vatsimOtherControllers,
-            fss: vatsim.vatsimFSS
+            fss: vatsim.vatsimFSS,
+            tracon: vatsim.vatsimTracon
         });
     } catch (e) {
         res.status(200).json({});

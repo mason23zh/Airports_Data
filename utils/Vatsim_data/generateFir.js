@@ -115,6 +115,7 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
                         data.value?.iata_code === callsign ||
                         data.value?.ident === callsign ||
                         data.value?.local_code === callsign) &&
+                    c.facility !== 5 &&
                     c.facility !== 6 &&
                     c.facility !== 1 &&
                     c.facility !== 0
@@ -142,6 +143,15 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
             resolve({ controllers: controllers, atis: atis });
         });
     });
+};
+
+module.exports.generateTracon = async (vatsimControllers) => {
+    // Only need to do a simple filter here
+    // The matching logic will be done in the client side.
+    const traconOnlyControllers = vatsimControllers.filter(
+        (controller) => controller.facility === 5
+    );
+    return traconOnlyControllers;
 };
 
 module.exports.generateFir = async (vatsimControllers) => {

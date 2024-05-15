@@ -16,7 +16,7 @@ const {vatsimTrafficsSchema} = require("../../redis/vatsimTraffics");
 const {batchProcess} = require("../../utils/batchProcess");
 
 const RedisClient = require("../../redis/RedisClient");
-const {generateFir, generateControllersAndAtis, generateFSS} = require("./generateFir");
+const {generateFir, generateControllersAndAtis, generateFSS, generateTracon} = require("./generateFir");
 
 
 class VatsimData {
@@ -30,6 +30,7 @@ class VatsimData {
         this.vatsimAtis = [];
         this.vatsimEvents = [];
         this.vatsimFir = [];
+        this.vatsimTracon = [];
         this.vatsimOtherControllers = [];
         this.L1 = 0;
         this.L2 = 0;
@@ -709,7 +710,17 @@ class VatsimData {
         }
     }
 
-
+    async getVatsimTracon() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available");
+            }
+            this.vatsimTracon = await generateTracon(this.vatsimControllers);
+        } catch (e) {
+            logger.error("Error get vatsim Tracon: %O", e);
+            this.vatsimTracon = []
+        }
+    }
 }
 
 module.exports = VatsimData;
