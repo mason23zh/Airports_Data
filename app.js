@@ -54,7 +54,7 @@ const corsOptions = {
 };
 // app.use("/api", limiter);
 
-app.use(express.json({ limit: "10kb" }));
+// app.use(express.json({ limit: "10kb" }));
 
 app.use(mongoSanitize());
 

@@ -1373,6 +1373,24 @@
         "logon_time": "2024-05-15T01:26:37.6330597Z"
     },
     {
+        "cid": 1202523,
+        "name": "TEST 1",
+        "callsign": "ANT_CTR",
+        "frequency": "135.925",
+        "facility": 6,
+        "rating": 5,
+        "server": "VIRTUALNAS",
+        "visual_range": 600,
+        "text_atis": [
+            "- I DO NOT control TPA or surrounding airports, but I do control MCO and MLB.",
+            "- Providing top down services for all controlled airports during operating hours.",
+            "- If you are unsure of something PLEASE ask questions.",
+            "- How did we do? Leave feedback at https //zjxartcc.org/feedback/"
+        ],
+        "last_updated": "2024-05-15T01:35:50.9559271Z",
+        "logon_time": "2024-05-15T01:26:37.6330597Z"
+    },
+    {
         "cid": 1263766,
         "name": "Jonathan Baggett",
         "callsign": "JPB_SUP",

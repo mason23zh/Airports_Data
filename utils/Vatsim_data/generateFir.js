@@ -8,7 +8,7 @@ const fir = path.resolve(__dirname, "./fir_2.json");
 const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
 // const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
-// const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
+const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
 
 module.exports.generateFSS = async (vatsimControllers) => {
     // logger.info("Generating fss");
@@ -172,7 +172,6 @@ module.exports.generateTracon = async (vatsimControllers) => {
                         data.value.ident === callsign ||
                         data.value.local_code === callsign
                     ) {
-                        console.log(`Match found for callsign: ${callsign}`);
                         controllerSet.add(c.callsign);
                         controllers.push({
                             ...c,
@@ -213,26 +212,27 @@ module.exports.generateTracon = async (vatsimControllers) => {
     });
 };
 
-module.exports.generateFir = async (vatsimControllers) => {
+module.exports.generateFir = async (useTestData = true) => {
     return new Promise((resolve, reject) => {
         let formatFir = [];
         //LOCAL TEST FILE
-        // let vatsimControllers;
-        // if (useTestData) {
-        //     try {
-        //         const data = fs.readFileSync(vatsimControllersData_Test);
-        //         vatsimControllers = JSON.parse(data);
-        //     } catch (err) {
-        //         logger.error("Failed to read or parse test data: %O", err);
-        //         return reject("Failed to load test data");
-        //     }
-        // }
+        let vatsimControllers;
+        if (useTestData) {
+            try {
+                const data = fs.readFileSync(vatsimControllersData_Test);
+                vatsimControllers = JSON.parse(data);
+            } catch (err) {
+                logger.error("Failed to read or parse test data: %O", err);
+                return reject("Failed to load test data");
+            }
+        }
         const firOnlyControllers = vatsimControllers.filter(
             (controller) => controller.facility === 6
         );
 
         //LOCAL TEST FILE
         const processedControllers = new Set();
+        const specialControllers = [];
         const firStream = fs
             .createReadStream(fir)
             .on("error", (err) => {
@@ -245,14 +245,17 @@ module.exports.generateFir = async (vatsimControllers) => {
             })
             .pipe(StreamArray.withParser());
 
-        firStream.on("data", (data) => {
+        firStream.on("data", ({ value }) => {
             firOnlyControllers.forEach((controller) => {
                 const callsign = controller.callsign.split("_")[0];
                 const controllerKey = `${controller.cid}_${callsign}`;
-                if (!processedControllers.has(controllerKey) && data.value[callsign]) {
+
+                if (callsign === "ANT") {
+                    specialControllers.push(controller);
+                } else if (!processedControllers.has(controllerKey) && value[callsign]) {
                     processedControllers.add(controllerKey);
                     formatFir.push({
-                        fir: data.value[callsign].icao,
+                        fir: value[callsign].icao,
                         name: controller.name,
                         cid: controller.cid,
                         facility: controller.facility,
@@ -268,6 +271,27 @@ module.exports.generateFir = async (vatsimControllers) => {
         });
 
         firStream.on("end", () => {
+            // Handle the special case for "ANT"
+            specialControllers.forEach((controller) => {
+                ["MDCS", "TNCF", "MTEG"].forEach((icao) => {
+                    const specialKey = `${controller.cid}_${icao}`;
+                    if (!processedControllers.has(specialKey)) {
+                        processedControllers.add(specialKey);
+                        formatFir.push({
+                            fir: icao,
+                            name: controller.name,
+                            cid: controller.cid,
+                            facility: controller.facility,
+                            rating: controller.rating,
+                            callsign: controller.callsign,
+                            frequency: controller.frequency,
+                            visual_range: controller.visual_range,
+                            last_updated: controller.last_updated,
+                            logon_time: controller.logon_time
+                        });
+                    }
+                });
+            });
             resolve(formatFir);
         });
     });
