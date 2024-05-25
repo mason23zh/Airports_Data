@@ -255,6 +255,7 @@ module.exports.generateFir = async (useTestData = true) => {
                 } else if (!processedControllers.has(controllerKey) && value[callsign]) {
                     processedControllers.add(controllerKey);
                     formatFir.push({
+                        firInfo: value[callsign],
                         fir: value[callsign].icao,
                         name: controller.name,
                         cid: controller.cid,
@@ -277,18 +278,68 @@ module.exports.generateFir = async (useTestData = true) => {
                     const specialKey = `${controller.cid}_${icao}`;
                     if (!processedControllers.has(specialKey)) {
                         processedControllers.add(specialKey);
-                        formatFir.push({
-                            fir: icao,
-                            name: controller.name,
-                            cid: controller.cid,
-                            facility: controller.facility,
-                            rating: controller.rating,
-                            callsign: controller.callsign,
-                            frequency: controller.frequency,
-                            visual_range: controller.visual_range,
-                            last_updated: controller.last_updated,
-                            logon_time: controller.logon_time
-                        });
+                        if (icao === "MDCS") {
+                            formatFir.push({
+                                firInfo: {
+                                    icao: "MDCS",
+                                    name: "Santo Domingo",
+                                    prefix: "",
+                                    fir: "MDCS"
+                                },
+                                fir: icao,
+                                name: controller.name,
+                                cid: controller.cid,
+                                facility: controller.facility,
+                                rating: controller.rating,
+                                callsign: controller.callsign,
+                                frequency: controller.frequency,
+                                visual_range: controller.visual_range,
+                                last_updated: controller.last_updated,
+                                logon_time: controller.logon_time
+                            });
+                        }
+
+                        if (icao === "TNCF") {
+                            formatFir.push({
+                                firInfo: {
+                                    icao: "TNCF",
+                                    name: "Cura\u00e7ao",
+                                    prefix: "",
+                                    fir: "TNCF"
+                                },
+                                fir: icao,
+                                name: controller.name,
+                                cid: controller.cid,
+                                facility: controller.facility,
+                                rating: controller.rating,
+                                callsign: controller.callsign,
+                                frequency: controller.frequency,
+                                visual_range: controller.visual_range,
+                                last_updated: controller.last_updated,
+                                logon_time: controller.logon_time
+                            });
+                        }
+
+                        if (icao === "MTEG") {
+                            formatFir.push({
+                                firInfo: {
+                                    icao: "MTEG",
+                                    name: "Port-Au-Prince",
+                                    prefix: "",
+                                    fir: "MTEG"
+                                },
+                                fir: icao,
+                                name: controller.name,
+                                cid: controller.cid,
+                                facility: controller.facility,
+                                rating: controller.rating,
+                                callsign: controller.callsign,
+                                frequency: controller.frequency,
+                                visual_range: controller.visual_range,
+                                last_updated: controller.last_updated,
+                                logon_time: controller.logon_time
+                            });
+                        }
                     }
                 });
             });
