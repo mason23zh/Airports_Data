@@ -8,8 +8,11 @@ const fir = path.resolve(__dirname, "./fir_2.json");
 const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
 // const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
-const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
-
+// const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
+// const vatsimControllersData_Test = path.resolve(
+//     __dirname,
+//     "./vatsim-data-ctp-controllers-only.json"
+// );
 module.exports.generateFSS = async (vatsimControllers) => {
     // logger.info("Generating fss");
     return new Promise((resolve, reject) => {
@@ -206,31 +209,30 @@ module.exports.generateTracon = async (vatsimControllers) => {
                     });
                 }
             });
-
             resolve(controllers);
         });
     });
 };
 
-module.exports.generateFir = async (useTestData = true) => {
+module.exports.generateFir = async (vatsimControllers) => {
     return new Promise((resolve, reject) => {
         let formatFir = [];
         //LOCAL TEST FILE
-        let vatsimControllers;
-        if (useTestData) {
-            try {
-                const data = fs.readFileSync(vatsimControllersData_Test);
-                vatsimControllers = JSON.parse(data);
-            } catch (err) {
-                logger.error("Failed to read or parse test data: %O", err);
-                return reject("Failed to load test data");
-            }
-        }
+        // let vatsimControllers;
+        // if (useTestData) {
+        //     try {
+        //         const data = fs.readFileSync(vatsimControllersData_Test);
+        //         vatsimControllers = JSON.parse(data);
+        //     } catch (err) {
+        //         logger.error("Failed to read or parse test data: %O", err);
+        //         return reject("Failed to load test data");
+        //     }
+        // }
+
+        //LOCAL TEST FILE
         const firOnlyControllers = vatsimControllers.filter(
             (controller) => controller.facility === 6
         );
-
-        //LOCAL TEST FILE
         const processedControllers = new Set();
         const specialControllers = [];
         const firStream = fs
