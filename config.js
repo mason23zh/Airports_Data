@@ -1,5 +1,5 @@
 const CHECK_WEATHER_BASE_URL = "https://api.checkwx.com";
-const FAA_ATIS_API_BASE_URL = "http://datis.clowd.io/api";
+const FAA_ATIS_API_BASE_URL = "https://datis.clowd.io/api";
 const VATSIM_DATA_URL = "https://data.vatsim.net/v3/vatsim-data.json";
 const VATSIM_EVENTS_URL = "https://my.vatsim.net/api/v1/events/all";
 const AWC_METAR_BASE_URL =
