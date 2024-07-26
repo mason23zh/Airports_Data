@@ -45,44 +45,36 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         }
     });
 
-    // (async () => {
-    //     try {
-    //         await importFaaAtisToDB();
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
-    //     }
-    // })();
-
-    // schedule.scheduleJob("*/10 * * * *", async () => {
-    //     try {
-    //         await importMetarsToDB(Latest_AwcWeatherModel, metarRedisClient);
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
-    //     }
-    // });
+    schedule.scheduleJob("*/10 * * * *", async () => {
+        try {
+            await importMetarsToDB(Latest_AwcWeatherModel, metarRedisClient);
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
+        }
+    });
     // every 12 hours
-    // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-    //     try {
-    //         await importVatsimEventsToDb();
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
-    //     }
-    // });
+    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+        try {
+            await importVatsimEventsToDb();
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
+        }
+    });
     // every 20 seconds
 
-    // CronJob.from({
-    //     cronTime: "*/30 * * * * *",
-    //     onTick: async () => {
-    //         try {
-    //             await importVatsimTrafficsToDb(trafficRedisClient);
-    //         } catch (e) {
-    //             logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():%O", e);
-    //         }
-    //     },
-    //     start: true,
-    //     timeZone: "America/Los_Angeles",
-    //     runOnInit: true
-    // });
+    CronJob.from({
+        cronTime: "*/30 * * * * *",
+        onTick: async () => {
+            try {
+                await importVatsimTrafficsToDb(trafficRedisClient);
+            } catch (e) {
+                logger.error("Error occurred in CronJob:importVatsimTrafficsToDB():%O", e);
+            }
+        },
+        start: true,
+        timeZone: "America/Los_Angeles",
+        runOnInit: true
+    });
 });
 const port = process.env.PORT || 80;
 app.listen(port, () => {
