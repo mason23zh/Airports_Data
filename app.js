@@ -48,7 +48,8 @@ const corsOptions = {
         "https://stage.airportweather.org",
         "https://airportweather.org",
         "https://www.airportweather.org",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://192.168.100.116:3000"
     ],
     optionsSuccessStatus: 200
 };

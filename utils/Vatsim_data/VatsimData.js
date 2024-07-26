@@ -16,7 +16,7 @@ const {vatsimTrafficsSchema} = require("../../redis/vatsimTraffics");
 const {batchProcess} = require("../../utils/batchProcess");
 
 const RedisClient = require("../../redis/RedisClient");
-const {generateFir, generateControllersAndAtis, generateFSS} = require("./generateFir");
+const {generateFir, generateControllersAndAtis, generateFSS, generateTracon} = require("./generateFir");
 
 
 class VatsimData {
@@ -30,6 +30,7 @@ class VatsimData {
         this.vatsimAtis = [];
         this.vatsimEvents = [];
         this.vatsimFir = [];
+        this.vatsimTracon = [];
         this.vatsimOtherControllers = [];
         this.L1 = 0;
         this.L2 = 0;
@@ -72,7 +73,7 @@ class VatsimData {
             }
         ];
     }
-
+    
     static async getAirportITAT(icao) {
         try {
             const airport = await GNS430Airport_Update.findOne({ICAO: `${icao.toUpperCase()}`});
@@ -81,7 +82,7 @@ class VatsimData {
             throw new NotFoundError("Airport Not Found.");
         }
     }
-
+    
     async storeVatsimEventsToDB() {
         if (this.vatsimEvents.length <= 0) {
             return null;
@@ -101,7 +102,7 @@ class VatsimData {
             return null;
         }
     }
-
+    
     async requestVatsimEventsData() {
         try {
             const response = await axios.get(VATSIM_EVENTS_URL);
@@ -116,7 +117,7 @@ class VatsimData {
         }
         return this;
     }
-
+    
     async getAllVatsimEvents() {
         try {
             const currentTime = new Date(new Date()).toISOString();
@@ -132,12 +133,12 @@ class VatsimData {
             return [];
         }
     }
-
+    
     async sortVatsimEventsByTime(timeFlag, order) {
         try {
             let docs;
             const currentTime = new Date(new Date()).toISOString();
-
+            
             if (timeFlag === "start_time") {
                 docs = await VatsimEvents.find({end_time: {$gte: currentTime}}).sort({
                     start_time: order
@@ -155,7 +156,7 @@ class VatsimData {
             return [];
         }
     }
-
+    
     async getCurrentVatsimEvents() {
         try {
             const currentTime = new Date().getTime();
@@ -180,7 +181,7 @@ class VatsimData {
             return [];
         }
     }
-
+    
     async requestVatsimData() {
         try {
             const response = await axios.get(VATSIM_DATA_URL);
@@ -204,11 +205,11 @@ class VatsimData {
             throw new BadRequestError("Vatsim API ERROR");
         }
     }
-
+    
     async getVatsimGeneralInfo() {
         return await VatsimData.requestVatsimData();
     }
-
+    
     async getTotalNumberOfPilots() {
         const vatsimData = await VatsimData.requestVatsimData();
         if (vatsimData.data) {
@@ -216,7 +217,7 @@ class VatsimData {
         }
         return -1;
     }
-
+    
     async getTotalNumberOfControllers() {
         const vatsimData = await VatsimData.requestVatsimData();
         if (vatsimData) {
@@ -224,7 +225,7 @@ class VatsimData {
         }
         return -1;
     }
-
+    
     async getPopularAirports(limit) {
         if (!limit) limit = 10;
         const {vatsimPilots} = this;
@@ -245,7 +246,7 @@ class VatsimData {
                 return b.count - a.count; //sort counter by decrease order
             });
         };
-
+        
         let depAirports = [];
         let arrAirports = [];
         if (vatsimPilots) {
@@ -259,12 +260,12 @@ class VatsimData {
                 }
             }
         }
-
+        
         let sortedArrAirports = sortAirports(arrAirports).slice(0, limit);
         let sortedDepAirports = sortAirports(depAirports).slice(0, limit);
         const combinedAirports = [];
         const airportSortingOrder = [];
-
+        
         while (sortedDepAirports.length > 0 && sortedArrAirports.length > 0) {
             // compare first element of both array since they are sorted
             if (sortedArrAirports[0].count > sortedDepAirports[0].count) {
@@ -289,7 +290,7 @@ class VatsimData {
                 let depICAO = sortedDepAirports[0].ICAO;
                 let depCount = sortedArrAirports[0].count;
                 let arrAirport = sortedDepAirports.find((e) => e.ICAO === depICAO);
-
+                
                 if (arrAirport) {
                     let tempAirportObj = {
                         ICAO: depICAO,
@@ -305,7 +306,7 @@ class VatsimData {
                 sortedDepAirports.shift();
             }
         }
-
+        
         // attach controller information and ATIS information
         let tempCombined = [];
         for await (let airport of combinedAirports) {
@@ -318,7 +319,7 @@ class VatsimData {
             };
             tempCombined.push(tempObj);
         }
-
+        
         return {
             arrival: sortedArrAirports,
             departure: sortedDepAirports,
@@ -326,7 +327,7 @@ class VatsimData {
             sortingOrder: airportSortingOrder
         };
     }
-
+    
     checkATIS(icao) {
         const vatsimAtisList = this.vatsimAtis;
         if (vatsimAtisList.length !== 0) {
@@ -339,25 +340,38 @@ class VatsimData {
             return false;
         }
     }
-
+    
     getATIS(icao) {
         const vatsimAtisList = this.vatsimAtis;
+        let vatsimAtis = {data: []};
         if (vatsimAtisList) {
+            
             for (const atis of vatsimAtisList) {
                 if (atis.callsign.includes(icao.toUpperCase())) {
-                    let vatsimAtis = {data: {}};
-                    vatsimAtis.data.code = atis.atis_code ? atis.atis_code : "-";
-                    vatsimAtis.data.datis = atis.text_atis.join(" ");
-                    return vatsimAtis;
+                    let tempAtisObj = {
+                        type: "combined",
+                        code: atis.atis_code ? atis.atis_code : "-",
+                        datis: atis.text_atis.join(" "),
+                    };
+                    
+                    // Match exact word to check if atis contains DEP or ARR
+                    const depRegex = /\b(DEP|DEPARTURE)\b/;
+                    const arrRegex = /\b(ARR|ARRIVAL)\b/;
+                    
+                    if (atis.text_atis.some(line => depRegex.test(line))) {
+                        tempAtisObj.type = "dep";
+                    } else if (atis.text_atis.some(line => arrRegex.test(line))) {
+                        tempAtisObj.type = "arr";
+                    }
+                    
+                    vatsimAtis.data.push(tempAtisObj);
                 }
             }
-            return {
-                data: `No Vatsim ATIS found in ${icao.toUpperCase()}`
-            };
         }
-        return {data: "Vatsim API not available"};
+        return vatsimAtis;
     }
-
+    
+    
     async onlineControllersInAirport(icao) {
         const controllerList = this.vatsimControllers;
         if (icao.length === 4 && icao.toUpperCase().startsWith("K")) {
@@ -379,10 +393,10 @@ class VatsimData {
             return controllerLists;
         }
     }
-
+    
     async onlineControllerStatus(icao) {
         const controllers = await this.onlineControllersInAirport(icao);
-
+        
         let tempObj = {
             DEL: false,
             GND: false,
@@ -407,7 +421,7 @@ class VatsimData {
         }
         return tempObj;
     }
-
+    
     async displayControllerRange(icao) {
         const controllerList = await this.onlineControllersInAirport(icao);
         const controllerObject = {controllerList: []};
@@ -421,10 +435,10 @@ class VatsimData {
         }
         const airport = await GNS430Airport.findOne({ICAO: `${icao.toUpperCase()}`});
         controllerObject.airportLocation = airport.location;
-
+        
         return controllerObject;
     }
-
+    
     #validateVatsimTraffic(flight) {
         if (
             !flight.cid ||
@@ -439,7 +453,7 @@ class VatsimData {
         }
         return true;
     }
-
+    
     #buildTrafficObject(traffic, trackFlag) {
         const tempObject = {
             cid: traffic.cid,
@@ -464,7 +478,7 @@ class VatsimData {
             logonTime: traffic.logon_time,
             lastUpdated: traffic.last_updated
         };
-
+        
         if (trackFlag) {
             tempObject.track = [{
                 latitude: traffic.latitude ?? 0,
@@ -476,10 +490,10 @@ class VatsimData {
                 compensation: 0
             }];
         }
-
+        
         return tempObject;
     }
-
+    
     normalizeVatsimTraffic() {
         this.normalizedVatsimTraffics = this.vatsimPilots.reduce((acc, pilot) => {
             if (this.#validateVatsimTraffic(pilot)) {
@@ -489,7 +503,7 @@ class VatsimData {
         }, []);
         return this.normalizedVatsimTraffics;
     }
-
+    
     //! This function will FLUSH the redis. Make sure connectionUrl is correct
     async importVatsimTrafficToRedis(connectionUrl) {
         // throw error if connectionUrl is production db url.
@@ -522,7 +536,7 @@ class VatsimData {
             logger.error("importVatsimTrafficToRedis error:", e);
         }
     }
-
+    
     #trackCompensation(latestTrack, dbTrack) {
         // If latestTrack return groundSpeed as 0, don't push new track, only update the flight info
         // If latestTrack has the same heading with dbTrack, don't update track, only increment compensation number
@@ -538,7 +552,7 @@ class VatsimData {
             return {...latestTrack, track: dbTrack.track};
         }
     }
-
+    
     /*
      A generator function to return the db array in batch.
      * */
@@ -546,7 +560,7 @@ class VatsimData {
         let offset = 0;
         let results;
         let keepGoing = true;
-
+        
         while (keepGoing) {
             try {
                 results = await repository.search().page(offset, pageSize);
@@ -561,7 +575,7 @@ class VatsimData {
             }
         }
     }
-
+    
     /* *
      trackClient: the Redis client that contains all track for every traffic
      noTrackClient: the redis client that only contains the latest track
@@ -570,14 +584,14 @@ class VatsimData {
         try {
             await this.requestVatsimData();
             this.normalizeVatsimTraffic();
-
+            
             const trafficRepo = trackClient.createRedisRepository(vatsimTrafficsSchema);
             if (!trafficRepo) {
                 throw new Error("Failed to fetch Redis repo");
             }
-
+            
             const entityToRemove = new Set();
-
+            
             for await (const page of this.paginatedSearch(trafficRepo)) {
                 page.forEach((p) => {
                     if (!_.find(this.normalizedVatsimTraffics, {cid: p.cid})) {
@@ -586,7 +600,7 @@ class VatsimData {
                 });
             }
             logger.debug("Entity to be removed:%O", entityToRemove);
-
+            
             // logger.debug("Traffic to be removed:%O", trafficToBeRemoved);
             const trafficPromise = this.normalizedVatsimTraffics.map(async (pilot) => {
                 const trackEntity = await trafficRepo
@@ -602,7 +616,7 @@ class VatsimData {
                 }
             });
             this.normalizedVatsimTraffics = null;
-
+            
             trafficPromise.push(trafficRepo.remove(Array.from(entityToRemove)));
             await batchProcess(trafficPromise, 30);
             // logger.debug("MEMORY AFTER UPDATE:%O", process.memoryUsage());
@@ -610,14 +624,14 @@ class VatsimData {
             logger.error("updateVatsimTrafficRedis error:%O", e);
         }
     }
-
+    
     async getAllVatsimTraffics(client) {
         try {
             if (!client) {
                 throw new Error("Redis Connect Failed");
             }
             const repo = client.createRedisRepository(vatsimTrafficsSchema);
-
+            
             //remove traffics that are not in the latest fetched data
             const allRedisTraffics = await repo.search().all();
             if (allRedisTraffics) {
@@ -630,14 +644,14 @@ class VatsimData {
             return null;
         }
     }
-
+    
     getVatsimPilots() {
         if (this.vatsimPilots.length > 0) {
             return this.vatsimPilots;
         }
         return [];
     }
-
+    
     normalizeVatsimPrefiles() {
         this.normalizedVatsimPrifiles = this.vatsimPrefiles.reduce((acc, pilot) => {
             if (pilot.cid && pilot.cid !== 0) {
@@ -648,7 +662,7 @@ class VatsimData {
         this.vatsimPrefiles = [];
         return this.normalizedVatsimPrifiles;
     }
-
+    
     async updateVatsimHistoryTraffic() {
         try {
             this.normalizeVatsimPrefiles();
@@ -672,7 +686,7 @@ class VatsimData {
             logger.error("Error update vatsim history traffic: %O", e)
         }
     }
-
+    
     async getVatsimFir() {
         try {
             if (!this.vatsimControllers) {
@@ -684,7 +698,7 @@ class VatsimData {
             this.vatsimFir = [];
         }
     }
-
+    
     async getOtherControllers() {
         try {
             if (!this.vatsimControllers) {
@@ -696,7 +710,7 @@ class VatsimData {
             this.vatsimControllers = []
         }
     }
-
+    
     async getVatsimFss() {
         try {
             if (!this.vatsimControllers) {
@@ -708,8 +722,19 @@ class VatsimData {
             this.vatsimFSS = []
         }
     }
-
-
+    
+    async getVatsimTracons() {
+        try {
+            if (!this.vatsimControllers) {
+                throw new Error("No Vatsim Controllers Available");
+            }
+            this.vatsimTracon = await generateTracon(this.vatsimControllers)
+            return this.vatsimTracon;
+        } catch (e) {
+            logger.error("Error get vatsim Tracon: %O", e);
+            this.vatsimTracon = []
+        }
+    }
 }
 
 module.exports = VatsimData;

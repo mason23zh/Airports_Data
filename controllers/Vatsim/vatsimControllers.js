@@ -236,8 +236,10 @@ module.exports.getVatsimControllers = async (req, res) => {
         await vatsim.getVatsimFir();
         await vatsim.getOtherControllers();
         await vatsim.getVatsimFss();
+        await vatsim.getVatsimTracons();
         res.status(200).json({
             fir: vatsim.vatsimFir,
+            tracon: vatsim.vatsimTracon,
             other: vatsim.vatsimOtherControllers,
             fss: vatsim.vatsimFSS
         });
@@ -263,6 +265,17 @@ module.exports.getVatsimOtherControllers = async (req, res) => {
         await vatsim.requestVatsimData();
         await vatsim.getOtherControllers();
         res.status(200).json({ results: vatsim.vatsimOtherControllers });
+    } catch (e) {
+        res.status(200).json({ results: [] });
+    }
+};
+
+module.exports.getVatsimTracon = async (req, res) => {
+    try {
+        const vatsim = new VatsimData();
+        await vatsim.requestVatsimData();
+        await vatsim.getVatsimTracons();
+        res.status(200).json({ results: vatsim.vatsimTracon });
     } catch (e) {
         res.status(200).json({ results: [] });
     }
