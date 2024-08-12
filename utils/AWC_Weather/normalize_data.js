@@ -6,8 +6,6 @@ const util = require("util");
 const readFile = util.promisify(fs.readFile);
 const paths = require("../../utils/path/paths");
 
-// const gns430_airports_with_location = "./utils/AWC_Weather/Data/GNS430_airports_with_location.json";
-
 module.exports.normalizeData = async () => {
     // const gns430AirportData = await readFile(gns430_airports_with_location, "utf-8");
     const gns430AirportData = await readFile(paths.gns430AirportsWithLocation);
