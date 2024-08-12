@@ -3,9 +3,12 @@ const path = require("path");
 const logger = require("../../logger/index");
 const StreamArray = require("stream-json/streamers/StreamArray");
 const StreamValues = require("stream-json/streamers/StreamValues");
+const paths = require("../../utils/path/paths");
 
 const fir = path.resolve(__dirname, "./fir_2.json");
-const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
+// const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
+const airport = paths.gns430AirportsWithLocation;
+
 // const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
 // const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
