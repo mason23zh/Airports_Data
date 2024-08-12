@@ -52,7 +52,7 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             logger.error("Error occurred in scheduleJob:importMetarsToDB():", e);
         }
     });
-    // every 12 hours
+    //every 12 hours
     schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
         try {
             await importVatsimEventsToDb();
