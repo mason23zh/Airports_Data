@@ -22,7 +22,13 @@ const Latest_AwcWeatherModel = SecondaryConnection.model(
     AwcWeatherMetarSchema
 );
 mongoose.set("strictQuery", false); //to avoid 'strictQuery' deprecation warning
-mongoose.connect(`${process.env.DATABASE}`).then(() => {
+const mongooseOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+    socketTimeoutMS: 45000 // 45 seconds timeout
+};
+mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     logger.info("DB connected");
     (async () => {
         try {
