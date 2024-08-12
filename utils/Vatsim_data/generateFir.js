@@ -8,6 +8,11 @@ const paths = require("../../utils/path/paths");
 const fir = path.resolve(__dirname, "./fir_2.json");
 // const airport = path.resolve(__dirname, "./GNS430_airports_with_location.json");
 const airport = paths.gns430AirportsWithLocation;
+// const airport = path.resolve(
+//     __dirname,
+//     "../../dev-data/GNS430_Data/GNS430_airports_with_location.json"
+// );
+console.log("AIRPORT LOCATION:", airport);
 
 // const uris = path.resolve(__dirname, "../../Data/Vatsim/uris.json");
 const uris = path.resolve(__dirname, "./uris.json");
@@ -67,6 +72,7 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
     return new Promise((resolve, reject) => {
         let controllers = [];
         let atis = [];
+        console.log("Airport FILE:", airport);
         const airportStream = fs
             .createReadStream(airport)
             .on("error", (err) => {

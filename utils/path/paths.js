@@ -1,5 +1,8 @@
 const path = require("path");
-const rootDir = path.resolve(__dirname, "../../");
+const rootDir =
+    process.env.NODE_ENV === "development"
+        ? path.resolve(__dirname, "../../")
+        : path.resolve("/app");
 
 module.exports = {
     gns430AirportsWithLocation: path.join(
