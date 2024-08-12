@@ -7,6 +7,6 @@ const rootDir =
 module.exports = {
     gns430AirportsWithLocation: path.join(
         rootDir,
-        "dev-data/GNS430_Data/GNS430_airports_with_location.json"
+        "utils/AWC_Weather/Data/GNS430_airports_with_location.json"
     )
 };
