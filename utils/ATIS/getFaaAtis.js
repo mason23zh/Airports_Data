@@ -2,18 +2,29 @@ const axios = require("axios");
 const { FAA_ATIS_API_BASE_URL } = require("../../config");
 const { getRandomUserAgent } = require("../Online_Flight_Data/randomUserAgent");
 const tunnel = require("tunnel");
+const { FaaAtis } = require("../../models/ATIS/faaAtisModel");
+
+const isUsAirport = (icao) => {
+    if (icao.length < 4) return false;
+    const usAirports = ["PANC", "TJSJ", "PHNL"];
+    return icao.startsWith("K") || usAirports.includes(icao);
+};
 
 const getFaaAtis = async (location) => {
     try {
-        // const response = await axios.get(`${FAA_ATIS_API_BASE_URL}/${location}`);
-        // const response = await axios.get(`${FAA_ATIS_API_BASE_URL}/${location}`, {
-        //     timeout: 10000,
-        //     headers: {
-        //         "User-Agent": getRandomUserAgent()
-        //     }
-        // });
+        const icao = location.toUpperCase();
+        if (!isUsAirport(icao)) {
+            return { data: [] };
+        }
 
-        const response = await axios.get(`${FAA_ATIS_API_BASE_URL}/${location}`, {
+        const atisData = await FaaAtis.find({ airport: icao });
+
+        if (atisData && atisData.length > 0) {
+            return { data: atisData };
+        }
+
+        // Fallback, make request to https://datil.clowd.io
+        const response = await axios.get(`${FAA_ATIS_API_BASE_URL}/${icao}`, {
             headers: {
                 "User-Agent": getRandomUserAgent()
             },
@@ -27,8 +38,19 @@ const getFaaAtis = async (location) => {
             })
         });
 
+        // If found, insert fallback data to the DB.
         if (response.data && response.data.length > 0) {
-            return { data: response.data };
+            const newAtisEntries = response.data.map((atis) => ({
+                airport: atis.airport,
+                type: atis.type,
+                code: atis.code,
+                datis: atis.datis,
+                lastUpdated: new Date()
+            }));
+
+            await FaaAtis.insertMany(newAtisEntries);
+
+            return { data: newAtisEntries };
         } else {
             return { data: [] };
         }

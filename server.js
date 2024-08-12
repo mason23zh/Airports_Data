@@ -8,6 +8,7 @@ const RedisClient = require("./redis/RedisClient");
 const { CronJob } = require("cron");
 const { importVatsimEventsToDb, importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
 const logger = require("./logger/index");
+const { importFaaAtisToDB } = require("./utils/ATIS/importFaaAtisToDB");
 
 const REDIS_VATSIM_URL =
     process.env.NODE_ENV === "production"
@@ -34,6 +35,15 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
             logger.error("Error connecting to Redis:%O", e);
         }
     })();
+
+    //Update FAA ATIS every 60 minutes
+    schedule.scheduleJob("0 * * * *", async () => {
+        try {
+            await importFaaAtisToDB();
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+        }
+    });
 
     schedule.scheduleJob("*/10 * * * *", async () => {
         try {
