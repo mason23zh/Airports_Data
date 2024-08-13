@@ -6,7 +6,7 @@ const schedule = require("node-schedule");
 const { SecondaryConnection } = require("./secondaryDbConnection");
 const RedisClient = require("./redis/RedisClient");
 const { CronJob } = require("cron");
-const { importMetarsToDB, importVatsimTrafficsToDb, importVatsimEventsToDb } = require("./index");
+const { importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
 const logger = require("./logger/index");
 
 const REDIS_VATSIM_URL =
@@ -66,16 +66,7 @@ mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     //     }
     // });
 
-    // (async () => {
-    //     try {
-    //         await importVatsimEventsToDb();
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
-    //     }
-    // })();
-
     // every 20 seconds
-
     CronJob.from({
         cronTime: "*/30 * * * * *",
         onTick: async () => {

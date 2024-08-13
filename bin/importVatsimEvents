@@ -19,7 +19,7 @@ const logger = require("../logger/index");
             socketTimeoutMS: 45000, // 45 seconds timeout
             bufferCommands: false // Disable Mongoose buffering
         });
-        logger.info("MongoDB connected");
+        logger.info("MongoDB connected (importVatsimEvent)");
         
         // Perform the import operation
         await importVatsimEventsToDb();
@@ -29,6 +29,7 @@ const logger = require("../logger/index");
     } finally {
         // Ensure Mongoose connection is closed
         await mongoose.disconnect();
+        logger.info("Mongoose disconnect (importVatsimEvent)");
         process.exit(0);
     }
 })();

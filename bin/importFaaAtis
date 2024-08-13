@@ -22,12 +22,13 @@ const logger = require("../logger/index");
         
         // Perform the import operation
         await importFaaAtisToDB();
-        logger.info("Vatsim events import complete.");
+        logger.info("FAA ATIS import complete.");
     } catch (e) {
-        logger.error("Error occurred in scheduleJob: importVatsimEventsToDb():", e);
+        logger.error("Error occurred in scheduleJob: importFaaAtisToDB():", e);
     } finally {
         // Ensure Mongoose connection is closed
         await mongoose.disconnect();
+        logger.info("Mongoose disconnect (importFaa)")
         process.exit(0);
     }
 })();
