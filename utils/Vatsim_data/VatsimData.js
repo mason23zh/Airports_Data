@@ -91,12 +91,20 @@ class VatsimData {
             logger.info("starting import vatsim events to db...");
             // delete all previous events
             await VatsimEvents.deleteMany({});
-            const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
-            if (doc.length > 0) {
-                logger.info("successfully import vatsim events to db ");
+            
+            const batchSize = 100;
+            for (let i = 0; i < this.vatsimEvents.length; i += batchSize) {
+                const batch = this.vatsimEvents.slice(i, i + batchSize);
+                await VatsimEvents.insertMany(batch)
             }
+            
+            // const doc = await VatsimEvents.create(JSON.parse(JSON.stringify(this.vatsimEvents)));
+            // if (doc.length > 0) {
+            logger.info("successfully import vatsim events to db ");
+            // }
             this.vatsimEvents = null;
-            return doc.length;
+            return 1;
+            // return doc.length;
         } catch (e) {
             logger.error("storeVatsimEventsToDB error:%O", e);
             return null;

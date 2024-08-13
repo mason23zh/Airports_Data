@@ -6,9 +6,8 @@ const schedule = require("node-schedule");
 const { SecondaryConnection } = require("./secondaryDbConnection");
 const RedisClient = require("./redis/RedisClient");
 const { CronJob } = require("cron");
-const { importVatsimEventsToDb, importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
+const { importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
 const logger = require("./logger/index");
-const { importFaaAtisToDB } = require("./utils/ATIS/importFaaAtisToDB");
 
 const REDIS_VATSIM_URL =
     process.env.NODE_ENV === "production"
@@ -23,7 +22,13 @@ const Latest_AwcWeatherModel = SecondaryConnection.model(
     AwcWeatherMetarSchema
 );
 mongoose.set("strictQuery", false); //to avoid 'strictQuery' deprecation warning
-mongoose.connect(`${process.env.DATABASE}`).then(() => {
+const mongooseOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+    socketTimeoutMS: 45000 // 45 seconds timeout
+};
+mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     logger.info("DB connected");
     (async () => {
         try {
@@ -37,13 +42,13 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
     })();
 
     //Update FAA ATIS every 60 minutes
-    schedule.scheduleJob("0 * * * *", async () => {
-        try {
-            await importFaaAtisToDB();
-        } catch (e) {
-            logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
-        }
-    });
+    // schedule.scheduleJob("0 * * * *", async () => {
+    //     try {
+    //         await importFaaAtisToDB();
+    //     } catch (e) {
+    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+    //     }
+    // });
 
     schedule.scheduleJob("*/10 * * * *", async () => {
         try {
@@ -53,15 +58,15 @@ mongoose.connect(`${process.env.DATABASE}`).then(() => {
         }
     });
     //every 12 hours
-    schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
-        try {
-            await importVatsimEventsToDb();
-        } catch (e) {
-            logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
-        }
-    });
-    // every 20 seconds
+    // schedule.scheduleJob("0 0 0/12 1/1 * ? *", async () => {
+    //     try {
+    //         await importVatsimEventsToDb();
+    //     } catch (e) {
+    //         logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
+    //     }
+    // });
 
+    // every 20 seconds
     CronJob.from({
         cronTime: "*/30 * * * * *",
         onTick: async () => {

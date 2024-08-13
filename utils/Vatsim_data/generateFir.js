@@ -64,7 +64,6 @@ module.exports.generateControllersAndAtis = async (vatsimControllers, vatsimAtis
     return new Promise((resolve, reject) => {
         let controllers = [];
         let atis = [];
-        console.log("Airport FILE:", airport);
         const airportStream = fs
             .createReadStream(airport)
             .on("error", (err) => {

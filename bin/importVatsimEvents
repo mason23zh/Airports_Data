@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+/*
+ * The importVatsimEvents will run in the Heroku Scheduler
+ * This task will run every 12 hours.
+ * */
+require("dotenv").config({path: "../config/env"});
+const mongoose = require("mongoose");
+const {importVatsimEventsToDb} = require("../index");
+const logger = require("../logger/index");
+
+(async () => {
+    try {
+        // Establish MongoDB connection
+        await mongoose.connect(process.env.DATABASE, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+            socketTimeoutMS: 45000, // 45 seconds timeout
+            bufferCommands: false // Disable Mongoose buffering
+        });
+        logger.info("MongoDB connected (importVatsimEvent)");
+        
+        // Perform the import operation
+        await importVatsimEventsToDb();
+        logger.info("Vatsim events import complete.");
+    } catch (e) {
+        logger.error("Error occurred in scheduleJob: importVatsimEventsToDb():", e);
+    } finally {
+        // Ensure Mongoose connection is closed
+        await mongoose.disconnect();
+        logger.info("Mongoose disconnect (importVatsimEvent)");
+        process.exit(0);
+    }
+})();
+
