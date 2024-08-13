@@ -6,7 +6,7 @@ const schedule = require("node-schedule");
 const { SecondaryConnection } = require("./secondaryDbConnection");
 const RedisClient = require("./redis/RedisClient");
 const { CronJob } = require("cron");
-const { importMetarsToDB, importVatsimTrafficsToDb } = require("./index");
+const { importMetarsToDB, importVatsimTrafficsToDb, importVatsimEventsToDb } = require("./index");
 const logger = require("./logger/index");
 
 const REDIS_VATSIM_URL =
@@ -42,13 +42,13 @@ mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     })();
 
     //Update FAA ATIS every 60 minutes
-    // schedule.scheduleJob("0 * * * *", async () => {
-    //     try {
-    //         await importFaaAtisToDB();
-    //     } catch (e) {
-    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
-    //     }
-    // });
+    schedule.scheduleJob("0 * * * *", async () => {
+        try {
+            await importFaaAtisToDB();
+        } catch (e) {
+            logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+        }
+    });
 
     schedule.scheduleJob("*/10 * * * *", async () => {
         try {
@@ -65,6 +65,15 @@ mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     //         logger.error("Error occurred in scheduleJob:importVatsimEventsToDb():", e);
     //     }
     // });
+
+    // (async () => {
+    //     try {
+    //         await importVatsimEventsToDb();
+    //     } catch (e) {
+    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+    //     }
+    // })();
+
     // every 20 seconds
 
     CronJob.from({

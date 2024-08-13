@@ -1,3 +1,4 @@
+#! /app/.heroku/node/bin/node
 /*
  * The importFaaAtis will run in the Heroku Scheduler
  * This task will run every 60 minutes.

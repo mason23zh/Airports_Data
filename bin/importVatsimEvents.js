@@ -1,7 +1,10 @@
+#! /app/.heroku/node/bin/node
+
 /*
  * The importVatsimEvents will run in the Heroku Scheduler
- * This task will run every 60 minutes.
+ * This task will run every 12 hours.
  * */
+
 const { importVatsimEventsToDb } = require("../index");
 const logger = require("../logger/index");
 
