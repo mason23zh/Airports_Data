@@ -4,7 +4,7 @@
  * The importVatsimEvents will run in the Heroku Scheduler
  * This task will run every 12 hours.
  * */
-require("dotenv").config({path:"../config/env"});
+require("dotenv").config({path: "../config/env"});
 const mongoose = require("mongoose");
 const {importVatsimEventsToDb} = require("../index");
 const logger = require("../logger/index");
@@ -33,4 +33,3 @@ const logger = require("../logger/index");
     }
 })();
 
-/
