@@ -1,4 +1,4 @@
-#! /app/.heroku/node/bin/node
+#! /usr/bin/node
 
 /*
  * The importVatsimEvents will run in the Heroku Scheduler
@@ -13,5 +13,7 @@ const logger = require("../logger/index");
         await importVatsimEventsToDb();
     } catch (e) {
         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+    } finally {
+        process.exit(0);
     }
 })();
