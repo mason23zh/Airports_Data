@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 /*
  * The importVatsimEvents will run in the Heroku Scheduler

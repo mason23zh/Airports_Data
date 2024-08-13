@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 /*
  * The importFaaAtis will run in the Heroku Scheduler
  * This task will run every 60 minutes.
