@@ -3,15 +3,31 @@
  * The importFaaAtis will run in the Heroku Scheduler
  * This task will run every 60 minutes.
  * */
+require("dotenv").config({path: "../config.env"});
+const mongoose = require("mongoose");
 const {importFaaAtisToDB} = require("../utils/ATIS/importFaaAtisToDB");
 const logger = require("../logger/index");
+
 (async () => {
     try {
-        logger.info("Import FAA Atis to DB.");
+        // Establish MongoDB connection
+        await mongoose.connect(process.env.DATABASE, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+            socketTimeoutMS: 45000, // 45 seconds timeout
+            bufferCommands: false // Disable Mongoose buffering
+        });
+        logger.info("MongoDB connected (importFaaAtis)");
+        
+        // Perform the import operation
         await importFaaAtisToDB();
+        logger.info("Vatsim events import complete.");
     } catch (e) {
-        logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+        logger.error("Error occurred in scheduleJob: importVatsimEventsToDb():", e);
     } finally {
+        // Ensure Mongoose connection is closed
+        await mongoose.disconnect();
         process.exit(0);
     }
 })();
