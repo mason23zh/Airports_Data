@@ -42,13 +42,13 @@ mongoose.connect(`${process.env.DATABASE}`, mongooseOptions).then(() => {
     })();
 
     //Update FAA ATIS every 60 minutes
-    schedule.scheduleJob("0 * * * *", async () => {
-        try {
-            await importFaaAtisToDB();
-        } catch (e) {
-            logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
-        }
-    });
+    // schedule.scheduleJob("0 * * * *", async () => {
+    //     try {
+    //         await importFaaAtisToDB();
+    //     } catch (e) {
+    //         logger.error("Error occurred in scheduleJob:importFaaAtisToDB():", e);
+    //     }
+    // });
 
     schedule.scheduleJob("*/10 * * * *", async () => {
         try {
