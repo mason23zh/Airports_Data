@@ -1,11 +1,11 @@
-#! /usr/bin/node
+#! /usr/bin/env node
 
 /*
  * The importVatsimEvents will run in the Heroku Scheduler
  * This task will run every 12 hours.
  * */
 
-const { importVatsimEventsToDb } = require("../index");
+const {importVatsimEventsToDb} = require("../index");
 const logger = require("../logger/index");
 
 (async () => {
