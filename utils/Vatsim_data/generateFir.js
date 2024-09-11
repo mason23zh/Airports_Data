@@ -8,6 +8,7 @@ const paths = require("../../utils/path/paths");
 const fir = path.resolve(__dirname, "./fir_2.json");
 const airport = paths.gns430AirportsWithLocation;
 const uris = path.resolve(__dirname, "./uris.json");
+const simplifiedFIRGeoJsonFeature = path.resolve(__dirname, "./simplifiedGeoJsonFeature.json");
 // const vatsimControllersData_Test = path.resolve(__dirname, "./vatsim-data-sbwr-tracon.json");
 // const vatsimControllersData_Test = path.resolve(
 //     __dirname,

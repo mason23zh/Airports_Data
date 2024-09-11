@@ -1,0 +1,4228 @@
+{
+    "ADR": [
+        {
+            "id": "ADR",
+            "label_lat": "42.9",
+            "label_lon": "16.3",
+            "oceanic": "0"
+        }
+    ],
+    "ADR-E": [
+        {
+            "id": "ADR-E",
+            "label_lat": "42.55",
+            "label_lon": "20.8",
+            "oceanic": "0"
+        }
+    ],
+    "ADR-W": [
+        {
+            "id": "ADR-W",
+            "label_lat": "45.3",
+            "label_lon": "16.15",
+            "oceanic": "0"
+        }
+    ],
+    "AGGG": [
+        {
+            "id": "AGGG",
+            "label_lat": "-9.416667",
+            "label_lon": "160.937500",
+            "oceanic": "0"
+        }
+    ],
+    "ANAU": [
+        {
+            "id": "ANAU",
+            "label_lat": "-4.150000",
+            "label_lon": "165.000000",
+            "oceanic": "0"
+        }
+    ],
+    "AYPM": [
+        {
+            "id": "AYPM",
+            "label_lat": "-4.000000",
+            "label_lon": "148.500000",
+            "oceanic": "0"
+        }
+    ],
+    "BGGL": [
+        {
+            "id": "BGGL",
+            "label_lat": "75.5",
+            "label_lon": "-30.0",
+            "oceanic": "0"
+        }
+    ],
+    "BIRD": [
+        {
+            "id": "BIRD",
+            "label_lat": "63.6",
+            "label_lon": "-28.0",
+            "oceanic": "0"
+        }
+    ],
+    "BIRD-E": [
+        {
+            "id": "BIRD-E",
+            "label_lat": "63.6",
+            "label_lon": "-5.0",
+            "oceanic": "0"
+        }
+    ],
+    "BIRD-N": [
+        {
+            "id": "BIRD-N",
+            "label_lat": "70.0",
+            "label_lon": "-11.0",
+            "oceanic": "0"
+        }
+    ],
+    "BIRD-S": [
+        {
+            "id": "BIRD-S",
+            "label_lat": "64.0",
+            "label_lon": "-20.0",
+            "oceanic": "0"
+        }
+    ],
+    "BIRD-W": [
+        {
+            "id": "BIRD-W",
+            "label_lat": "66.0",
+            "label_lon": "-45.8",
+            "oceanic": "0"
+        }
+    ],
+    "CZEG": [
+        {
+            "id": "CZEG",
+            "label_lat": "69.499861",
+            "label_lon": "-99.376111",
+            "oceanic": "0"
+        }
+    ],
+    "CZUL": [
+        {
+            "id": "CZUL",
+            "label_lat": "54.610695",
+            "label_lon": "-68.5",
+            "oceanic": "0"
+        }
+    ],
+    "CZWG": [
+        {
+            "id": "CZWG",
+            "label_lat": "56.091111",
+            "label_lon": "-95.000695",
+            "oceanic": "0"
+        }
+    ],
+    "CZVR": [
+        {
+            "id": "CZVR",
+            "label_lat": "52.6125",
+            "label_lon": "-125.56875",
+            "oceanic": "0"
+        }
+    ],
+    "CZYZ": [
+        {
+            "id": "CZYZ",
+            "label_lat": "47.575",
+            "label_lon": "-81.591805",
+            "oceanic": "0"
+        }
+    ],
+    "CZQM": [
+        {
+            "id": "CZQM",
+            "label_lat": "45.183334",
+            "label_lon": "-62.366685",
+            "oceanic": "0"
+        },
+        {
+            "id": "CZQM",
+            "label_lat": "45.183334",
+            "label_lon": "-62.366685",
+            "oceanic": "0"
+        }
+    ],
+    "CZZV": [
+        {
+            "id": "CZZV",
+            "label_lat": "50.5",
+            "label_lon": "-64.25",
+            "oceanic": "0"
+        }
+    ],
+    "CZQX": [
+        {
+            "id": "CZQX",
+            "label_lat": "48.78",
+            "label_lon": "-56.166667",
+            "oceanic": "0"
+        },
+        {
+            "id": "CZQX",
+            "label_lat": "48.78",
+            "label_lon": "-56.166667",
+            "oceanic": "0"
+        }
+    ],
+    "CZQO-GOTA": [
+        {
+            "id": "CZQO-GOTA",
+            "label_lat": "61.0",
+            "label_lon": "-59.0",
+            "oceanic": "0"
+        }
+    ],
+    "CZQO": [
+        {
+            "id": "CZQO",
+            "label_lat": "53.0",
+            "label_lon": "-42.5",
+            "oceanic": "0"
+        }
+    ],
+    "DAAA": [
+        {
+            "id": "DAAA",
+            "label_lat": "28.975",
+            "label_lon": "1.666666",
+            "oceanic": "0"
+        }
+    ],
+    "DGAC": [
+        {
+            "id": "DGAC",
+            "label_lat": "0.733333",
+            "label_lon": "1.666666",
+            "oceanic": "0"
+        }
+    ],
+    "DIII": [
+        {
+            "id": "DIII",
+            "label_lat": "4.3",
+            "label_lon": "-5.2",
+            "oceanic": "0"
+        }
+    ],
+    "DNKK": [
+        {
+            "id": "DNKK",
+            "label_lat": "8.442681",
+            "label_lon": "8.66818",
+            "oceanic": "0"
+        }
+    ],
+    "DRRR": [
+        {
+            "id": "DRRR",
+            "label_lat": "17.016667",
+            "label_lon": "3.25",
+            "oceanic": "0"
+        }
+    ],
+    "DTTC": [
+        {
+            "id": "DTTC",
+            "label_lat": "34.615961",
+            "label_lon": "9.508024",
+            "oceanic": "0"
+        }
+    ],
+    "EBBU": [
+        {
+            "id": "EBBU",
+            "label_lat": "50.652284",
+            "label_lon": "4.544189",
+            "oceanic": "0"
+        }
+    ],
+    "EDWW": [
+        {
+            "id": "EDWW",
+            "label_lat": "52.9",
+            "label_lon": "10.8",
+            "oceanic": "0"
+        }
+    ],
+    "EDWW-B": [
+        {
+            "id": "EDWW-B",
+            "label_lat": "53.3",
+            "label_lon": "12.79",
+            "oceanic": "0"
+        }
+    ],
+    "EDWW-A": [
+        {
+            "id": "EDWW-A",
+            "label_lat": "52.98",
+            "label_lon": "8.48",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG": [
+        {
+            "id": "EDGG",
+            "label_lat": "50.28",
+            "label_lon": "8.25",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-P": [
+        {
+            "id": "EDGG-P",
+            "label_lat": "51.5",
+            "label_lon": "7.4",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-R": [
+        {
+            "id": "EDGG-R",
+            "label_lat": "49.7",
+            "label_lon": "7.2",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-K": [
+        {
+            "id": "EDGG-K",
+            "label_lat": "49.90",
+            "label_lon": "8.54",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-D": [
+        {
+            "id": "EDGG-D",
+            "label_lat": "49.6",
+            "label_lon": "9.9",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-G": [
+        {
+            "id": "EDGG-G",
+            "label_lat": "50.75",
+            "label_lon": "8.96",
+            "oceanic": "0"
+        }
+    ],
+    "EDGG-B": [
+        {
+            "id": "EDGG-B",
+            "label_lat": "48.66",
+            "label_lon": "8.77",
+            "oceanic": "0"
+        }
+    ],
+    "EDMM": [
+        {
+            "id": "EDMM",
+            "label_lat": "49.711666",
+            "label_lon": "11.786666",
+            "oceanic": "0"
+        }
+    ],
+    "EDMM-G": [
+        {
+            "id": "EDMM-G",
+            "label_lat": "50.92",
+            "label_lon": "12.63",
+            "oceanic": "0"
+        }
+    ],
+    "EDMM-Z": [
+        {
+            "id": "EDMM-Z",
+            "label_lat": "48.36",
+            "label_lon": "10.85",
+            "oceanic": "0"
+        }
+    ],
+    "EDMM-R": [
+        {
+            "id": "EDMM-R",
+            "label_lat": "48.75036",
+            "label_lon": "11.72787",
+            "oceanic": "0"
+        }
+    ],
+    "EETT": [
+        {
+            "id": "EETT",
+            "label_lat": "58.709167",
+            "label_lon": "24.438055",
+            "oceanic": "0"
+        }
+    ],
+    "EFIN": [
+        {
+            "id": "EFIN",
+            "label_lat": "63.733333",
+            "label_lon": "27.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX": [
+        {
+            "id": "EGPX",
+            "label_lat": "57.458333",
+            "label_lon": "-2.5",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX-E": [
+        {
+            "id": "EGPX-E",
+            "label_lat": "57.0",
+            "label_lon": "0.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX-D": [
+        {
+            "id": "EGPX-D",
+            "label_lat": "55.161111",
+            "label_lon": "-3.64",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX-W": [
+        {
+            "id": "EGPX-W",
+            "label_lat": "57.25",
+            "label_lon": "-8.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX-WD": [
+        {
+            "id": "EGPX-WD",
+            "label_lat": "55.58",
+            "label_lon": "-5.2",
+            "oceanic": "0"
+        }
+    ],
+    "EGPX-R": [
+        {
+            "id": "EGPX-R",
+            "label_lat": "55.1",
+            "label_lon": "-5.58",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT": [
+        {
+            "id": "EGTT",
+            "label_lat": "51.916667",
+            "label_lon": "-1.5",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT-N": [
+        {
+            "id": "EGTT-N",
+            "label_lat": "53.2",
+            "label_lon": "0.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT-W": [
+        {
+            "id": "EGTT-W",
+            "label_lat": "51.0",
+            "label_lon": "-5.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT-S": [
+        {
+            "id": "EGTT-S",
+            "label_lat": "50.6",
+            "label_lon": "-1.2",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT-C": [
+        {
+            "id": "EGTT-C",
+            "label_lat": "52.65",
+            "label_lon": "-1.2",
+            "oceanic": "0"
+        }
+    ],
+    "EGTT-SC": [
+        {
+            "id": "EGTT-SC",
+            "label_lat": "51.5",
+            "label_lon": "1.0",
+            "oceanic": "0"
+        }
+    ],
+    "EGTM": [
+        {
+            "id": "EGTM",
+            "label_lat": "53.56",
+            "label_lon": "-2.34",
+            "oceanic": "0"
+        }
+    ],
+    "EGTL": [
+        {
+            "id": "EGTL",
+            "label_lat": "51.75",
+            "label_lon": "0.38",
+            "oceanic": "0"
+        }
+    ],
+    "EGVV": [
+        {
+            "id": "EGVV",
+            "label_lat": "54.05",
+            "label_lon": "-1.4",
+            "oceanic": "0"
+        }
+    ],
+    "EHAA": [
+        {
+            "id": "EHAA",
+            "label_lat": "52.932825",
+            "label_lon": "5.077517",
+            "oceanic": "0"
+        }
+    ],
+    "EISN": [
+        {
+            "id": "EISN",
+            "label_lat": "53.0",
+            "label_lon": "-11.0",
+            "oceanic": "0"
+        }
+    ],
+    "EIDW": [
+        {
+            "id": "EIDW",
+            "label_lat": "53.4",
+            "label_lon": "-6.9",
+            "oceanic": "0"
+        }
+    ],
+    "EGGX": [
+        {
+            "id": "EGGX",
+            "label_lat": "53.0",
+            "label_lon": "-22.5",
+            "oceanic": "0"
+        }
+    ],
+    "EGYP": [
+        {
+            "id": "EGYP",
+            "label_lat": "-51.864636",
+            "label_lon": "-61.500000",
+            "oceanic": "0"
+        }
+    ],
+    "EKDK": [
+        {
+            "id": "EKDK",
+            "label_lat": "56.472916",
+            "label_lon": "8.949445",
+            "oceanic": "0"
+        }
+    ],
+    "ENBD": [
+        {
+            "id": "ENBD",
+            "label_lat": "69.38036",
+            "label_lon": "15.84846",
+            "oceanic": "0"
+        }
+    ],
+    "ENBD-S": [
+        {
+            "id": "ENBD-S",
+            "label_lat": "63.5",
+            "label_lon": "7",
+            "oceanic": "0"
+        }
+    ],
+    "ENOR": [
+        {
+            "id": "ENOR",
+            "label_lat": "62.525969",
+            "label_lon": "9.455475",
+            "oceanic": "0"
+        }
+    ],
+    "ENOS": [
+        {
+            "id": "ENOS",
+            "label_lat": "59.5",
+            "label_lon": "9.432621",
+            "oceanic": "0"
+        }
+    ],
+    "ENSV": [
+        {
+            "id": "ENSV",
+            "label_lat": "60.758034",
+            "label_lon": "3.75",
+            "oceanic": "0"
+        }
+    ],
+    "ENOB": [
+        {
+            "id": "ENOB",
+            "label_lat": "72.5",
+            "label_lon": "15.0",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW": [
+        {
+            "id": "EPWW",
+            "label_lat": "52.433334",
+            "label_lon": "19.15",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW-N": [
+        {
+            "id": "EPWW-N",
+            "label_lat": "53.433334",
+            "label_lon": "20.15",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW-W": [
+        {
+            "id": "EPWW-W",
+            "label_lat": "51.813334",
+            "label_lon": "18.15",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW-S": [
+        {
+            "id": "EPWW-S",
+            "label_lat": "51.033334",
+            "label_lon": "21.15",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW-NW": [
+        {
+            "id": "EPWW-NW",
+            "label_lat": "52.133334",
+            "label_lon": "16.15",
+            "oceanic": "0"
+        }
+    ],
+    "EPWW-SW": [
+        {
+            "id": "EPWW-SW",
+            "label_lat": "50.933334",
+            "label_lon": "17.15",
+            "oceanic": "0"
+        }
+    ],
+    "ESMM": [
+        {
+            "id": "ESMM",
+            "label_lat": "57.31",
+            "label_lon": "12.45",
+            "oceanic": "0"
+        }
+    ],
+    "ESOS": [
+        {
+            "id": "ESOS",
+            "label_lat": "61.33",
+            "label_lon": "16.41",
+            "oceanic": "0"
+        },
+        {
+            "id": "ESOS",
+            "label_lat": "61.33",
+            "label_lon": "16.41",
+            "oceanic": "0"
+        }
+    ],
+    "EVRR": [
+        {
+            "id": "EVRR",
+            "label_lat": "57.046945",
+            "label_lon": "23.378195",
+            "oceanic": "0"
+        }
+    ],
+    "EYVL": [
+        {
+            "id": "EYVL",
+            "label_lat": "55.168631",
+            "label_lon": "22.43743",
+            "oceanic": "0"
+        }
+    ],
+    "FAJO": [
+        {
+            "id": "FAJO",
+            "label_lat": "-45.0",
+            "label_lon": "32.5",
+            "oceanic": "0"
+        }
+    ],
+    "FACA": [
+        {
+            "id": "FACA",
+            "label_lat": "-33.25",
+            "label_lon": "23.5",
+            "oceanic": "0"
+        }
+    ],
+    "FACA-W": [
+        {
+            "id": "FACA-W",
+            "label_lat": "-34.0",
+            "label_lon": "17.7",
+            "oceanic": "0"
+        }
+    ],
+    "FACA-E": [
+        {
+            "id": "FACA-E",
+            "label_lat": "-33.6",
+            "label_lon": "25.7",
+            "oceanic": "0"
+        }
+    ],
+    "FAJA": [
+        {
+            "id": "FAJA",
+            "label_lat": "-27.566667",
+            "label_lon": "28.0",
+            "oceanic": "0"
+        }
+    ],
+    "FBGR": [
+        {
+            "id": "FBGR",
+            "label_lat": "-22.172223",
+            "label_lon": "24.675",
+            "oceanic": "0"
+        }
+    ],
+    "FCCC": [
+        {
+            "id": "FCCC",
+            "label_lat": "1.5",
+            "label_lon": "14.0",
+            "oceanic": "0"
+        }
+    ],
+    "FIMM": [
+        {
+            "id": "FIMM",
+            "label_lat": "-25.5",
+            "label_lon": "65.25",
+            "oceanic": "0"
+        }
+    ],
+    "FLFI": [
+        {
+            "id": "FLFI",
+            "label_lat": "-13.091603",
+            "label_lon": "27.853286",
+            "oceanic": "0"
+        }
+    ],
+    "FMMM": [
+        {
+            "id": "FMMM",
+            "label_lat": "-20.0",
+            "label_lon": "48.5",
+            "oceanic": "0"
+        }
+    ],
+    "FNAN": [
+        {
+            "id": "FNAN",
+            "label_lat": "-12.083334",
+            "label_lon": "7.166666",
+            "oceanic": "0"
+        }
+    ],
+    "FQBE": [
+        {
+            "id": "FQBE",
+            "label_lat": "-20.209379",
+            "label_lon": "36.607389",
+            "oceanic": "0"
+        }
+    ],
+    "FSSS": [
+        {
+            "id": "FSSS",
+            "label_lat": "0.183333",
+            "label_lon": "52.0",
+            "oceanic": "0"
+        }
+    ],
+    "FTTT": [
+        {
+            "id": "FTTT",
+            "label_lat": "15.0",
+            "label_lon": "18.233334",
+            "oceanic": "0"
+        }
+    ],
+    "FVHF": [
+        {
+            "id": "FVHF",
+            "label_lat": "-19.017743",
+            "label_lon": "29.143667",
+            "oceanic": "0"
+        }
+    ],
+    "FWLL": [
+        {
+            "id": "FWLL",
+            "label_lat": "-12.743854",
+            "label_lon": "34.294567",
+            "oceanic": "0"
+        }
+    ],
+    "FYWH": [
+        {
+            "id": "FYWH",
+            "label_lat": "-22.22541",
+            "label_lon": "17.631199",
+            "oceanic": "0"
+        }
+    ],
+    "FZZA": [
+        {
+            "id": "FZZA",
+            "label_lat": "-3.0",
+            "label_lon": "22.0",
+            "oceanic": "0"
+        }
+    ],
+    "GCCC": [
+        {
+            "id": "GCCC",
+            "label_lat": "25.890622",
+            "label_lon": "-17.5",
+            "oceanic": "0"
+        }
+    ],
+    "GCCO": [
+        {
+            "id": "GCCO",
+            "label_lat": "24.942397",
+            "label_lon": "-21.0",
+            "oceanic": "0"
+        }
+    ],
+    "GLRB": [
+        {
+            "id": "GLRB",
+            "label_lat": "6.337707",
+            "label_lon": "-12.124819",
+            "oceanic": "0"
+        }
+    ],
+    "GMMM": [
+        {
+            "id": "GMMM",
+            "label_lat": "31.814217",
+            "label_lon": "-8.390876",
+            "oceanic": "0"
+        },
+        {
+            "id": "GMMM",
+            "label_lat": "33.0",
+            "label_lon": "-12.0",
+            "oceanic": "0"
+        }
+    ],
+    "GMMO": [
+        {
+            "id": "GMMO",
+            "label_lat": "33.0",
+            "label_lon": "-12.0",
+            "oceanic": "0"
+        }
+    ],
+    "GOOO": [
+        {
+            "id": "GOOO",
+            "label_lat": "2.500555",
+            "label_lon": "-20.249722",
+            "oceanic": "1"
+        },
+        {
+            "id": "GOOO",
+            "label_lat": "16.0",
+            "label_lon": "-11.933149",
+            "oceanic": "0"
+        }
+    ],
+    "GVSC": [
+        {
+            "id": "GVSC",
+            "label_lat": "18.481667",
+            "label_lon": "-28.751528",
+            "oceanic": "0"
+        }
+    ],
+    "HAAA": [
+        {
+            "id": "HAAA",
+            "label_lat": "9.44375",
+            "label_lon": "40.500354",
+            "oceanic": "0"
+        }
+    ],
+    "HBBA": [
+        {
+            "id": "HBBA",
+            "label_lat": "-3.391956",
+            "label_lon": "29.916189",
+            "oceanic": "0"
+        }
+    ],
+    "HCSM": [
+        {
+            "id": "HCSM",
+            "label_lat": "5.092196",
+            "label_lon": "50.499371",
+            "oceanic": "0"
+        }
+    ],
+    "HECC": [
+        {
+            "id": "HECC",
+            "label_lat": "27.998667",
+            "label_lon": "31.081334",
+            "oceanic": "0"
+        }
+    ],
+    "HHAA": [
+        {
+            "id": "HHAA",
+            "label_lat": "16.180911",
+            "label_lon": "39.819237",
+            "oceanic": "0"
+        }
+    ],
+    "HKNA": [
+        {
+            "id": "HKNA",
+            "label_lat": "-0.351167",
+            "label_lon": "38.950528",
+            "oceanic": "0"
+        }
+    ],
+    "HLLL": [
+        {
+            "id": "HLLL",
+            "label_lat": "26.916667",
+            "label_lon": "17.275245",
+            "oceanic": "0"
+        }
+    ],
+    "HRYR": [
+        {
+            "id": "HRYR",
+            "label_lat": "-1.948361",
+            "label_lon": "29.873917",
+            "oceanic": "0"
+        }
+    ],
+    "HSSS": [
+        {
+            "id": "HSSS",
+            "label_lat": "13.000771",
+            "label_lon": "30.163157",
+            "oceanic": "0"
+        }
+    ],
+    "HTDC": [
+        {
+            "id": "HTDC",
+            "label_lat": "-6.368818",
+            "label_lon": "36.425811",
+            "oceanic": "0"
+        }
+    ],
+    "HUEC": [
+        {
+            "id": "HUEC",
+            "label_lat": "1.25369",
+            "label_lon": "32.306",
+            "oceanic": "0"
+        }
+    ],
+    "KZAB": [
+        {
+            "id": "KZAB",
+            "label_lat": "33.208334",
+            "label_lon": "-107.0",
+            "oceanic": "0"
+        }
+    ],
+    "KZTL": [
+        {
+            "id": "KZTL",
+            "label_lat": "34.30625",
+            "label_lon": "-84.045833",
+            "oceanic": "0"
+        }
+    ],
+    "KZBW": [
+        {
+            "id": "KZBW",
+            "label_lat": "43.80125",
+            "label_lon": "-71.895834",
+            "oceanic": "0"
+        }
+    ],
+    "KZAU": [
+        {
+            "id": "KZAU",
+            "label_lat": "42.170834",
+            "label_lon": "-89.141667",
+            "oceanic": "0"
+        }
+    ],
+    "KZOB": [
+        {
+            "id": "KZOB",
+            "label_lat": "41.541667",
+            "label_lon": "-80.833334",
+            "oceanic": "0"
+        }
+    ],
+    "KZJX": [
+        {
+            "id": "KZJX",
+            "label_lat": "31.177778",
+            "label_lon": "-82.163611",
+            "oceanic": "0"
+        }
+    ],
+    "KZMO": [
+        {
+            "id": "KZMO",
+            "label_lat": "23.8",
+            "label_lon": "-75.0",
+            "oceanic": "0"
+        }
+    ],
+    "KZMA": [
+        {
+            "id": "KZMA",
+            "label_lat": "27",
+            "label_lon": "-81",
+            "oceanic": "0"
+        }
+    ],
+    "KZNY": [
+        {
+            "id": "KZNY",
+            "label_lat": "41.0",
+            "label_lon": "-75.7",
+            "oceanic": "0"
+        },
+        {
+            "id": "KZNY",
+            "label_lat": "31.5",
+            "label_lon": "-58.5",
+            "oceanic": "1"
+        }
+    ],
+    "KZNY-BDA": [
+        {
+            "id": "KZNY-BDA",
+            "label_lat": "31.5",
+            "label_lon": "-64.7",
+            "oceanic": "0"
+        }
+    ],
+    "PHZH": [
+        {
+            "id": "PHZH",
+            "label_lat": "21.6",
+            "label_lon": "-157.0",
+            "oceanic": "0"
+        }
+    ],
+    "KZAK": [
+        {
+            "id": "KZAK",
+            "label_lat": "28.0",
+            "label_lon": "-160.0",
+            "oceanic": "0"
+        }
+    ],
+    "KZOA": [
+        {
+            "id": "KZOA",
+            "label_lat": "37.916667",
+            "label_lon": "-122.004167",
+            "oceanic": "0"
+        }
+    ],
+    "KZDV": [
+        {
+            "id": "KZDV",
+            "label_lat": "40.46875",
+            "label_lon": "-105.339584",
+            "oceanic": "0"
+        }
+    ],
+    "KZFW": [
+        {
+            "id": "KZFW",
+            "label_lat": "33.5",
+            "label_lon": "-97.811111",
+            "oceanic": "0"
+        }
+    ],
+    "KZKC": [
+        {
+            "id": "KZKC",
+            "label_lat": "38.120833",
+            "label_lon": "-95.322222",
+            "oceanic": "0"
+        }
+    ],
+    "KZLA": [
+        {
+            "id": "KZLA",
+            "label_lat": "34.383334",
+            "label_lon": "-117.377084",
+            "oceanic": "0"
+        }
+    ],
+    "KZMP": [
+        {
+            "id": "KZMP",
+            "label_lat": "44.233334",
+            "label_lon": "-92.676112",
+            "oceanic": "0"
+        }
+    ],
+    "KZLC": [
+        {
+            "id": "KZLC",
+            "label_lat": "43.20625",
+            "label_lon": "-111.333334",
+            "oceanic": "0"
+        }
+    ],
+    "KZHU": [
+        {
+            "id": "KZHU",
+            "label_lat": "26.125",
+            "label_lon": "-90.958334",
+            "oceanic": "1"
+        },
+        {
+            "id": "KZHU",
+            "label_lat": "29.0625",
+            "label_lon": "-94.979167",
+            "oceanic": "0"
+        }
+    ],
+    "KZID": [
+        {
+            "id": "KZID",
+            "label_lat": "38.545833",
+            "label_lon": "-84.358334",
+            "oceanic": "0"
+        }
+    ],
+    "KZME": [
+        {
+            "id": "KZME",
+            "label_lat": "34.620834",
+            "label_lon": "-90.422917",
+            "oceanic": "0"
+        }
+    ],
+    "KZSE": [
+        {
+            "id": "KZSE",
+            "label_lat": "44.608334",
+            "label_lon": "-121.333334",
+            "oceanic": "0"
+        }
+    ],
+    "KZDC": [
+        {
+            "id": "KZDC",
+            "label_lat": "36.45875",
+            "label_lon": "-76.754167",
+            "oceanic": "0"
+        }
+    ],
+    "LBSR": [
+        {
+            "id": "LBSR",
+            "label_lat": "42.8",
+            "label_lon": "26.2",
+            "oceanic": "0"
+        }
+    ],
+    "LCCC": [
+        {
+            "id": "LCCC",
+            "label_lat": "33.9573",
+            "label_lon": "33.229451",
+            "oceanic": "0"
+        }
+    ],
+    "LCCC-E": [
+        {
+            "id": "LCCC-E",
+            "label_lat": "34.9",
+            "label_lon": "34.4",
+            "oceanic": "0"
+        }
+    ],
+    "LCCC-H": [
+        {
+            "id": "LCCC-H",
+            "label_lat": "33.52",
+            "label_lon": "30.54",
+            "oceanic": "0"
+        }
+    ],
+    "LCCC-S": [
+        {
+            "id": "LCCC-S",
+            "label_lat": "33.4",
+            "label_lon": "32.0",
+            "oceanic": "0"
+        }
+    ],
+    "LCCC-W": [
+        {
+            "id": "LCCC-W",
+            "label_lat": "35.0",
+            "label_lon": "31.5",
+            "oceanic": "0"
+        }
+    ],
+    "LECB": [
+        {
+            "id": "LECB",
+            "label_lat": "40.3",
+            "label_lon": "1.45",
+            "oceanic": "0"
+        }
+    ],
+    "LECL": [
+        {
+            "id": "LECL",
+            "label_lat": "39.2",
+            "label_lon": "-0.5",
+            "oceanic": "0"
+        }
+    ],
+    "LECM": [
+        {
+            "id": "LECM",
+            "label_lat": "41.9",
+            "label_lon": "-4.4",
+            "oceanic": "0"
+        },
+        {
+            "id": "LECM",
+            "label_lat": "38.0",
+            "label_lon": "-4.4",
+            "oceanic": "0"
+        }
+    ],
+    "LECP": [
+        {
+            "id": "LECP",
+            "label_lat": "39.4",
+            "label_lon": "2.05",
+            "oceanic": "0"
+        }
+    ],
+    "LECS": [
+        {
+            "id": "LECS",
+            "label_lat": "38.0",
+            "label_lon": "-4.4",
+            "oceanic": "0"
+        }
+    ],
+    "LFBB": [
+        {
+            "id": "LFBB",
+            "label_lat": "44.775",
+            "label_lon": "0.628889",
+            "oceanic": "0"
+        }
+    ],
+    "LFEE-S": [
+        {
+            "id": "LFEE-S",
+            "label_lat": "47.83",
+            "label_lon": "6.2",
+            "oceanic": "0"
+        }
+    ],
+    "LFFF": [
+        {
+            "id": "LFFF",
+            "label_lat": "48.82",
+            "label_lon": "2.15",
+            "oceanic": "0"
+        }
+    ],
+    "LFMM": [
+        {
+            "id": "LFMM",
+            "label_lat": "42.75",
+            "label_lon": "6.0125",
+            "oceanic": "0"
+        }
+    ],
+    "LFRR-N": [
+        {
+            "id": "LFRR-N",
+            "label_lat": "46.791667",
+            "label_lon": "-4.125",
+            "oceanic": "0"
+        }
+    ],
+    "LFRR-E": [
+        {
+            "id": "LFRR-E",
+            "label_lat": "48.73",
+            "label_lon": "0.95",
+            "oceanic": "0"
+        }
+    ],
+    "LFEE-N": [
+        {
+            "id": "LFEE-N",
+            "label_lat": "49.45",
+            "label_lon": "3.34",
+            "oceanic": "0"
+        }
+    ],
+    "LFEE": [
+        {
+            "id": "LFEE",
+            "label_lat": "48.35",
+            "label_lon": "5.16",
+            "oceanic": "0"
+        }
+    ],
+    "LFRR": [
+        {
+            "id": "LFRR",
+            "label_lat": "48.0",
+            "label_lon": "-1.6",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG": [
+        {
+            "id": "LGGG",
+            "label_lat": "36.7",
+            "label_lon": "24.55",
+            "oceanic": "0"
+        }
+    ],
+    "LGMD-E": [
+        {
+            "id": "LGMD-E",
+            "label_lat": "39.105292",
+            "label_lon": "25.10577",
+            "oceanic": "0"
+        }
+    ],
+    "LGMD-K": [
+        {
+            "id": "LGMD-K",
+            "label_lat": "40.252662",
+            "label_lon": "24.514111",
+            "oceanic": "0"
+        }
+    ],
+    "LGMD-T": [
+        {
+            "id": "LGMD-T",
+            "label_lat": "40.192406",
+            "label_lon": "21.593955",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-W": [
+        {
+            "id": "LGGG-W",
+            "label_lat": "39.24576",
+            "label_lon": "21.010782",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-E": [
+        {
+            "id": "LGGG-E",
+            "label_lat": "36.264344",
+            "label_lon": "27.000707",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-H": [
+        {
+            "id": "LGGG-H",
+            "label_lat": "34.250557",
+            "label_lon": "27.06295",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-S": [
+        {
+            "id": "LGGG-S",
+            "label_lat": "36.024996",
+            "label_lon": "24.465394",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-K": [
+        {
+            "id": "LGGG-K",
+            "label_lat": "38.200081",
+            "label_lon": "19.533921",
+            "oceanic": "0"
+        }
+    ],
+    "LGGG-P": [
+        {
+            "id": "LGGG-P",
+            "label_lat": "36.563441",
+            "label_lon": "20.180581",
+            "oceanic": "0"
+        }
+    ],
+    "LGMD": [
+        {
+            "id": "LGMD",
+            "label_lat": "39.460402",
+            "label_lon": "23.114011",
+            "oceanic": "0"
+        }
+    ],
+    "LHCC": [
+        {
+            "id": "LHCC",
+            "label_lat": "47.169264",
+            "label_lon": "19.50865",
+            "oceanic": "0"
+        }
+    ],
+    "LIBB": [
+        {
+            "id": "LIBB",
+            "label_lat": "41.2",
+            "label_lon": "16.041666",
+            "oceanic": "0"
+        }
+    ],
+    "LIRR": [
+        {
+            "id": "LIRR",
+            "label_lat": "40.108334",
+            "label_lon": "13.5",
+            "oceanic": "0"
+        }
+    ],
+    "LIMM": [
+        {
+            "id": "LIMM",
+            "label_lat": "45.0",
+            "label_lon": "8.65",
+            "oceanic": "0"
+        },
+        {
+            "id": "LIMM",
+            "label_lat": "45.3",
+            "label_lon": "11.55",
+            "oceanic": "0"
+        }
+    ],
+    "LIPP": [
+        {
+            "id": "LIPP",
+            "label_lat": "45.3",
+            "label_lon": "11.55",
+            "oceanic": "0"
+        }
+    ],
+    "LKAA": [
+        {
+            "id": "LKAA",
+            "label_lat": "49.8",
+            "label_lon": "15.475",
+            "oceanic": "0"
+        }
+    ],
+    "LLLL": [
+        {
+            "id": "LLLL",
+            "label_lat": "31.5",
+            "label_lon": "34.74961",
+            "oceanic": "0"
+        }
+    ],
+    "LLPT": [
+        {
+            "id": "LLPT",
+            "label_lat": "32.431889",
+            "label_lon": "34.934306",
+            "oceanic": "0"
+        }
+    ],
+    "LLSC": [
+        {
+            "id": "LLSC",
+            "label_lat": "30.87044",
+            "label_lon": "34.87608",
+            "oceanic": "0"
+        }
+    ],
+    "LMMM": [
+        {
+            "id": "LMMM",
+            "label_lat": "35.416667",
+            "label_lon": "15.5",
+            "oceanic": "0"
+        }
+    ],
+    "LOVV": [
+        {
+            "id": "LOVV",
+            "label_lat": "47.3",
+            "label_lon": "14.15",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC": [
+        {
+            "id": "LPPC",
+            "label_lat": "40.0",
+            "label_lon": "-9.0",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-D": [
+        {
+            "id": "LPPC-D",
+            "label_lat": "41.0",
+            "label_lon": "-12.0",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-V": [
+        {
+            "id": "LPPC-V",
+            "label_lat": "37.63952",
+            "label_lon": "-11.840505",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-I": [
+        {
+            "id": "LPPC-I",
+            "label_lat": "34.35871",
+            "label_lon": "-14.854017",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-S": [
+        {
+            "id": "LPPC-S",
+            "label_lat": "36.75",
+            "label_lon": "-8.85",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-C": [
+        {
+            "id": "LPPC-C",
+            "label_lat": "38.75",
+            "label_lon": "-8.0",
+            "oceanic": "0"
+        }
+    ],
+    "LPPC-N": [
+        {
+            "id": "LPPC-N",
+            "label_lat": "40.75",
+            "label_lon": "-8.0",
+            "oceanic": "0"
+        }
+    ],
+    "LPPO": [
+        {
+            "id": "LPPO",
+            "label_lat": "33.0",
+            "label_lon": "-28.0",
+            "oceanic": "0"
+        }
+    ],
+    "LPPO-TMA": [
+        {
+            "id": "LPPO-TMA",
+            "label_lat": "39.0",
+            "label_lon": "-30.0",
+            "oceanic": "0"
+        }
+    ],
+    "LRBB": [
+        {
+            "id": "LRBB",
+            "label_lat": "45.949777",
+            "label_lon": "25.402153",
+            "oceanic": "0"
+        }
+    ],
+    "LSAS": [
+        {
+            "id": "LSAS",
+            "label_lat": "46.85",
+            "label_lon": "8.216667",
+            "oceanic": "0"
+        }
+    ],
+    "LTAA": [
+        {
+            "id": "LTAA",
+            "label_lat": "39.2875",
+            "label_lon": "37.399954",
+            "oceanic": "0"
+        }
+    ],
+    "LTBB": [
+        {
+            "id": "LTBB",
+            "label_lat": "39.433334",
+            "label_lon": "28.3",
+            "oceanic": "0"
+        }
+    ],
+    "LJLA": [
+        {
+            "id": "LJLA",
+            "label_lat": "46.028879",
+            "label_lon": "14.707096",
+            "oceanic": "0"
+        }
+    ],
+    "LDZO": [
+        {
+            "id": "LDZO",
+            "label_lat": "43.97195",
+            "label_lon": "14.5",
+            "oceanic": "0"
+        }
+    ],
+    "LQSB": [
+        {
+            "id": "LQSB",
+            "label_lat": "43.915189",
+            "label_lon": "17.679715",
+            "oceanic": "0"
+        }
+    ],
+    "LYBA": [
+        {
+            "id": "LYBA",
+            "label_lat": "43.65597",
+            "label_lon": "20.65533",
+            "oceanic": "0"
+        }
+    ],
+    "LWSS": [
+        {
+            "id": "LWSS",
+            "label_lat": "41.585028",
+            "label_lon": "21.743602",
+            "oceanic": "0"
+        }
+    ],
+    "LAAA": [
+        {
+            "id": "LAAA",
+            "label_lat": "41.153205",
+            "label_lon": "19.961987",
+            "oceanic": "0"
+        }
+    ],
+    "LZBB": [
+        {
+            "id": "LZBB",
+            "label_lat": "48.666667",
+            "label_lon": "19.708333",
+            "oceanic": "0"
+        }
+    ],
+    "MDCS": [
+        {
+            "id": "MDCS",
+            "label_lat": "18.208334",
+            "label_lon": "-69.999305",
+            "oceanic": "0"
+        }
+    ],
+    "MHCC": [
+        {
+            "id": "MHCC",
+            "label_lat": "11.075",
+            "label_lon": "-93.25",
+            "oceanic": "0"
+        }
+    ],
+    "MKJK": [
+        {
+            "id": "MKJK",
+            "label_lat": "17.5",
+            "label_lon": "-77.625",
+            "oceanic": "0"
+        }
+    ],
+    "MPZL": [
+        {
+            "id": "MPZL",
+            "label_lat": "9.75",
+            "label_lon": "-80.1125",
+            "oceanic": "0"
+        }
+    ],
+    "MTEG": [
+        {
+            "id": "MTEG",
+            "label_lat": "18.708334",
+            "label_lon": "-73.316667",
+            "oceanic": "0"
+        }
+    ],
+    "MUFH": [
+        {
+            "id": "MUFH",
+            "label_lat": "21.25",
+            "label_lon": "-79.666666",
+            "oceanic": "0"
+        }
+    ],
+    "MYNN": [
+        {
+            "id": "MYNN",
+            "label_lat": "23.2",
+            "label_lon": "-75",
+            "oceanic": "0"
+        }
+    ],
+    "NAT": [
+        {
+            "id": "NAT",
+            "label_lat": "53.0",
+            "label_lon": "-32.5",
+            "oceanic": "0"
+        }
+    ],
+    "NFFF": [
+        {
+            "id": "NFFF",
+            "label_lat": "-13.25",
+            "label_lon": "175.0",
+            "oceanic": "0"
+        }
+    ],
+    "NFFN": [
+        {
+            "id": "NFFN",
+            "label_lat": "-19.035672",
+            "label_lon": "179.828924",
+            "oceanic": "0"
+        }
+    ],
+    "NVVV": [
+        {
+            "id": "NVVV",
+            "label_lat": "-15.500000",
+            "label_lon": "168.500000",
+            "oceanic": "0"
+        }
+    ],
+    "NTTT": [
+        {
+            "id": "NTTT",
+            "label_lat": "-13.25",
+            "label_lon": "-138.5",
+            "oceanic": "0"
+        }
+    ],
+    "NSFA": [
+        {
+            "id": "NSFA",
+            "label_lat": "-15.0",
+            "label_lon": "-167.0",
+            "oceanic": "0"
+        }
+    ],
+    "NWWW": [
+        {
+            "id": "NWWW",
+            "label_lat": "-18.500000",
+            "label_lon": "165.250000",
+            "oceanic": "0"
+        }
+    ],
+    "NZZO": [
+        {
+            "id": "NZZO",
+            "label_lat": "-40.0",
+            "label_lon": "-170.0",
+            "oceanic": "0"
+        }
+    ],
+    "NZCM": [
+        {
+            "id": "NZCM",
+            "label_lat": "-65.0",
+            "label_lon": "171.0",
+            "oceanic": "0"
+        },
+        {
+            "id": "NZCM",
+            "label_lat": "-65.0",
+            "label_lon": "-160.5",
+            "oceanic": "1"
+        }
+    ],
+    "NZOH": [
+        {
+            "id": "NZOH",
+            "label_lat": "-40.0",
+            "label_lon": "176.5",
+            "oceanic": "0"
+        }
+    ],
+    "NZCT": [
+        {
+            "id": "NZCT",
+            "label_lat": "-40.0",
+            "label_lon": "172.75",
+            "oceanic": "0"
+        }
+    ],
+    "NZCB": [
+        {
+            "id": "NZCB",
+            "label_lat": "-38.25",
+            "label_lon": "176.75",
+            "oceanic": "0"
+        }
+    ],
+    "NZAA": [
+        {
+            "id": "NZAA",
+            "label_lat": "-36.039",
+            "label_lon": "174.897",
+            "oceanic": "0"
+        }
+    ],
+    "NZCS": [
+        {
+            "id": "NZCS",
+            "label_lat": "-45.0",
+            "label_lon": "170.0",
+            "oceanic": "0"
+        }
+    ],
+    "NZCK": [
+        {
+            "id": "NZCK",
+            "label_lat": "-42.5",
+            "label_lon": "173.5",
+            "oceanic": "0"
+        }
+    ],
+    "OAKX": [
+        {
+            "id": "OAKX",
+            "label_lat": "33.951253",
+            "label_lon": "67.683334",
+            "oceanic": "0"
+        }
+    ],
+    "OBBB": [
+        {
+            "id": "OBBB",
+            "label_lat": "26.0",
+            "label_lon": "51.333333",
+            "oceanic": "0"
+        }
+    ],
+    "OBBB-N": [
+        {
+            "id": "OBBB-N",
+            "label_lat": "27.7",
+            "label_lon": "49.8",
+            "oceanic": "0"
+        }
+    ],
+    "OBBB-C": [
+        {
+            "id": "OBBB-C",
+            "label_lat": "26.1",
+            "label_lon": "50.9",
+            "oceanic": "0"
+        }
+    ],
+    "OBBB-S": [
+        {
+            "id": "OBBB-S",
+            "label_lat": "25.0",
+            "label_lon": "51.7",
+            "oceanic": "0"
+        }
+    ],
+    "OBBB-E": [
+        {
+            "id": "OBBB-E",
+            "label_lat": "26.2",
+            "label_lon": "52.2",
+            "oceanic": "0"
+        }
+    ],
+    "OEJD": [
+        {
+            "id": "OEJD",
+            "label_lat": "23.85857",
+            "label_lon": "44.095051",
+            "oceanic": "0"
+        }
+    ],
+    "OERD": [
+        {
+            "id": "OERD",
+            "label_lat": "27.498221",
+            "label_lon": "43.543168",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-1N": [
+        {
+            "id": "TEH-1N",
+            "label_lat": "38.225913",
+            "label_lon": "46.812884",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-1E": [
+        {
+            "id": "TEH-1E",
+            "label_lat": "36.610343",
+            "label_lon": "49.611297",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-1W": [
+        {
+            "id": "TEH-1W",
+            "label_lat": "36.862284",
+            "label_lon": "45.944948",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-2E": [
+        {
+            "id": "TEH-2E",
+            "label_lat": "34.248389",
+            "label_lon": "50.855803",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-2W": [
+        {
+            "id": "TEH-2W",
+            "label_lat": "34.681729",
+            "label_lon": "47.156989",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-3N": [
+        {
+            "id": "TEH-3N",
+            "label_lat": "32.156014",
+            "label_lon": "49.841167",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-3S": [
+        {
+            "id": "TEH-3S",
+            "label_lat": "29.53582",
+            "label_lon": "51.400997",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-4E": [
+        {
+            "id": "TEH-4E",
+            "label_lat": "28.408381",
+            "label_lon": "53.953448",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-4W": [
+        {
+            "id": "TEH-4W",
+            "label_lat": "27.356525",
+            "label_lon": "51.804016",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-4S": [
+        {
+            "id": "TEH-4S",
+            "label_lat": "26.205466",
+            "label_lon": "54.886361",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-5E": [
+        {
+            "id": "TEH-5E",
+            "label_lat": "26.325138",
+            "label_lon": "59.509878",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-5W": [
+        {
+            "id": "TEH-5W",
+            "label_lat": "28.712286",
+            "label_lon": "56.382753",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-6E": [
+        {
+            "id": "TEH-6E",
+            "label_lat": "29.628575",
+            "label_lon": "59.676467",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-6W": [
+        {
+            "id": "TEH-6W",
+            "label_lat": "32.234046",
+            "label_lon": "56.773148",
+            "oceanic": "0"
+        }
+    ],
+    "TEH-7": [
+        {
+            "id": "TEH-7",
+            "label_lat": "35.808468",
+            "label_lon": "56.735832",
+            "oceanic": "0"
+        }
+    ],
+    "OIIX": [
+        {
+            "id": "OIIX",
+            "label_lat": "32.225446",
+            "label_lon": "53.691667",
+            "oceanic": "0"
+        }
+    ],
+    "OJAC": [
+        {
+            "id": "OJAC",
+            "label_lat": "31.285853",
+            "label_lon": "36.35",
+            "oceanic": "0"
+        }
+    ],
+    "OKAC": [
+        {
+            "id": "OKAC",
+            "label_lat": "29.178334",
+            "label_lon": "48.111389",
+            "oceanic": "0"
+        }
+    ],
+    "OLBB": [
+        {
+            "id": "OLBB",
+            "label_lat": "33.852245",
+            "label_lon": "35.758643",
+            "oceanic": "0"
+        }
+    ],
+    "OMAE": [
+        {
+            "id": "OMAE",
+            "label_lat": "24.400824",
+            "label_lon": "54.183333",
+            "oceanic": "0"
+        }
+    ],
+    "OOMM": [
+        {
+            "id": "OOMM",
+            "label_lat": "21.175",
+            "label_lon": "58.25",
+            "oceanic": "0"
+        }
+    ],
+    "OPKR": [
+        {
+            "id": "OPKR",
+            "label_lat": "26.749449",
+            "label_lon": "67.256735",
+            "oceanic": "0"
+        }
+    ],
+    "OPLR": [
+        {
+            "id": "OPLR",
+            "label_lat": "33.463532",
+            "label_lon": "71.686419",
+            "oceanic": "0"
+        }
+    ],
+    "ORBB": [
+        {
+            "id": "ORBB",
+            "label_lat": "33.02789",
+            "label_lon": "43.761655",
+            "oceanic": "0"
+        }
+    ],
+    "ORBB-N": [
+        {
+            "id": "ORBB-N",
+            "label_lat": "34.399765",
+            "label_lon": "42.700911",
+            "oceanic": "0"
+        }
+    ],
+    "ORBB-S": [
+        {
+            "id": "ORBB-S",
+            "label_lat": "31.314367",
+            "label_lon": "45.231957",
+            "oceanic": "0"
+        }
+    ],
+    "OSTT": [
+        {
+            "id": "OSTT",
+            "label_lat": "34.779167",
+            "label_lon": "38.9125",
+            "oceanic": "0"
+        }
+    ],
+    "OYSC": [
+        {
+            "id": "OYSC",
+            "label_lat": "15.775",
+            "label_lon": "50.83",
+            "oceanic": "0"
+        }
+    ],
+    "RCAA": [
+        {
+            "id": "RCAA",
+            "label_lat": "23.67",
+            "label_lon": "121.39",
+            "oceanic": "0"
+        }
+    ],
+    "RJCG": [
+        {
+            "id": "RJCG",
+            "label_lat": "41.6141",
+            "label_lon": "138.37",
+            "oceanic": "0"
+        }
+    ],
+    "RJBG": [
+        {
+            "id": "RJBG",
+            "label_lat": "25.504028",
+            "label_lon": "129.248056",
+            "oceanic": "0"
+        }
+    ],
+    "RJDG": [
+        {
+            "id": "RJDG",
+            "label_lat": "31.5",
+            "label_lon": "128.0",
+            "oceanic": "0"
+        }
+    ],
+    "RJTG": [
+        {
+            "id": "RJTG",
+            "label_lat": "32.541667",
+            "label_lon": "150.208334",
+            "oceanic": "1"
+        },
+        {
+            "id": "RJTG",
+            "label_lat": "37.85",
+            "label_lon": "134.6369",
+            "oceanic": "0"
+        }
+    ],
+    "RKRR": [
+        {
+            "id": "RKRR",
+            "label_lat": "34.31774",
+            "label_lon": "126.20162",
+            "oceanic": "0"
+        }
+    ],
+    "RKRR-N": [
+        {
+            "id": "RKRR-N",
+            "label_lat": "35.33565",
+            "label_lon": "125.72574",
+            "oceanic": "0"
+        }
+    ],
+    "RKRR-S": [
+        {
+            "id": "RKRR-S",
+            "label_lat": "32.94158",
+            "label_lon": "126.20287",
+            "oceanic": "0"
+        }
+    ],
+    "RKDA": [
+        {
+            "id": "RKDA",
+            "label_lat": "36.41501",
+            "label_lon": "128.22325",
+            "oceanic": "0"
+        }
+    ],
+    "RKDA-W": [
+        {
+            "id": "RKDA-W",
+            "label_lat": "37.25639",
+            "label_lon": "125.77332",
+            "oceanic": "0"
+        }
+    ],
+    "RKDA-E": [
+        {
+            "id": "RKDA-E",
+            "label_lat": "37.313694",
+            "label_lon": "130.230707",
+            "oceanic": "0"
+        }
+    ],
+    "RKDA-C": [
+        {
+            "id": "RKDA-C",
+            "label_lat": "35.84646",
+            "label_lon": "128.68895",
+            "oceanic": "0"
+        }
+    ],
+    "RPHI": [
+        {
+            "id": "RPHI",
+            "label_lat": "12.248708",
+            "label_lon": "123.501372",
+            "oceanic": "0"
+        }
+    ],
+    "SACF": [
+        {
+            "id": "SACF",
+            "label_lat": "-27.875",
+            "label_lon": "-64.925",
+            "oceanic": "0"
+        }
+    ],
+    "SACO": [
+        {
+            "id": "SACO",
+            "label_lat": "-31.5",
+            "label_lon": "-64.2",
+            "oceanic": "0"
+        }
+    ],
+    "SAMF": [
+        {
+            "id": "SAMF",
+            "label_lat": "-35.35",
+            "label_lon": "-67.5",
+            "oceanic": "0"
+        }
+    ],
+    "SAME": [
+        {
+            "id": "SAME",
+            "label_lat": "-33.05",
+            "label_lon": "-68.9",
+            "oceanic": "0"
+        }
+    ],
+    "SARR": [
+        {
+            "id": "SARR",
+            "label_lat": "-29.4",
+            "label_lon": "-58.9",
+            "oceanic": "0"
+        }
+    ],
+    "SARE": [
+        {
+            "id": "SARE",
+            "label_lat": "-27.7",
+            "label_lon": "-59.1",
+            "oceanic": "0"
+        }
+    ],
+    "SAEF": [
+        {
+            "id": "SAEF",
+            "label_lat": "-42.0",
+            "label_lon": "-49.0",
+            "oceanic": "0"
+        }
+    ],
+    "SAEF-N": [
+        {
+            "id": "SAEF-N",
+            "label_lat": "-33.1",
+            "label_lon": "-60.2",
+            "oceanic": "0"
+        }
+    ],
+    "SAEF-S": [
+        {
+            "id": "SAEF-S",
+            "label_lat": "-37.5",
+            "label_lon": "-62.15",
+            "oceanic": "0"
+        }
+    ],
+    "BAIRES": [
+        {
+            "id": "BAIRES",
+            "label_lat": "-35.4",
+            "label_lon": "-58.56082",
+            "oceanic": "0"
+        }
+    ],
+    "SAVF": [
+        {
+            "id": "SAVF",
+            "label_lat": "-49.641667",
+            "label_lon": "-49.0",
+            "oceanic": "0"
+        }
+    ],
+    "SAVC": [
+        {
+            "id": "SAVC",
+            "label_lat": "-46.0",
+            "label_lon": "-67.4",
+            "oceanic": "0"
+        }
+    ],
+    "SBAO": [
+        {
+            "id": "SBAO",
+            "label_lat": "-13.166666",
+            "label_lon": "-30.375",
+            "oceanic": "0"
+        }
+    ],
+    "SBAZ": [
+        {
+            "id": "SBAZ",
+            "label_lat": "-6.051",
+            "label_lon": "-57.65525",
+            "oceanic": "0"
+        }
+    ],
+    "SBBS": [
+        {
+            "id": "SBBS",
+            "label_lat": "-16.050833",
+            "label_lon": "-48.416667",
+            "oceanic": "0"
+        }
+    ],
+    "SBCW": [
+        {
+            "id": "SBCW",
+            "label_lat": "-25.166834",
+            "label_lon": "-51.104167",
+            "oceanic": "0"
+        }
+    ],
+    "SBRE": [
+        {
+            "id": "SBRE",
+            "label_lat": "-8.736945",
+            "label_lon": "-40.277056",
+            "oceanic": "0"
+        }
+    ],
+    "SCFZ": [
+        {
+            "id": "SCFZ",
+            "label_lat": "-22.983334",
+            "label_lon": "-78.0",
+            "oceanic": "0"
+        }
+    ],
+    "SCTZ": [
+        {
+            "id": "SCTZ",
+            "label_lat": "-42.75",
+            "label_lon": "-78.0",
+            "oceanic": "0"
+        }
+    ],
+    "SCCZ": [
+        {
+            "id": "SCCZ",
+            "label_lat": "-53.5",
+            "label_lon": "-77.85",
+            "oceanic": "0"
+        }
+    ],
+    "SCEZ": [
+        {
+            "id": "SCEZ",
+            "label_lat": "-33.5",
+            "label_lon": "-78.0",
+            "oceanic": "0"
+        }
+    ],
+    "SCIZ": [
+        {
+            "id": "SCIZ",
+            "label_lat": "-37.5",
+            "label_lon": "-110.5",
+            "oceanic": "0"
+        }
+    ],
+    "SEFG": [
+        {
+            "id": "SEFG",
+            "label_lat": "-1.770833",
+            "label_lon": "-83.583334",
+            "oceanic": "0"
+        }
+    ],
+    "SGFA": [
+        {
+            "id": "SGFA",
+            "label_lat": "-23.479613",
+            "label_lon": "-58.458802",
+            "oceanic": "0"
+        }
+    ],
+    "SKEC": [
+        {
+            "id": "SKEC",
+            "label_lat": "11.316331",
+            "label_lon": "-74.208836",
+            "oceanic": "0"
+        }
+    ],
+    "SKED": [
+        {
+            "id": "SKED",
+            "label_lat": "2.210747",
+            "label_lon": "-74.875487",
+            "oceanic": "0"
+        }
+    ],
+    "SLLF": [
+        {
+            "id": "SLLF",
+            "label_lat": "-16.262908",
+            "label_lon": "-63.508809",
+            "oceanic": "0"
+        }
+    ],
+    "SMPM": [
+        {
+            "id": "SMPM",
+            "label_lat": "5.566667",
+            "label_lon": "-55.95",
+            "oceanic": "0"
+        }
+    ],
+    "SOOO": [
+        {
+            "id": "SOOO",
+            "label_lat": "7.816667",
+            "label_lon": "-44.775",
+            "oceanic": "0"
+        }
+    ],
+    "SPIM": [
+        {
+            "id": "SPIM",
+            "label_lat": "-9.2",
+            "label_lon": "-79.333334",
+            "oceanic": "0"
+        }
+    ],
+    "SVZM": [
+        {
+            "id": "SVZM",
+            "label_lat": "8.212349",
+            "label_lon": "-66.600468",
+            "oceanic": "0"
+        }
+    ],
+    "SYGC": [
+        {
+            "id": "SYGC",
+            "label_lat": "5.033333",
+            "label_lon": "-58.936083",
+            "oceanic": "0"
+        }
+    ],
+    "TJZS": [
+        {
+            "id": "TJZS",
+            "label_lat": "19.25",
+            "label_lon": "-65.0",
+            "oceanic": "0"
+        }
+    ],
+    "TNCF": [
+        {
+            "id": "TNCF",
+            "label_lat": "14.2",
+            "label_lon": "-70.533334",
+            "oceanic": "0"
+        }
+    ],
+    "TTZP": [
+        {
+            "id": "TTZP",
+            "label_lat": "13.713303",
+            "label_lon": "-60.064226",
+            "oceanic": "0"
+        }
+    ],
+    "TTZO": [
+        {
+            "id": "TTZO",
+            "label_lat": "14.720326",
+            "label_lon": "-47.593671",
+            "oceanic": "0"
+        }
+    ],
+    "VCCF": [
+        {
+            "id": "VCCF",
+            "label_lat": "4.0",
+            "label_lon": "84.25",
+            "oceanic": "0"
+        }
+    ],
+    "VDPF": [
+        {
+            "id": "VDPF",
+            "label_lat": "12.732899",
+            "label_lon": "104.948148",
+            "oceanic": "0"
+        }
+    ],
+    "VGFR": [
+        {
+            "id": "VGFR",
+            "label_lat": "23.801272",
+            "label_lon": "90.345546",
+            "oceanic": "0"
+        }
+    ],
+    "VHHK": [
+        {
+            "id": "VHHK",
+            "label_lat": "20.166667",
+            "label_lon": "114.5",
+            "oceanic": "0"
+        }
+    ],
+    "VLVT": [
+        {
+            "id": "VLVT",
+            "label_lat": "19.870834",
+            "label_lon": "102.660161",
+            "oceanic": "0"
+        }
+    ],
+    "VNSM": [
+        {
+            "id": "VNSM",
+            "label_lat": "28.391824",
+            "label_lon": "84.134033",
+            "oceanic": "0"
+        }
+    ],
+    "VRMF": [
+        {
+            "id": "VRMF",
+            "label_lat": "0.75",
+            "label_lon": "73.0",
+            "oceanic": "0"
+        }
+    ],
+    "VABF": [
+        {
+            "id": "VABF",
+            "label_lat": "15.29",
+            "label_lon": "70.0",
+            "oceanic": "0"
+        }
+    ],
+    "VABX": [
+        {
+            "id": "VABX",
+            "label_lat": "11.572",
+            "label_lon": "65.0758",
+            "oceanic": "0"
+        }
+    ],
+    "VAAH": [
+        {
+            "id": "VAAH",
+            "label_lat": "23.1935",
+            "label_lon": "72.4328",
+            "oceanic": "0"
+        }
+    ],
+    "VABB": [
+        {
+            "id": "VABB",
+            "label_lat": "18.34775",
+            "label_lon": "71.58858",
+            "oceanic": "0"
+        }
+    ],
+    "VANP": [
+        {
+            "id": "VANP",
+            "label_lat": "21.3498",
+            "label_lon": "77.56858",
+            "oceanic": "0"
+        }
+    ],
+    "VIDF": [
+        {
+            "id": "VIDF",
+            "label_lat": "30.258011",
+            "label_lon": "76.556075",
+            "oceanic": "0"
+        }
+    ],
+    "VIDP": [
+        {
+            "id": "VIDP",
+            "label_lat": "27.5705",
+            "label_lon": "76.3419",
+            "oceanic": "0"
+        }
+    ],
+    "VEGF": [
+        {
+            "id": "VEGF",
+            "label_lat": "26.455",
+            "label_lon": "92.131667",
+            "oceanic": "0"
+        }
+    ],
+    "VOMF": [
+        {
+            "id": "VOMF",
+            "label_lat": "15.03",
+            "label_lon": "83.59",
+            "oceanic": "0"
+        }
+    ],
+    "VOMX": [
+        {
+            "id": "VOMX",
+            "label_lat": "10.472",
+            "label_lon": "88.5744",
+            "oceanic": "0"
+        }
+    ],
+    "VOBL": [
+        {
+            "id": "VOBL",
+            "label_lat": "14.3909",
+            "label_lon": "77.3225",
+            "oceanic": "0"
+        }
+    ],
+    "VOCI": [
+        {
+            "id": "VOCI",
+            "label_lat": "11.23",
+            "label_lon": "76.18",
+            "oceanic": "0"
+        }
+    ],
+    "VOHS": [
+        {
+            "id": "VOHS",
+            "label_lat": "17.542",
+            "label_lon": "78.3251",
+            "oceanic": "0"
+        }
+    ],
+    "VOML": [
+        {
+            "id": "VOML",
+            "label_lat": "13.3312",
+            "label_lon": "74.3543",
+            "oceanic": "0"
+        }
+    ],
+    "VOMM": [
+        {
+            "id": "VOMM",
+            "label_lat": "13.3105",
+            "label_lon": "81.151",
+            "oceanic": "0"
+        }
+    ],
+    "VOTV": [
+        {
+            "id": "VOTV",
+            "label_lat": "8.1346",
+            "label_lon": "75.3307",
+            "oceanic": "0"
+        }
+    ],
+    "VECF": [
+        {
+            "id": "VECF",
+            "label_lat": "20.1",
+            "label_lon": "89.4",
+            "oceanic": "0"
+        }
+    ],
+    "VECX": [
+        {
+            "id": "VECX",
+            "label_lat": "16.582",
+            "label_lon": "88.5025",
+            "oceanic": "0"
+        }
+    ],
+    "VEBN": [
+        {
+            "id": "VEBN",
+            "label_lat": "25.245",
+            "label_lon": "82.3335",
+            "oceanic": "0"
+        }
+    ],
+    "VECC": [
+        {
+            "id": "VECC",
+            "label_lat": "22.97",
+            "label_lon": "86.46",
+            "oceanic": "0"
+        }
+    ],
+    "VECC-B": [
+        {
+            "id": "VECC-B",
+            "label_lat": "19.392",
+            "label_lon": "84.1645",
+            "oceanic": "0"
+        }
+    ],
+    "VECC-R": [
+        {
+            "id": "VECC-R",
+            "label_lat": "22.202",
+            "label_lon": "82.3251",
+            "oceanic": "0"
+        }
+    ],
+    "VTBB": [
+        {
+            "id": "VTBB",
+            "label_lat": "13.042771",
+            "label_lon": "101.083018",
+            "oceanic": "0"
+        }
+    ],
+    "VVCL": [
+        {
+            "id": "VVCL",
+            "label_lat": "14.118383",
+            "label_lon": "106.93746",
+            "oceanic": "0"
+        }
+    ],
+    "VVHM": [
+        {
+            "id": "VVHM",
+            "label_lat": "10.958542",
+            "label_lon": "108.831833",
+            "oceanic": "0"
+        },
+        {
+            "id": "VVHM",
+            "label_lat": "16.277041",
+            "label_lon": "108.311622",
+            "oceanic": "0"
+        }
+    ],
+    "VVHN": [
+        {
+            "id": "VVHN",
+            "label_lat": "19.578677",
+            "label_lon": "106.276211",
+            "oceanic": "0"
+        }
+    ],
+    "VYYF": [
+        {
+            "id": "VYYF",
+            "label_lat": "19.29099",
+            "label_lon": "96.592",
+            "oceanic": "0"
+        }
+    ],
+    "WAAF": [
+        {
+            "id": "WAAF",
+            "label_lat": "-2.916667",
+            "label_lon": "125.1",
+            "oceanic": "0"
+        }
+    ],
+    "WAAF-B": [
+        {
+            "id": "WAAF-B",
+            "label_lat": "-7.510833",
+            "label_lon": "116.642222",
+            "oceanic": "0"
+        }
+    ],
+    "WAAF-W": [
+        {
+            "id": "WAAF-W",
+            "label_lat": "-0.205556",
+            "label_lon": "115.760278",
+            "oceanic": "0"
+        }
+    ],
+    "WAAF-E": [
+        {
+            "id": "WAAF-E",
+            "label_lat": "-2.282917",
+            "label_lon": "127.424694",
+            "oceanic": "0"
+        }
+    ],
+    "WBFC": [
+        {
+            "id": "WBFC",
+            "label_lat": "4.625",
+            "label_lon": "114.25",
+            "oceanic": "0"
+        },
+        {
+            "id": "WBFC",
+            "label_lat": "2.7",
+            "label_lon": "111.0",
+            "oceanic": "0"
+        }
+    ],
+    "WBGG": [
+        {
+            "id": "WBGG",
+            "label_lat": "2.7",
+            "label_lon": "111.0",
+            "oceanic": "0"
+        }
+    ],
+    "WIIF": [
+        {
+            "id": "WIIF",
+            "label_lat": "-2.902256",
+            "label_lon": "102.277836",
+            "oceanic": "0"
+        }
+    ],
+    "WIIF-N": [
+        {
+            "id": "WIIF-N",
+            "label_lat": "2.408889",
+            "label_lon": "96.326111",
+            "oceanic": "0"
+        }
+    ],
+    "WIIF-W": [
+        {
+            "id": "WIIF-W",
+            "label_lat": "-3.861111",
+            "label_lon": "102.339444",
+            "oceanic": "0"
+        }
+    ],
+    "WIIF-E": [
+        {
+            "id": "WIIF-E",
+            "label_lat": "-4.712417",
+            "label_lon": "108.814833",
+            "oceanic": "0"
+        }
+    ],
+    "WMFC": [
+        {
+            "id": "WMFC",
+            "label_lat": "5.607951",
+            "label_lon": "99.582158",
+            "oceanic": "0"
+        }
+    ],
+    "WSJC": [
+        {
+            "id": "WSJC",
+            "label_lat": "4.833334",
+            "label_lon": "109.333334",
+            "oceanic": "0"
+        }
+    ],
+    "ZBPE": [
+        {
+            "id": "ZBPE",
+            "label_lat": "40.09172",
+            "label_lon": "113.29524",
+            "oceanic": "0"
+        }
+    ],
+    "ZBAA": [
+        {
+            "id": "ZBAA",
+            "label_lat": "39.02789",
+            "label_lon": "116.64389",
+            "oceanic": "0"
+        }
+    ],
+    "ZBHH": [
+        {
+            "id": "ZBHH",
+            "label_lat": "42.01505",
+            "label_lon": "112.43802",
+            "oceanic": "0"
+        }
+    ],
+    "ZBLA": [
+        {
+            "id": "ZBLA",
+            "label_lat": "48.75674",
+            "label_lon": "119.47633",
+            "oceanic": "0"
+        }
+    ],
+    "ZBYN": [
+        {
+            "id": "ZBYN",
+            "label_lat": "37.375556",
+            "label_lon": "112.606667",
+            "oceanic": "0"
+        }
+    ],
+    "ZGZU": [
+        {
+            "id": "ZGZU",
+            "label_lat": "25.279167",
+            "label_lon": "111.341667",
+            "oceanic": "0"
+        }
+    ],
+    "ZSHA-AR22": [
+        {
+            "id": "ZSHA-AR22",
+            "label_lat": "26.23955",
+            "label_lon": "115.01155",
+            "oceanic": "0"
+        }
+    ],
+    "ZGGG": [
+        {
+            "id": "ZGGG",
+            "label_lat": "23.8925",
+            "label_lon": "113.798889",
+            "oceanic": "0"
+        }
+    ],
+    "ZGHA": [
+        {
+            "id": "ZGHA",
+            "label_lat": "27.866667",
+            "label_lon": "111.520834",
+            "oceanic": "0"
+        }
+    ],
+    "ZGNN-AR08": [
+        {
+            "id": "ZGNN-AR08",
+            "label_lat": "25.366667",
+            "label_lon": "109.3",
+            "oceanic": "0"
+        }
+    ],
+    "ZGNN": [
+        {
+            "id": "ZGNN",
+            "label_lat": "23.366667",
+            "label_lon": "108.0",
+            "oceanic": "0"
+        }
+    ],
+    "ZGZJ": [
+        {
+            "id": "ZGZJ",
+            "label_lat": "21.71667",
+            "label_lon": "109.9",
+            "oceanic": "0"
+        }
+    ],
+    "ZHWH": [
+        {
+            "id": "ZHWH",
+            "label_lat": "32.0",
+            "label_lon": "112.650833",
+            "oceanic": "0"
+        }
+    ],
+    "ZHCC": [
+        {
+            "id": "ZHCC",
+            "label_lat": "33.5",
+            "label_lon": "112.650833",
+            "oceanic": "0"
+        }
+    ],
+    "ZHHH": [
+        {
+            "id": "ZHHH",
+            "label_lat": "30.5",
+            "label_lon": "112.650833",
+            "oceanic": "0"
+        }
+    ],
+    "ZJSY": [
+        {
+            "id": "ZJSY",
+            "label_lat": "19.08253",
+            "label_lon": "109.57186",
+            "oceanic": "0"
+        }
+    ],
+    "ZJSA-OCA": [
+        {
+            "id": "ZJSA-OCA",
+            "label_lat": "17.28511",
+            "label_lon": "111.29363",
+            "oceanic": "0"
+        }
+    ],
+    "ZJSA": [
+        {
+            "id": "ZJSA",
+            "label_lat": "18.41011",
+            "label_lon": "110.40915",
+            "oceanic": "0"
+        }
+    ],
+    "ZLLL": [
+        {
+            "id": "ZLLL",
+            "label_lat": "37.12123",
+            "label_lon": "95.43824",
+            "oceanic": "0"
+        }
+    ],
+    "ZLHW": [
+        {
+            "id": "ZLHW",
+            "label_lat": "38.2979",
+            "label_lon": "101.62578",
+            "oceanic": "0"
+        }
+    ],
+    "ZLXY-H": [
+        {
+            "id": "ZLXY-H",
+            "label_lat": "36.60685",
+            "label_lon": "104.9444",
+            "oceanic": "0"
+        }
+    ],
+    "ZLXY": [
+        {
+            "id": "ZLXY",
+            "label_lat": "34.65427",
+            "label_lon": "108.67186",
+            "oceanic": "0"
+        }
+    ],
+    "ZPPP": [
+        {
+            "id": "ZPPP",
+            "label_lat": "24.42727",
+            "label_lon": "102.06528",
+            "oceanic": "0"
+        }
+    ],
+    "ZPKM": [
+        {
+            "id": "ZPKM",
+            "label_lat": "29.91873",
+            "label_lon": "98.69726",
+            "oceanic": "0"
+        }
+    ],
+    "ZULS": [
+        {
+            "id": "ZULS",
+            "label_lat": "30.75362",
+            "label_lon": "90.11675",
+            "oceanic": "0"
+        }
+    ],
+    "ZUGY": [
+        {
+            "id": "ZUGY",
+            "label_lat": "26.78015",
+            "label_lon": "107.28488",
+            "oceanic": "0"
+        }
+    ],
+    "ZUUU": [
+        {
+            "id": "ZUUU",
+            "label_lat": "29.83459",
+            "label_lon": "103.65367",
+            "oceanic": "0"
+        }
+    ],
+    "ZSSS": [
+        {
+            "id": "ZSSS",
+            "label_lat": "30.89823",
+            "label_lon": "120.21437",
+            "oceanic": "0"
+        }
+    ],
+    "ZSHA": [
+        {
+            "id": "ZSHA",
+            "label_lat": "29.37925",
+            "label_lon": "118.17084",
+            "oceanic": "0"
+        }
+    ],
+    "ZSAM": [
+        {
+            "id": "ZSAM",
+            "label_lat": "25.44139",
+            "label_lon": "118.29305",
+            "oceanic": "0"
+        }
+    ],
+    "ZSCN": [
+        {
+            "id": "ZSCN",
+            "label_lat": "28.08850",
+            "label_lon": "116.48420",
+            "oceanic": "0"
+        }
+    ],
+    "ZSJN": [
+        {
+            "id": "ZSJN",
+            "label_lat": "35.85",
+            "label_lon": "117.2",
+            "oceanic": "0"
+        }
+    ],
+    "ZSOF": [
+        {
+            "id": "ZSOF",
+            "label_lat": "31.17144",
+            "label_lon": "117.0",
+            "oceanic": "0"
+        }
+    ],
+    "ZSQD": [
+        {
+            "id": "ZSQD",
+            "label_lat": "36.79607",
+            "label_lon": "121.89935",
+            "oceanic": "0"
+        }
+    ],
+    "ZWWW": [
+        {
+            "id": "ZWWW",
+            "label_lat": "42.98516",
+            "label_lon": "88.53638",
+            "oceanic": "0"
+        }
+    ],
+    "ZWUQ": [
+        {
+            "id": "ZWUQ",
+            "label_lat": "39.77188",
+            "label_lon": "84.3564",
+            "oceanic": "0"
+        }
+    ],
+    "ZWAK": [
+        {
+            "id": "ZWAK",
+            "label_lat": "36.67571",
+            "label_lon": "81.1109",
+            "oceanic": "0"
+        }
+    ],
+    "ZYTX": [
+        {
+            "id": "ZYTX",
+            "label_lat": "42.59123",
+            "label_lon": "122.46231",
+            "oceanic": "0"
+        }
+    ],
+    "ZYSH": [
+        {
+            "id": "ZYSH",
+            "label_lat": "44.83988",
+            "label_lon": "123.03321",
+            "oceanic": "0"
+        }
+    ],
+    "ZYHB": [
+        {
+            "id": "ZYHB",
+            "label_lat": "46.74231",
+            "label_lon": "127.27081",
+            "oceanic": "0"
+        }
+    ],
+    "ZYTL": [
+        {
+            "id": "ZYTL",
+            "label_lat": "39.20652",
+            "label_lon": "121.73851",
+            "oceanic": "0"
+        }
+    ],
+    "ZYTL-AR03": [
+        {
+            "id": "ZYTL-AR03",
+            "label_lat": "37.50938",
+            "label_lon": "123.49129",
+            "oceanic": "0"
+        }
+    ],
+    "ZKKP": [
+        {
+            "id": "ZKKP",
+            "label_lat": "40.319095",
+            "label_lon": "129.96421",
+            "oceanic": "0"
+        }
+    ],
+    "PAZA": [
+        {
+            "id": "PAZA",
+            "label_lat": "61.066666",
+            "label_lon": "-165.9",
+            "oceanic": "0"
+        }
+    ],
+    "PGZU": [
+        {
+            "id": "PGZU",
+            "label_lat": "11.8",
+            "label_lon": "144.795983",
+            "oceanic": "0"
+        }
+    ],
+    "SUEO": [
+        {
+            "id": "SUEO",
+            "label_lat": "-37.0",
+            "label_lon": "-31.6",
+            "oceanic": "1"
+        },
+        {
+            "id": "SUEO",
+            "label_lat": "-33.4375",
+            "label_lon": "-55.036112",
+            "oceanic": "0"
+        }
+    ],
+    "LUUU": [
+        {
+            "id": "LUUU",
+            "label_lat": "46.959166",
+            "label_lon": "29.0",
+            "oceanic": "0"
+        }
+    ],
+    "MMEX": [
+        {
+            "id": "MMEX",
+            "label_lat": "18.739215",
+            "label_lon": "-100.78432",
+            "oceanic": "0"
+        }
+    ],
+    "MMID": [
+        {
+            "id": "MMID",
+            "label_lat": "18.965712",
+            "label_lon": "-92.447442",
+            "oceanic": "0"
+        }
+    ],
+    "MMTY": [
+        {
+            "id": "MMTY",
+            "label_lat": "27.39",
+            "label_lon": "-102.75",
+            "oceanic": "0"
+        }
+    ],
+    "MMZT": [
+        {
+            "id": "MMZT",
+            "label_lat": "24.45",
+            "label_lon": "-109.0",
+            "oceanic": "0"
+        }
+    ],
+    "MMFO": [
+        {
+            "id": "MMFO",
+            "label_lat": "17.5",
+            "label_lon": "-114.0",
+            "oceanic": "1"
+        }
+    ],
+    "ZMUB": [
+        {
+            "id": "ZMUB",
+            "label_lat": "46.845",
+            "label_lon": "103.85",
+            "oceanic": "0"
+        }
+    ],
+    "UAAA": [
+        {
+            "id": "UAAA",
+            "label_lat": "47.037778",
+            "label_lon": "77.552778",
+            "oceanic": "0"
+        }
+    ],
+    "UACN": [
+        {
+            "id": "UACN",
+            "label_lat": "50.5",
+            "label_lon": "68.9",
+            "oceanic": "0"
+        }
+    ],
+    "UAII": [
+        {
+            "id": "UAII",
+            "label_lat": "44.008889",
+            "label_lon": "66.0",
+            "oceanic": "0"
+        }
+    ],
+    "UATT": [
+        {
+            "id": "UATT",
+            "label_lat": "48.5",
+            "label_lon": "54.5",
+            "oceanic": "0"
+        }
+    ],
+    "UBBA": [
+        {
+            "id": "UBBA",
+            "label_lat": "40.266667",
+            "label_lon": "48.691666",
+            "oceanic": "0"
+        }
+    ],
+    "UBBA-S": [
+        {
+            "id": "UBBA-S",
+            "label_lat": "39.25523",
+            "label_lon": "45.44359",
+            "oceanic": "0"
+        }
+    ],
+    "UCFM": [
+        {
+            "id": "UCFM",
+            "label_lat": "41.916667",
+            "label_lon": "76.1",
+            "oceanic": "0"
+        }
+    ],
+    "UCFO": [
+        {
+            "id": "UCFO",
+            "label_lat": "40.770833",
+            "label_lon": "73.3",
+            "oceanic": "0"
+        }
+    ],
+    "UDDD": [
+        {
+            "id": "UDDD",
+            "label_lat": "40.058334",
+            "label_lon": "45.008334",
+            "oceanic": "0"
+        }
+    ],
+    "UEEE": [
+        {
+            "id": "UEEE",
+            "label_lat": "66.25",
+            "label_lon": "130.0",
+            "oceanic": "0"
+        }
+    ],
+    "UGGG": [
+        {
+            "id": "UGGG",
+            "label_lat": "42.166667",
+            "label_lon": "43.441667",
+            "oceanic": "0"
+        }
+    ],
+    "UHHH": [
+        {
+            "id": "UHHH",
+            "label_lat": "51.0",
+            "label_lon": "139.0",
+            "oceanic": "0"
+        }
+    ],
+    "UHMM": [
+        {
+            "id": "UHMM",
+            "label_lat": "65.6",
+            "label_lon": "166.0",
+            "oceanic": "0"
+        }
+    ],
+    "UHPP": [
+        {
+            "id": "UHPP",
+            "label_lat": "57.0",
+            "label_lon": "164.3",
+            "oceanic": "0"
+        }
+    ],
+    "UIII": [
+        {
+            "id": "UIII",
+            "label_lat": "56.0",
+            "label_lon": "111.558333",
+            "oceanic": "0"
+        }
+    ],
+    "UKBV": [
+        {
+            "id": "UKBV",
+            "label_lat": "50.0655",
+            "label_lon": "30.941667",
+            "oceanic": "0"
+        }
+    ],
+    "UKFV": [
+        {
+            "id": "UKFV",
+            "label_lat": "45.233333",
+            "label_lon": "33.759167",
+            "oceanic": "0"
+        }
+    ],
+    "UKDV": [
+        {
+            "id": "UKDV",
+            "label_lat": "48.911666",
+            "label_lon": "36.516667",
+            "oceanic": "0"
+        }
+    ],
+    "UKLV": [
+        {
+            "id": "UKLV",
+            "label_lat": "49.807958",
+            "label_lon": "24.987917",
+            "oceanic": "0"
+        }
+    ],
+    "UKOV": [
+        {
+            "id": "UKOV",
+            "label_lat": "46.501667",
+            "label_lon": "30.6275",
+            "oceanic": "0"
+        }
+    ],
+    "UKR": [
+        {
+            "id": "UKR",
+            "label_lat": "48.060395",
+            "label_lon": "31.892367",
+            "oceanic": "0"
+        }
+    ],
+    "ULAA": [
+        {
+            "id": "ULAA",
+            "label_lat": "64.017680",
+            "label_lon": "43.800170",
+            "oceanic": "0"
+        }
+    ],
+    "ULKK": [
+        {
+            "id": "ULKK",
+            "label_lat": "61.20332",
+            "label_lon": "45.2777",
+            "oceanic": "0"
+        }
+    ],
+    "ULLL": [
+        {
+            "id": "ULLL",
+            "label_lat": "60.32514",
+            "label_lon": "33.32006",
+            "oceanic": "0"
+        }
+    ],
+    "ULMM": [
+        {
+            "id": "ULMM",
+            "label_lat": "67.67634",
+            "label_lon": "35.56818",
+            "oceanic": "0"
+        },
+        {
+            "id": "ULMM",
+            "label_lat": "73.597663",
+            "label_lon": "41.74777",
+            "oceanic": "1"
+        }
+    ],
+    "ULWW": [
+        {
+            "id": "ULWW",
+            "label_lat": "59.72579",
+            "label_lon": "39.71935",
+            "oceanic": "0"
+        }
+    ],
+    "UMKK": [
+        {
+            "id": "UMKK",
+            "label_lat": "55.205682",
+            "label_lon": "20.215527",
+            "oceanic": "0"
+        }
+    ],
+    "UMMV": [
+        {
+            "id": "UMMV",
+            "label_lat": "53.78",
+            "label_lon": "27.958334",
+            "oceanic": "0"
+        }
+    ],
+    "UNKL": [
+        {
+            "id": "UNKL",
+            "label_lat": "64.68202",
+            "label_lon": "95.66849",
+            "oceanic": "0"
+        }
+    ],
+    "UNNT": [
+        {
+            "id": "UNNT",
+            "label_lat": "56.75",
+            "label_lon": "79.666667",
+            "oceanic": "0"
+        }
+    ],
+    "URRV": [
+        {
+            "id": "URRV",
+            "label_lat": "46.583333",
+            "label_lon": "43.133334",
+            "oceanic": "0"
+        }
+    ],
+    "USSV": [
+        {
+            "id": "USSV",
+            "label_lat": "58.791667",
+            "label_lon": "55.116667",
+            "oceanic": "0"
+        }
+    ],
+    "USTV": [
+        {
+            "id": "USTV",
+            "label_lat": "64.425",
+            "label_lon": "72.033334",
+            "oceanic": "0"
+        }
+    ],
+    "UTAA": [
+        {
+            "id": "UTAA",
+            "label_lat": "38.6",
+            "label_lon": "59.6",
+            "oceanic": "0"
+        }
+    ],
+    "UTAK": [
+        {
+            "id": "UTAK",
+            "label_lat": "39.841667",
+            "label_lon": "54.558334",
+            "oceanic": "0"
+        }
+    ],
+    "UTAT": [
+        {
+            "id": "UTAT",
+            "label_lat": "41.239893",
+            "label_lon": "58.823281",
+            "oceanic": "0"
+        }
+    ],
+    "UTAV": [
+        {
+            "id": "UTAV",
+            "label_lat": "38.5375",
+            "label_lon": "63.458334",
+            "oceanic": "0"
+        }
+    ],
+    "UTDD": [
+        {
+            "id": "UTDD",
+            "label_lat": "38.8",
+            "label_lon": "71.333333",
+            "oceanic": "0"
+        }
+    ],
+    "UTSD": [
+        {
+            "id": "UTSD",
+            "label_lat": "39.9",
+            "label_lon": "65.5",
+            "oceanic": "0"
+        }
+    ],
+    "UTTR": [
+        {
+            "id": "UTTR",
+            "label_lat": "41.875",
+            "label_lon": "64.291666",
+            "oceanic": "0"
+        }
+    ],
+    "UUWV": [
+        {
+            "id": "UUWV",
+            "label_lat": "54.074167",
+            "label_lon": "38.841667",
+            "oceanic": "0"
+        }
+    ],
+    "UUYY": [
+        {
+            "id": "UUYY",
+            "label_lat": "64.0",
+            "label_lon": "54.966667",
+            "oceanic": "0"
+        }
+    ],
+    "UWWW": [
+        {
+            "id": "UWWW",
+            "label_lat": "53.578334",
+            "label_lon": "51.833333",
+            "oceanic": "0"
+        }
+    ],
+    "YARA": [
+        {
+            "id": "YARA",
+            "label_lat": "-12.397883",
+            "label_lon": "139.202342",
+            "oceanic": "0"
+        }
+    ],
+    "YTRT": [
+        {
+            "id": "YTRT",
+            "label_lat": "-13.796825",
+            "label_lon": "131.701580",
+            "oceanic": "0"
+        }
+    ],
+    "YASP": [
+        {
+            "id": "YASP",
+            "label_lat": "-22.45736",
+            "label_lon": "133.65313",
+            "oceanic": "0"
+        }
+    ],
+    "YKIY": [
+        {
+            "id": "YKIY",
+            "label_lat": "-17.770280",
+            "label_lon": "125.608865",
+            "oceanic": "0"
+        }
+    ],
+    "YPOT": [
+        {
+            "id": "YPOT",
+            "label_lat": "-19.46316",
+            "label_lon": "118.84430",
+            "oceanic": "0"
+        }
+    ],
+    "YNEW": [
+        {
+            "id": "YNEW",
+            "label_lat": "-23.01030",
+            "label_lon": "122.06207",
+            "oceanic": "0"
+        }
+    ],
+    "YASW": [
+        {
+            "id": "YASW",
+            "label_lat": "-25.99314",
+            "label_lon": "130.54390",
+            "oceanic": "0"
+        }
+    ],
+    "YWAR": [
+        {
+            "id": "YWAR",
+            "label_lat": "-26.840631",
+            "label_lon": "126.389564",
+            "oceanic": "0"
+        }
+    ],
+    "YAUG": [
+        {
+            "id": "YAUG",
+            "label_lat": "-33.903480",
+            "label_lon": "136.950344",
+            "oceanic": "0"
+        }
+    ],
+    "YWRA": [
+        {
+            "id": "YWRA",
+            "label_lat": "-28.81072",
+            "label_lon": "136.86043",
+            "oceanic": "0"
+        }
+    ],
+    "YISA": [
+        {
+            "id": "YISA",
+            "label_lat": "-19.225629",
+            "label_lon": "140.388607",
+            "oceanic": "0"
+        }
+    ],
+    "YBUR": [
+        {
+            "id": "YBUR",
+            "label_lat": "-26.274857",
+            "label_lon": "152.573363",
+            "oceanic": "0"
+        }
+    ],
+    "YCOL": [
+        {
+            "id": "YCOL",
+            "label_lat": "-15.477509",
+            "label_lon": "154.316670",
+            "oceanic": "0"
+        }
+    ],
+    "YCVN": [
+        {
+            "id": "YCVN",
+            "label_lat": "-25.095498",
+            "label_lon": "149.004499",
+            "oceanic": "0"
+        }
+    ],
+    "YDOS": [
+        {
+            "id": "YDOS",
+            "label_lat": "-28.32161",
+            "label_lon": "151.82435",
+            "oceanic": "0"
+        }
+    ],
+    "YFLD": [
+        {
+            "id": "YFLD",
+            "label_lat": "-21.856842",
+            "label_lon": "157.873790",
+            "oceanic": "0"
+        }
+    ],
+    "YFOR": [
+        {
+            "id": "YFOR",
+            "label_lat": "-34.870990",
+            "label_lon": "130.542438",
+            "oceanic": "0"
+        }
+    ],
+    "YGEL": [
+        {
+            "id": "YGEL",
+            "label_lat": "-28.735160",
+            "label_lon": "114.263405",
+            "oceanic": "0"
+        }
+    ],
+    "YPIY": [
+        {
+            "id": "YPIY",
+            "label_lat": "-32.066661",
+            "label_lon": "117.107390",
+            "oceanic": "0"
+        }
+    ],
+    "YIND": [
+        {
+            "id": "YIND",
+            "label_lat": "-23.902742",
+            "label_lon": "93.067652",
+            "oceanic": "0"
+        }
+    ],
+    "YINE": [
+        {
+            "id": "YINE",
+            "label_lat": "-15.941451",
+            "label_lon": "109.158525",
+            "oceanic": "0"
+        }
+    ],
+    "YINS": [
+        {
+            "id": "YINS",
+            "label_lat": "-50.365426",
+            "label_lon": "139.999596",
+            "oceanic": "0"
+        }
+    ],
+    "YOLW": [
+        {
+            "id": "YOLW",
+            "label_lat": "-21.510109",
+            "label_lon": "114.353878",
+            "oceanic": "0"
+        }
+    ],
+    "YMEK": [
+        {
+            "id": "YMEK",
+            "label_lat": "-26.20273",
+            "label_lon": "115.95591",
+            "oceanic": "0"
+        }
+    ],
+    "YKAT": [
+        {
+            "id": "YKAT",
+            "label_lat": "-33.417685",
+            "label_lon": "149.504314",
+            "oceanic": "0"
+        }
+    ],
+    "YBKE": [
+        {
+            "id": "YBKE",
+            "label_lat": "-31.823119",
+            "label_lon": "144.993866",
+            "oceanic": "0"
+        }
+    ],
+    "YBIK": [
+        {
+            "id": "YBIK",
+            "label_lat": "-34.513566",
+            "label_lon": "149.434312",
+            "oceanic": "0"
+        }
+    ],
+    "YMLD": [
+        {
+            "id": "YMLD",
+            "label_lat": "-32.079082",
+            "label_lon": "152.413991",
+            "oceanic": "0"
+        }
+    ],
+    "YOCN": [
+        {
+            "id": "YOCN",
+            "label_lat": "-33.734848",
+            "label_lon": "153.415611",
+            "oceanic": "0"
+        }
+    ],
+    "YWOL": [
+        {
+            "id": "YWOL",
+            "label_lat": "-35.756651",
+            "label_lon": "151.303522",
+            "oceanic": "0"
+        }
+    ],
+    "YTSN": [
+        {
+            "id": "YTSN",
+            "label_lat": "-38.158707",
+            "label_lon": "157.389245",
+            "oceanic": "0"
+        }
+    ],
+    "YELW": [
+        {
+            "id": "YELW",
+            "label_lat": "-37.42586",
+            "label_lon": "146.14289",
+            "oceanic": "0"
+        }
+    ],
+    "YGTH": [
+        {
+            "id": "YGTH",
+            "label_lat": "-34.213083",
+            "label_lon": "146.796663",
+            "oceanic": "0"
+        }
+    ],
+    "YYWE": [
+        {
+            "id": "YYWE",
+            "label_lat": "-37.810595",
+            "label_lon": "143.539740",
+            "oceanic": "0"
+        }
+    ],
+    "YOXL": [
+        {
+            "id": "YOXL",
+            "label_lat": "-34.542036",
+            "label_lon": "144.787212",
+            "oceanic": "0"
+        }
+    ],
+    "YTAS": [
+        {
+            "id": "YTAS",
+            "label_lat": "-42.079836",
+            "label_lon": "146.469407",
+            "oceanic": "0"
+        }
+    ],
+    "YMUN": [
+        {
+            "id": "YMUN",
+            "label_lat": "-37.425228",
+            "label_lon": "141.482768",
+            "oceanic": "0"
+        }
+    ],
+    "YTBD": [
+        {
+            "id": "YTBD",
+            "label_lat": "-35.450637",
+            "label_lon": "139.939612",
+            "oceanic": "0"
+        }
+    ],
+    "YARL": [
+        {
+            "id": "YARL",
+            "label_lat": "-31.612897",
+            "label_lon": "151.263989",
+            "oceanic": "0"
+        }
+    ],
+    "YMDE": [
+        {
+            "id": "YMDE",
+            "label_lat": "-30.453293",
+            "label_lon": "149.555574",
+            "oceanic": "0"
+        }
+    ],
+    "YWON": [
+        {
+            "id": "YWON",
+            "label_lat": "-39.300790",
+            "label_lon": "145.967190",
+            "oceanic": "0"
+        }
+    ],
+    "YSNO": [
+        {
+            "id": "YSNO",
+            "label_lat": "-37.08721",
+            "label_lon": "148.40039",
+            "oceanic": "0"
+        }
+    ],
+    "YHWE": [
+        {
+            "id": "YHWE",
+            "label_lat": "-30.116177",
+            "label_lon": "158.714616",
+            "oceanic": "0"
+        }
+    ],
+    "YKPL": [
+        {
+            "id": "YKPL",
+            "label_lat": "-23.801825",
+            "label_lon": "151.865360",
+            "oceanic": "0"
+        }
+    ],
+    "YMTK": [
+        {
+            "id": "YMTK",
+            "label_lat": "-26.88682",
+            "label_lon": "120.97259",
+            "oceanic": "0"
+        }
+    ],
+    "YPAR": [
+        {
+            "id": "YPAR",
+            "label_lat": "-23.59304",
+            "label_lon": "117.09607",
+            "oceanic": "0"
+        }
+    ],
+    "YINL": [
+        {
+            "id": "YINL",
+            "label_lat": "-29.05514",
+            "label_lon": "153.20574",
+            "oceanic": "0"
+        }
+    ],
+    "YSDY": [
+        {
+            "id": "YSDY",
+            "label_lat": "-27.474185",
+            "label_lon": "154.783212",
+            "oceanic": "0"
+        }
+    ],
+    "YSWY": [
+        {
+            "id": "YSWY",
+            "label_lat": "-21.723564",
+            "label_lon": "148.299400",
+            "oceanic": "0"
+        }
+    ],
+    "YTBP": [
+        {
+            "id": "YTBP",
+            "label_lat": "-18.360260",
+            "label_lon": "148.500183",
+            "oceanic": "0"
+        }
+    ],
+    "YSTR": [
+        {
+            "id": "YSTR",
+            "label_lat": "-18.694395",
+            "label_lon": "134.889028",
+            "oceanic": "0"
+        }
+    ],
+    "YBAR": [
+        {
+            "id": "YBAR",
+            "label_lat": "-15.627515",
+            "label_lon": "145.812514",
+            "oceanic": "0"
+        }
+    ],
+    "YKEN": [
+        {
+            "id": "YKEN",
+            "label_lat": "-17.846580",
+            "label_lon": "144.900158",
+            "oceanic": "0"
+        }
+    ],
+    "YBLA": [
+        {
+            "id": "YBLA",
+            "label_lat": "-36.03181",
+            "label_lon": "146.58715",
+            "oceanic": "0"
+        }
+    ],
+    "YESP": [
+        {
+            "id": "YESP",
+            "label_lat": "-32.986496",
+            "label_lon": "122.289883",
+            "oceanic": "0"
+        }
+    ],
+    "YJAR": [
+        {
+            "id": "YJAR",
+            "label_lat": "-34.549098",
+            "label_lon": "116.930320",
+            "oceanic": "0"
+        }
+    ],
+    "YLEA": [
+        {
+            "id": "YLEA",
+            "label_lat": "-31.245552",
+            "label_lon": "114.106715",
+            "oceanic": "0"
+        }
+    ],
+    "YGVE": [
+        {
+            "id": "YGVE",
+            "label_lat": "-29.400174",
+            "label_lon": "117.804804",
+            "oceanic": "0"
+        }
+    ],
+    "YMZI": [
+        {
+            "id": "YMZI",
+            "label_lat": "-29.9089",
+            "label_lon": "122.5183",
+            "oceanic": "0"
+        }
+    ],
+    "YHYD": [
+        {
+            "id": "YHYD",
+            "label_lat": "-32.806879",
+            "label_lon": "119.065568",
+            "oceanic": "0"
+        }
+    ],
+    "YCRS": [
+        {
+            "id": "YCRS",
+            "label_lat": "-30.938281",
+            "label_lon": "118.888494",
+            "oceanic": "0"
+        }
+    ],
+    "YWEG": [
+        {
+            "id": "YWEG",
+            "label_lat": "-26.482729",
+            "label_lon": "143.189324",
+            "oceanic": "0"
+        }
+    ],
+    "FASA": [
+        {
+            "id": "FASA",
+            "label_lat": "-30.765751",
+            "label_lon": "24.469167",
+            "oceanic": "0"
+        }
+    ],
+    "ENOR-S": [
+        {
+            "id": "ENOR-S",
+            "label_lat": "61.948152",
+            "label_lon": "7.552371",
+            "oceanic": "0"
+        }
+    ]
+}
